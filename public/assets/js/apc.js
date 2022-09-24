@@ -295,13 +295,15 @@ const register = {
     },
     saveStep: function(step){
         if(this.validate(step)){
+            loading('show');
+
             let formData = new FormData(),
                 mapFData = this.getMapField(step)
                 mapFiles = this.mapField.files;
 
             formData.append('id',this.id);
             formData.append('step',step);
-            formData.append('status',step != 5 ? 'draft' : 'finish');
+            formData.append('status',step != 'finish' ? 1 : 2);
             
             $.each(mapFData,function(mapk,mapv){
                 formData.append(mapv.api,this.formData['step'+step][mapv.variant]);
@@ -328,7 +330,8 @@ const register = {
                 });
             }
 
-            this.saveApp(formData).then(function(res){
+            this.saveApp(formData,baseUrl+'/frontend/app/draft').then(function(res){
+                loading('hide');
                 let save = res;
             });
 
@@ -336,13 +339,24 @@ const register = {
             alert.show('error','ไม่สามารถบันทึกใบสมัครได้','กรุณาตรวจทานข้อมูลอีกครั้ง');
         }
     },
+    saveApp: function(postData,link){
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                type: 'post',
+                url: link,
+                data: postData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                async: false,
+                success: function(response){
+                    resolve(response);
+                }
+            });
+        });
+    },
     setFile: function(){
 
-    },
-    saveApp: function(postData){
-        return new Promise(function(resolve, reject) {
-
-        });
     },
     onFileHandle: function(id, clear = true){
         let file = {
@@ -433,35 +447,29 @@ const register = {
 
         formData.append('id',this.id);
         formData.append('step',1);
-        formData.append('position','app-register-img');
+        formData.append('position','registerImages');
         
         $.each(images,function(key,file){
             formData.append('images[]',file);
         });
 
-        $.ajax({
-            type: 'post',
-            url: baseUrl+'/frontend/app/upload/images',
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            async: false,
-            success: function(response){
-                loading('hide');
-                if(response.result == 'error_login'){
-                    alert.login();
+        this.saveApp(formData,baseUrl+'/frontend/app/upload/images').then(function(res){
+            loading('hide');
+            let save = res;
+
+            if(save.result == 'error_login'){
+                alert.login();
+            } else {
+                if(save.result == 'success'){
+                    register.count.image += Number(save.upload_c);
+                    var title = 'อัพโหลดรูปเรียบร้อยแล้ว'
                 } else {
-                    if(response.result == 'success'){
-                        this.count.image += Number(response.upload_c);
-                        var title = 'อัพโหลดรูปเรียบร้อยแล้ว'
-                    } else {
-                        var title = 'ไม่สามารถอัพโหลดรูปได้'
-                    }
-                    alert.show(response.result,title,response.message);
-                    return;
+                    var title = 'ไม่สามารถอัพโหลดรูปได้'
                 }
+                alert.show(save.result,title,save.message);
+                return;
             }
+
         });
         
     },
