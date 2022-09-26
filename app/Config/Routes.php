@@ -68,6 +68,7 @@ $routes->group('frontend', static function ($routes) {
             $routes->post('images', 'ApplicationController::uploadImages');
         });
     });
+    $routes->get('get-question', 'AnswerController::getQuestionByAjax');
 });
 
 $routes->group('backend',['namespace' => 'App\Controllers\Backend'], static function ($routes) {    

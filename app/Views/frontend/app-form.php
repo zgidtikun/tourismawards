@@ -47,8 +47,8 @@
         <div class="loading" id="loading-page"></div>
     </div>
 </div>
-<link rel="preload" as="script" href="<?= base_url('assets/js/apc.js')?>"> 
-<script src="<?=base_url('assets/js/apc.js')?>"></script>
+<link rel="preload" as="script" href="<?= base_url('assets/js/frontend/apc.js')?>"> 
+<script src="<?=base_url('assets/js/frontend/apc.js')?>"></script>
 <script>
     $(document).ready(function(){
         register.init(<?=session()->get('id')?>);

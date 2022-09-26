@@ -89,10 +89,10 @@
 <link rel="preload" as="script" href="//cdn.jsdelivr.net/npm/sweetalert2@11"> 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<link rel="preload" as="script" href="<?= base_url('assets/js/other.js')?>"> 
+<link rel="preload" as="script" href="<?= base_url('assets/js/frontend/other.js')?>"> 
 <script src="<?= base_url('assets/js/other.js') ?>" charset="utf-8" type="text/javascript"></script>
 
-<link rel="preload" as="script" href="<?= base_url('assets/js/alert.js')?>"> 
+<link rel="preload" as="script" href="<?= base_url('assets/js/frontend/alert.js')?>"> 
 <script src="<?= base_url('assets/js/alert.js') ?>" charset="utf-8" type="text/javascript"></script>
 
 <?php if($view == 'frontend/app-form') : ?>
