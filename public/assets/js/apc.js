@@ -1,4 +1,77 @@
-var baseUrl = window.location.origin;
+const MapField = {
+    register: {
+        step: {
+            s1: [
+                { input: '[name=step1-appType]', variant: 'appType', 
+                    api: 'application_type_id', id: 'step1-appType-', require: true },
+                { input: '[name=step1-appTypeSub]', variant: 'appTypeSub', 
+                    api: 'application_type_sub_id', id: 'step1-appTypeSub-', require: true },
+                { input: '#step1-desc', variant: 'desc', api: 'highlights', require: true },
+                { input: '#step1-link', variant: 'link', api: 'link', require: false },
+            ],
+            s2: [
+                { input: '#step2-siteNameTh', variant: 'siteNameTh', api: 'attraction_name_th', require: true },
+                { input: '#step2-siteNameEng', variant: 'siteNameEng', api: 'attraction_name_en', require: false },
+                { input: '#step2-address', variant: 'address', api: 'address_no', require: true },
+                { input: '#step2-road', variant: 'road', api: 'address_road', require: true },
+                { input: '#step2-subDistrict', variant: 'subDistrict', api: 'address_sub_district', require: true },
+                { input: '#step2-district', variant: 'district', api: 'address_district', require: true },
+                { input: '#step2-province', variant: 'province', api: 'address_province', require: true },
+                { input: '#step2-zipcode', variant: 'zipcode', api: 'address_zipcode', require: true },
+                { input: '#step2-fb', variant: 'fb', api: 'facebook', require: false },
+                { input: '#step2-ig', variant: 'ig', api: 'instagram', require: false },
+                { input: '#step2-lid', variant: 'lid', api: 'line_id', require: false },
+                { input: '#step2-other', variant: 'other', api: 'other_social', require: false},
+            ],
+            s3: [
+                { input: '#step3-companyName', variant: 'companyName', api: 'company_name', require: true },
+                { input: '#step3-address', variant: 'address', api: 'company_addr_no', require: true },
+                { input: '#step3-road', variant: 'road', api: 'company_addr_road', require: true },
+                { input: '#step3-subDistrict', variant: 'subDistrict', api: 'company_addr_sub_district', require: true },
+                { input: '#step3-district', variant: 'district', api: 'company_addr_district', require: true },
+                { input: '#step3-province', variant: 'province', api: 'company_addr_province', require: true },
+                { input: '#step3-zipcode', variant: 'zipcode', api: 'company_addr_zipcode', require: true },
+                { input: '#step3-telephone', variant: 'telephone', api: 'mobile', require: false },
+                { input: '#step3-email', variant: 'email', api: 'email', require: false },
+                { input: '#step3-lid', variant: 'lid', api: 'line_id', require: false },
+            ],
+            s4: [
+                { input: '#step4-name', variant: 'name', api: 'knitter_name', require: true },
+                { input: '#step4-position', variant: 'position', api: 'knitter_position', require: true },
+                { input: '#step4-telephone', variant: 'telephone', api: 'knitter_tel', require: true },
+                { input: '#step4-email', variant: 'email', api: 'knitter_email', require: true },
+                { input: '#step4-lid', variant: 'lid', api: 'knitter_line', require: false },
+            ],
+            s5: [
+                { input: '#step5-openYear', variant: 'openYear', api: 'year_open', require: true },
+                { input: '#step5-totalYear', variant: 'totalYear', api: 'year_total', require: true },
+                { input: '[name=step5-manageBy]', variant: 'manageBy', 
+                    api: 'manage_by', id: 'step5-manageBy-', require: false },
+            ],
+        },
+        files: [
+            { input: '#step1-img', step: 1, show: 'div.image-new', api: 'registerImages[]',
+                position: 'registerImages', filed: 'image' },
+            { input: '#step1-detail', step: 1, show: 'div.detail-new', api: 'detailFiles[]',
+                position: 'detailFiles', filed: 'detail' },
+            { input: '#step1-paper', step: 1, show: 'div.paper-new', api: 'paperFiles[]',
+                position: 'paperFiles', filed: 'paper' },
+            { input: '#step5-landOwner', step: 5, show: 'div.landOwner-new', api: 'landOwnerFiles[]',
+                position: 'landOwnerFiles', filed: 'landOwner' },
+            { input: '#step5-businessCert', step: 5, show: 'div.businessCert-new', api: 'businessCertFiles[]',
+                position: 'businessCertFiles', filed: 'businessCert' },
+            { input: '#step5-otherCert', step: 5, show: 'div.otherCert-new', api: 'otherCertFiles[]',
+                position: 'otherCertFiles', filed: 'otherCert' },
+        ],
+        fileFilter: {
+            input: ['#step1-detail','#step1-paper','#step5-landOwner','#step5-businessCert','#step5-otherCert'],
+            inputAccept: ['.doc','docx','application/pdf',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            image:  ['#step1-img'],
+            imageAccept: ['image/jpg','image/jpeg','image/gif','image/png','image/webp'],
+        } 
+    }                                                                                             
+};
 
 const register = {
     id: null,
@@ -9,66 +82,10 @@ const register = {
         currentStep: null,
         step1: {}, step2: {}, step3: {}, step4: {}, step5: {},
     },
-    mapField: {
-        step1: [
-            { input: '[name=step1-appType]', variant: 'appType', 
-                api: 'application_type_id', id: 'step1-appType-', require: true },
-            { input: '[name=step1-appTypeSub]', variant: 'appTypeSub', 
-                api: 'application_type_sub_id', id: 'step1-appTypeSub-', require: true },
-            { input: '#step1-desc', variant: 'desc', api: 'highlights', require: true },
-            { input: '#step1-link', variant: 'link', api: 'link', require: false },
-        ],
-        step2: [
-            { input: '#step2-siteNameTh', variant: 'siteNameTh', api: 'attraction_name_th', require: true },
-            { input: '#step2-siteNameEng', variant: 'siteNameEng', api: 'attraction_name_en', require: false },
-            { input: '#step2-address', variant: 'address', api: 'address_no', require: true },
-            { input: '#step2-road', variant: 'road', api: 'address_road', require: true },
-            { input: '#step2-subDistrict', variant: 'subDistrict', api: 'address_sub_district', require: true },
-            { input: '#step2-district', variant: 'district', api: 'address_district', require: true },
-            { input: '#step2-province', variant: 'province', api: 'address_province', require: true },
-            { input: '#step2-zipcode', variant: 'zipcode', api: 'address_zipcode', require: true },
-            { input: '#step2-fb', variant: 'fb', api: 'facebook', require: false },
-            { input: '#step2-ig', variant: 'ig', api: 'instagram', require: false },
-            { input: '#step2-lid', variant: 'lid', api: 'line_id', require: false },
-            { input: '#step2-other', variant: 'other', api: 'other_social', require: false},
-        ],
-        step3: [
-            { input: '#step3-companyName', variant: 'companyName', api: 'company_name', require: true },
-            { input: '#step3-address', variant: 'address', api: 'company_addr_no', require: true },
-            { input: '#step3-road', variant: 'road', api: 'company_addr_road', require: true },
-            { input: '#step3-subDistrict', variant: 'subDistrict', api: 'company_addr_sub_district', require: true },
-            { input: '#step3-district', variant: 'district', api: 'company_addr_district', require: true },
-            { input: '#step3-province', variant: 'province', api: 'company_addr_province', require: true },
-            { input: '#step3-zipcode', variant: 'zipcode', api: 'company_addr_zipcode', require: true },
-            { input: '#step3-telephone', variant: 'telephone', api: 'mobile', require: false },
-            { input: '#step3-email', variant: 'email', api: 'email', require: false },
-            { input: '#step3-lid', variant: 'lid', api: 'line_id', require: false },
-        ],
-        step4: [
-            { input: '#step4-name', variant: 'name', api: 'knitter_name', require: true },
-            { input: '#step4-position', variant: 'position', api: 'knitter_position', require: true },
-            { input: '#step4-telephone', variant: 'telephone', api: 'knitter_tel', require: true },
-            { input: '#step4-email', variant: 'email', api: 'knitter_email', require: true },
-            { input: '#step4-lid', variant: 'lid', api: 'knitter_line', require: false },
-        ],
-        step5: [
-            { input: '#step5-openYear', variant: 'openYear', api: 'year_open', require: true },
-            { input: '#step5-totalYear', variant: 'totalYear', api: 'year_total', require: true },
-            { input: '[name=step5-manageBy]', variant: 'manageBy', 
-                api: 'manage_by', id: 'step5-manageBy-', require: false },
-        ],
-        files: [
-            { input: '#step1-detail', step: 1, show: 'div.detail-new', api: 'detailFiles[]' },
-            { input: '#step1-paper', step: 1, show: 'div.paper-new', api: 'paperFiles[]' },
-            { input: '#step5-landOwner', step: 5, show: 'div.landOwner-new', api: 'landOwnerFiles[]' },
-            { input: '#step5-businessCert', step: 5, show: 'div.businessCert-new', api: 'businessCertFiles[]' },
-            { input: '#step5-otherCert', step: 5, show: 'div.otherCert-new', api: 'otherCertFiles[]' },
-        ]
-    },
     init: function(){        
-        this.getAppType().then(function(dataApp){
-            register.appType.main = dataApp.main;
-            register.appType.sub = dataApp.sub;
+        this.getAppType().then(function(appType){
+            register.appType.main = appType.main;
+            register.appType.sub = appType.sub;
 
             let radio = '',
                 counter = 0;
@@ -108,115 +125,104 @@ const register = {
             $('#group-type-sub').html(radio);
 
             register.getApc().then(function(dataApc){
-                if(dataApc.status == 'success')
+                if(dataApc.result == 'success')
                     loading('hide');
             });
         });
     },
-    getApc: function(){
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                type: 'get',
-                url: baseUrl+'/frontend/app/detail',
-                async: false,
-                success: function(response){
-                    let app = response.data;
-                    let files = app.files,
-                        tmp = [];
-                    
-                    register.id = app.id;
-                    register.statue = app.status;
-                    register.formData.currentStep = app.current_step;
-
-                    for(let i = 1; i <= 5; i++){
-                        let mapFData = register.getMapField(i);                        
-                        tmp['step'+i] = [];
-
-                        $.each(mapFData,function(keym,vulm){
-                            tmp['step'+i][keym.variant] = '';
-                            $.each(app,function(keya,vula){
-                                if(keym.api == keya){
-                                    if(!empty(vula)){
-                                        tmp['step'+i][keym.variant] = vula;
-
-                                        if(!$(vulm.input).length){
-                                            let = attrType = $(vulm.input).attr('type');
-                                            if(!$.inArray(attrType,['radio','checkbox']))
-                                                $(vulm.input).val(vula);
-                                            else
-                                                $(vulm.id+'-'+vula).prop('checked',true);                                            
-                                        }
-                                    }
-                                }
-                            });
-                        });
-                    }
-                    
-                    Object.assign(register.formData.step1, tmp['step1']);
-                    Object.assign(register.formData.step2, tmp['step2']);
-                    Object.assign(register.formData.step3, tmp['step3']);
-                    Object.assign(register.formData.step4, tmp['step4']);
-                    Object.assign(register.formData.step5, tmp['step5']);
-                    
-                    register.formData.step1.images = [];
-                    register.formData.step1.detail = [];
-                    register.formData.step1.paper = [];
-                    register.formData.step5.landOwner = [];
-                    register.formData.step5.businessCert = [];
-                    register.formData.step5.otherCert = [];
-                    register.count = {
-                        image: 0, detail: 0, paper: 0,
-                        landOwner: 0, businessCert: 0, otherCert: 0
-                    };
-
-                    if(files.length > 0){
-                        $.each(files,function(key,file){
-                            switch(file.file_position){
-                                case 'app-register-img':
-                                    register.formData.step1.images.push(file);
-                                    register.count.image++;
-                                break;
-                                case 'app-register-detail': 
-                                    register.formData.step1.detail.push(file);
-                                    register.count.detail++;
-                                break;
-                                case 'app-register-paper':
-                                    register.formData.step1.paper.push(file);
-                                    register.count.paper++;
-                                break;
-                                case 'app-register-landOwner':
-                                    register.formData.step5.landOwner.push(file);
-                                    register.count.landOwner++;
-                                break;
-                                case 'app-register-businessCert':
-                                    register.formData.step5.businessCert.push(file);
-                                    register.count.businessCert++;
-                                break;
-                                case 'app-register-otherCert':
-                                    register.formData.step5.otherCert.push(file);
-                                    register.count.otherCert++;
-                                break;
-                            }
-                        });
-                    }
-                    
-                    resolve({status: response.result});
-                }
-            });
-        });  
-    },
-    getAppType: function(){
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                type: 'get',
-                url: baseUrl+'/frontend/app/type-all',
-                dataType: 'json',
-                async: false,
-                success: function(response){
-                    resolve(response);
-                }
+    getAppType: async function(){
+        return new Promise(function(resolve) {            
+            api({method: 'get', url: '/frontend/app/type-all'}).then(function(data){
+                resolve(data);
             });
         });
+    },
+    getApc: async function(){
+        return new Promise(function(resolve) {
+            api({method: 'get', url: '/frontend/app/detail'}).then(function(response){
+                let app = response.data;
+                let files = app.files,
+                    tmp = [];
+                
+                register.id = app.id;
+                register.statue = app.status;
+                register.formData.currentStep = app.current_step;
+
+                for(let i = 1; i <= 5; i++){
+                    let mapFData = register.getMapField('step',i);                        
+                    tmp['step'+i] = [];
+
+                    $.each(mapFData,function(keym,vulm){
+                        tmp['step'+i][keym.variant] = '';
+                        $.each(app,function(keya,vula){
+                            if(keym.api == keya){
+                                if(!empty(vula)){
+                                    tmp['step'+i][keym.variant] = vula;
+
+                                    if(!$(vulm.input).length){
+                                        let = attrType = $(vulm.input).attr('type');
+                                        if(!$.inArray(attrType,['radio','checkbox']))
+                                            $(vulm.input).val(vula);
+                                        else
+                                            $(vulm.id+'-'+vula).prop('checked',true);                                            
+                                    }
+                                }
+                            }
+                        });
+                    });
+                }
+                
+                Object.assign(register.formData.step1, tmp['step1']);
+                Object.assign(register.formData.step2, tmp['step2']);
+                Object.assign(register.formData.step3, tmp['step3']);
+                Object.assign(register.formData.step4, tmp['step4']);
+                Object.assign(register.formData.step5, tmp['step5']);
+                
+                register.formData.step1.images = [];
+                register.formData.step1.detail = [];
+                register.formData.step1.paper = [];
+                register.formData.step5.landOwner = [];
+                register.formData.step5.businessCert = [];
+                register.formData.step5.otherCert = [];
+                register.count = {
+                    image: 0, detail: 0, paper: 0,
+                    landOwner: 0, businessCert: 0, otherCert: 0
+                };
+
+                if(files.length > 0){
+                    $.each(files,function(key,file){
+                        switch(file.file_position){
+                            case 'registerImages':
+                                register.formData.step1.images.push(file);
+                                register.count.image++;
+                            break;
+                            case 'detailFiles': 
+                                register.formData.step1.detail.push(file);
+                                register.count.detail++;
+                            break;
+                            case 'paperFiles':
+                                register.formData.step1.paper.push(file);
+                                register.count.paper++;
+                            break;
+                            case 'landOwnerFiles':
+                                register.formData.step5.landOwner.push(file);
+                                register.count.landOwner++;
+                            break;
+                            case 'businessCertFiles':
+                                register.formData.step5.businessCert.push(file);
+                                register.count.businessCert++;
+                            break;
+                            case 'otherCertFiles':
+                                register.formData.step5.otherCert.push(file);
+                                register.count.otherCert++;
+                            break;
+                        }
+                    });
+                }
+                
+                resolve(response);
+            });
+        });  
     },
     setAppTypeSub: function(id){        
         this.formData.step1.appType = id;  
@@ -244,22 +250,22 @@ const register = {
     setStep: function(step){
 
     },
-    getMapField: function(step){
+    getMapField: function(by,step = 1){
         let map = [];
 
-        if(step == 1) map = mapField.step1 
-        else if(step == 2) map = mapField.step2 
-        else if(step == 3) map = mapField.step3 
-        else if(step == 4) map = mapField.step4
-        else if(step == 5) map = mapField.step5;
-        else if(step == 'finish') {
-            map.concat(mapField.step1.concat(mapField.step2.concat(mapField.step3.concat(mapField.step4.concat(mapField.step5)))));
-        }
+        if(by == 'step'){            
+            let temp = MapField.register.step;
+            if(step != 'finish') 
+                map = temp['s'+step]; 
+            else 
+                map.concat(temp.s1.concat(temp.s2.concat(temp.s3.concat(temp.s4.concat(temp.s5)))));
+        } else if(by == 'files')
+            map = MapField.register.files;
 
         return map;
     },
     validate: function(step){
-        let mapFData = this.getMapField(step),
+        let mapFData = this.getMapField('step',step),
             bool = true;
 
         $.each(mapFData,function(key,map){
@@ -298,8 +304,8 @@ const register = {
             loading('show');
 
             let formData = new FormData(),
-                mapFData = this.getMapField(step)
-                mapFiles = this.mapField.files;
+                mapFData = this.getMapField('step',step),
+                mapFiles = this.getMapField('files');
 
             formData.append('id',this.id);
             formData.append('step',step);
@@ -319,7 +325,7 @@ const register = {
                         }
                     } else isAppend = true;
 
-                    if(isAppend){
+                    if(isAppend && vmf.input != '#step1-img'){
                         let files = $(vmf.input)[0].files;
                         if(files.length > 0){
                             $.each(detail,function(key,file){
@@ -330,47 +336,37 @@ const register = {
                 });
             }
 
-            this.saveApp(formData,baseUrl+'/frontend/app/draft').then(function(res){
+            api({method: 'action', url: '/frontend/app/draft', data: formData}).then(function(res){
                 loading('hide');
                 let save = res;
+
+                if(save.result == 'error_login'){
+                    alert.login();
+                } else {
+                    if(save.result == 'success'){
+                        var title = 'บันทึกข้อมูลเรียบร้อยแล้ว';
+                    } else {
+                        var title = 'ไม่สามารถบันทึกข้อมูลได้';
+                    }
+                    alert.show(save.result,title,save.message);
+                    return;
+                }
             });
 
         } else {
-            alert.show('error','ไม่สามารถบันทึกใบสมัครได้','กรุณาตรวจทานข้อมูลอีกครั้ง');
+            alert.show('error','ไม่สามารถบันทึกข้อมูลได้','กรุณาตรวจทานข้อมูลอีกครั้ง');
         }
-    },
-    saveApp: function(postData,link){
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                type: 'post',
-                url: link,
-                data: postData,
-                dataType: 'json',
-                contentType: false,
-                processData: false,
-                async: false,
-                success: function(response){
-                    resolve(response);
-                }
-            });
-        });
     },
     setFile: function(){
 
     },
     onFileHandle: function(id, clear = true){
-        let file = {
-                input: ['#step1-detail','#step1-paper','#step5-landOwner','#step5-businessCert','#step5-otherCert'],
-                inputAccept: ['.doc','docx','application/pdf',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-                image:  ['#step1-img'],
-                imageAccept: ['image/jpg','image/jpeg','image/gif','image/png','image/webp'],
-            },
+        let filter = MapField.register.fileFilter,
             filehandle = $(id)[0].files,
             checkType = true;
         
         if(filehandle > 0){
-            if($.inArray(id,file.input) !== -1){
+            if($.inArray(id,filter.input) !== -1){
                 let indexCount = null
                 
                 if(id.indexOf('#step1-') !== -1)
@@ -386,7 +382,7 @@ const register = {
                 }
 
                 if(checkType){
-                    let accept = file.inputAccept.concat(file.imageAccept);
+                    let accept = filter.inputAccept.concat(filter.imageAccept);
                     $.each(filehandle,function(key,val){
                         let mb = (val.size / (1024 * 1024)).toFixed(2);
                         
@@ -404,7 +400,7 @@ const register = {
                 if(imageTotal <= 10){
                     
                     $.each(filehandle,function(key,val){
-                        if($.inArray(val.type,file.imageAccept) === -1)
+                        if($.inArray(val.type,filter.imageAccept) === -1)
                             checkType = false;
                     });
 
@@ -429,16 +425,6 @@ const register = {
         
         return checkType;
     },
-    resetFileInput: function(id){
-        let ele = $(id);
-        ele.wrap('<form>').closest('form').get(0).reset();
-        ele.unwrap();
-
-        if(id != '#step1-img'){
-            let map = this.mapField.files.find(el => el.input == id);
-            $(map.show).remove();
-        }
-    },
     uploadImage: function(id){
         loading('show');
 
@@ -453,7 +439,7 @@ const register = {
             formData.append('images[]',file);
         });
 
-        this.saveApp(formData,baseUrl+'/frontend/app/upload/images').then(function(res){
+        api({method: 'action', url: '/frontend/app/upload/images', data: formData}).then(function(res){
             loading('hide');
             let save = res;
 
@@ -462,9 +448,9 @@ const register = {
             } else {
                 if(save.result == 'success'){
                     register.count.image += Number(save.upload_c);
-                    var title = 'อัพโหลดรูปเรียบร้อยแล้ว'
+                    var title = 'อัพโหลดรูปเรียบร้อยแล้ว';
                 } else {
-                    var title = 'ไม่สามารถอัพโหลดรูปได้'
+                    var title = 'ไม่สามารถอัพโหลดรูปได้';
                 }
                 alert.show(save.result,title,save.message);
                 return;
@@ -472,6 +458,56 @@ const register = {
 
         });
         
+    },
+    removeFile: function(id,pos){
+        let filter = MapField.register.files.find(el => el.position == pos);
+        let files = this.formData['step'+filter.step][filter.filed],
+            file = files.find(el => el.id == id),
+            setAlert = {
+                icon: 'info',
+                title: 'ยืนยันการลบไฟล์!',
+                text: 'คุณต้องการลบไฟล์ '+file.file_original+' หรือไม่',
+                button: { confirm: 'ลบไฟล์', cancel: 'ยกเลิก' }
+            };
+
+        alert.confirm(setAlert).then(function(al){
+            loading('show');
+            if(al.status){
+                let setting = {
+                    method: 'post', url: '/frontend/app/remove-file',
+                    data: { id: file.id, path: file.path }
+                };
+
+                api(setting).then(function(res){
+                    loading('hide');
+                    let save = res;
+
+                    if(save.result == 'error_login'){
+                        alert.login();
+                    } else {
+                        if(save.result == 'success'){
+                            register.count[filter.filed]--;
+                            var title = 'ลบไฟล์เรียบร้อยแล้ว';
+                        } else {
+                            var title = 'ไม่สามารถลบไฟล์ได้';
+                        }
+                        alert.show(save.result,title,save.message);
+                        return;
+                    }
+                });
+            }
+        });
+
+    },
+    resetFileInput: function(id){
+        let ele = $(id);
+        ele.wrap('<form>').closest('form').get(0).reset();
+        ele.unwrap();
+
+        if(id != '#step1-img'){
+            let map = MapField.register.files.find(el => el.input == id);
+            $(map.show).remove();
+        }
     },
 }
 
@@ -542,7 +578,7 @@ $('#step5-openYear').on('keyup', function(){
     let currntYear = new Date().getFullYear() + 543,
         openYear = $(this).val();
 
-    let totalYear = Number(currntYear) = Number(openYear);
+    let totalYear = Number(currntYear) - Number(openYear);
 
     register.formData.step5.openYear = openYear;
     register.formData.step5.totalYear = totalYear;

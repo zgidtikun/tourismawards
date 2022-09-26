@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use CodeIgniter\Files\File;
+use CodeIgniter\Files\FileCollection;
 use App\Controllers\BaseController;
 use App\Models\ApplicationForm as AppForm;
 use App\Models\ApplicationType as AppType;
@@ -123,7 +124,7 @@ class ApplicationController extends BaseController
             $step = $temp != 'finish' ? 'step'.$temp : $temp;
             $rules = $this->validRules[$step];
             $input = $this->input->getVar();
-            $valid = $this->validation($input,$rules);
+            $valid = $this->validation->run($input,$rules);
 
             if($valid){
 
@@ -138,14 +139,18 @@ class ApplicationController extends BaseController
                 }
                 
                 $app_id = $input['id'];
-                $updd = [];
+                $updd = [
+                    'step' => $step != 'finish' ? $step : 5, 
+                    'status' => $input['status'],
+                    'updated_by' => session()->get('id'),
+                ];
 
                 foreach($maps as $map){
                     $updd[$map] = $input[$map];
                 }
 
                 $update = $this->appForm->update($app_id,$updd);
-                $result = ['result' => 'success', 'files' => []];
+                $result = ['result' => 'success', 'message' => '', 'files' => []];
 
                 $ipf = [
                     'step1' => ['detailFiles','paperFiles'],
@@ -176,8 +181,7 @@ class ApplicationController extends BaseController
                                                 'application_id' => $app_id,
                                                 'file_name' => $newName,
                                                 'file_original' => $originalName,
-                                                'file_step' => $step,
-                                                'file_position' => $position,
+                                                'file_position' => $map,
                                                 'file_path' => $path.'/'.$newName
                                             );
                                         
@@ -252,7 +256,6 @@ class ApplicationController extends BaseController
                                 'application_id' => $app_id,
                                 'file_name' => $newName,
                                 'file_original' => $originalName,
-                                'file_step' => $step,
                                 'file_position' => $position,
                                 'file_path' => $path.'/'.$newName
                             );
@@ -288,6 +291,26 @@ class ApplicationController extends BaseController
     private function randomFileName($type)
     {
         return date('Ymd').'_'.bin2hex(random_bytes(6)).'.'.$type;
+    }
+
+    public function removeFiles()
+    {
+        checkLoggedIn();
+
+        try{
+            $files = new FileCollection();
+
+            if($files->removeFile(FCPATH.$this->innput->getVar('path'))){
+                $this->appFile->delete($this->input->getVar('id'));
+                $result = ['result' => 'success', 'message' => ''];
+            } else {
+                $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
+            }
+        } catch(\Exception $e){
+            $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
+        }
+
+        return $this->response->setJSON($result);
     }
 }
 

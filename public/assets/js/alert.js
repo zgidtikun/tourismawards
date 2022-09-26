@@ -35,8 +35,28 @@ const alert = {
             window.location.href =  origin+'/login';
         });
     },
-    confirm: function(setting){
-        return new Promise(function(resolve, reject){
+    toast: function(setting){
+        let init = this.initToast();
+        init.fire({
+            icon: setting.icon,
+            title: setting.title
+        });
+    },
+    show: async function(icon,title,text = ''){     
+        return new Promise(function(resolve){       
+            Swal.fire({
+                icon: icon,
+                title: title,
+                html: text,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'ตกลง',
+            }).then((result) => {
+                resolve({status: true});
+            });
+        });
+    },
+    confirm: async function(setting){
+        return new Promise(function(resolve){
             let init = this.initBootstrap();
             init.fire({
                 icon: setting.icon,
@@ -55,24 +75,4 @@ const alert = {
             });
         });
     },
-    toast: function(setting){
-        let init = this.initToast();
-        init.fire({
-            icon: setting.icon,
-            title: setting.title
-        });
-    },
-    show: function(icon,title,text){     
-        return new Promise(function(resolve, reject){       
-            Swal.fire({
-                icon: icon,
-                title: title,
-                html: text,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'ตกลง',
-            }).then((result) => {
-                resolve({status: true});
-            });
-        });
-    }
 }

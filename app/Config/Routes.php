@@ -63,6 +63,7 @@ $routes->group('frontend', static function ($routes) {
         $routes->get('detail', 'ApplicationController::getApplicationByAjax');
         $routes->post('draft', 'ApplicationController::draftApp');
         $routes->get('type-all', 'ApplicationController::getAppTypeAndSubAllByAjax');
+        $routes->post('remove-file', 'ApplicationController::removeFiles');
         $routes->group('upload', static function ($routes) {
             $routes->post('images', 'ApplicationController::uploadImages');
         });
