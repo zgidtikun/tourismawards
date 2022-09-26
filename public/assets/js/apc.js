@@ -464,7 +464,7 @@ const register = {
         let files = this.formData['step'+filter.step][filter.filed],
             file = files.find(el => el.id == id),
             setAlert = {
-                icon: 'info',
+                icon: 'question',
                 title: 'ยืนยันการลบไฟล์!',
                 text: 'คุณต้องการลบไฟล์ '+file.file_original+' หรือไม่',
                 button: { confirm: 'ลบไฟล์', cancel: 'ยกเลิก' }
