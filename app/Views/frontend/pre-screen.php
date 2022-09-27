@@ -11,16 +11,29 @@
 
                 <div class="formbox_row">
                     <div class="inp_form login">
-                        <h3>เข้าสู่ระบบ</h3>
+                        <h1 id="title">เข้าสู่ระบบ</h3>
+                        <h4 id="sum">เข้าสู่ระบบ</h3>
+                        <h3 id="question">เข้าสู่ระบบ</h3>
+                        <h4 id="remark">เข้าสู่ระบบ</h3>
                         <div class="inp_form_row">
                             <div class="inp_form_col1">
+                                
+                                    
+                                <div class="inp_form_col1">
+                                    <input type="text" id="reply">
+                                </div>
+
                                 <form>
-                                <input type="file" onchange="register.onFileHandle('#step1-detail')" 
-                                id="step1-detail" multiple>
+                                <div class="inp_form_col1">
+                                    <input type="file" id="paperFile" multiple>
+                                </div>
                                 </form>
-                            </div>
-                            <div class="inp_form_col1">
-                                <input type="password" id="password" placeholder="รหัสผ่าน">
+
+                                <form>
+                                <div class="inp_form_col1">
+                                    <input type="file" id="imagesFile" multiple>
+                                </div>
+                                </form>
                             </div>
                             <div class="inp_form_col1 submit">
                                 <button type="button">เข้าสู่ระบบ</button>
@@ -42,24 +55,10 @@
     </div>
 </div>
 <?php $app = new \Config\App(); ?>
-<link rel="preload" as="script" href="<?= base_url('assets/js/frontend/apc.js')?>?v=<?=$app->script_v?>"> 
-<script src="<?=base_url('assets/js/frontend/apc.js')?>?v=<?=$app->script_v?>"></script>
+<link rel="preload" as="script" href="<?= base_url('assets/js/frontend/psc.js')?>?v=<?=$app->script_v?>"> 
+<script src="<?=base_url('assets/js/frontend/psc.js')?>?v=<?=$app->script_v?>"></script>
 <script>
     $(document).ready(function(){
-        register.init(<?=session()->get('id')?>);
-    });
-
-    $.Thailand({
-        $district: $('#step2-subDistrict'),
-        $amphoe: $('#step2-district'),
-        $province: $('#step2-province'),
-        $zipcode: $('#step2-zipcode'),
-    });
-
-    $.Thailand({
-        $district: $('#step3-subDistrict'),
-        $amphoe: $('#step3-district'),
-        $province: $('#step3-province'),
-        $zipcode: $('#step3-zipcode'),
+        psc.init();
     });
 </script>

@@ -8,7 +8,7 @@ class Dashboard extends BaseController
 {
     public function index()
     {
-        $data['title']  = 'Thailand Tourism Award';
+        $data['title']  = 'สถิติการใช้งาน';
         $data['view']   = 'backend/dashboard/index';
         $data['ci']     = $this;
 

@@ -129,31 +129,21 @@
 <script>
   $(function() {
     // Active Menu
-    var menu = $("a[href='<?= base_url() ?>/backend/Officer/tat']");
-    var item = $(menu).closest('li');
-    menu.addClass('active');
+    var menu = $('#menu');
+    var item = $(menu).find("a[href='<?= base_url() ?>/backend/Officer/tat']");
+    var ul = $(item).closest('ul');
+    var li = $(ul).closest('li');
+
+    li.find('.has-arrow').attr('aria-expanded', 'true');
+    li.addClass('active');
     item.addClass('active');
+    $(ul).collapse('toggle');
 
     var insert_id = $('#insert_id').val();
     if (insert_id != "" || insert_id != 0) {
       $('#email').prop('disabled', true);
     } else {
       $('#email').prop('disabled', false);
-    }
-
-    var award_type = '<?= @$result->award_type ?>';
-    var assessment_group = '<?= @$result->assessment_group ?>';
-
-    if (award_type != "") {
-      $.each(JSON.parse(award_type), function(index, value) {
-        $('[name="award_type[]"][value="' + value + '"]').prop('checked', true);
-      });
-    }
-
-    if (assessment_group != "") {
-      $.each(JSON.parse(assessment_group), function(index, value) {
-        $('[name="assessment_group[]"][value="' + value + '"]').prop('checked', true);
-      });
     }
   });
 

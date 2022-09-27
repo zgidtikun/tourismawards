@@ -30,7 +30,7 @@ class Officer extends BaseController
 
         // Template
         $data['title']  = 'เพิ่มคณะกรรมการ';
-        $data['view']   = 'backend/tat/edit';
+        $data['view']   = 'backend/officer/edit';
         $data['ci']     = $this;
 
         return view('backend/template', $data);
@@ -44,7 +44,7 @@ class Officer extends BaseController
 
         // Template
         $data['title']  = 'แก้ไขคณะกรรมการ';
-        $data['view']   = 'backend/tat/edit';
+        $data['view']   = 'backend/officer/edit';
         $data['ci']     = $this;
 
         return view('backend/template', $data);

@@ -1,76 +1,74 @@
 const MapField = {
-    register: {
-        step: {
-            s1: [
-                { input: '[name=step1-appType]', variant: 'appType', 
-                    api: 'application_type_id', id: 'step1-appType-', require: true },
-                { input: '[name=step1-appTypeSub]', variant: 'appTypeSub', 
-                    api: 'application_type_sub_id', id: 'step1-appTypeSub-', require: true },
-                { input: '#step1-desc', variant: 'desc', api: 'highlights', require: true },
-                { input: '#step1-link', variant: 'link', api: 'link', require: false },
-            ],
-            s2: [
-                { input: '#step2-siteNameTh', variant: 'siteNameTh', api: 'attraction_name_th', require: true },
-                { input: '#step2-siteNameEng', variant: 'siteNameEng', api: 'attraction_name_en', require: false },
-                { input: '#step2-address', variant: 'address', api: 'address_no', require: true },
-                { input: '#step2-road', variant: 'road', api: 'address_road', require: true },
-                { input: '#step2-subDistrict', variant: 'subDistrict', api: 'address_sub_district', require: true },
-                { input: '#step2-district', variant: 'district', api: 'address_district', require: true },
-                { input: '#step2-province', variant: 'province', api: 'address_province', require: true },
-                { input: '#step2-zipcode', variant: 'zipcode', api: 'address_zipcode', require: true },
-                { input: '#step2-fb', variant: 'fb', api: 'facebook', require: false },
-                { input: '#step2-ig', variant: 'ig', api: 'instagram', require: false },
-                { input: '#step2-lid', variant: 'lid', api: 'line_id', require: false },
-                { input: '#step2-other', variant: 'other', api: 'other_social', require: false},
-            ],
-            s3: [
-                { input: '#step3-companyName', variant: 'companyName', api: 'company_name', require: true },
-                { input: '#step3-address', variant: 'address', api: 'company_addr_no', require: true },
-                { input: '#step3-road', variant: 'road', api: 'company_addr_road', require: true },
-                { input: '#step3-subDistrict', variant: 'subDistrict', api: 'company_addr_sub_district', require: true },
-                { input: '#step3-district', variant: 'district', api: 'company_addr_district', require: true },
-                { input: '#step3-province', variant: 'province', api: 'company_addr_province', require: true },
-                { input: '#step3-zipcode', variant: 'zipcode', api: 'company_addr_zipcode', require: true },
-                { input: '#step3-telephone', variant: 'telephone', api: 'mobile', require: false },
-                { input: '#step3-email', variant: 'email', api: 'email', require: false },
-                { input: '#step3-lid', variant: 'lid', api: 'line_id', require: false },
-            ],
-            s4: [
-                { input: '#step4-name', variant: 'name', api: 'knitter_name', require: true },
-                { input: '#step4-position', variant: 'position', api: 'knitter_position', require: true },
-                { input: '#step4-telephone', variant: 'telephone', api: 'knitter_tel', require: true },
-                { input: '#step4-email', variant: 'email', api: 'knitter_email', require: true },
-                { input: '#step4-lid', variant: 'lid', api: 'knitter_line', require: false },
-            ],
-            s5: [
-                { input: '#step5-openYear', variant: 'openYear', api: 'year_open', require: true },
-                { input: '#step5-totalYear', variant: 'totalYear', api: 'year_total', require: true },
-                { input: '[name=step5-manageBy]', variant: 'manageBy', 
-                    api: 'manage_by', id: 'step5-manageBy-', require: false },
-            ],
-        },
-        files: [
-            { input: '#step1-img', step: 1, show: 'div.image-new', api: 'registerImages[]',
-                position: 'registerImages', filed: 'image' },
-            { input: '#step1-detail', step: 1, show: 'div.detail-new', api: 'detailFiles[]',
-                position: 'detailFiles', filed: 'detail' },
-            { input: '#step1-paper', step: 1, show: 'div.paper-new', api: 'paperFiles[]',
-                position: 'paperFiles', filed: 'paper' },
-            { input: '#step5-landOwner', step: 5, show: 'div.landOwner-new', api: 'landOwnerFiles[]',
-                position: 'landOwnerFiles', filed: 'landOwner' },
-            { input: '#step5-businessCert', step: 5, show: 'div.businessCert-new', api: 'businessCertFiles[]',
-                position: 'businessCertFiles', filed: 'businessCert' },
-            { input: '#step5-otherCert', step: 5, show: 'div.otherCert-new', api: 'otherCertFiles[]',
-                position: 'otherCertFiles', filed: 'otherCert' },
+    step: {
+        s1: [
+            { input: '[name=step1-appType]', variant: 'appType', 
+                api: 'application_type_id', id: 'step1-appType-', require: true },
+            { input: '[name=step1-appTypeSub]', variant: 'appTypeSub', 
+                api: 'application_type_sub_id', id: 'step1-appTypeSub-', require: true },
+            { input: '#step1-desc', variant: 'desc', api: 'highlights', require: true },
+            { input: '#step1-link', variant: 'link', api: 'link', require: false },
         ],
-        fileFilter: {
-            input: ['#step1-detail','#step1-paper','#step5-landOwner','#step5-businessCert','#step5-otherCert'],
-            inputAccept: ['.doc','docx','application/pdf',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-            image:  ['#step1-img'],
-            imageAccept: ['image/jpg','image/jpeg','image/gif','image/png','image/webp'],
-        } 
-    }                                                                                             
+        s2: [
+            { input: '#step2-siteNameTh', variant: 'siteNameTh', api: 'attraction_name_th', require: true },
+            { input: '#step2-siteNameEng', variant: 'siteNameEng', api: 'attraction_name_en', require: false },
+            { input: '#step2-address', variant: 'address', api: 'address_no', require: true },
+            { input: '#step2-road', variant: 'road', api: 'address_road', require: true },
+            { input: '#step2-subDistrict', variant: 'subDistrict', api: 'address_sub_district', require: true },
+            { input: '#step2-district', variant: 'district', api: 'address_district', require: true },
+            { input: '#step2-province', variant: 'province', api: 'address_province', require: true },
+            { input: '#step2-zipcode', variant: 'zipcode', api: 'address_zipcode', require: true },
+            { input: '#step2-fb', variant: 'fb', api: 'facebook', require: false },
+            { input: '#step2-ig', variant: 'ig', api: 'instagram', require: false },
+            { input: '#step2-lid', variant: 'lid', api: 'line_id', require: false },
+            { input: '#step2-other', variant: 'other', api: 'other_social', require: false},
+        ],
+        s3: [
+            { input: '#step3-companyName', variant: 'companyName', api: 'company_name', require: true },
+            { input: '#step3-address', variant: 'address', api: 'company_addr_no', require: true },
+            { input: '#step3-road', variant: 'road', api: 'company_addr_road', require: true },
+            { input: '#step3-subDistrict', variant: 'subDistrict', api: 'company_addr_sub_district', require: true },
+            { input: '#step3-district', variant: 'district', api: 'company_addr_district', require: true },
+            { input: '#step3-province', variant: 'province', api: 'company_addr_province', require: true },
+            { input: '#step3-zipcode', variant: 'zipcode', api: 'company_addr_zipcode', require: true },
+            { input: '#step3-telephone', variant: 'telephone', api: 'mobile', require: false },
+            { input: '#step3-email', variant: 'email', api: 'email', require: false },
+            { input: '#step3-lid', variant: 'lid', api: 'line_id', require: false },
+        ],
+        s4: [
+            { input: '#step4-name', variant: 'name', api: 'knitter_name', require: true },
+            { input: '#step4-position', variant: 'position', api: 'knitter_position', require: true },
+            { input: '#step4-telephone', variant: 'telephone', api: 'knitter_tel', require: true },
+            { input: '#step4-email', variant: 'email', api: 'knitter_email', require: true },
+            { input: '#step4-lid', variant: 'lid', api: 'knitter_line', require: false },
+        ],
+        s5: [
+            { input: '#step5-openYear', variant: 'openYear', api: 'year_open', require: true },
+            { input: '#step5-totalYear', variant: 'totalYear', api: 'year_total', require: true },
+            { input: '[name=step5-manageBy]', variant: 'manageBy', 
+                api: 'manage_by', id: 'step5-manageBy-', require: false },
+        ],
+    },
+    files: [
+        { input: '#step1-img', step: 1, show: 'div.image-new', api: 'registerImages[]',
+            position: 'registerImages', filed: 'image' },
+        { input: '#step1-detail', step: 1, show: 'div.detail-new', api: 'detailFiles[]',
+            position: 'detailFiles', filed: 'detail' },
+        { input: '#step1-paper', step: 1, show: 'div.paper-new', api: 'paperFiles[]',
+            position: 'paperFiles', filed: 'paper' },
+        { input: '#step5-landOwner', step: 5, show: 'div.landOwner-new', api: 'landOwnerFiles[]',
+            position: 'landOwnerFiles', filed: 'landOwner' },
+        { input: '#step5-businessCert', step: 5, show: 'div.businessCert-new', api: 'businessCertFiles[]',
+            position: 'businessCertFiles', filed: 'businessCert' },
+        { input: '#step5-otherCert', step: 5, show: 'div.otherCert-new', api: 'otherCertFiles[]',
+            position: 'otherCertFiles', filed: 'otherCert' },
+    ],
+    fileFilter: {
+        input: ['#step1-detail','#step1-paper','#step5-landOwner','#step5-businessCert','#step5-otherCert'],
+        inputAccept: ['.doc','docx','application/pdf',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+        image:  ['#step1-img'],
+        imageAccept: ['image/jpg','image/jpeg','image/gif','image/png','image/webp'],
+    }                                                                                         
 };
 
 const register = {
@@ -254,13 +252,13 @@ const register = {
         let map = [];
 
         if(by == 'step'){            
-            let temp = MapField.register.step;
+            let temp = MapField.step;
             if(step != 'finish') 
                 map = temp['s'+step]; 
             else 
                 map.concat(temp.s1.concat(temp.s2.concat(temp.s3.concat(temp.s4.concat(temp.s5)))));
         } else if(by == 'files')
-            map = MapField.register.files;
+            map = MapField.files;
 
         return map;
     },
@@ -361,7 +359,7 @@ const register = {
 
     },
     onFileHandle: function(id, clear = true){
-        let filter = MapField.register.fileFilter,
+        let filter = MapField.fileFilter,
             filehandle = $(id)[0].files,
             checkType = true;
         
@@ -460,7 +458,7 @@ const register = {
         
     },
     removeFile: function(id,pos){
-        let filter = MapField.register.files.find(el => el.position == pos);
+        let filter = MapField.files.find(el => el.position == pos);
         let files = this.formData['step'+filter.step][filter.filed],
             file = files.find(el => el.id == id),
             setAlert = {
@@ -505,7 +503,7 @@ const register = {
         ele.unwrap();
 
         if(id != '#step1-img'){
-            let map = MapField.register.files.find(el => el.input == id);
+            let map = MapField.files.find(el => el.input == id);
             $(map.show).remove();
         }
     },

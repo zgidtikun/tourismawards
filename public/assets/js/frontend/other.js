@@ -3,8 +3,13 @@ const getBaseUrl = () => {
 }
 
 const loading = async(action) => {
-    if(action == 'show') $('#loading-page').addClass('loading');
-    else $('#loading-page').removeClass('loading');    
+    if(action == 'show'){
+        if(!$('#loading-page').hasClass('loading'))
+            $('#loading-page').addClass('loading');
+    } else {
+        if($('#loading-page').hasClass('loading'))
+            $('#loading-page').removeClass('loading');
+    }
 }
 
 const empty = (data) =>{

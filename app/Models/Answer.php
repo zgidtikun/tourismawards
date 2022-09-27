@@ -14,7 +14,7 @@ class Answer extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['reply', 'reply_by', 'question_id'];
+    protected $allowedFields = ['reply', 'reply_by', 'question_id', 'pack_file'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

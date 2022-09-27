@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class AnswerFile extends Model
+class AssessmentGroup extends Model
 {
-    protected $table      = 'answer_file';
+    protected $table      = 'assessment_group';
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
@@ -14,11 +14,7 @@ class AnswerFile extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['answer_id', 'file_name', 'file_original', 'file_path'];
-
-    protected $useTimestamps = false;
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
+    protected $allowedFields = ['name'];
 
     protected $validationRules    = [];
     protected $validationMessages = [];

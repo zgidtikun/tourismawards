@@ -59,6 +59,7 @@ $routes->group('auth', static function ($routes) {
 $routes->group('frontend', static function ($routes) {
     $routes->get('/', 'Home::frontend', ['filter' => 'auth:frontend']);    
     $routes->get('application', 'ApplicationController::formIndex', ['filter' => 'auth:1']);
+    $routes->get('pre-screen', 'AnswerController::preScreenIndex', ['filter' => 'auth:1']);
     $routes->group('app', static function ($routes) {
         $routes->get('detail', 'ApplicationController::getApplicationByAjax');
         $routes->post('draft', 'ApplicationController::draftApp');
@@ -68,7 +69,10 @@ $routes->group('frontend', static function ($routes) {
             $routes->post('images', 'ApplicationController::uploadImages');
         });
     });
-    $routes->get('get-question', 'AnswerController::getQuestionByAjax');
+    $routes->get('question/get', 'AnswerController::getQuestionByAjax');
+    $routes->group('answer', static function ($routes){
+        $routes->get('get/(:any)', 'AnswerController::getAnswerByAjax/$1');
+    });
 });
 
 $routes->group('backend',['namespace' => 'App\Controllers\Backend'], static function ($routes) {    

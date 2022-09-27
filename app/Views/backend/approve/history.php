@@ -17,9 +17,6 @@
         <h3 class="card-title"><?= $title ?></a></h3>
       </div>
       <div class="card-body">
-        <?php
-        // pp($result);
-        ?>
         <div class="table-responsive">
           <table id="main_datatable" class="table table-striped" style="width:100%">
             <thead>

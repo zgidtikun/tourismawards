@@ -177,10 +177,15 @@
 <script>
   $(function() {
     // Active Menu
-    var menu = $("a[href='<?= base_url() ?>/backend/Officer']");
-    var item = $(menu).closest('li');
-    menu.addClass('active');
+    var menu = $('#menu');
+    var item = $(menu).find("a[href='<?= base_url() ?>/backend/Officer']");
+    var ul = $(item).closest('ul');
+    var li = $(ul).closest('li');
+
+    li.find('.has-arrow').attr('aria-expanded', 'true');
+    li.addClass('active');
     item.addClass('active');
+    $(ul).collapse('toggle');
 
     var insert_id = $('#insert_id').val();
     if (insert_id != "" || insert_id != 0) {
