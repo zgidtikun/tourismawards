@@ -387,7 +387,7 @@ const register = {
                         if($.inArray(val.type,accept) === -1){
                             checkType = false;
                         } else if(mb > 1.00){
-                            checkType = false;
+                            checkType = false; 
                         } 
                     });
                 }
@@ -406,7 +406,7 @@ const register = {
                         this.uploadImage(id);
                     } else {
                         checkType = false;
-                        alert.show('warning','ไม่สามารถอัพโหลดรูปได้','กรุณาเลือกเป็นไฟล์ .jpg, .jpeg, .gif, .png .webp เท่านั้น');
+                        alert.show('warning','ไม่สามารถอัพโหลดรูปได้','กรุณาเลือกเป็นไฟล์ .jpg, .jpeg, .gif, .png, .webp เท่านั้น');
                     }
                 } else {
                     checkType = false;

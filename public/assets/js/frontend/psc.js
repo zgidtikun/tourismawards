@@ -13,8 +13,7 @@ const MapData = {
             images: {id: '#images-fixed-', new: 'div.images-new', ready: 'div.images-ready'}
         },
         accept: {
-            paper: ['.doc','docx','application/pdf',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            paper: ['.doc','docx','application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
             images: ['image/jpg','image/jpeg','image/gif','image/png','image/webp'],
         }
     }
@@ -22,7 +21,7 @@ const MapData = {
 
 const psc = {
     pointer: {
-        category: 0,        
+        category: 0,
         segment: 0,
     },
     questions: null,
@@ -82,23 +81,48 @@ const psc = {
 
         if(count <= max){
             let accept = MapData.files.accept[type];
+            this.questions[point.cate].question[point.seg][type].new = [];
 
             if(type == 'images'){
                 $.each(files,function(key,file){
-                    if($.inArray(file.type,accet) === -1){
+                    if($.inArray(file.type,accept) === -1){
                         check = false;
                         return false;
                     } else {
-
+                        this.questions[point.cate].question[point.seg][type].new.push(file);
                     }
                 });
+
+                if(!check){
+                    this.questions[point.cate].question[point.seg][type].new = [];
+                    let message = 'กรุณาเลือกเป็นไฟล์ .jpg, .jpeg, .gif, .png, .webp  เท่านั้น';
+                    alert.show('warning','ไม่สามารถอัพโหลดรูปได้',message);
+                }
             } else {
-                
+                $.each(files,function(key,file){
+                    let mb = (file.size / (1024 * 1024)).toFixed(2);
+
+                    if($.inArray(val.file,accept) === -1){
+                        var text = 'กรุณาเลือกเป็นไฟล์ .docx, .doc, .pdf เท่านั้น'
+                        check = false;
+                        return false;
+                    } else if(mb > 20.00){
+                        var text = 'กรุณาเลือกขนาดไฟล์ไม่เกิน 20 MiB.'
+                        check = false;
+                        return false;
+                    }
+
+                    if(check){
+                        this.questions[point.cate].question[point.seg][type].new.push(file);
+                    } else {
+                        alert.show('warning','ไม่สามารถอัพโหลดไฟล์ได้',text);
+                    }
+                });
             }
         } else {
             check = false;
             let title = type == 'images' ? 'ไม่สามารถอัพโหลดรูปได้' : 'ไม่สามารถอัพโหลดไฟล์ได้';
-            let texte = type == 'images' ? 'คุณสามารถอัพโหลกไฟล์ได้ไม่เกิน '+max+' ไฟล์เท่านั้น' : 'คุณสามารถอัพโหลดรูปได้ไม่เกิน '+max+' รูปเท่านั้น';
+            let text = type == 'images' ? 'คุณสามารถอัพโหลกไฟล์ได้ไม่เกิน '+max+' ไฟล์เท่านั้น' : 'คุณสามารถอัพโหลดรูปได้ไม่เกิน '+max+' รูปเท่านั้น';
             alert.show('warning',title,text);
         }
         
@@ -107,6 +131,15 @@ const psc = {
             ele.wrap('<form>').closest('form').get(0).reset();
             ele.unwrap();
         }
+    },
+    removeFiles: function(type,act,index){
+        let point = this.getPointer();
+        let temp = this.questions[point.cate].question[point.seg][type][act][index];
+        this.questions[point.cate].question[point.seg][type][act].splice(index,1);
+
+        if(act == 'list')
+            this.questions[point.cate].question[point.seg][type].delete.push(temp);
+
     }
 }
 

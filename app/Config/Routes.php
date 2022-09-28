@@ -72,6 +72,7 @@ $routes->group('frontend', static function ($routes) {
     $routes->get('question/get', 'AnswerController::getQuestionByAjax');
     $routes->group('answer', static function ($routes){
         $routes->get('get/(:any)', 'AnswerController::getAnswerByAjax/$1');
+        $routes->post('save', 'AnswerController::saveReply');
     });
 });
 

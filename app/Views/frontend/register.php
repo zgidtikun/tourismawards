@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="inp_form_col1">
                                 <?php 
-                                    $attr = ['id' => 'role'];
+                                    $attr = ['id' => 'role', 'disabled' => 'disabled'];
                                     $options = ['1' => 'ผู้ประกอบการ', '2' => 'คณะกรรมการ'];
                                     $selected = !empty($_signup->data->role) ? $_signup->data->role  : '1';
                                     echo form_dropdown('role', $options, $selected,$attr);

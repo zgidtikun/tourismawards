@@ -3,7 +3,6 @@
 namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\Users;
-use App\Models\Admin;
 
 class UserController extends BaseController
 {
@@ -13,7 +12,6 @@ class UserController extends BaseController
     public function __construct()
     {
         $this->instUsers = new Users();
-        $this->instAdmin = new Admin();
         
         if(!isset($this->db))
             $this->db = \Config\Database::connect();
