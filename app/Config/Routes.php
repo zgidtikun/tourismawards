@@ -80,6 +80,10 @@ $routes->group('backend',['namespace' => 'App\Controllers\Backend'], static func
     $routes->get('/', 'Dashboard::index', ['filter' => 'auth:backend']);
     $routes->get('login', 'Login::index');
     $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth:backend']);
+
+    // News
+    $routes->get('News/add', 'News::add', ['filter' => 'auth:backend']);
+    $routes->get('News/edit/(:any)', 'News::edit/$1', ['filter' => 'auth:backend']);
 });
 
 $routes->environment('development', static function ($routes) {

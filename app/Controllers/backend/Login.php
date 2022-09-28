@@ -8,7 +8,7 @@ class Login extends BaseController
 {
     public function index()
     {
-        $data['title']  = 'Amazing Thailand Safety and Health Administration (SHA)';
+        $data['title']  = 'Tourist Award | Login';
         $data['view']   = 'backend/login/index';
         $data['ci']     = $this;
         $data['_recapcha'] = false;

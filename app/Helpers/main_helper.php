@@ -154,3 +154,8 @@ function getStandardOffsetUTC($timezone)
         return false;
     }
 }
+
+function genFileName($type)
+{
+    return date('Ymd').'_'.bin2hex(random_bytes(6)).'.'.$type;
+}

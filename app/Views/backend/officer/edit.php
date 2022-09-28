@@ -222,6 +222,10 @@
           toastr.error('กรุณาระบุรหัสผ่าน');
           return false;
         }
+        if (validated_email()) {
+          toastr.error('E-Mail นี้มีการสมัครเข้าใช้งานแล้ว');
+          return false;
+        }
         var res = main_save(BASE_URL + '/backend/Officer/saveInsert', '#input_form');
         res_swal(res, 0, function() {
           window.location.href = '<?= base_url('backend/Officer') ?>';
@@ -254,5 +258,13 @@
       return false;
     }
     return true;
+  }
+
+  function validated_email() {
+    var email = $('#email').val();
+    var res = main_post(BASE_URL + '/backend/Admin/checkData', {
+      email: email
+    });
+    return res;
   }
 </script>

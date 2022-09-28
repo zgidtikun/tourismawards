@@ -159,6 +159,10 @@
           toastr.error('กรุณาระบุรหัสผ่าน');
           return false;
         }
+        if (validated_email()) {
+          toastr.error('E-Mail นี้มีการสมัครเข้าใช้งานแล้ว');
+          return false;
+        }
         var res = main_save(BASE_URL + '/backend/Admin/saveInsert', '#input_form');
         res_swal(res, 0, function() {
           window.location.href = '<?= base_url('backend/Admin') ?>';
@@ -175,5 +179,13 @@
   function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
+  }
+
+  function validated_email() {
+    var email = $('#email').val();
+    var res = main_post(BASE_URL + '/backend/Admin/checkData', {
+      email: email
+    });
+    return res;
   }
 </script>

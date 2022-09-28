@@ -136,4 +136,11 @@ class Users extends BaseController
     {
         // pp($data);
     }
+
+    public function checkData()
+    {
+        $email = $this->input->getVar('email');
+        $result = $this->db->table('users')->where('email', $email)->get()->getRowObject();
+        echo json_encode($result);
+    }
 }

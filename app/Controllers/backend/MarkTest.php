@@ -10,6 +10,7 @@ class MarkTest extends BaseController
 {
     public function index()
     {
+        px(password_hash('0000',PASSWORD_DEFAULT));
         $model = new Admin();
 
         $page    = (int) ($this->request->getGet('page') ?? 1);

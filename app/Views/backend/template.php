@@ -32,6 +32,8 @@
 
   <!-- Select2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="<?php echo base_url() ?>/backend/assets/plugins/summernote/summernote-bs4.min.css">
 
   <?php echo view('backend/main_css') ?>
 </head>
@@ -118,6 +120,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
   <!-- Select2 -->
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <!-- Summernote -->
+  <script src="<?php echo base_url() ?>/backend/assets/plugins/summernote/summernote-bs4.min.js"></script>
 
   <?php echo view('backend/main_js') ?>
 </body>

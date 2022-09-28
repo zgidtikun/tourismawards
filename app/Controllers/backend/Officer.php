@@ -8,7 +8,7 @@ class Officer extends BaseController
 {
     public function index()
     {
-        $data['result'] = $this->db->table('admin A')->select('A.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = A.member_type', 'left')->join('award_type AT', 'AT.id = A.award_type', 'left')->join('assessment_group AG', 'AG.id = A.assessment_group', 'left')->where('A.member_type = 3 AND A.status = 1')->orderBy('A.id', 'desc')->get()->getResultObject();
+        $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('award_type AT', 'AT.id = U.award_type', 'left')->join('assessment_group AG', 'AG.id = U.assessment_group', 'left')->where('U.member_type = 3 AND U.status = 1')->orderBy('U.id', 'desc')->get()->getResultObject();
         $data['award_type'] = $this->db->table('award_type')->get()->getResultObject();
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
         $data['type']   = 3;
@@ -80,7 +80,7 @@ class Officer extends BaseController
             'created_at'            => date('Y-m-d H:i:s'),
             'updated_at'            => date('Y-m-d H:i:s'),
         ];
-        $result = $this->db->table('admin')->insert($data);
+        $result = $this->db->table('users')->insert($data);
         if ($result) {
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
@@ -121,7 +121,7 @@ class Officer extends BaseController
         if (!empty($post['password'])) {
             $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
         }
-        $result = $this->db->table('admin')->where('id', $post['insert_id'])->update($data);
+        $result = $this->db->table('users')->where('id', $post['insert_id'])->update($data);
         if ($result) {
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
         } else {

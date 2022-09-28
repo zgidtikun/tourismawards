@@ -14,7 +14,7 @@
   <div class="col-xl-12 col-xxl-12">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">ข้อมูลผู้ประกอบการ</h3>
+        <h3 class="card-title"><?= $title ?></h3>
         <div class="card-action float-sm-right my-3 my-sm-0">
           <button type="button" class="btn btn-primary" onclick="insert_item(this)"><i class="fas fa-edit"></i> เพิ่มข้อมูล</button>
         </div>
@@ -45,7 +45,7 @@
                     <td><?= $value->role_name ?></td>
                     <td><?= $value->mobile ?></td>
                     <td><?= $value->email ?></td>
-                    <td class="text-center"><?= ($value->status) ? '<span class="text-success">ผ่าน</span>' : '<span class="text-danger">รอตรวจสอบ</span>'; ?></td>
+                    <td class="text-center"><?= ($value->status) ? '<span class="text-success">ผ่านการตรวจสอบ</span>' : '<span class="text-danger">รอตรวจสอบ</span>'; ?></td>
                     <td class="text-center"><?= docDate($value->created_at, 4) ?></td>
                     <td class="text-center">
                       <i class="fas fa-edit text-primary mr-2" data-toggle="tooltip" title="แก้ไขข้อมูล" onclick="edit_user('<?= $value->id ?>')"></i></a>

@@ -126,4 +126,11 @@ class Admin extends BaseController
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการลบข้อมูลไม่สำเร็จ']);
         }
     }
+
+    public function checkData()
+    {
+        $email = $this->input->getVar('email');
+        $result = $this->db->table('admin')->where('email', $email)->get()->getRowObject();
+        echo json_encode($result);
+    }
 }
