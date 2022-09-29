@@ -40,18 +40,83 @@ const psc = {
                     qval.change = false;
                 });
             });
-            
+
             psc.setNewQuestion(0,0);
             loading('hide');
         });
     },
+    setApi: function(act,cate = null,seg = null){
+        let setting = null;
+        switch(act){
+            case 'fixed':
+                let qt = this.questions[cate].question[seg];
+
+                setting = {
+                    method: 'action',
+                    data: null
+                };
+
+                let formData = new FormData(),
+                    paper = qt.paper.new,
+                    images = qt.images.new;
+                
+                formData.append('action',!empty(qt.id) ? 'update' : 'create');
+                formData.append('id',!empty(qt.id) ? qt.id : '');
+                formData.append('oldFiles',qt.paper.list.concat(qt.images.list));
+                formData.append('deeteFies',qt.paper.delete.concat(qt.images.delete))
+
+                if(paper.length > 0){
+                    $.each(paper,function(key,file){
+                        formData.append(MapData.input.paper.api,file);
+                    });
+                }
+
+                if(images.length > 0){
+                    $.each(images,function(key,file){
+                        formData.append(MapData.input.images.api,file);
+                    });
+                }
+
+                setting.data = formData;
+                break;
+            case 'submit':
+                break;
+            case 'adjunct':
+                break;
+        }
+
+        return  setting;
+    },
+    reply: function(cate,seg){
+        let setting = this.setApi('fixed',cate,seg);
+        console.log(setting);
+    },
+    toStep: function(cate,seg){
+        let point = this.getPointer();
+        this.setPointer(cate,seg);
+
+        if(this.questions[point.cate].question[point.seg].change){
+            let setAlert = {
+                icon: 'warning',
+                title: 'กรุณาบันทึกข้อมูล',
+                text: 'คุณมีการเปลี่ยนแปลงข้อมูล กรุณาบันทึกข้อมูลใหม่',
+                button: { confirm: 'บันทึกข้อมูล', cancel: 'ยกเลิก' }
+            };
+
+            alert.confirm(setAlert).then(function(alt){
+                if(alt.status){
+
+                }
+            });
+        } else this.setNewQuestion()
+
+    },
     setNewQuestion: function(cate,seg){        
-        let old = this.getPointer(),
+        let point = this.getPointer(),
             category = this.questions[cate],
             question = this.questions[cate].question[seg];
 
-        this.pointer.category = cate;
-        this.pointer.segment = seg;
+        this.setPointer(cate,seg);
 
         $(MapData.label.title).html(category.group.name);
         $(MapData.label.sum).html(category.question.length);
@@ -63,6 +128,10 @@ const psc = {
         let point = this.getPointer();
         this.questions[point.cate].question[point.seg].reply = str;
         this.questions[point.cate].question[point.seg].change = true;
+    },
+    setPointer: function(cate,seg){
+        this.pointer.category = cate;
+        this.pointer.segment = seg;
     },
     getPointer: function(){
         return {cate: this.pointer.category, seg: this.pointer.segment};
@@ -130,12 +199,15 @@ const psc = {
             let ele = $(id);
             ele.wrap('<form>').closest('form').get(0).reset();
             ele.unwrap();
+        } else {
+            this.questions[point.cate].question[point.seg].change = true;
         }
     },
     removeFiles: function(type,act,index){
         let point = this.getPointer();
         let temp = this.questions[point.cate].question[point.seg][type][act][index];
         this.questions[point.cate].question[point.seg][type][act].splice(index,1);
+        this.questions[point.cate].question[point.seg].change = true;
 
         if(act == 'list')
             this.questions[point.cate].question[point.seg][type].delete.push(temp);

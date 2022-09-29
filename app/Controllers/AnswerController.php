@@ -114,7 +114,59 @@ class AnswerController extends BaseController
 
     public function saveReply()
     {
-        
+        switch($this->input->getVar('action')){
+            case 'action': 
+                $tmpFiles = [];
+                $insd = [
+                    'reply' => $this->input->getVar('reply'),
+                    'reply_by' => session()->get('id'),
+                    'status' => 1,
+                    'pack_file' => []
+                ];
+
+                if($files = $this->input->getFiles()){
+                    
+                    $accept = [
+                        'input' => ['paperFile','imagesFile'],
+                        'types' => ['paper','images'],
+                        'path' => 'uploads/per-screen/'.session()->get('id').'/',
+                        'paper' => ['pdf','doc','docx'],
+                        'images' => ['jpg','jpeg','gif','png','webp']
+                    ];
+
+                    foreach($accept['input'] as $key=>$index){
+                        foreach($files[$index] as $file){
+                            if($file->isValid() && !$file->hasMoved()){
+                                $originalName = $file->getName();
+                                $extension = $file->guessExtension();
+                                $newName = $this->randomFileName($extension);
+
+                                if(in_array($extension,$accept[$accept['type'][$key]])){
+                                    $path = $accept['path'].$accept['types'][$key];
+                                    $file->move(FCPATH.$path, $newName);
+                                    array_push($tmpFiles,[
+                                        'file_name' => $newName,
+                                        'file_original' => $originalName,
+                                        'file_type' => $accept['types'][$key],
+                                        'file_path' => $path.'/'.$newName
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+
+                    $insd['pack_file'] = json_encode($tmpFiles);
+                }
+
+                break;
+            case 'update':
+                break;
+        }
+    }
+
+    private function randomFileName($type)
+    {
+        return date('Ymd').'_'.bin2hex(random_bytes(6)).'.'.$type;
     }
 }
 

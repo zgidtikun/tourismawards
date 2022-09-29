@@ -71,8 +71,7 @@ class ApplicationController extends BaseController
     }
 
     public function getApplicationByAjax()
-    {
-        checkLoggedIn();
+    {        
         $data = $this->getApplication(session()->get('id'));
         return $this->response->setJSON($data);
     }
@@ -117,7 +116,6 @@ class ApplicationController extends BaseController
 
     public function draftApp()
     {
-        checkLoggedIn();
 
         try{    
             $temp = $this->input->getVar('step');
@@ -226,7 +224,6 @@ class ApplicationController extends BaseController
 
     public function uploadImages()
     {
-        checkLoggedIn();
 
         try{
 
@@ -295,7 +292,6 @@ class ApplicationController extends BaseController
 
     public function removeFiles()
     {
-        checkLoggedIn();
 
         try{
             $files = new FileCollection();

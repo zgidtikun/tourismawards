@@ -61,18 +61,18 @@ $routes->group('frontend', static function ($routes) {
     $routes->get('application', 'ApplicationController::formIndex', ['filter' => 'auth:1']);
     $routes->get('pre-screen', 'AnswerController::preScreenIndex', ['filter' => 'auth:1']);
     $routes->group('app', static function ($routes) {
-        $routes->get('detail', 'ApplicationController::getApplicationByAjax');
-        $routes->post('draft', 'ApplicationController::draftApp');
-        $routes->get('type-all', 'ApplicationController::getAppTypeAndSubAllByAjax');
-        $routes->post('remove-file', 'ApplicationController::removeFiles');
+        $routes->get('detail', 'ApplicationController::getApplicationByAjax', ['filter' => 'api:frontend']);
+        $routes->post('draft', 'ApplicationController::draftApp', ['filter' => 'api:frontend']);
+        $routes->get('type-all', 'ApplicationController::getAppTypeAndSubAllByAjax', ['filter' => 'api:frontend']);
+        $routes->post('remove-file', 'ApplicationController::removeFiles', ['filter' => 'api:frontend']);
         $routes->group('upload', static function ($routes) {
-            $routes->post('images', 'ApplicationController::uploadImages');
+            $routes->post('images', 'ApplicationController::uploadImages', ['filter' => 'api:frontend']);
         });
     });
-    $routes->get('question/get', 'AnswerController::getQuestionByAjax');
+    $routes->get('question/get', 'AnswerController::getQuestionByAjax', ['filter' => 'api:frontend']);
     $routes->group('answer', static function ($routes){
-        $routes->get('get/(:any)', 'AnswerController::getAnswerByAjax/$1');
-        $routes->post('save', 'AnswerController::saveReply');
+        $routes->get('get/(:any)', 'AnswerController::getAnswerByAjax/$1', ['filter' => 'api:frontend']);
+        $routes->post('save', 'AnswerController::saveReply', ['filter' => 'api:frontend']);
     });
 });
 
