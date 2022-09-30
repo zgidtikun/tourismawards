@@ -24,7 +24,7 @@ class LoginController extends BaseController
             
         if(session()->get('isLoggedIn')){
             if(in_array(session()->get('role'),array(1,3)))
-                return redirect()->to(base_url('frontend'));
+                return redirect()->to(base_url('frontend/application'));
             else
                 return redirect()->to(base_url('backend/dashboard'));            
         }

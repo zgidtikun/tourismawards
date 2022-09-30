@@ -45,7 +45,7 @@
     <?php endif; ?>
     <script>
         jQuery(document).each(function() {
-            var headerheight = $('.header-box').height();
+            var headerheight = $('.header-box').height()+'px';
             $('.inpform').css({
                 "display": "block",
                 "margin-top": headerheight
@@ -54,7 +54,7 @@
     </script>
 <?php else : ?>
 
-    <body style="background-color: #f5f4f1;">
+    <body>
         <div id="wrapper">
 
             <!--include header-->
@@ -63,7 +63,7 @@
             </div>
 
             <!-- inclide main contents -->
-            <div class="mainsite">
+            <div class="mainsite" style="margin-top: 141.641px;">
                 <?= view($view) ?>
             </div>
 
@@ -78,7 +78,7 @@
     <script type="text/javascript">
         jQuery(document).ready(function($) {
             jQuery(document).each(function() {
-                var headerheight = $('.header-box ').height();
+                var headerheight = $('div.header-box').height()+'px';
                 $('#mainsite').css({
                     "display": "block",
                     "margin-top": headerheight

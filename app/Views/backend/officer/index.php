@@ -28,12 +28,12 @@
             <thead>
               <tr>
                 <th class="text-center" width="1%">#</th>
-                <th class="text-center" width="10%">ชื่อผู้ประกอบการ</th>
+                <th class="text-center" width="10%">ชื่อคณะกรรมการ</th>
                 <!-- <th class="text-center" width="10%">ประเภทสมาชิก</th> -->
                 <th class="text-center" width="10%">เบอร์มือถือ</th>
                 <th class="text-center" width="10%">E-mail</th>
                 <!-- <th class="text-center" width="5%">สถานะ</th> -->
-                <th class="text-center" width="10%">จัดการ</th>
+                <th class="text-center" width="5%">จัดการ</th>
               </tr>
             </thead>
             <tbody>

@@ -28,12 +28,12 @@
             <thead>
               <tr>
                 <th class="text-center" width="1%">#</th>
-                <th class="text-center" width="10%">ชื่อผู้ประกอบการ</th>
+                <th class="text-center" width="10%">ชื่อเจ้าหน้าที่ ททท.</th>
                 <!-- <th class="text-center" width="10%">ประเภทสมาชิก</th> -->
                 <th class="text-center" width="10%">เบอร์มือถือ</th>
                 <th class="text-center" width="10%">E-mail</th>
                 <!-- <th class="text-center" width="5%">สถานะ</th> -->
-                <th class="text-center" width="10%">จัดการ</th>
+                <th class="text-center" width="5%">จัดการ</th>
               </tr>
             </thead>
             <tbody>
@@ -73,7 +73,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL + '/backend/Officer/delete', {
+      var res = main_post(BASE_URL + '/backend/TAT/delete', {
         id: id
       });
       res_swal(res, 1);
@@ -81,10 +81,10 @@
   }
 
   function edit_item(id) {
-    window.location.href = '<?= base_url('backend/Officer/editTAT') ?>' + '/' + id;
+    window.location.href = '<?= base_url('backend/TAT/edit') ?>' + '/' + id;
   }
 
   function insert_item(elm) {
-    window.location.href = '<?= base_url('backend/Officer/addTAT') ?>';
+    window.location.href = '<?= base_url('backend/TAT/add') ?>';
   }
 </script>

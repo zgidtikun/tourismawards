@@ -119,7 +119,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" onclick="window.location.href = '<?= base_url('backend/Officer/tat') ?>'"><i class="fas fa-times"></i> ยกเลิก</button>
+        <button type="button" class="btn btn-danger" onclick="window.location.href = '<?= base_url('backend/TAT') ?>'"><i class="fas fa-times"></i> ยกเลิก</button>
         <button type="button" class="btn btn-primary" id="btn_save"><i class="fas fa-save"></i> บันทึก</button>
       </div>
     </div>
@@ -130,7 +130,7 @@
   $(function() {
     // Active Menu
     var menu = $('#menu');
-    var item = $(menu).find("a[href='<?= base_url() ?>/backend/Officer/tat']");
+    var item = $(menu).find("a[href='<?= base_url() ?>/backend/TAT']");
     var ul = $(item).closest('ul');
     var li = $(ul).closest('li');
 
@@ -163,14 +163,14 @@
           toastr.error('E-Mail นี้มีการสมัครเข้าใช้งานแล้ว');
           return false;
         }
-        var res = main_save(BASE_URL + '/backend/Officer/saveInsertTAT', '#input_form');
+        var res = main_save(BASE_URL + '/backend/TAT/saveInsert', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = '<?= base_url('backend/Officer/tat') ?>';
+          window.location.href = '<?= base_url('backend/TAT') ?>';
         });
       } else {
-        var res = main_save(BASE_URL + '/backend/Officer/saveUpdateTAT', '#input_form');
+        var res = main_save(BASE_URL + '/backend/TAT/saveUpdate', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = '<?= base_url('backend/Officer/tat') ?>';
+          window.location.href = '<?= base_url('backend/TAT') ?>';
         });
       }
     }

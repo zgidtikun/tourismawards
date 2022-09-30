@@ -14,7 +14,7 @@
   <div class="col-xl-12 col-xxl-12">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">ข้อมูลผู้ประกอบการ</h3>
+        <h3 class="card-title"><?= $title ?></h3>
         <div class="card-action float-sm-right my-3 my-sm-0">
           <button type="button" class="btn btn-primary" onclick="insert_item(this)"><i class="fas fa-edit"></i> เพิ่มข้อมูล</button>
         </div>
@@ -28,12 +28,12 @@
             <thead>
               <tr>
                 <th class="text-center" width="1%">#</th>
-                <th class="text-center" width="10%">ชื่อผู้ประกอบการ</th>
+                <th class="text-center" width="10%">ชื่อผู้ดูแลระะบบ</th>
                 <!-- <th class="text-center" width="10%">ประเภทสมาชิก</th> -->
                 <th class="text-center" width="10%">เบอร์มือถือ</th>
                 <th class="text-center" width="10%">E-mail</th>
                 <!-- <th class="text-center" width="5%">สถานะ</th> -->
-                <th class="text-center" width="10%">จัดการ</th>
+                <th class="text-center" width="5%">จัดการ</th>
               </tr>
             </thead>
             <tbody>

@@ -21,18 +21,44 @@
 
         <form id="input_form">
           <input type="hidden" name="insert_id" id="insert_id" value="<?= @$result->id ?>">
+
           <div class="row">
             <div class="col-sm-3">
               <div class="form-group">
-                <label for="">ชื่อ - นามสกุล <span class="text-danger">*</span></label>
+                <label for="prefix">คำนำหน้า <span class="text-danger">*</span></label>
               </div>
             </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <select name="prefix" id="prefix" class="form-control">
+                  <option value="นาย" <?= (@$result->prefix == 'นาย') ? 'selected' : ''; ?>>นาย</option>
+                  <option value="นาง" <?= (@$result->prefix == 'นาง') ? 'selected' : ''; ?>>นาง</option>
+                  <option value="นางสาว" <?= (@$result->prefix == 'นางสาว') ? 'selected' : ''; ?>>นางสาว</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
             <div class="col-sm-3">
+              <div class="form-group">
+                <label for="name">ชื่อ <span class="text-danger">*</span></label>
+              </div>
+            </div>
+            <div class="col-sm-6">
               <div class="form-group">
                 <input type="text" name="name" id="name" class="form-control" value="<?= @$result->name ?>" placeholder="" required>
               </div>
             </div>
+          </div>
+
+          <div class="row">
             <div class="col-sm-3">
+              <div class="form-group">
+                <label for="">นามสกุล <span class="text-danger">*</span></label>
+              </div>
+            </div>
+            <div class="col-sm-6">
               <div class="form-group">
                 <input type="text" name="surname" id="surname" class="form-control" value="<?= @$result->surname ?>" placeholder="" required>
               </div>

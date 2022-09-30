@@ -6,12 +6,16 @@ use App\Controllers\BaseController;
 
 class Admin extends BaseController
 {
+    public function __construct()
+    {
+        // helper('main');
+    }
+
     public function index()
     {
         $data['result'] = $this->db->table('admin A')->select('A.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = A.member_type', 'left')->join('award_type AT', 'AT.id = A.award_type', 'left')->join('assessment_group AG', 'AG.id = A.assessment_group', 'left')->where('A.member_type = 4 AND A.status = 1')->orderBy('A.id', 'desc')->get()->getResultObject();
         $data['award_type'] = $this->db->table('award_type')->get()->getResultObject();
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
-
 
         // Template
         $data['title']  = 'ผู้ดูแลระะบบ';

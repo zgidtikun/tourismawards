@@ -63,7 +63,7 @@ const psc = {
                 formData.append('action',!empty(qt.id) ? 'update' : 'create');
                 formData.append('id',!empty(qt.id) ? qt.id : '');
                 formData.append('oldFiles',qt.paper.list.concat(qt.images.list));
-                formData.append('deeteFies',qt.paper.delete.concat(qt.images.delete))
+                formData.append('deleteFies',qt.paper.delete.concat(qt.images.delete))
 
                 if(paper.length > 0){
                     $.each(paper,function(key,file){

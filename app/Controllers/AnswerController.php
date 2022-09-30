@@ -114,54 +114,73 @@ class AnswerController extends BaseController
 
     public function saveReply()
     {
-        switch($this->input->getVar('action')){
-            case 'action': 
-                $tmpFiles = [];
-                $insd = [
-                    'reply' => $this->input->getVar('reply'),
-                    'reply_by' => session()->get('id'),
-                    'status' => 1,
-                    'pack_file' => []
-                ];
+        try{
+            $tmpFiles = [];                      
+            $accept = [
+                'input' => ['paperFile','imagesFile'],
+                'types' => ['paper','images'],
+                'path' => 'uploads/per-screen/'.session()->get('id').'/',
+                'paper' => ['pdf','doc','docx'],
+                'images' => ['jpg','jpeg','gif','png','webp']
+            ];
 
-                if($files = $this->input->getFiles()){
-                    
-                    $accept = [
-                        'input' => ['paperFile','imagesFile'],
-                        'types' => ['paper','images'],
-                        'path' => 'uploads/per-screen/'.session()->get('id').'/',
-                        'paper' => ['pdf','doc','docx'],
-                        'images' => ['jpg','jpeg','gif','png','webp']
-                    ];
+            $dtdb = [
+                'reply' => $this->input->getVar('reply'),
+                'reply_by' => session()->get('id'),
+                'status' => 1,
+                'pack_file' => $this->input->getVar('oldFiles')
+            ];  
+            
+            if($files = $this->input->getFiles()){
+                foreach($accept['input'] as $key=>$index){
+                    foreach($files[$index] as $file){
+                        if($file->isValid() && !$file->hasMoved()){
+                            $originalName = $file->getName();
+                            $extension = $file->guessExtension();
+                            $newName = $this->randomFileName($extension);
 
-                    foreach($accept['input'] as $key=>$index){
-                        foreach($files[$index] as $file){
-                            if($file->isValid() && !$file->hasMoved()){
-                                $originalName = $file->getName();
-                                $extension = $file->guessExtension();
-                                $newName = $this->randomFileName($extension);
-
-                                if(in_array($extension,$accept[$accept['type'][$key]])){
-                                    $path = $accept['path'].$accept['types'][$key];
-                                    $file->move(FCPATH.$path, $newName);
-                                    array_push($tmpFiles,[
-                                        'file_name' => $newName,
-                                        'file_original' => $originalName,
-                                        'file_type' => $accept['types'][$key],
-                                        'file_path' => $path.'/'.$newName
-                                    ]);
-                                }
+                            if(in_array($extension,$accept[$accept['type'][$key]])){
+                                $path = $accept['path'].$accept['types'][$key];
+                                $file->move(FCPATH.$path, $newName);
+                                array_push($tmpFiles,[
+                                    'file_name' => $newName,
+                                    'file_original' => $originalName,
+                                    'file_type' => $accept['types'][$key],
+                                    'file_path' => $path.'/'.$newName
+                                ]);
                             }
                         }
                     }
-
-                    $insd['pack_file'] = json_encode($tmpFiles);
                 }
+                
+                $dtdb['pack_file'] = json_encode(array_merge($dtdb['pack_file'],$tmpFiles));
+            }
 
-                break;
-            case 'update':
-                break;
+            switch($this->input->getVar('action')){
+                case 'action': 
+                    $ins = $this->ans->insert($dtdb);
+                    $insId = $this->ans->getInsertID();
+                    $answer = $this->ans->find($insId)->first();
+                    $result = ['result' => 'success', 'data' => $answer];
+                    break;
+                case 'update':
+                    if(!empty($this->input->getVar('deleteFies'))){
+                        $collect = new FileCollection();
+                        foreach($this->input->getVar('deleteFies') as $path){
+                            $collect->removeFile(FCPATH.$this->innput->getVar('path'));
+                        }
+                    }
+
+                    $upd = $this->ans->update($this->input->getVar('id'),$dtdb);                    
+                    $answer = $this->ans->find($this->input->getVar('id'))->first();
+                    $result = ['result' => 'success', 'data' => $answer];
+                    break;
+            }
+        } catch(\Exception $e){
+            $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
         }
+
+        return $this->response->setJSON($result);
     }
 
     private function randomFileName($type)

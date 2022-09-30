@@ -7,6 +7,15 @@ use CodeIgniter\Files\File;
 
 class News extends BaseController
 {
+    public function __construct()
+    {
+        helper('main');
+        // pp(session()->role);
+        // if (session()->role == 2) {
+        //     return redirect()->to('404');
+        // }
+    }
+
     public function index()
     {
         // pp(session()->get());
@@ -69,8 +78,10 @@ class News extends BaseController
             // 'image_cover'   => $post['image_cover'],
             'category_id'   => $post['category_id'],
             'status'        => $post['status'],
-            'created_by'    => session()->id,
-            'updated_by'    => session()->id,
+            'created_id'    => session()->id,
+            'updated_id'    => session()->id,
+            'created_by'    => session()->user,
+            'updated_by'    => session()->user,
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
@@ -100,8 +111,6 @@ class News extends BaseController
         $post = $this->input->getVar();
         $imagefile = $this->input->getFiles('image_cover');
         $img = $imagefile['image_cover'];
-        // pp($img->getName());
-        // px($imagefile);
 
         if ($img->isValid() && !$img->hasMoved()) {
             $path = FCPATH . 'uploads/news/images/';
@@ -127,9 +136,13 @@ class News extends BaseController
             'image_cover'   => $post['image_cover'],
             'category_id'   => $post['category_id'],
             'status'        => $post['status'],
-            // 'created_by'    => session()->id,
-            'updated_by'    => session()->id,
-            'created_at'    => date('Y-m-d H:i:s'),
+            'publish_start' => $post['publish_start'],
+            'publish_end'   => $post['publish_end'],
+            // 'created_id'    => session()->id,
+            'updated_id'    => session()->id,
+            // 'created_by'    => session()->user,
+            'updated_by'    => session()->user,
+            // 'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
         $result = $this->db->table('blog')->where('id', $post['insert_id'])->update($data);
@@ -151,6 +164,22 @@ class News extends BaseController
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'ทำการลบข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการลบข้อมูลไม่สำเร็จ']);
+        }
+    }
+
+    public function uploadImage()
+    {
+        $imagefile = $this->input->getFiles('file');
+        $img = $imagefile['file'];
+        if ($img->isValid() && !$img->hasMoved()) {
+            $path = FCPATH . 'uploads/news/images/';
+            $extension = $img->guessExtension();
+            $newName = genFileName($extension);
+            $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
+            if (in_array($extension, $accept)) {
+                $img->move($path, $newName);
+                echo base_url() . '/uploads/news/images/' . $newName;
+            }
         }
     }
 }

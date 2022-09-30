@@ -28,12 +28,12 @@
             <thead>
               <tr>
                 <th class="text-center" width="1%">#</th>
-                <th class="text-center" width="10%">รูป</th>
-                <th class="text-center" width="10%">หัวข้อ</th>
+                <th class="text-center" width="5%">รูป</th>
+                <th class="text-center" width="25%">หัวข้อ</th>
                 <th class="text-center" width="10%">หมวดหมู่</th>
-                <th class="text-center" width="10%">สถานะ</th>
-                <th class="text-center" width="10%">วันที่</th>
-                <th class="text-center" width="10%">จัดการ</th>
+                <th class="text-center" width="5%">สถานะ</th>
+                <th class="text-center" width="8%">วันที่</th>
+                <th class="text-center" width="5%">จัดการ</th>
               </tr>
             </thead>
             <tbody>
@@ -50,7 +50,8 @@
                   <tr>
                     <td><?= $key + 1 ?></td>
                     <td class="text-center">
-                      <img src="<?= $path ?>" alt="" srcset="" width="100px">
+                      <img src="<?= $path ?>" alt="" srcset="" width="100px" onclick="view_img(this)">
+                      <textarea class="description" style="display: none;"><?= $value->description ?></textarea>
                     </td>
                     <td><?= $value->title ?></td>
                     <td class="text-center"><?= $category[$value->category_id] ?></td>
@@ -59,6 +60,7 @@
                     </td>
                     <td class="text-center"><?= docDate($value->updated_at) ?></td>
                     <td class="text-center">
+                      <i class="fa fa-eye text-success mr-2" data-toggle="tooltip" title="ดูรายละเอียด" onclick="view_item(this)"></i>
                       <i class="fas fa-edit text-primary mr-2" data-toggle="tooltip" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"></i></a>
                       <i class="fas fa-trash-alt text-danger mr-2" data-toggle="tooltip" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"></i>
                     </td>
@@ -71,6 +73,26 @@
           </table>
         </div>
 
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-xl" id="exampleModal" data-target=".bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ตัวอย่างเนื้อหา</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fas fa-times text-danger"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
       </div>
     </div>
   </div>
@@ -89,6 +111,13 @@
       });
       res_swal(res, 1);
     })
+  }
+
+  function view_item(elm) {
+    var tr = $(elm).closest('tr');
+    var description = $(tr).find('.description').val();
+    $('.modal-body').html(description);
+    $('#exampleModal').modal('show');
   }
 
   function edit_item(id) {

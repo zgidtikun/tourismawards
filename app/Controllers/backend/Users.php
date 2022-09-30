@@ -53,7 +53,7 @@ class Users extends BaseController
         }
         $data = [
             // 'id'            => $post['id'],
-            // 'prefix'        => $post[''],
+            'prefix'        => $post['prefix'],
             'name'          => $post['name'],
             'surname'       => $post['surname'],
             'member_type'   => 2,
@@ -79,7 +79,7 @@ class Users extends BaseController
         $post = $this->input->getVar();
         $data = [
             // 'id'            => $post['id'],
-            // 'prefix'        => $post[''],
+            'prefix'        => $post['prefix'],
             'name'          => $post['name'],
             'surname'       => $post['surname'],
             'member_type'   => 2,
@@ -89,7 +89,7 @@ class Users extends BaseController
             // 'password'      => $post['password'],
             // 'captcha'       => $post[''],
             'role_id'       => 1,
-            'created_at'    => date('Y-m-d H:i:s'),
+            // 'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
 

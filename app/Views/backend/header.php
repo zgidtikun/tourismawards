@@ -23,9 +23,9 @@
             <i class="icon-frame"></i>
           </a>
         </li> -->
-        
+
         <li class="d-none d-md-flex">
-          Administrator
+          <?= session()->user ?>
         </li>
         <li class="dropdown">
           <div class="user-img c-pointer wave-effect wave-effect-x waves-effect" data-display="static" data-toggle="dropdown">
@@ -57,6 +57,11 @@
               </ul>
             </div>
           </div> -->
+        </li>
+        <li class="d-none d-md-flex">
+          <a href="<?= base_url('auth/logout') ?>" data-toggle="tooltip" title="ออกจากระบบ">
+            <i class="fas fa-sign-out-alt"></i>
+          </a>
         </li>
       </ul>
     </div>

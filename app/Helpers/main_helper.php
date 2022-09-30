@@ -41,6 +41,28 @@ function pxml($xml)
     echo '</pre>';
 }
 
+function isAdmin()
+{
+    if (session()->id == 4) {
+        return true;
+    }
+    return false;
+}
+
+function checkPermission($id = [])
+{
+    if (in_array(session()->id, $id)) {
+        return true;
+    }
+    return false;
+}
+
+function show_404()
+{
+    header('Location: ' . base_url() . '/404');
+    exit();
+}
+
 // รูปแบบวันที่ที่ใช้ในเอกสาร
 function docDate($date, $format = 3, $lang = 'thailand')
 {

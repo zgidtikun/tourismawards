@@ -623,7 +623,7 @@
         var screen_w = $(window).width();
         var screen_h = $(window).height();
 
-        if (screen_w >= 1280) {
+        if (screen_w > 1024) {
             $(".comment_slide").css("display", "block");
             $(".comment_slide").slick({
                 dots: true,
@@ -654,7 +654,7 @@
             var branchtxtheight = branchtxttab.reduce(function(a, b) {
                 return Math.max(a, b);
             });
-            $('.branch_txt').css("height", branchtxtheight);
+            $('.branch_txt').css("height", branchtxtheight + 20);
             //----------------------------------------------------------------------------------//
             var claimtitle = $('.claim_title').length;
             var claimtitletab = [];

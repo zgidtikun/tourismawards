@@ -57,9 +57,10 @@ $routes->group('auth', static function ($routes) {
 });
 
 $routes->group('frontend', static function ($routes) {
+
     $routes->get('/', 'Home::frontend', ['filter' => 'auth:frontend']);    
+
     $routes->get('application', 'ApplicationController::formIndex', ['filter' => 'auth:1']);
-    $routes->get('pre-screen', 'AnswerController::preScreenIndex', ['filter' => 'auth:1']);
     $routes->group('app', static function ($routes) {
         $routes->get('detail', 'ApplicationController::getApplicationByAjax', ['filter' => 'api:frontend']);
         $routes->post('draft', 'ApplicationController::draftApp', ['filter' => 'api:frontend']);
@@ -69,6 +70,8 @@ $routes->group('frontend', static function ($routes) {
             $routes->post('images', 'ApplicationController::uploadImages', ['filter' => 'api:frontend']);
         });
     });
+    
+    $routes->get('pre-screen', 'AnswerController::preScreenIndex', ['filter' => 'auth:1']);
     $routes->get('question/get', 'AnswerController::getQuestionByAjax', ['filter' => 'api:frontend']);
     $routes->group('answer', static function ($routes){
         $routes->get('get/(:any)', 'AnswerController::getAnswerByAjax/$1', ['filter' => 'api:frontend']);
@@ -77,13 +80,42 @@ $routes->group('frontend', static function ($routes) {
 });
 
 $routes->group('backend',['namespace' => 'App\Controllers\Backend'], static function ($routes) {    
-    $routes->get('/', 'Dashboard::index', ['filter' => 'auth:backend']);
+    
     $routes->get('login', 'Login::index');
+
+    $routes->get('/', 'Dashboard::index', ['filter' => 'auth:backend']);
     $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth:backend']);
 
-    // News
+    // Admin (เฉพาะแอดมินที่เข้าได้)
+    $routes->get('Admin', 'Admin::index', ['filter' => 'auth:4']);
+    $routes->get('Admin/add', 'Admin::add', ['filter' => 'auth:4']);
+    $routes->get('Admin/edit/(:any)', 'Admin::edit/$1', ['filter' => 'auth:4']);
+    $routes->post('Admin/saveInsert', 'Admin::saveInsert', ['filter' => 'auth:4']);
+    $routes->post('Admin/saveUpdate', 'Admin::saveUpdate', ['filter' => 'auth:4']);
+    $routes->post('Admin/checkData', 'Admin::checkData', ['filter' => 'auth:4']);
+
+    // Officer (เฉพาะแอดมินที่เข้าได้)
+    $routes->get('Officer', 'Officer::index', ['filter' => 'auth:4']);
+    $routes->get('Officer/add', 'Officer::add', ['filter' => 'auth:4']);
+    $routes->get('Officer/edit/(:any)', 'Officer::edit/$1', ['filter' => 'auth:4']);
+    $routes->post('Officer/saveInsert', 'Officer::saveInsert', ['filter' => 'auth:4']);
+    $routes->post('Officer/saveUpdate', 'Officer::saveUpdate', ['filter' => 'auth:4']);
+
+    $routes->get('TAT', 'Officer::tat', ['filter' => 'auth:4']);
+    $routes->get('TAT/add', 'Officer::addTAT', ['filter' => 'auth:4']);
+    $routes->get('TAT/edit/(:any)', 'Officer::editTAT/$1', ['filter' => 'auth:4']);
+    $routes->post('TAT/saveInsert', 'Officer::saveInsertTAT', ['filter' => 'auth:4']);
+    $routes->post('TAT/saveUpdate', 'Officer::saveUpdateTAT', ['filter' => 'auth:4']);
+    $routes->post('Officer/delete', 'Officer::delete', ['filter' => 'auth:4']);
+
+    // News (เฉพาะแอดมินที่เข้าได้)
+    $routes->get('News', 'News::index', ['filter' => 'auth:backend']);
     $routes->get('News/add', 'News::add', ['filter' => 'auth:backend']);
     $routes->get('News/edit/(:any)', 'News::edit/$1', ['filter' => 'auth:backend']);
+    $routes->post('News/saveInsert', 'News::saveInsert', ['filter' => 'auth:backend']);
+    $routes->post('News/saveUpdate', 'News::saveUpdate', ['filter' => 'auth:backend']);
+    $routes->post('News/uploadImage', 'News::uploadImage', ['filter' => 'auth:backend']);
+    $routes->post('News/delete', 'News::delete', ['filter' => 'auth:backend']);
 });
 
 $routes->environment('development', static function ($routes) {

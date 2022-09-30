@@ -246,12 +246,12 @@ height: 100%;
     -webkit-box-orient: vertical;
 }
 .banner-txt h1 {
-    font-size: 3.6em;
-    margin:20px  0;
+    font-size: 4.6vw;
+    margin: 20px 0;
     line-height: 1;
 }
 .banner-txt h2 {
-    font-size: 2.6em;
+    font-size: 3.3vw;
     font-weight: normal;
     margin: 0;
     line-height: 1;
@@ -267,6 +267,7 @@ height: 100%;
     font-weight: 500;
     line-height: 1;
     transition: all 0.2s;
+    border-radius: 5px;
 }
 .btn-banner:hover{
 transform: translateY(-5px);
@@ -480,6 +481,8 @@ color: #FFF;
     width: 300px;
     border-bottom: 3px solid #08244a;
     box-shadow: 0 0 5px rgba(0,0,0,0.75);
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .header-box-col.menu ul li.item-with-ul a:before {

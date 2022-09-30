@@ -61,7 +61,7 @@ color: #FFF;
 .header-box img {
     width: auto;
     max-width: 100%;
-    height: auto;
+    height: 5vw;
     max-height: 100%;
     object-fit: contain;
     transition: all 0.3s;
@@ -110,8 +110,8 @@ margin-right: 0;
 }
 
 .header-box-col.logo {
-    width: 12.5%;
-    max-width: 230px;
+    width: auto;
+    max-width: none;
     flex: none;
     padding: 0 0 20px 0;
 }

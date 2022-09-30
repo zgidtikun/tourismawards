@@ -13,7 +13,7 @@ class Auth implements FilterInterface
     {
         $this->setting = array(
             'frontend' => array('1','3'),
-            'backend' => array('2','4'),
+            'backend' => array('2','4')
         );
         
         if(session()->get('isLoggedIn')){
@@ -63,4 +63,3 @@ class Auth implements FilterInterface
         
     }
 }
-?>

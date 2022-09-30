@@ -173,7 +173,7 @@
 </div>
 
 <script>
-   jQuery(document).ready(function($) {
+   jQuery(document).ready(function() {
 
       $('.btn-menu').click(function () {
          if ($('.menubox').hasClass('active')) {

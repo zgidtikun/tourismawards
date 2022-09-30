@@ -70,7 +70,7 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <div class="custom-file">
-                  <input type="file" name="image_cover" id="image_cover" class="custom-file-input">
+                  <input type="file" name="image_cover" id="image_cover" class="custom-file-input" required>
                   <label class="custom-file-label" for="image_cover">Choose file...</label>
                 </div>
                 <?php
@@ -102,6 +102,24 @@
           <div class="row">
             <div class="col-sm-3">
               <div class="form-group">
+                <label for="publish_start">หัวข้อ <span class="text-danger">*</span></label>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <input type="datetime-local" name="publish_start" id="publish_start" class="form-control" value="<?= @$result->publish_start ?>" required>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <input type="datetime-local" name="publish_end" id="publish_end" class="form-control" value="<?= @$result->publish_end ?>" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
                 <label for="status">สถานะ <span class="text-danger">*</span></label>
               </div>
             </div>
@@ -110,7 +128,7 @@
                 <div class="d-flex">
                   <h6 class="text-dark mr-2 mt-2">ไม่เผยแพร่</h6>
                   <div class="tgl-btn-primary">
-                    <input type="checkbox" class="tgl tgl-flat" id="status" name="status" value="1" <?= (@$result->status == 1) ? 'checked': ''; ?>>
+                    <input type="checkbox" class="tgl tgl-flat" id="status" name="status" value="1" <?= (@$result->status == 1) ? 'checked' : ''; ?>>
                     <label class="tgl-btn" for="status"></label>
                   </div>
                   <h6 class="text-dark ml-2 mt-2">เผยแพร่</h6>
@@ -143,23 +161,73 @@
     item.addClass('active');
     $(ul).collapse('toggle');
 
+    // $('#description').summernote({
+    //   height: 300
+    // });
+
     $('#description').summernote({
-      height: 300
+      tabsize: 2,
+      height: 400,
+      spellCheck: true,
+      toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'underline', 'italic', 'superscript', 'subscript', 'clear']],
+        ['fontname', ['fontname', 'fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['table', ['table']],
+        ['insert', ['link', 'picture', 'video']],
+        ['view', ['fullscreen', 'help', 'undo', 'redo', 'codeview']],
+      ],
+      callbacks: {
+        onImageUpload: function(files, editor, welEditable) {
+          sendFile(files[0], editor, welEditable);
+        }
+      }
     });
+
   });
+
+  function sendFile(file, editor, welEditable) {
+    var lib_url = BASE_URL + '/backend/News/uploadImage';
+    data = new FormData();
+    data.append("file", file);
+    $.ajax({
+      data: data,
+      type: "POST",
+      url: lib_url,
+      cache: false,
+      processData: false,
+      contentType: false,
+      success: function(url) {
+        var image = $('<img>').attr('src', url);
+        $('#description').summernote("insertNode", image[0]);
+      }
+    });
+  }
+
 
   $('#btn_save').click(function(e) {
     var insert_id = $('#insert_id').val();
+    if (insert_id == "" || insert_id == 0) {
+      $('#image_cover').prop('required', true);
+    } else {
+      $('#image_cover').prop('required', false);
+    }
     if (main_validated('input_form')) {
       if (insert_id == "" || insert_id == 0) {
         var res = main_save(BASE_URL + '/backend/News/saveInsert', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = '<?= base_url('backend/News') ?>';
+          if (res.type == 'success') {
+            window.location.href = '<?= base_url('backend/News') ?>';
+          }
         });
       } else {
         var res = main_save(BASE_URL + '/backend/News/saveUpdate', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = '<?= base_url('backend/News') ?>';
+          if (res.type == 'success') {
+            window.location.href = '<?= base_url('backend/News') ?>';
+          }
         });
       }
     }

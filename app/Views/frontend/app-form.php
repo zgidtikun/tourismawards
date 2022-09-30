@@ -1,44 +1,63 @@
-<div class="container login" style="height: 100%;">
-    <div class="row">
-        <div class="col6 loginbox">
-            <div class="formbox">
-                <div class="formbox_row logo">
-                    <picture>
-                        <source srcset="<?= base_url('assets/images/logo.svg') ?>">
-                        <img src="<?= base_url('assets/images/logo.png') ?>" width="230" height="89">
-                    </picture>
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-xl-10">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2 class="card-title status-title">
+                        สถานะการสมัครประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566
+                    </h2>
                 </div>
-
-                <div class="formbox_row">
-                    <div class="inp_form login">
-                        <h3>เข้าสู่ระบบ</h3>
-                        <div class="inp_form_row">
-                            <div class="inp_form_col1">
-                                <form>
-                                <input type="file" onchange="register.onFileHandle('#step1-detail')" 
-                                id="step1-detail" multiple>
-                                </form>
-                            </div>
-                            <div class="inp_form_col1">
-                                <input type="password" id="password" placeholder="รหัสผ่าน">
-                            </div>
-                            <div class="inp_form_col1 submit">
-                                <button type="button">เข้าสู่ระบบ</button>
-                            </div>
-                            <div class="inp_form_col1 accept" id="group-type">
-
-                            </div>
-                            <div class="inp_form_col1 accept" id="group-type-sub">
-
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-body">
+                    ..............
+                </div>
+            </div>
+            <div class="mt-4">
+                <h1 class="page-title align-middle d-inline-block m-0">
+                    กรอกแบบฟอร์มใบสมัคร                      
+                </h1>
+                <button class="btn btn-outline-gold btn-site float-end" disabled>ส่งใบสมัคร</button>  
+                <button class="btn btn-main btn-site float-end mr-3">บันทึก</button>
+            </div>
+            <div class="card mt-4">
+                <div class="card-header">
+                    <ul class="card-header-tabs nav nav-tabs justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <span>1. ประเภทการสมัคร</span>
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span>2. ข้อมูลผลงาน</span>                                
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span>3. ข้อมูลหน่วยงาน/บริษัท</span>
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span>4. ข้อมูลผู้ประสานงาน</span>
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span>5. คุณสมบัติเบื้องต้น/เอกสารประกอบการสมัคร</span>
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    ..............
                 </div>
             </div>
         </div>
-        <div class="col6 loginbg">
-        </div>    
-        <div class="loading" id="loading-page"></div>
     </div>
 </div>
 <?php $app = new \Config\App(); ?>

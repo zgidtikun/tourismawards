@@ -75,7 +75,7 @@
       imageWidth: 1100,
       confirmButtonColor: '#DD3342',
       confirmButtonText: '<i class="fas fa-times"></i> ปิด',
-    })
+    });
   }
 
   function main_post(url, data = null) {
@@ -337,4 +337,28 @@
     var fileName = e.target.files[0].name;
     $('.custom-file-label').html(fileName);
   });
+
+  // สร้าง selectpicker
+  // function init_selectpicker() {
+
+  //   $('.selectpicker').selectpicker({
+  //     noneSelectedText: 'กรุณาเลือก',
+  //     selectAllText: 'เลือกทั้งหมด',
+  //     deselectAllText: 'ยกเลิกทั้งหมด',
+  //     countSelectedText: function(numSelected, numTotal) {
+  //       return (numSelected == 1) ? "{0} <?php echo 'รายการ' ?>" : "{0} <?php echo 'รายการ' ?>";
+  //     },
+  //   });
+
+  //   $('.selectpicker_all').selectpicker({
+  //     noneSelectedText: 'เลือกทั้งหมด',
+  //     selectAllText: 'เลือกทั้งหมด',
+  //     deselectAllText: 'ยกเลิกทั้งหมด',
+  //     countSelectedText: function(numSelected, numTotal) {
+  //       return (numSelected == 1) ? "{0} <?php echo 'รายการ' ?>" : "{0} <?php echo 'รายการ' ?>";
+  //     },
+  //   });
+
+  //   $('.select_document').selectpicker();
+  // }
 </script>

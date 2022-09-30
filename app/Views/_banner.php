@@ -95,7 +95,7 @@
     });
 
     jQuery(document).each(function() {
-      var headerheight = $('.header-box ').height();
+      var headerheight = $('.header-box ').height()+'px';
       $('#includedbanner').css({
         "display": "block",
         "margin-top": headerheight

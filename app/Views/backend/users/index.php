@@ -31,7 +31,7 @@
                 <th class="text-center" width="10%">E-mail</th>
                 <th class="text-center" width="8%">สถานะ</th>
                 <th class="text-center" width="8%">วันที่ลงทะเบียน</th>
-                <th class="text-center" width="8%">จัดการ</th>
+                <th class="text-center" width="5%">จัดการ</th>
               </tr>
             </thead>
             <tbody>

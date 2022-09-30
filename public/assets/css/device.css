@@ -39,10 +39,6 @@ html {
 .banner-txt {
     max-width: 75%;
 }
-
-.header-box img {
-    height: 50px;
-}
 }
 
 @media screen and (max-width:1024px){
@@ -83,20 +79,16 @@ display: none;
 .login_list .header-box-col, .header-box-row.menulist, .container.footer, .container.copyright {
     padding: 0 20px;
 }
-.header-box img {
+.header-box-col.logo {
     width: auto;
-    max-width: 100%;
-    height: auto;
-    max-height: 40px;
-    object-fit: contain;
+    padding: 0;
 }
+
 .banner-txt h1 {
-    font-size: 2.4em;
     margin: 20px 0;
     line-height: 1;
 }
 .banner-txt h2 {
-    font-size: 1.6em;
     font-weight: normal;
     margin: 0;
     line-height: 1;
@@ -252,12 +244,10 @@ max-height: 50px;
     padding-top: 100%;
 }
 .banner-txt h1 {
-    font-size: 1.6em;
     margin: 10px 0;
     line-height: 1;
 }
 .banner-txt h2 {
-    font-size: 1.2em;
     font-weight: normal;
     margin: 0;
     line-height: 1;
@@ -276,6 +266,9 @@ max-height: 50px;
 .btn-banner:link, .btn-banner:visited {
     padding: 13px 20px;
     font-size: 1em;
+}
+.header-box img {
+    height: 40px;
 }
 }
 
