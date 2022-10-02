@@ -70,7 +70,7 @@
                             }
 
                             alert.show('info','คำแนะนำการใช้งาน', message).then(function(data){                                
-                                let url = '<?= base_url('frontend') ?>';
+                                let url = '<?= base_url('frontend/application') ?>';
                                 window.location.href = url;
                             });
                         } else {

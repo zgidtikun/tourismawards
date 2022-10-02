@@ -48,10 +48,10 @@ class ApplicationController extends BaseController
     {
         $data = [
             'title' => 'Application Form',
-            'view' => 'frontend/app-form'
+            'view' => 'frontend/entrepreneur/app-form'
         ];
 
-        return view('template-frontend',$data);
+        return view('frontend/entrepreneur/_template',$data);
     }
 
     public function getAppTypeAndSubAllByAjax()

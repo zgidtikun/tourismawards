@@ -154,7 +154,7 @@ class LoginController extends BaseController
 
     public function showSession(){
         if(getenv('CI_ENVIRONMENT') != 'production'){
-            echo password_hash('123456',PASSWORD_DEFAULT);
+            echo password_hash('123456',PASSWORD_DEFAULT).'<br>';
             var_dump(get_cookie('username'));
             return $this->response->setJSON(session()->get());
         }
