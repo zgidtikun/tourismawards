@@ -72,17 +72,73 @@ body {
     background-color: #f5f4f1;
 }
 
-.mainsite {
-    font-size: 16px;
-    font-weight: 400;
+hr {
+  margin: 1rem 0;
+  color: inherit;
+  border: 0;
+  border-top: 1px solid;
+  opacity: 0.25;
 }
 
-.inp_form .submit button[disabled] {
-    background-color: #5D8BC9;
+h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
-.hide {
-    display: none;
+h1, .h1 {
+  font-size: calc(1.375rem + 1.5vw);
+}
+@media (min-width: 1200px) {
+  h1, .h1 {
+    font-size: 2.5rem;
+  }
+}
+
+h2, .h2 {
+  font-size: calc(1.325rem + 0.9vw);
+}
+@media (min-width: 1200px) {
+  h2, .h2 {
+    font-size: 2rem;
+  }
+}
+
+h3, .h3 {
+  font-size: calc(1.3rem + 0.6vw);
+}
+@media (min-width: 1200px) {
+  h3, .h3 {
+    font-size: 1.75rem;
+  }
+}
+
+h4, .h4 {
+  font-size: calc(1.275rem + 0.3vw);
+}
+@media (min-width: 1200px) {
+  h4, .h4 {
+    font-size: 1.5rem;
+  }
+}
+
+h5, .h5 {
+  font-size: 1.25rem;
+}
+
+h6, .h6 {
+  font-size: 1rem;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+b,
+strong {
+  font-weight: bolder;
 }
 
 /* Absolute Center Spinner */
@@ -374,7 +430,7 @@ body {
     }
 }
 
-.row {
+.bs-row {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
     display: flex;
@@ -384,7 +440,7 @@ body {
     margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
 
-.row>* {
+.bs-row>* {
     flex-shrink: 0;
     width: 100%;
     max-width: 100%;
@@ -2377,7 +2433,7 @@ body {
 }
 
 .nav-tabs .nav-link {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 400;
     color: #B5B5C3;
     margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width));
@@ -2869,6 +2925,19 @@ body {
     }
 }
 
+.mainsite {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.inp_form .submit button[disabled] {
+    background-color: #5D8BC9;
+}
+
+.hide {
+    display: none;
+}
+
 .btn-main, .btn-main:hover {
     color: #fff;
     background-color: #0C2C55;
@@ -2894,7 +2963,7 @@ body {
 }
 
 .btn-site {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 400;
     letter-spacing: 0.24px;
     line-height: 32.4px;
@@ -2905,7 +2974,7 @@ body {
 .status-title {
     font-style: normal;
     font-weight: 400;
-    font-size: 24px;
+    font-size: 1.125rem;
     line-height: 43px;
     color: #0C2C55;
 }
@@ -2913,7 +2982,7 @@ body {
 .page-title {
     font-style: normal;
     font-weight: 400;
-    font-size: 30px;
+    font-size: 1.875rem;
     line-height: 54px;
     text-align: center;
     color: #0C2C55;
@@ -2922,7 +2991,7 @@ body {
 .form-title {
     font-style: normal;
     font-weight: 700;
-    font-size: 22px;
+    font-size: 1.375rem;
     line-height: 40px;
     color: #0C2C55;
 }
@@ -2930,6 +2999,6 @@ body {
 .form-subject {
     font-style: normal;
     font-weight: 400;
-    font-size: 22px;
+    font-size: 1.375rem;
     line-height: 40px;
 }
