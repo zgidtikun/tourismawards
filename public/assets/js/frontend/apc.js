@@ -85,8 +85,7 @@ const register = {
             register.appType.main = appType.main;
             register.appType.sub = appType.sub;
 
-            let radio = '',
-                counter = 0;
+            let radio = '';
 
             $.each(register.appType.main, function(key,value){
                 let rbId = 'id="step1-appType-'+value.id+'"',
@@ -95,12 +94,14 @@ const register = {
                     rbCheck = '';
                 
                 if(key == 0) rbCheck = 'checked';
-
-                radio += '<input type="radio" '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
-                radio += '<label>'+value.name+'</label>';
+                
+                radio += '<div class="form-check">';
+                radio += '<input class="form-check-input mr-3" type="radio" '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
+                radio += '<label class="form-check-label">'+(key+1)+'. '+value.name+'</label>';
+                radio += '</div>';
             });            
 
-            $('#group-type').html(radio);
+            $('#group-type').append(radio);
 
             $.each(register.appType.sub, function(key,value){
                 if(value.application_type_id == register.appType.main[0].id){
@@ -109,18 +110,18 @@ const register = {
                         rbValue = 'value="'+value.id+'"',
                         rbCheck = '';
                     
-                    if(key == 0) rbCheck = 'checked';
-
-                    radio += '<input type="radio" '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
-                    radio += '<label>'+value.name+'</label>';
-                    
-                    if(counter == 1) 
+                    if(key == 0) {
+                        rbCheck = 'checked';
                         register.formData.step1.appTypeSub = value.id;
-                    counter++;
+                    }
+                    radio += '<div class="form-check">';
+                    radio += '<input class="form-check-input" type="radio" '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
+                    radio += '<label class="form-check-label">'+value.name+'</label>';
+                    radio += '</div>';
                 }
             }); 
 
-            $('#group-type-sub').html(radio);
+            $('#group-type-sub').append(radio);
 
             register.getApc().then(function(dataApc){
                 if(dataApc.result == 'success')

@@ -1,16 +1,16 @@
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="bs-row mt-5 justify-content-center">
         <div class="col-xs-12 col-sm-12 col-md-10 col-xl-10">
             <div class="bs-row">
                 <?=view('frontend/entrepreneur/_navigator')?>
             </div>
             <div class="bs-row mt-4">
-                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6">
-                    <h1 class="page-title align-middle d-inline-block m-0">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6" id="">
+                    <h1 class="page-title m-0 form-legend">
                         กรอกแบบฟอร์มใบสมัคร                      
                     </h1>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 d-flex justify-content-end">  
+                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 form-btn-action d-flex justify-content-end" id="appFormBtn">  
                     <button class="btn btn-main btn-site mr-2"
                     onclick="">
                         บันทึก
@@ -58,7 +58,22 @@
                         </ul>
                     </div>
                     <div class="card-body">
-                        ..............
+                        <form class="bs-row">
+                            <div class="col-12 mt-2">                            
+                                <span class="form-title">
+                                    <i class="bi bi-file-text-fill text-info mr-2"></i>
+                                    ประเภทที่ต้องการสมัครประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย
+                                </span>
+                            </div>       
+                            <div class="col-12 mt-4" id="group-type">
+                                <legend class="fs-22 mb-2">
+                                    กรุณาเลือกประเภทที่สอดคล้องกับการดำเนินงานและกลุ่มลูกค้าของท่านมากที่สุด
+                                    <span style="color: #F64E60;">*</span>
+                                </legend>
+                            </div>
+                            <div class="col-12 mt-4" >
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -85,5 +100,25 @@
         $amphoe: $('#step3-district'),
         $province: $('#step3-province'),
         $zipcode: $('#step3-zipcode'),
+    });
+</script>
+
+<script type="text/javascript" async>
+    jQuery(document).ready(function($) {
+
+        var screen_w = $(window).width();
+
+        // if(screen_w < 768){
+        //     console.log('moblie')
+        //     // appFormTitle
+        //     // appFormBtn
+        //     if(!$('#appFormTitle').hasClass('text-center'));
+        //         $('#appFormTitle').addClass('text-center');
+        // } else {
+        //     console.log('PC')
+        //     if($('#appFormTitle').hasClass('text-center'));
+        //         $('#appFormTitle').removeClass('text-center');
+
+        // }
     });
 </script>
