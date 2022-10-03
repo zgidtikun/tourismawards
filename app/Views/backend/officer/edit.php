@@ -190,8 +190,10 @@
     var insert_id = $('#insert_id').val();
     if (insert_id != "" || insert_id != 0) {
       $('#email').prop('disabled', true);
+      $('#password').prop('required', false);
     } else {
       $('#email').prop('disabled', false);
+      $('#password').prop('required', true);
     }
 
     var award_type = '<?= @$result->award_type ?>';
@@ -219,6 +221,7 @@
       }
       if (insert_id == "" || insert_id == 0) {
         if ($('#password').val() == "") {
+          $('#password').focus();
           toastr.error('กรุณาระบุรหัสผ่าน');
           return false;
         }
@@ -228,12 +231,16 @@
         }
         var res = main_save(BASE_URL + '/backend/Officer/saveInsert', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = '<?= base_url('backend/Officer') ?>';
+          if (res.type == 'success') {
+            window.location.href = '<?= base_url('backend/Officer') ?>';
+          }
         });
       } else {
         var res = main_save(BASE_URL + '/backend/Officer/saveUpdate', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = '<?= base_url('backend/Officer') ?>';
+          if (res.type == 'success') {
+            window.location.href = '<?= base_url('backend/Officer') ?>';
+          }
         });
       }
     }
@@ -262,7 +269,7 @@
 
   function validated_email() {
     var email = $('#email').val();
-    var res = main_post(BASE_URL + '/backend/Admin/checkData', {
+    var res = main_post(BASE_URL + '/backend/Users/checkData', {
       email: email
     });
     return res;

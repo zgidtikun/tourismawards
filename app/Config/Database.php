@@ -32,10 +32,10 @@ class Database extends Config
      */
     public $default = [
         'DSN'      => '',
-        'hostname' => 'localhost',
-        'username' => '',
-        'password' => '',
-        'database' => '',
+        'hostname' => '10.0.0.70',
+        'username' => 'tripleasia',
+        'password' => 'welovechaiyohosting',
+        'database' => 'ta_api_v11',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,

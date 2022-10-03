@@ -28,7 +28,7 @@ class Api implements FilterInterface
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {       
         if(!session()->has('isLoggedIn') || !session()->get('isLoggedIn')){
-            return $response->setJSON(['stats' => 'error', 'result' => 'error_login']);
+            return $response->setJSON(['stats' => 'error', 'result' => 'error_login', 'title' => 'เข้าสู่ระบบผิดพลาด', 'text' => 'เวลาในการเข้าสู่ระบบหมดแล้วกรุณาเข้าสู่ระบบอีกครั้ง']);
         } else {
             if(!empty($arguments)){
                 if(in_array($arguments[0],array('frontend','backend'))){                     
@@ -50,4 +50,3 @@ class Api implements FilterInterface
         
     }
 }
-?>

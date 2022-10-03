@@ -73,7 +73,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL + '/backend/Admin/delete', {
+      var res = main_post('<?= base_url('backend/Admin/delete') ?>', {
         id: id
       });
       res_swal(res, 1);

@@ -21,6 +21,10 @@
     font-family: 'Prompt', sans-serif;
   }
 
+  .content-body, .page-titles {
+    background-color: #eef0f8;
+  }
+
   .nk-sidebar .metismenu>li:hover i,
   .nk-sidebar .metismenu>li:focus i,
   .nk-sidebar .metismenu>li.active i {

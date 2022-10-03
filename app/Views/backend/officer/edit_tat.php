@@ -142,8 +142,10 @@
     var insert_id = $('#insert_id').val();
     if (insert_id != "" || insert_id != 0) {
       $('#email').prop('disabled', true);
+      $('#password').prop('required', false);
     } else {
       $('#email').prop('disabled', false);
+      $('#password').prop('required', true);
     }
   });
 
@@ -156,6 +158,7 @@
       }
       if (insert_id == "" || insert_id == 0) {
         if ($('#password').val() == "") {
+          $('#password').focus();
           toastr.error('กรุณาระบุรหัสผ่าน');
           return false;
         }
@@ -165,12 +168,16 @@
         }
         var res = main_save(BASE_URL + '/backend/TAT/saveInsert', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = '<?= base_url('backend/TAT') ?>';
+          if (res.type == 'success') {
+            window.location.href = '<?= base_url('backend/TAT') ?>';
+          }
         });
       } else {
         var res = main_save(BASE_URL + '/backend/TAT/saveUpdate', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = '<?= base_url('backend/TAT') ?>';
+          if (res.type == 'success') {
+            window.location.href = '<?= base_url('backend/TAT') ?>';
+          }
         });
       }
     }

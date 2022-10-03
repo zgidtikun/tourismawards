@@ -38,21 +38,28 @@
               <?php
               if (!empty($result)) :
                 foreach ($result as $key => $value) :
+                  $color = 'table-danger';
+                  $status = '<span class="text-danger">รอตรวจสอบ</span>';
+                  if ($value->status) {
+                    $color = 'table-success';
+                    $status = '<span class="text-success">ผ่านการตรวจสอบ</span>';
+                  }
               ?>
-                  <tr>
+                  <tr class="<?= $color ?>">
                     <td><?= $key + 1 ?></td>
                     <td><?= $value->prefix . ' ' . $value->name . ' ' . $value->surname ?></td>
                     <td><?= $value->role_name ?></td>
                     <td><?= $value->mobile ?></td>
                     <td><?= $value->email ?></td>
-                    <td class="text-center"><?= ($value->status) ? '<span class="text-success">ผ่านการตรวจสอบ</span>' : '<span class="text-danger">รอตรวจสอบ</span>'; ?></td>
+                    <td class="text-center"><?= $status ?></td>
                     <td class="text-center"><?= docDate($value->created_at, 4) ?></td>
                     <td class="text-center">
+                      <?php if (!$value->status) : ?>
+                        <!-- <i class="fa fa-check text-success mr-2" data-toggle="tooltip" title="ยืนยันผู้ประกอบการ" onclick="active_user('<?= $value->id ?>')"></i> -->
+                        <i class="fas fa-eye text-success mr-2" data-toggle="tooltip" title="ดูข้อมูล" onclick="view_user('<?= $value->id ?>')"></i></a>
+                      <?php endif; ?>
                       <i class="fas fa-edit text-primary mr-2" data-toggle="tooltip" title="แก้ไขข้อมูล" onclick="edit_user('<?= $value->id ?>')"></i></a>
                       <i class="fas fa-trash-alt text-danger mr-2" data-toggle="tooltip" title="ลบข้อมูล" onclick="delete_user('<?= $value->id ?>')"></i>
-                      <?php if (!$value->status) : ?>
-                        <i class="fa fa-check text-success mr-2" data-toggle="tooltip" title="ยืนยันผู้ประกอบการ" onclick="active_user('<?= $value->id ?>')"></i>
-                      <?php endif; ?>
                     </td>
                   </tr>
               <?php
@@ -61,6 +68,9 @@
               ?>
             </tbody>
           </table>
+          <span class="text-danger">* หมายเหตุ</span> <small>กดดูข้อมูลเพื่อตรวจสอบ </small> <i class="fas fa-eye text-success"></i> <br>
+          <span>🟥 รอการตรวจสอบ</span><br>
+          <span>🟩 ถูกตรวจสอบแล้ว</span>
         </div>
 
       </div>
@@ -81,7 +91,7 @@
       res_swal(res, 1);
     })
   }
-  
+
   function delete_user(id) {
     var option = {
       title: "Warning!",

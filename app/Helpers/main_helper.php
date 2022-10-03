@@ -43,15 +43,15 @@ function pxml($xml)
 
 function isAdmin()
 {
-    if (session()->id == 4) {
+    if (session()->role == 4) {
         return true;
     }
     return false;
 }
 
-function checkPermission($id = [])
+function checkPermission($role = [])
 {
-    if (in_array(session()->id, $id)) {
+    if (in_array(session()->role, $role)) {
         return true;
     }
     return false;

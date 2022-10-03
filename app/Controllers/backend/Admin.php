@@ -3,12 +3,14 @@
 namespace App\Controllers\Backend;
 
 use App\Controllers\BaseController;
+use App\Models\ApplicationType;
 
 class Admin extends BaseController
 {
     public function __construct()
     {
         // helper('main');
+        $this->ApplicationType = new ApplicationType();
     }
 
     public function index()

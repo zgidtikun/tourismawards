@@ -222,7 +222,7 @@ class ApplicationController extends BaseController
         return $this->response->setJSON($result);
     }
 
-    public function uploadImages()
+    public function uploadFiles()
     {
 
         try{

@@ -25,7 +25,7 @@ $routes->set404Override();
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
 // Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
-$routes->setAutoRoute(true);
+$routes->setAutoRoute(false);
 
 /*
  * --------------------------------------------------------------------
@@ -43,7 +43,7 @@ $routes->get('forget-password', 'RegisterController::forgetpass');
 $routes->get('login', 'LoginController::index',);
 $routes->get('login/(:any)', 'LoginController::index/$1');
 
-$routes->group('register', static function ($routes) {    
+$routes->group('register', static function ($routes) {
     $routes->get('/', 'RegisterController::signup');
     $routes->post('/', 'RegisterController::signup');
 });
@@ -66,56 +66,74 @@ $routes->group('frontend', static function ($routes) {
         $routes->post('draft', 'ApplicationController::draftApp', ['filter' => 'api:frontend']);
         $routes->get('type-all', 'ApplicationController::getAppTypeAndSubAllByAjax', ['filter' => 'api:frontend']);
         $routes->post('remove-file', 'ApplicationController::removeFiles', ['filter' => 'api:frontend']);
-        $routes->group('upload', static function ($routes) {
-            $routes->post('images', 'ApplicationController::uploadImages', ['filter' => 'api:frontend']);
-        });
+        $routes->post('upload', 'ApplicationController::uploadFiles', ['filter' => 'api:frontend']);        
     });
     
     $routes->get('pre-screen', 'AnswerController::preScreenIndex', ['filter' => 'auth:1']);
     $routes->get('question/get', 'AnswerController::getQuestionByAjax', ['filter' => 'api:frontend']);
-    $routes->group('answer', static function ($routes){
+    $routes->group('answer', static function ($routes) {
         $routes->get('get/(:any)', 'AnswerController::getAnswerByAjax/$1', ['filter' => 'api:frontend']);
         $routes->post('save', 'AnswerController::saveReply', ['filter' => 'api:frontend']);
     });
 });
 
-$routes->group('backend',['namespace' => 'App\Controllers\Backend'], static function ($routes) {    
-    
-    $routes->get('login', 'Login::index');
 
-    $routes->get('/', 'Dashboard::index', ['filter' => 'auth:backend']);
+$routes->get('backend', 'Home::indexBackend', ['filter' => 'auth:backend']);
+$routes->group('backend', ['namespace' => 'App\Controllers\Backend'], static function ($routes) {
+
+    // $routes->get('login', 'Login::index');
     $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth:backend']);
 
+    // Users (เฉพาะแอดมินที่เข้าได้)
+    $routes->group('Users', static function ($routes) {
+        $routes->get('', 'Users::index', ['filter' => 'auth:4']);
+        $routes->get('add', 'Users::add', ['filter' => 'auth:4']);
+        $routes->get('edit/(:any)', 'Users::edit/$1', ['filter' => 'auth:4']);
+        $routes->post('delete', 'Users::delete', ['filter' => 'api:4']);
+        $routes->post('active', 'Users::active', ['filter' => 'api:4']);
+        $routes->post('saveInsert', 'Users::saveInsert', ['filter' => 'api:4']);
+        $routes->post('saveUpdate', 'Users::saveUpdate', ['filter' => 'api:4']);
+        $routes->post('checkData', 'Users::checkData', ['filter' => 'api:4']);
+    });
+
     // Admin (เฉพาะแอดมินที่เข้าได้)
-    $routes->get('Admin', 'Admin::index', ['filter' => 'auth:4']);
-    $routes->get('Admin/add', 'Admin::add', ['filter' => 'auth:4']);
-    $routes->get('Admin/edit/(:any)', 'Admin::edit/$1', ['filter' => 'auth:4']);
-    $routes->post('Admin/saveInsert', 'Admin::saveInsert', ['filter' => 'auth:4']);
-    $routes->post('Admin/saveUpdate', 'Admin::saveUpdate', ['filter' => 'auth:4']);
-    $routes->post('Admin/checkData', 'Admin::checkData', ['filter' => 'auth:4']);
+    $routes->group('Admin', static function ($routes) {
+        $routes->get('', 'Admin::index', ['filter' => 'auth:4']);
+        $routes->get('add', 'Admin::add', ['filter' => 'auth:4']);
+        $routes->get('edit/(:any)', 'Admin::edit/$1', ['filter' => 'auth:4']);
+        $routes->post('delete', 'Admin::delete', ['filter' => 'api:4']);
+        $routes->post('saveInsert', 'Admin::saveInsert', ['filter' => 'api:4']);
+        $routes->post('saveUpdate', 'Admin::saveUpdate', ['filter' => 'api:4']);
+        $routes->post('checkData', 'Admin::checkData', ['filter' => 'api:4']);
+    });
 
     // Officer (เฉพาะแอดมินที่เข้าได้)
-    $routes->get('Officer', 'Officer::index', ['filter' => 'auth:4']);
-    $routes->get('Officer/add', 'Officer::add', ['filter' => 'auth:4']);
-    $routes->get('Officer/edit/(:any)', 'Officer::edit/$1', ['filter' => 'auth:4']);
-    $routes->post('Officer/saveInsert', 'Officer::saveInsert', ['filter' => 'auth:4']);
-    $routes->post('Officer/saveUpdate', 'Officer::saveUpdate', ['filter' => 'auth:4']);
+    $routes->group('Officer', static function ($routes) {
+        $routes->get('', 'Officer::index', ['filter' => 'auth:4']);
+        $routes->get('add', 'Officer::add', ['filter' => 'auth:4']);
+        $routes->get('edit/(:any)', 'Officer::edit/$1', ['filter' => 'auth:4']);
+        $routes->post('saveInsert', 'Officer::saveInsert', ['filter' => 'api:4']);
+        $routes->post('saveUpdate', 'Officer::saveUpdate', ['filter' => 'api:4']);
+        $routes->post('delete', 'Officer::delete', ['filter' => 'api:4']);
+    });
+    $routes->group('TAT', static function ($routes) {
+        $routes->get('', 'Officer::tat', ['filter' => 'auth:4']);
+        $routes->get('add', 'Officer::addTAT', ['filter' => 'auth:4']);
+        $routes->get('edit/(:any)', 'Officer::editTAT/$1', ['filter' => 'auth:4']);
+        $routes->post('saveInsert', 'Officer::saveInsertTAT', ['filter' => 'api:4']);
+        $routes->post('saveUpdate', 'Officer::saveUpdateTAT', ['filter' => 'api:4']);
+        $routes->post('delete', 'Officer::delete', ['filter' => 'api:4']);
+    });
 
-    $routes->get('TAT', 'Officer::tat', ['filter' => 'auth:4']);
-    $routes->get('TAT/add', 'Officer::addTAT', ['filter' => 'auth:4']);
-    $routes->get('TAT/edit/(:any)', 'Officer::editTAT/$1', ['filter' => 'auth:4']);
-    $routes->post('TAT/saveInsert', 'Officer::saveInsertTAT', ['filter' => 'auth:4']);
-    $routes->post('TAT/saveUpdate', 'Officer::saveUpdateTAT', ['filter' => 'auth:4']);
-    $routes->post('Officer/delete', 'Officer::delete', ['filter' => 'auth:4']);
-
-    // News (เฉพาะแอดมินที่เข้าได้)
-    $routes->get('News', 'News::index', ['filter' => 'auth:backend']);
-    $routes->get('News/add', 'News::add', ['filter' => 'auth:backend']);
-    $routes->get('News/edit/(:any)', 'News::edit/$1', ['filter' => 'auth:backend']);
-    $routes->post('News/saveInsert', 'News::saveInsert', ['filter' => 'auth:backend']);
-    $routes->post('News/saveUpdate', 'News::saveUpdate', ['filter' => 'auth:backend']);
-    $routes->post('News/uploadImage', 'News::uploadImage', ['filter' => 'auth:backend']);
-    $routes->post('News/delete', 'News::delete', ['filter' => 'auth:backend']);
+    // News (แอดมินและเจ้าหน้าที่เข้าถึงได้)
+    $routes->group('News', static function ($routes) {
+        $routes->get('', 'News::index', ['filter' => 'auth:backend']);
+        $routes->get('add', 'News::add', ['filter' => 'auth:backend']);
+        $routes->get('edit/(:any)', 'News::edit/$1', ['filter' => 'auth:backend']);
+        $routes->post('saveInsert', 'News::saveInsert', ['filter' => 'api:backend']);
+        $routes->post('saveUpdate', 'News::saveUpdate', ['filter' => 'api:backend']);
+        $routes->post('delete', 'News::delete', ['filter' => 'api:backend']);
+    });
 });
 
 $routes->environment('development', static function ($routes) {

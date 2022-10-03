@@ -64,10 +64,9 @@ const MapField = {
     ],
     fileFilter: {
         input: ['#step1-detail','#step1-paper','#step5-landOwner','#step5-businessCert','#step5-otherCert'],
-        inputAccept: ['.doc','docx','application/pdf',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+        inputAccept: ['application/pdf'],
         image:  ['#step1-img'],
-        imageAccept: ['image/jpg','image/jpeg','image/gif','image/png','image/webp'],
+        imageAccept: ['image/jpg','image/jpeg','image/png'],
     }                                                                                         
 };
 
@@ -81,47 +80,57 @@ const register = {
         step1: {}, step2: {}, step3: {}, step4: {}, step5: {},
     },
     init: function(){        
+        loading('show');
         this.getAppType().then(function(appType){
             register.appType.main = appType.main;
             register.appType.sub = appType.sub;
 
-            let radio = '';
+            let radio = '',
+                count = 0;
 
             $.each(register.appType.main, function(key,value){
                 let rbId = 'id="step1-appType-'+value.id+'"',
                     rbName = 'name="step1-appType"',
                     rbValue = 'value="'+value.id+'"',
+                    rbOC = 'onclick="selectType(\'appType\','+value.id+')"';
                     rbCheck = '';
                 
                 if(key == 0) rbCheck = 'checked';
                 
                 radio += '<div class="form-check">';
-                radio += '<input class="form-check-input" type="radio" '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
+                radio += '<input class="form-check-input" type="radio" '+rbOC+' '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
                 radio += '<label class="form-check-label">'+(key+1)+'. '+value.name+'</label>';
                 radio += '</div>';
             });            
 
             $('#group-type').append(radio);
+            radio = '<legend class="fs-22 mb-2">';
+            radio += 'สาขารางวัล';
+            radio += '<span class="ml-1" style="color: #F64E60;">*</span>';
+            radio += '</legend>';
 
             $.each(register.appType.sub, function(key,value){
                 if(value.application_type_id == register.appType.main[0].id){
                     let rbId = 'id="step1-appTypeSub-'+value.id+'"',
                         rbName = 'name="step1-appTypeSub"',
                         rbValue = 'value="'+value.id+'"',
+                        rbOC = 'onclick="selectType(\'appTypeSub\','+value.id+')"';
                         rbCheck = '';
                     
-                    if(key == 0) {
-                        rbCheck = 'checked';
+                    if(count == 0) {         
+                        rbCheck = 'checked';          
+                        $('#form-define').html(value.descreption);
                         register.formData.step1.appTypeSub = value.id;
                     }
                     radio += '<div class="form-check">';
-                    radio += '<input class="form-check-input" type="radio" '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
+                    radio += '<input class="form-check-input" type="radio" '+rbOC+' '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
                     radio += '<label class="form-check-label">'+value.name+'</label>';
                     radio += '</div>';
+                    count++;
                 }
             }); 
 
-            $('#group-type-sub').append(radio);
+            $('#group-type-sub').html(radio);
 
             register.getApc().then(function(dataApc){
                 if(dataApc.result == 'success')
@@ -225,37 +234,49 @@ const register = {
     },
     setAppTypeSub: function(id){        
         this.formData.step1.appType = id;  
-        let radio = '';
+        let count = 0;
+        let radio = '<legend class="fs-22 mb-2">';
+        radio += 'สาขารางวัล';
+        radio += '<span class="ml-1" style="color: #F64E60;">*</span>';
+        radio += '</legend>';
 
         $.each(this.appType.sub, function(key,value){
             if(value.application_type_id == id){
                 let rbId = 'id="step1-appTypeSub-'+value.id+'"',
                     rbName = 'name="step1-appTypeSub"',
                     rbValue = 'value="'+value.id+'"',
+                    rbOC = 'onclick="selectType(\'appTypeSub\','+value.id+')"';
                     rbCheck = '';
                 
-                if(key == 0) rbCheck = 'checked';
-
-                radio += '<input type="radio" '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
-                radio += '<label>'+value.name+'</label>';
-                
-                if(counter == 1) 
-                    this.formData.step1.appTypeSub = value.id;                    
+                if(count == 0) {
+                    rbCheck = 'checked';
+                    $('#form-define').html(value.descreption);
+                    register.formData.step1.appTypeSub = value.id;
+                }
+                radio += '<div class="form-check">';
+                radio += '<input class="form-check-input" type="radio" '+rbOC+' '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
+                radio += '<label class="form-check-label">'+value.name+'</label>';
+                radio += '</div>';  
+                count++;               
             }
         });
 
         $('#group-type-sub').html(radio);
     },
+    setFormDefine: function(id){
+        let sub = this.appType.sub.find(el => el.id == id);
+        $('#form-define').html(sub.descreption);
+    },
     setStep: function(step){
 
     },
-    getMapField: function(by,step = 1){
+    getMapField: function(by,st = 1){
         let map = [];
 
         if(by == 'step'){            
             let temp = MapField.step;
-            if(step != 'finish') 
-                map = temp['s'+step]; 
+            if(st != 'finish') 
+                map = temp['s'+st]; 
             else 
                 map.concat(temp.s1.concat(temp.s2.concat(temp.s3.concat(temp.s4.concat(temp.s5)))));
         } else if(by == 'files')
@@ -407,7 +428,7 @@ const register = {
                         this.uploadImage(id);
                     } else {
                         checkType = false;
-                        alert.show('warning','ไม่สามารถอัพโหลดรูปได้','กรุณาเลือกเป็นไฟล์ .jpg, .jpeg, .gif, .png, .webp เท่านั้น');
+                        alert.show('warning','ไม่สามารถอัพโหลดรูปได้','กรุณาเลือกเป็นไฟล์ .jpg, .jpeg, .png เท่านั้น');
                     }
                 } else {
                     checkType = false;
@@ -438,7 +459,7 @@ const register = {
             formData.append('images[]',file);
         });
 
-        api({method: 'action', url: '/frontend/app/upload/images', data: formData}).then(function(res){
+        api({method: 'action', url: '/frontend/app/upload', data: formData}).then(function(res){
             loading('hide');
             let save = res;
 
@@ -512,9 +533,20 @@ const register = {
 
 // Application Register
 // Step 1 
-$('[name=step1-appType]').on('click', function(){ register.formData.step1.appType = $(this).val(); });
-$('[name=step1-appTypeSub]').on('click', function(){ register.formData.step1.appTypeSub = $(this).val(); });
-$('#step1-desc').on('keyup', function(){ register.formData.step1.desc = $(this).val(); });
+const selectType = (type,value) => {
+    if(type == 'appType'){
+        register.formData.step1.appType = value; 
+        register.setAppTypeSub(value);
+    } else {
+        register.formData.step1.appTypeSub = value; 
+        register.setFormDefine(value);
+    }
+};
+
+$('#step1-desc').on('keyup', function(){ 
+    register.formData.step1.desc = $(this).val(); 
+    $('#step1-desc-cc').html(1000 - register.formData.step1.desc.length);
+});
 $('#step1-link').on('keyup', function(){ register.formData.step1.link = $(this).val(); });
 
 // Step 2

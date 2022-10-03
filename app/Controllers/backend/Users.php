@@ -7,10 +7,8 @@ use App\Controllers\BaseController;
 class Users extends BaseController
 {
     public function index()
-    {
-        $where = [];
-        $where['status_delete'] = 1;
-        $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, R.user_groups AS role_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('role R', 'R.id = U.role_id', 'left')->where($where)->orderBy('U.id', 'desc')->get()->getResultObject();
+    {        
+        $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name, R.user_groups AS role_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('award_type AT', 'AT.id = U.award_type', 'left')->join('assessment_group AG', 'AG.id = U.assessment_group', 'left')->where('U.member_type = 1 AND status_delete = 1')->join('role R', 'R.id = U.role_id', 'left')->orderBy('U.id', 'desc')->get()->getResultObject();
 
         // Template
         $data['title']  = 'ผู้ประกอบการ';
@@ -56,7 +54,7 @@ class Users extends BaseController
             'prefix'        => $post['prefix'],
             'name'          => $post['name'],
             'surname'       => $post['surname'],
-            'member_type'   => 2,
+            'member_type'   => 1,
             'mobile'        => $post['mobile'],
             'email'         => $post['email'],
             'username'      => $post['email'],
@@ -82,7 +80,7 @@ class Users extends BaseController
             'prefix'        => $post['prefix'],
             'name'          => $post['name'],
             'surname'       => $post['surname'],
-            'member_type'   => 2,
+            // 'member_type'   => 1,
             'mobile'        => $post['mobile'],
             // 'email'         => $post['email'],
             // 'username'      => $post['email'],

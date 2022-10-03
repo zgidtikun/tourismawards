@@ -28,7 +28,6 @@
             <div id="includedfooter">
                 <?= view('_footer') ?>
             </div>
-
             <a href="#0" class="cd-top"></a>
         </div>
         <script type="text/javascript">

@@ -23,6 +23,15 @@ class Home extends BaseController
         else return redirect()->to(base_url('frontend/application'));
     }
 
+    public function indexBackend()
+    {
+        $data['title']  = 'สถิติการใช้งาน';
+        $data['view']   = 'backend/dashboard/index';
+        $data['ci']     = $this;
+
+        return view('backend/template', $data);
+    }
+
     public function error_403()
     {
         return view('errors/html/error_403_c');

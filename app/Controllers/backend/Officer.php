@@ -38,7 +38,7 @@ class Officer extends BaseController
 
     public function edit($id)
     {
-        $data['result'] = $this->db->table('admin')->where('id', $id)->get()->getRowObject();
+        $data['result'] = $this->db->table('users')->where('id', $id)->get()->getRowObject();
         $data['award_type'] = $this->db->table('award_type')->get()->getResultObject();
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
 
@@ -105,7 +105,7 @@ class Officer extends BaseController
             'prefix'                => $post["prefix"],
             'name'                  => $post["name"],
             'surname'               => $post["surname"],
-            'member_type'           => 3,
+            // 'member_type'           => 3,
             'award_type'            => json_encode($post["award_type"]),
             'assessment_group'      => json_encode($post["assessment_group"]),
             'mobile'                => $post["mobile"],

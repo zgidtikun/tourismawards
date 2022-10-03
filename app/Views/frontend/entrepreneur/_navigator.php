@@ -7,29 +7,35 @@
     <div class="card-body">
         <div class="bs-row mt-3">
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center mb-3">
-                <span class="fsm-20 active">1. กรอกแบบฟอร์มใบสมัคร</span><br>
-                <span style="color: #F64E60;">ภายในวันที่ 28 กุมภาพันธ์ 2566</span><br>
-                <button type="button" style="width: 2rem; height:2rem;"
-                class="btn btn-sm btn-main rounded-pill app-sts-btn">
-                    <i class="bi bi-pencil-square"></i>
-                    <i class="bi bi-check-lg hide"></i>
-                </button>
+                <a href="<?=base_url('frontend/application')?>">
+                    <span class="fsm-20 active">1. กรอกแบบฟอร์มใบสมัคร</span><br>
+                    <span style="color: #F64E60;">ภายในวันที่ 28 กุมภาพันธ์ 2566</span><br>
+                    <button type="button" style="width: 2rem; height:2rem;"
+                    class="btn btn-sm btn-main rounded-pill app-sts-btn">
+                        <i class="bi bi-pencil-square"></i>
+                        <i class="bi bi-check-lg hide"></i>
+                    </button>
+                </a>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center mb-3">
-                <span class="fsm-20">2. กรอกข้อมูลแบบประเมินขั้นต้น (Pre-screen)</span><br>
-                <button type="button" style="width: 2rem; height:2rem;"
-                class=" btn btn-sm btn-secondary rounded-pill app-sts-btn">
-                    <i class="bi bi-three-dots"></i>    
-                    <i class="bi bi-check-lg hide"></i>
-                </button>
+                <a href="javascript:void(0);">
+                    <span class="fsm-20">2. กรอกข้อมูลแบบประเมินขั้นต้น (Pre-screen)</span><br>
+                    <button type="button" style="width: 2rem; height:2rem;"
+                    class=" btn btn-sm btn-secondary rounded-pill app-sts-btn">
+                        <i class="bi bi-three-dots"></i>    
+                        <i class="bi bi-check-lg hide"></i>
+                    </button>
+                </a>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center mb-3">
-                <span class="fsm-20">3. สรุปผลการประเมิน</span><br>
-                <button type="button" style="width: 2rem; height:2rem;"
-                class=" btn btn-sm btn-secondary rounded-pill app-sts-btn">
-                    <i class="bi bi-three-dots"></i>    
-                    <i class="bi bi-check-lg hide"></i>
-                </button>
+                <a href="javascript:void(0);">
+                    <span class="fsm-20">3. สรุปผลการประเมิน</span><br>
+                    <button type="button" style="width: 2rem; height:2rem;"
+                    class=" btn btn-sm btn-secondary rounded-pill app-sts-btn">
+                        <i class="bi bi-three-dots"></i>    
+                        <i class="bi bi-check-lg hide"></i>
+                    </button>
+                </a>
             </div>
         </div>
         <div class="bs-row justify-content-center app-status-navi">
