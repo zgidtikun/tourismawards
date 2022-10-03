@@ -96,7 +96,7 @@ const register = {
                 if(key == 0) rbCheck = 'checked';
                 
                 radio += '<div class="form-check">';
-                radio += '<input class="form-check-input mr-3" type="radio" '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
+                radio += '<input class="form-check-input" type="radio" '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
                 radio += '<label class="form-check-label">'+(key+1)+'. '+value.name+'</label>';
                 radio += '</div>';
             });            

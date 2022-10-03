@@ -1,6 +1,6 @@
 <div class="container">
     <div class="bs-row mt-5 justify-content-center">
-        <div class="col-xs-12 col-sm-12 col-md-10 col-xl-10">
+        <div class="col-xs-12 col-sm-12 col-md-11 col-xl-11">
             <div class="bs-row">
                 <?=view('frontend/entrepreneur/_navigator')?>
             </div>
