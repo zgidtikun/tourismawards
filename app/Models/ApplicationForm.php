@@ -21,7 +21,7 @@ class ApplicationForm extends Model
     'company_addr_no', 'company_addr_road', 'company_addr_sub_district', 'company_addr_district', 
     'company_addr_province', 'company_addr_zipcode', 'mobile', 'email', 'knitter_name', 
     'knitter_position', 'knitter_tel', 'knitter_email', 'knitter_line', 'year_open', 
-    'year_total', 'manage_by', 'current_step', 'status', 'created_by', 'updated_by'];
+    'year_total', 'manage_by', 'pack_file', 'current_step', 'status', 'created_by', 'updated_by'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

@@ -20,7 +20,7 @@
             </div>
 
             <!-- inclide main contents -->
-            <div class="mainsite mb-5">
+            <div class="mainsite mb-4">
                 <?= view($view) ?>
             </div>
 
@@ -33,7 +33,7 @@
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 jQuery(document).each(function() {
-                    var headerheight = $('div.header-box').height()+'px';
+                    var headerheight = ($('div.header-box').height()+40)+'px';
                     $('.mainsite').css({
                         "display": "block",
                         "margin-top": headerheight

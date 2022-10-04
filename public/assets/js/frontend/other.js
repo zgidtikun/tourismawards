@@ -14,7 +14,7 @@ const loading = async(action) => {
 
 const empty = (data) =>{
     if($.isArray(data)) {
-        if(data.length > 0)
+        if(data.length < 1)
             return true;
     }
     else if($.type(data) === 'object'){
@@ -61,4 +61,11 @@ const api = async(setting) => {
             });
         });
     });
+}
+
+const setSpinner = (text = null) => {
+    let html = '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>';
+    if(!empty(text))
+        html += text;
+    return html;
 }

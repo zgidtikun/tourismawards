@@ -7,8 +7,6 @@ use App\Controllers\BaseController;
 use App\Models\ApplicationForm as AppForm;
 use App\Models\ApplicationType as AppType;
 use App\Models\ApplicationTypeSub as AppTypeSub;
-use App\Models\ApplicationFiles as AppFiles;
-
 class ApplicationController extends BaseController
 {
     private $validRules = [
@@ -38,7 +36,6 @@ class ApplicationController extends BaseController
         $this->appForm = new AppForm();
         $this->appType = new AppType();
         $this->appSub = new AppTypeSub();
-        $this->appFiles = new AppFiles();
 
         if(!isset($this->db))
             $this->db = \Config\Database::connect();
@@ -81,8 +78,8 @@ class ApplicationController extends BaseController
         $detail = $this->appForm->where('created_by',$id)->first();
 
         if($detail){
-            $files = $this->appFiles->where('application_id',$detail->id)->findAll();
-            $detail->files = !empty($files) ? $files : array();
+            if(!empty($detail->pack_file))
+                $detail->pack_file = json_decode($detail->pack_file);
             $result = array('result' => 'success', 'data' => $detail);
         } else {
             $instData = array(                
@@ -106,7 +103,7 @@ class ApplicationController extends BaseController
                     'manage_by' => 1,
                     'current_step' => 1,
                     'status' => 1,
-                    'files' => array()
+                    'pack_file' => array()
                 )
             );
         }
@@ -149,54 +146,6 @@ class ApplicationController extends BaseController
 
                 $update = $this->appForm->update($app_id,$updd);
                 $result = ['result' => 'success', 'message' => '', 'files' => []];
-
-                $ipf = [
-                    'step1' => ['detailFiles','paperFiles'],
-                    'step5' => ['landOwnerFiles','businessCertFiles','otherCertFiles'],
-                    'accept' => ['jpg','jpeg','gif','png','webp','pdf','doc','docx']
-                ];
-
-                if(in_array($step,[1,2,'finish'])){
-                    if($files = $this->input->getFiles()){
-                        if($step != 'finish')
-                            $mapFile = (object) $ipf[$step];
-                        else $mapFile = (object) array_merge($ipf['step1'],$ipf['step2']);
-
-                        $path = 'uploads/app-register/'.session()->get('id').'/paper';
-
-                        foreach($mapFile as $map){
-                            if(isset($files[$map]) && !empty($files[$map])){
-                                foreach($files[$map] as $file){
-                                    if($file->isValid() && !$file->hasMoved()){
-                                        $originalName = $file->getName();
-                                        $extension = $file->guessExtension();
-                                        $newName = $this->randomFileName($extension);
-
-                                        if(in_array($extension,$ipf['accept'])){
-                                            $file->move(FCPATH.$path, $newName);
-
-                                            $instData = array(
-                                                'application_id' => $app_id,
-                                                'file_name' => $newName,
-                                                'file_original' => $originalName,
-                                                'file_position' => $map,
-                                                'file_path' => $path.'/'.$newName
-                                            );
-                                        
-                                            $this->appFiles->insert($instData);
-                                            $instId = $this->appFiles->getInsertID();
-                                            
-                                            $instData['id'] = $instId;
-                                            unset($instData['application_id']);
-                                            array_push($result['files'],$instData);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
             } else {
                 $error = [];                
                 foreach($input as $key=>$value){
@@ -226,54 +175,49 @@ class ApplicationController extends BaseController
     {
 
         try{
-
-            if($imagefile = $this->input->getFiles()){
+            if($files = $this->input->getFiles()){
                 $app_id = $this->input->getVar('id');
-                $step = $this->input->getVar('step');
-                $position = $this->input->getVar('position');
-                $result = array('result' => 'success', 'images' => array());                
-                $totalImage = 0;
-                $countUpload = 0;
+                $path = $this->setFilePath($app_id);
+                $result = ['result' => 'success', 'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 'files' => []];
+                $files_up = [];
 
-                foreach($imagefile['images'] as $img){
-                    $totalImage++;
-                    if ($img->isValid() && !$img->hasMoved()) {
-
-                        $path = 'uploads/app-register/'.session()->get('id').'/images';
-                        $originalName = $img->getName();
-                        $extension = $img->guessExtension();
-                        $newName = $this->randomFileName($extension);
-                        $accept = array('jpg','jpeg','gif','png','webp');
-
-                        if(in_array($extension,$accept)){
-                            $img->move(FCPATH.$path, $newName);
-                            $countUpload++;
-
-                            $instData = array(
-                                'application_id' => $app_id,
-                                'file_name' => $newName,
-                                'file_original' => $originalName,
-                                'file_position' => $position,
-                                'file_path' => $path.'/'.$newName
-                            );
+                foreach($files['files'] as $file){
+                    if ($file->isValid() && !$file->hasMoved()) {
                         
-                            $this->appFiles->insert($instData);
-                            $instId = $this->appFiles->getInsertID();
-                            
-                            $instData['id'] = $instId;
-                            unset($instData['application_id']);
-                            array_push($result['images'],$instData);
-                        }
+                        $path .= 'app-register/'.$this->input->getVar('path');
+                        $originalName = $file->getName();
+                        $extension = $file->guessExtension();
+                        $newName = randomFileName($extension);
+                        
+                        $file->move(FCPATH.$path, $newName);
+
+                        $tmp_file = array(
+                            'file_name' => $newName,
+                            'file_original' => $originalName,
+                            'file_position' => $this->input->getVar('position'),
+                            'file_path' => $path.'/'.$newName,
+                            'file_size' => $file->getSizeByUnit('mb'),
+                        );
+                        
+                        array_push($files_up,$tmp_file);                            
 
                     }
                 } 
+
+                $pack_file = $this->appForm->where('id',$app_id)
+                    ->select('pack_file')
+                    ->first();
                 
-                if($countUpload > 0){
-                    $result['upload_c'] = $countUpload;
-                    $result['message'] = 'อัโหลดรูปสำเร็จแล้ว '.$countUpload.' รูป';
+                if(!empty($pack_file->pack_file)){
+                    $pack_file = json_decode($pack_file->pack_file);
+                    $updd = array_merge($pack_file,$files_up);
                 } else {
-                    $result = ['result' => 'error', 'message' => 'กรุณาตรวจสอบไฟล์ที่คุณอัพโหลด'];
+                    $updd = $files_up;
                 }
+
+                $this->appForm->update($app_id,['pack_file' => json_encode($updd)]);
+                $result['files'] = $updd;
+                
             }
              else {
                 $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์ในการอัพโหลด'];
@@ -285,9 +229,14 @@ class ApplicationController extends BaseController
         return $this->response->setJSON($result);
     }
 
-    private function randomFileName($type)
+    private function setFilePath($id)
     {
-        return date('Ymd').'_'.bin2hex(random_bytes(6)).'.'.$type;
+        $at = $this->appForm->where('id',$id)->select('created_at')->first();
+        $year = date('Y',strtotime($at->created_at));
+        $month = date('m',strtotime($at->created_at));
+        $day = date('d',strtotime($at->created_at));
+        $path = 'uploads/'.$year.'/'.$month.'/'.$day.'/'.session()->get('id').'/';
+        return $path;
     }
 
     public function removeFiles()
@@ -295,12 +244,42 @@ class ApplicationController extends BaseController
 
         try{
             $files = new FileCollection();
+            $app_id = $this->input->getVar('id');
+            $tmp = [];
+            $pack_file = $this->appForm->where('id',$app_id)
+                ->select('pack_file')
+                ->first();
 
-            if($files->removeFile(FCPATH.$this->innput->getVar('path'))){
-                $this->appFile->delete($this->input->getVar('id'));
-                $result = ['result' => 'success', 'message' => ''];
+            $pack_file = json_decode(json_decode($pack_file->pack_file));
+
+            if($this->input->getVar('remove') == 'fixed'){
+                if($files->removeFile(FCPATH.$this->innput->getVar('file_path'))){
+                    $file_name = $this->input->getVar('file_name');
+
+                    foreach($pack_file as $file){
+                        if($file->file_name != $file_name){
+                            array_push($tmp,$file);
+                        }
+                    }
+
+                    $this->appForm->update($app_id,['pack_file' => json_encode($tmp)]);
+                    $result = ['result' => 'success', 'message' => '', 'files' => $tmp];
+                } else {
+                    $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
+                }
             } else {
-                $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
+                $position = $this->input->getVar('position');
+
+                foreach($pack_file as $file){
+                    if($file->file_position == $position){
+                        $files->removeFile(FCPATH.$file->file_path);
+                    } else {
+                        array_push($tmp,$file);
+                    }
+                }
+
+                $this->appForm->update($app_id,['pack_file' => json_encode($tmp)]);
+                $result = ['result' => 'success', 'message' => '', 'files' => $tmp];
             }
         } catch(\Exception $e){
             $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];

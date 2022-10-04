@@ -179,5 +179,41 @@ function getStandardOffsetUTC($timezone)
 
 function genFileName($type)
 {
-    return date('Ymd').'_'.bin2hex(random_bytes(6)).'.'.$type;
+    return date('Ymd') . '_' . bin2hex(random_bytes(6)) . '.' . $type;
+}
+
+function pdfEncode($text)
+{
+    $text = preg_replace("/\xE2\x80\x8B/", "", $text);
+    $text = iconv("utf-8", "cp874//TRANSLIT", $text);
+    return $text;
+}
+
+function colExcel($numCol)
+{
+    $arrayCol = [];
+    $textCol  = '';
+    $round    = ceil($numCol / 25);
+    $alphabet = range('A', 'Z');
+
+    for ($i = 0; $i < ($round); $i++) {
+        $loopExcel  = loopExcel($textCol, $numCol);
+        $numCol     = $numCol - 25;
+        $arrayCol   = array_merge($arrayCol, $loopExcel);
+        $textCol    = $alphabet[$i];
+    }
+    return $arrayCol;
+}
+
+function loopExcel($textCol, $numCol)
+{
+    $arrayCol = [];
+    $alphabet = range('A', 'Z');
+    foreach ($alphabet as $key => $value) {
+        if ($numCol > 0) {
+            $arrayCol[] = $textCol . $value;
+            $numCol--;
+        }
+    }
+    return $arrayCol;
 }

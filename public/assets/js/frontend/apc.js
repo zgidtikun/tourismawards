@@ -104,10 +104,10 @@ const register = {
             });            
 
             $('#group-type').append(radio);
-            radio = '<legend class="fs-22 mb-2">';
+            radio = '<div class="fw-semibold mb-2">';
             radio += 'สาขารางวัล';
             radio += '<span class="ml-1" style="color: #F64E60;">*</span>';
-            radio += '</legend>';
+            radio += '</div>';
 
             $.each(register.appType.sub, function(key,value){
                 if(value.application_type_id == register.appType.main[0].id){
@@ -147,9 +147,10 @@ const register = {
     },
     getApc: async function(){
         return new Promise(function(resolve) {
+            
             api({method: 'get', url: '/frontend/app/detail'}).then(function(response){
                 let app = response.data;
-                let files = app.files,
+                let files = !empty(app.pack_file) ? app.pack_file : [],
                     tmp = [];
                 
                 register.id = app.id;
@@ -196,7 +197,7 @@ const register = {
                     image: 0, detail: 0, paper: 0,
                     landOwner: 0, businessCert: 0, otherCert: 0
                 };
-
+                
                 if(files.length > 0){
                     $.each(files,function(key,file){
                         switch(file.file_position){
@@ -226,6 +227,9 @@ const register = {
                             break;
                         }
                     });
+                    
+                    if(register.count.paper > 0)
+                        showFiles.registerPaper('#step1-paper',register.formData.step1.paper);
                 }
                 
                 resolve(response);

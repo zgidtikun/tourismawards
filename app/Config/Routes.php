@@ -58,17 +58,17 @@ $routes->group('auth', static function ($routes) {
 
 $routes->group('frontend', static function ($routes) {
 
-    $routes->get('/', 'Home::frontend', ['filter' => 'auth:frontend']);    
+    $routes->get('/', 'Home::frontend', ['filter' => 'auth:frontend']);
 
     $routes->get('application', 'ApplicationController::formIndex', ['filter' => 'auth:1']);
     $routes->group('app', static function ($routes) {
         $routes->get('detail', 'ApplicationController::getApplicationByAjax', ['filter' => 'api:frontend']);
         $routes->post('draft', 'ApplicationController::draftApp', ['filter' => 'api:frontend']);
         $routes->get('type-all', 'ApplicationController::getAppTypeAndSubAllByAjax', ['filter' => 'api:frontend']);
-        $routes->post('remove-file', 'ApplicationController::removeFiles', ['filter' => 'api:frontend']);
+        $routes->post('remove/file', 'ApplicationController::removeFiles', ['filter' => 'api:frontend']);
         $routes->post('upload', 'ApplicationController::uploadFiles', ['filter' => 'api:frontend']);        
     });
-    
+
     $routes->get('pre-screen', 'AnswerController::preScreenIndex', ['filter' => 'auth:1']);
     $routes->get('question/get', 'AnswerController::getQuestionByAjax', ['filter' => 'api:frontend']);
     $routes->group('answer', static function ($routes) {
@@ -78,10 +78,9 @@ $routes->group('frontend', static function ($routes) {
 });
 
 
-$routes->get('backend', 'Home::indexBackend', ['filter' => 'auth:backend']);
 $routes->group('backend', ['namespace' => 'App\Controllers\Backend'], static function ($routes) {
 
-    // $routes->get('login', 'Login::index');
+    $routes->get('login', 'Login::index');
     $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth:backend']);
 
     // Users (เฉพาะแอดมินที่เข้าได้)
@@ -134,6 +133,9 @@ $routes->group('backend', ['namespace' => 'App\Controllers\Backend'], static fun
         $routes->post('saveUpdate', 'News::saveUpdate', ['filter' => 'api:backend']);
         $routes->post('delete', 'News::delete', ['filter' => 'api:backend']);
     });
+
+    $routes->get('MarkTest', 'MarkTest::index');
+    $routes->get('MarkTest/excel', 'MarkTest::excel');
 });
 
 $routes->environment('development', static function ($routes) {

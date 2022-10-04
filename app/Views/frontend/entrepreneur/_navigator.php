@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header text-center">
-        <h2 class="card-title status-title m-0">
+        <h2 class="card-title status-title m-0 mt-3 mb-3">
             สถานะการสมัครประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566
         </h2>
     </div>
@@ -19,7 +19,7 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 text-center mb-3">
                 <a href="javascript:void(0);">
-                    <span class="fsm-20">2. กรอกข้อมูลแบบประเมินขั้นต้น (Pre-screen)</span><br>
+                    <span class="fsm-20">2. กรอกข้อมูลแบบประเมินขั้นต้น<br>(Pre-screen)</span><br>
                     <button type="button" style="width: 2rem; height:2rem;"
                     class=" btn btn-sm btn-secondary rounded-pill app-sts-btn">
                         <i class="bi bi-three-dots"></i>    
