@@ -116,7 +116,25 @@
                                                             <span class="card-title fw-semibold">รายละเอียดผลงาน (แนบไฟล์)</span>
                                                         </div>
                                                         <div class="card-body">
-                                                            ...............................
+                                                            <div class="bs-row mb-2">
+                                                                <div class="col-12">
+                                                                    <button class="btn btn-file" id="step1-detail-btn">
+                                                                        <span id="step1-detail-label">Upload Files</span>
+                                                                        <input type="file" id="step1-detail"
+                                                                        accept=".pdf" multiple
+                                                                        onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
+                                                                    </button>                                                                    
+                                                                    <button class="btn btn-action" id="step1-detail-remove"
+                                                                    onclick="removeFile('#step1-detail',{id: register.id,remove: 'all'})">
+                                                                        Remove All
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="bs-row" id="step1-paper-list">
+                                                            </div>
+                                                            <div class="bs-row">
+                                                                <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -130,30 +148,17 @@
                                                                 <div class="col-12">
                                                                     <button class="btn btn-file" id="step1-paper-btn">
                                                                         <span id="step1-paper-label">Upload Files</span>
-                                                                        <input type="file" name="step1-paper" id="step1-paper"
+                                                                        <input type="file" id="step1-paper"
                                                                         accept=".pdf" multiple
                                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
-                                                                    </button>
-                                                                    
-                                                                    <button class="btn btn-action" id="step1-paper-remove">
+                                                                    </button>                                                                    
+                                                                    <button class="btn btn-action" id="step1-paper-remove"
+                                                                    onclick="removeFile('#step1-paper',{id: register.id,remove: 'all'})">
                                                                         Remove All
                                                                     </button>
                                                                 </div>
                                                             </div>
                                                             <div class="bs-row" id="step1-paper-list">
-                                                                <!-- <div class="col-12">
-                                                                    <div class="card card-body-muted">
-                                                                        <div class="bs-row">
-                                                                            <div class="col-xs-12 col-sm-12 col-md-10 col-xl-10">                                                                            
-                                                                                <span class="fs-file-name">text.pdf (15MB)</span>
-                                                                            </div>
-                                                                            <div class="col-xs-12 col-sm-12 col-md-2 col-xl-2 d-flex justify-content-end"> 
-                                                                                <button type="button" class="btn btn-close">
-                                                                                </button>                      
-                                                                            </div>
-                                                                        </div>
-                                                                    </div> 
-                                                                </div> -->
                                                             </div>
                                                             <div class="bs-row">
                                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
@@ -163,21 +168,53 @@
                                                     
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6">
+                                            <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                                 <div class="col-12">
                                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                                         <div class="card-header text-center" style="background-color: rgba(0, 0, 0, 0.03);">
                                                             <span class="card-title fw-semibold">แนบรูปความระเอียดสูง (ประมาณ 5-10 รูป)</span>
                                                         </div>
                                                         <div class="card-body">
-                                                            ...............................
+                                                            <div class="bs-row">
+                                                                <div class="col-12">                                                                 
+                                                                    <button class="btn btn-action" id="step1-images-remove"
+                                                                    onclick="removeFile('#step1-images',{id: register.id,remove: 'all'})">
+                                                                        Remove All
+                                                                    </button>
+                                                                </div>
+                                                                <div class="col-12"> 
+                                                                    <div class='bfd-dropfield'> 
+                                                                        <div class='bfd-dropfield-inner' id="step1-images-drop">
+                                                                            <div class="mt-4 mb-4" id="step1-images-input">
+                                                                                <span class="fw-semibold">Drop File Here</span><br>
+                                                                                <button class="btn btn-file" style="font-size: 16px;" id="step1-images-btn">
+                                                                                    <span id="step1-images-label">Upload Files</span>
+                                                                                    <input type="file" id="step1-images"
+                                                                                    accept=".jpg,.jpeg,.png" multiple
+                                                                                    onchange="onFileHandle({id: register.id},'#'+this.id,'images')"/>
+                                                                                </button>   
+                                                                            </div>
+                                                                            <div class="mt-4 mb-4 hide" id="step1-images-progress">
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="bs-row">
+                                                                <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .jpg, .jpeg, .png เท่านั้น และขนาดไฟล์ไม่เกิน 10MB</span>
+                                                            </div>
                                                         </div>
-                                                        <div class="card-body-muted" style="border-top: 1px solid #E5E6ED;">
-                                                            ...............................
+                                                        <div class="card-body-muted c-lef" id="step1-detail-list">
                                                         </div>
                                                     </div>
                                                     
                                                 </div>
+                                            </div>
+                                            <div class="col-12 form-btn-action">                                                                                                                     
+                                                <button class="btn btn-action" id="btn-next" >
+                                                    ถัดไป
+                                                </button>
                                             </div>
                                         </div>
                                     <fieldset>
@@ -202,6 +239,10 @@
 <script>
     $(document).ready(function(){
         register.init(<?=session()->get('id')?>);
+    });
+
+    $('.bfd-dropfield-inner').click(function(){
+        $('#step1-images')[0].click();
     });
 
     $.Thailand({

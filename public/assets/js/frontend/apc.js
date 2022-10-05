@@ -47,27 +47,7 @@ const MapField = {
             { input: '[name=step5-manageBy]', variant: 'manageBy', 
                 api: 'manage_by', id: 'step5-manageBy-', require: false },
         ],
-    },
-    files: [
-        { input: '#step1-img', step: 1, show: 'div.image-new', api: 'registerImages[]',
-            position: 'registerImages', filed: 'image' },
-        { input: '#step1-detail', step: 1, show: 'div.detail-new', api: 'detailFiles[]',
-            position: 'detailFiles', filed: 'detail' },
-        { input: '#step1-paper', step: 1, show: 'div.paper-new', api: 'paperFiles[]',
-            position: 'paperFiles', filed: 'paper' },
-        { input: '#step5-landOwner', step: 5, show: 'div.landOwner-new', api: 'landOwnerFiles[]',
-            position: 'landOwnerFiles', filed: 'landOwner' },
-        { input: '#step5-businessCert', step: 5, show: 'div.businessCert-new', api: 'businessCertFiles[]',
-            position: 'businessCertFiles', filed: 'businessCert' },
-        { input: '#step5-otherCert', step: 5, show: 'div.otherCert-new', api: 'otherCertFiles[]',
-            position: 'otherCertFiles', filed: 'otherCert' },
-    ],
-    fileFilter: {
-        input: ['#step1-detail','#step1-paper','#step5-landOwner','#step5-businessCert','#step5-otherCert'],
-        inputAccept: ['application/pdf'],
-        image:  ['#step1-img'],
-        imageAccept: ['image/jpg','image/jpeg','image/png'],
-    }                                                                                         
+    }                                                                                        
 };
 
 const register = {
@@ -194,7 +174,7 @@ const register = {
                 register.formData.step5.businessCert = [];
                 register.formData.step5.otherCert = [];
                 register.count = {
-                    image: 0, detail: 0, paper: 0,
+                    images: 0, detail: 0, paper: 0,
                     landOwner: 0, businessCert: 0, otherCert: 0
                 };
                 
@@ -203,7 +183,7 @@ const register = {
                         switch(file.file_position){
                             case 'registerImages':
                                 register.formData.step1.images.push(file);
-                                register.count.image++;
+                                register.count.images++;
                             break;
                             case 'detailFiles': 
                                 register.formData.step1.detail.push(file);
@@ -227,6 +207,12 @@ const register = {
                             break;
                         }
                     });
+                    
+                    if(register.count.images > 0)
+                        showFiles.registerPaper('#step1-images',register.formData.step1.images);
+                    
+                    if(register.count.detail > 0)
+                        showFiles.registerPaper('#step1-detail',register.formData.step1.detail);
                     
                     if(register.count.paper > 0)
                         showFiles.registerPaper('#step1-paper',register.formData.step1.paper);
@@ -304,22 +290,6 @@ const register = {
             }
         });
 
-        if($.inArray(step,[1,'finish'])){
-            let file = ['#step1-detail','#step1-paper'];
-            $.each(file,function(key,id){
-                if(!this.onFileHandle(id))
-                    bool = false;
-            });
-        }
-        
-        if($.inArray(step,[5,'finish'])){
-            let file = ['#step5-landOwner','#step5-businessCert','#step5-otherCert'];
-            $.each(file,function(key,id){
-                if(!this.onFileHandle(id))
-                    bool = false;
-            });
-        }
-
         return bool;
 
     },
@@ -328,8 +298,7 @@ const register = {
             loading('show');
 
             let formData = new FormData(),
-                mapFData = this.getMapField('step',step),
-                mapFiles = this.getMapField('files');
+                mapFData = this.getMapField('step',step);
 
             formData.append('id',this.id);
             formData.append('step',step);
@@ -338,27 +307,6 @@ const register = {
             $.each(mapFData,function(mapk,mapv){
                 formData.append(mapv.api,this.formData['step'+step][mapv.variant]);
             });
-
-            if($.inArray(step,[1,5,'finish'])){
-                $.each(mapFiles,function(kmf,vmf){
-                    let isAppend = false;
-
-                    if($.inArray(step,[1,5])){
-                        if(vmf.step == step){
-                            isAppend = true;
-                        }
-                    } else isAppend = true;
-
-                    if(isAppend && vmf.input != '#step1-img'){
-                        let files = $(vmf.input)[0].files;
-                        if(files.length > 0){
-                            $.each(detail,function(key,file){
-                                formData.append(vmf.api,file);
-                            });
-                        }
-                    }
-                });
-            }
 
             api({method: 'action', url: '/frontend/app/draft', data: formData}).then(function(res){
                 loading('hide');
@@ -379,158 +327,6 @@ const register = {
 
         } else {
             alert.show('error','ไม่สามารถบันทึกข้อมูลได้','กรุณาตรวจทานข้อมูลอีกครั้ง');
-        }
-    },
-    setFile: function(){
-
-    },
-    onFileHandle: function(id, clear = true){
-        let filter = MapField.fileFilter,
-            filehandle = $(id)[0].files,
-            checkType = true;
-        
-        if(filehandle > 0){
-            if($.inArray(id,filter.input) !== -1){
-                let indexCount = null
-                
-                if(id.indexOf('#step1-') !== -1)
-                    indexCount = id.replace('#step1-','');
-                else if(id.indexOf('#step5-') !== -1)
-                    indexCount = id.replace('#step5-','');
-
-                let fileTotal = Number(this.count[indexCount]) + Number(filehandle.length);
-
-                if(fileTotal > 5){
-                    alert.show('warning','ไม่สามารถอัพโหลดไฟล์ได้','คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน 5 ไฟล์เท่านั้น');
-                    checkType = false;
-                }
-
-                if(checkType){
-                    let accept = filter.inputAccept.concat(filter.imageAccept);
-                    $.each(filehandle,function(key,val){
-                        let mb = (val.size / (1024 * 1024)).toFixed(2);
-                        
-                        if($.inArray(val.type,accept) === -1){
-                            checkType = false;
-                        } else if(mb > 1.00){
-                            checkType = false; 
-                        } 
-                    });
-                }
-                
-            } else {
-                let imageTotal = Number(this.count.image) + Number(filehandle.length);
-                
-                if(imageTotal <= 10){
-                    
-                    $.each(filehandle,function(key,val){
-                        if($.inArray(val.type,filter.imageAccept) === -1)
-                            checkType = false;
-                    });
-
-                    if(checkType){
-                        this.uploadImage(id);
-                    } else {
-                        checkType = false;
-                        alert.show('warning','ไม่สามารถอัพโหลดรูปได้','กรุณาเลือกเป็นไฟล์ .jpg, .jpeg, .png เท่านั้น');
-                    }
-                } else {
-                    checkType = false;
-                    alert.show('warning','ไม่สามารถอัพโหลดรูปได้','คุณสามารถอัพโหลดรูปได้ไม่เกิน 10 รูปเท่านั้น');
-                }
-            }
-        } else {
-            if(id == '#step5-landOwner')
-                checkType = false;
-        }
-        
-        if(!checkType && clear)
-           this.resetFileInput(id);
-        
-        return checkType;
-    },
-    uploadImage: function(id){
-        loading('show');
-
-        let images = $(id)[0].files,
-            formData = new FormData();
-
-        formData.append('id',this.id);
-        formData.append('step',1);
-        formData.append('position','registerImages');
-        
-        $.each(images,function(key,file){
-            formData.append('images[]',file);
-        });
-
-        api({method: 'action', url: '/frontend/app/upload', data: formData}).then(function(res){
-            loading('hide');
-            let save = res;
-
-            if(save.result == 'error_login'){
-                alert.login();
-            } else {
-                if(save.result == 'success'){
-                    register.count.image += Number(save.upload_c);
-                    var title = 'อัพโหลดรูปเรียบร้อยแล้ว';
-                } else {
-                    var title = 'ไม่สามารถอัพโหลดรูปได้';
-                }
-                alert.show(save.result,title,save.message);
-                return;
-            }
-
-        });
-        
-    },
-    removeFile: function(id,pos){
-        let filter = MapField.files.find(el => el.position == pos);
-        let files = this.formData['step'+filter.step][filter.filed],
-            file = files.find(el => el.id == id),
-            setAlert = {
-                icon: 'question',
-                title: 'ยืนยันการลบไฟล์!',
-                text: 'คุณต้องการลบไฟล์ '+file.file_original+' หรือไม่',
-                button: { confirm: 'ลบไฟล์', cancel: 'ยกเลิก' }
-            };
-
-        alert.confirm(setAlert).then(function(al){
-            loading('show');
-            if(al.status){
-                let setting = {
-                    method: 'post', url: '/frontend/app/remove-file',
-                    data: { id: file.id, path: file.path }
-                };
-
-                api(setting).then(function(res){
-                    loading('hide');
-                    let save = res;
-
-                    if(save.result == 'error_login'){
-                        alert.login();
-                    } else {
-                        if(save.result == 'success'){
-                            register.count[filter.filed]--;
-                            var title = 'ลบไฟล์เรียบร้อยแล้ว';
-                        } else {
-                            var title = 'ไม่สามารถลบไฟล์ได้';
-                        }
-                        alert.show(save.result,title,save.message);
-                        return;
-                    }
-                });
-            }
-        });
-
-    },
-    resetFileInput: function(id){
-        let ele = $(id);
-        ele.wrap('<form>').closest('form').get(0).reset();
-        ele.unwrap();
-
-        if(id != '#step1-img'){
-            let map = MapField.files.find(el => el.input == id);
-            $(map.show).remove();
         }
     },
 }

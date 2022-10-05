@@ -468,7 +468,6 @@ class App extends BaseConfig
 
     public $RECAPCHA_KEY = '6LdC6vghAAAAANJyaGCqYGZ1eY6YrKgRb40B8Ay4';
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
-    public $APPFROM_REGISTER_V = 'APP-REGISTER-VS-1';
     public $script_v = 1;
 
     public function __construct()

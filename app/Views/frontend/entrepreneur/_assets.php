@@ -3,9 +3,6 @@
 <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" as="style"> 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"  rel="stylesheet">
 
-<link rel="preload" href="<?= base_url('assets/css/boilerplate.css') ?>?v=<?=$app->script_v?>" as="style">
-<link href="<?= base_url('assets/css/boilerplate.css') ?>?v=<?=$app->script_v?>" rel="stylesheet" type="text/css" />
-
 <link rel="preload" href="<?= base_url('assets/css/mobilemenu.css') ?>?v=<?=$app->script_v?>" as="style">
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/mobilemenu.css') ?>?v=<?=$app->script_v?>">
 

@@ -12,35 +12,21 @@
 
     </head>
     <body>
-        <div id="wrapper">
-
-            <!--include header-->
-            <div id="includedheader">
-                <?= view('_header-menu') ?>
-            </div>
-
-            <!-- inclide main contents -->
-            <div class="mainsite mb-4">
-                <?= view($view) ?>
-            </div>
-
-            <!--include footer-->
-            <div id="includedfooter">
-                <?= view('_footer') ?>
-            </div>
-            <a href="#0" class="cd-top"></a>
+        <!--include header-->
+        <div id="includedheader">
+            <?= view('_header-menu') ?>
         </div>
-        <script type="text/javascript">
-            jQuery(document).ready(function($) {
-                jQuery(document).each(function() {
-                    var headerheight = ($('div.header-box').height()+40)+'px';
-                    $('.mainsite').css({
-                        "display": "block",
-                        "margin-top": headerheight
-                    });
-                });
-            });
-        </script>
+
+        <!-- inclide main contents -->
+        <div class="mainsite mb-4">
+            <?= view($view) ?>
+        </div>
+
+        <!--include footer-->
+        <div id="includedfooter">
+            <?= view('_footer') ?>
+        </div>
+        <a href="#0" class="cd-top"></a>
         
     </body>
 </html>

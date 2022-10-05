@@ -177,14 +177,13 @@ class ApplicationController extends BaseController
         try{
             if($files = $this->input->getFiles()){
                 $app_id = $this->input->getVar('id');
-                $path = $this->setFilePath($app_id);
+                $path = $this->setFilePath($app_id).'app-register/'.$this->input->getVar('path');
                 $result = ['result' => 'success', 'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 'files' => []];
                 $files_up = [];
 
                 foreach($files['files'] as $file){
                     if ($file->isValid() && !$file->hasMoved()) {
                         
-                        $path .= 'app-register/'.$this->input->getVar('path');
                         $originalName = $file->getName();
                         $extension = $file->guessExtension();
                         $newName = randomFileName($extension);
@@ -250,10 +249,10 @@ class ApplicationController extends BaseController
                 ->select('pack_file')
                 ->first();
 
-            $pack_file = json_decode(json_decode($pack_file->pack_file));
+            $pack_file = json_decode($pack_file->pack_file,false);
 
             if($this->input->getVar('remove') == 'fixed'){
-                if($files->removeFile(FCPATH.$this->innput->getVar('file_path'))){
+                if($files->removeFile(FCPATH.$this->input->getVar('file_path'))){
                     $file_name = $this->input->getVar('file_name');
 
                     foreach($pack_file as $file){
@@ -282,7 +281,7 @@ class ApplicationController extends BaseController
                 $result = ['result' => 'success', 'message' => '', 'files' => $tmp];
             }
         } catch(\Exception $e){
-            $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
+            $result = ['result' => 'error', 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()];
         }
 
         return $this->response->setJSON($result);
