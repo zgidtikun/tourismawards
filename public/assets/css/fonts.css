@@ -1,0 +1,31 @@
+@charset "utf-8";
+/* CSS Document */
+
+@font-face {
+font-family: "TATSana-Suksa";
+src: url("../fonts/TATSanaSuksa-Regular.woff2") format("woff2"), 
+      url("../fonts/TATSanaSuksa-Regular.woff") format("woff"), 
+      url("../fonts/TATSanaSuksa-Regular.ttf") format("truetype"),
+      url("../fonts/TATSanaSuksa-Regular.eot") format("embedded-opentype");
+font-weight: 400;
+font-style: normal;
+font-display: swap;
+}
+@font-face {
+font-family: "TATSana-Chon";
+src: url("../fonts/TATSanaChon-Regular.woff2") format("woff2"),
+      url("../fonts/TATSanaChon-Regular.woff") format("woff"),
+      url("../fonts/TATSanaChon-Regular.ttf") format("truetype"),
+      url("../fonts/TATSanaChon-Regular.eot") format("embedded-opentype");
+font-weight: 400;
+font-style: normal;
+font-display: swap;
+}
+@font-face {
+font-family: "TATSana-Chon-Bold";
+src: url("../fonts/TATSanaChon-Bold.woff2") format("woff2"),
+      url("../fonts/TATSanaChon-Bold.woff") format("woff");
+font-weight: 400;
+font-style: normal;
+font-display: swap;
+}

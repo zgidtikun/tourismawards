@@ -124,6 +124,22 @@ $routes->group('backend', ['namespace' => 'App\Controllers\Backend'], static fun
         $routes->post('delete', 'Officer::delete', ['filter' => 'api:4']);
     });
 
+    // Approve (แอดมินและเจ้าหน้าที่เข้าถึงได้)
+    $routes->group('Approve', static function ($routes) {
+        $routes->get('', 'Approve::index', ['filter' => 'auth:backend']);
+        $routes->get('history', 'Approve::history', ['filter' => 'auth:backend']);
+        $routes->get('check', 'Approve::check', ['filter' => 'auth:backend']);
+    });
+
+    // Directors (แอดมินและเจ้าหน้าที่เข้าถึงได้)
+    $routes->group('Directors', static function ($routes) {
+        $routes->get('', 'Directors::index', ['filter' => 'auth:backend']);
+        $routes->get('initial', 'Directors::initial', ['filter' => 'auth:backend']);
+        $routes->get('area', 'Directors::area', ['filter' => 'auth:backend']);
+        $routes->post('saveInsert', 'Directors::saveInsert', ['filter' => 'api:backend']);
+        $routes->post('getUserApprove', 'Directors::getUserApprove', ['filter' => 'api:backend']);
+    });
+
     // News (แอดมินและเจ้าหน้าที่เข้าถึงได้)
     $routes->group('News', static function ($routes) {
         $routes->get('', 'News::index', ['filter' => 'auth:backend']);
@@ -133,6 +149,13 @@ $routes->group('backend', ['namespace' => 'App\Controllers\Backend'], static fun
         $routes->post('saveUpdate', 'News::saveUpdate', ['filter' => 'api:backend']);
         $routes->post('delete', 'News::delete', ['filter' => 'api:backend']);
     });
+
+    // Report (แอดมินและเจ้าหน้าที่เข้าถึงได้)
+    $routes->group('Report', static function ($routes) {
+        $routes->get('', 'Report::index', ['filter' => 'auth:4']);
+    });
+
+
 
     $routes->get('MarkTest', 'MarkTest::index');
     $routes->get('MarkTest/excel', 'MarkTest::excel');

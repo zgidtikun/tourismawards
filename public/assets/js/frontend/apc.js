@@ -21,6 +21,7 @@ const MapField = {
             { input: '#step2-ig', variant: 'ig', api: 'instagram', require: false },
             { input: '#step2-lid', variant: 'lid', api: 'line_id', require: false },
             { input: '#step2-other', variant: 'other', api: 'other_social', require: false},
+            { input: '#step2-gm', variant: 'gm', api: 'google_map', require: false},
         ],
         s3: [
             { input: '#step3-companyName', variant: 'companyName', api: 'company_name', require: true },
@@ -42,10 +43,40 @@ const MapField = {
             { input: '#step4-lid', variant: 'lid', api: 'knitter_line', require: false },
         ],
         s5: [
-            { input: '#step5-openYear', variant: 'openYear', api: 'year_open', require: true },
-            { input: '#step5-totalYear', variant: 'totalYear', api: 'year_total', require: true },
-            { input: '[name=step5-manageBy]', variant: 'manageBy', 
-                api: 'manage_by', id: 'step5-manageBy-', require: false },
+            { input: '#step5-openYear', variant: 'openYear', type: 'all', api: 'year_open', require: true },
+            { input: '#step5-totalYear', variant: 'totalYear', type: 'all', api: 'year_total', require: true },
+            { 
+                input: '[name=step5-t1-manageBy]', variant: 'manageBy', type: 1, div: '#step5-type1',
+                api: 'manage_by', id: 'step5-ty1-manageBy-', require: false 
+            },
+            { 
+                nput: '#step5-t2-bussLicense', variant: 'bussLicense', type: 1, div: '#step5-type2', 
+                api: 'buss_license', require: false 
+            },
+            { 
+                input: '[name=step5-t2-bussCkRoom]', variant: 'bussCkRoom', type: 1, div: '#step5-type2',
+                api: 'buss_ckroom', id: 'step5-t2-bussCkRoom-', require: false 
+            },
+            { 
+                nput: '#step5-t3-bussLicense', variant: 'bussLicenseT3', type: 1, div: '#step5-type3', 
+                api: 'buss_license', require: false 
+            },
+            { 
+                input: '[name=step5-t3-bussCites]', variant: 'bussCites', type: 1, div: '#step5-type3',
+                api: 'buss_cites', id: 'step5-t3-bussCites-', require: false 
+            },
+            { 
+                input: '[name=step5-t3-nominee]', variant: 'nominee', type: 1, div: '#step5-type3',
+                api: 'admin_nominee', id: 'step5-t3-nominee-', require: false 
+            },
+            { 
+                input: '[name=step5-t3-outlander]', variant: 'outlander', type: 1, div: '#step5-type3',
+                api: 'has_outlander', id: 'step5-t3-outlander-', require: false 
+            },
+            { 
+                nput: '#step5-t4-bussLicense', variant: 'bussLicenset4', type: 1, div: '#step5-type4', 
+                api: 'buss_license', require: false 
+            },
         ],
     }                                                                                        
 };
@@ -54,6 +85,7 @@ const register = {
     id: null,
     statue: null,
     count: null,
+    change: false,
     appType: { main: [], sub: [] },
     formData: {
         currentStep: null,
@@ -66,7 +98,8 @@ const register = {
             register.appType.sub = appType.sub;
 
             let radio = '',
-                count = 0;
+                count = 0,
+                typeId,typeSubId;
 
             $.each(register.appType.main, function(key,value){
                 let rbId = 'id="step1-appType-'+value.id+'"',
@@ -75,19 +108,19 @@ const register = {
                     rbOC = 'onclick="selectType(\'appType\','+value.id+')"';
                     rbCheck = '';
                 
-                if(key == 0) rbCheck = 'checked';
+                if(key == 0) {
+                    rbCheck = 'checked';
+                    typeId = value.id;
+                }
                 
-                radio += '<div class="form-check">';
-                radio += '<input class="form-check-input" type="radio" '+rbOC+' '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
-                radio += '<label class="form-check-label">'+(key+1)+'. '+value.name+'</label>';
-                radio += '</div>';
+                radio += '<p>';
+                radio += '<input type="radio" '+rbOC+' '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
+                radio += (key+1)+'. '+value.name;
+                radio += '</p>';
             });            
 
             $('#group-type').append(radio);
-            radio = '<div class="fw-semibold mb-2">';
-            radio += 'สาขารางวัล';
-            radio += '<span class="ml-1" style="color: #F64E60;">*</span>';
-            radio += '</div>';
+            radio = '<h4>สาขารางวัล<span class="required">*</span></h4>';
 
             $.each(register.appType.sub, function(key,value){
                 if(value.application_type_id == register.appType.main[0].id){
@@ -100,12 +133,12 @@ const register = {
                     if(count == 0) {         
                         rbCheck = 'checked';          
                         $('#form-define').html(value.descreption);
-                        register.formData.step1.appTypeSub = value.id;
+                        typeSubId = value.id;
                     }
-                    radio += '<div class="form-check">';
-                    radio += '<input class="form-check-input" type="radio" '+rbOC+' '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
-                    radio += '<label class="form-check-label">'+value.name+'</label>';
-                    radio += '</div>';
+                    radio += '<p>';
+                    radio += '<input type="radio" '+rbOC+' '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
+                    radio += value.name;
+                    radio += '</p>';
                     count++;
                 }
             }); 
@@ -113,8 +146,18 @@ const register = {
             $('#group-type-sub').html(radio);
 
             register.getApc().then(function(dataApc){
-                if(dataApc.result == 'success')
+                if(dataApc.result == 'success'){
+                    if(empty(register.formData.step1.appType)){
+                        register.formData.step1.appType = typeId;
+                    }
+                    if(empty(register.formData.step1.appTypeSub)){
+                        register.formData.step1.appTypeSub = typeSubId;
+                    }
+
+                    register.change = false;
+                    register.setStep(5);
                     loading('hide');
+                }
             });
         });
     },
@@ -140,9 +183,9 @@ const register = {
                 for(let i = 1; i <= 5; i++){
                     let mapFData = register.getMapField('step',i);                        
                     tmp['step'+i] = [];
-
+                    
                     $.each(mapFData,function(keym,vulm){
-                        tmp['step'+i][keym.variant] = '';
+                        tmp['step'+i][vulm.variant] = '';
                         $.each(app,function(keya,vula){
                             if(keym.api == keya){
                                 if(!empty(vula)){
@@ -193,13 +236,13 @@ const register = {
                                 register.formData.step1.paper.push(file);
                                 register.count.paper++;
                             break;
-                            case 'landOwnerFiles':
-                                register.formData.step5.landOwner.push(file);
-                                register.count.landOwner++;
-                            break;
                             case 'businessCertFiles':
                                 register.formData.step5.businessCert.push(file);
                                 register.count.businessCert++;
+                            break;
+                            case 'landOwnerFiles':
+                                register.formData.step5.landOwner.push(file);
+                                register.count.landOwner++;
                             break;
                             case 'otherCertFiles':
                                 register.formData.step5.otherCert.push(file);
@@ -223,19 +266,17 @@ const register = {
         });  
     },
     setAppTypeSub: function(id){        
-        this.formData.step1.appType = id;  
+        register.formData.step1.appType = id;  
+        
         let count = 0;
-        let radio = '<legend class="fs-22 mb-2">';
-        radio += 'สาขารางวัล';
-        radio += '<span class="ml-1" style="color: #F64E60;">*</span>';
-        radio += '</legend>';
+        let radio = '<h4>สาขารางวัล<span class="required">*</span></h4>';
 
-        $.each(this.appType.sub, function(key,value){
+        $.each(register.appType.sub, function(key,value){
             if(value.application_type_id == id){
                 let rbId = 'id="step1-appTypeSub-'+value.id+'"',
                     rbName = 'name="step1-appTypeSub"',
                     rbValue = 'value="'+value.id+'"',
-                    rbOC = 'onclick="selectType(\'appTypeSub\','+value.id+')"';
+                    rbOC = 'onclick="selectType(\'appTypeSub\','+value.id+')"',
                     rbCheck = '';
                 
                 if(count == 0) {
@@ -243,10 +284,11 @@ const register = {
                     $('#form-define').html(value.descreption);
                     register.formData.step1.appTypeSub = value.id;
                 }
-                radio += '<div class="form-check">';
-                radio += '<input class="form-check-input" type="radio" '+rbOC+' '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
-                radio += '<label class="form-check-label">'+value.name+'</label>';
-                radio += '</div>';  
+
+                radio += '<p>';
+                radio += '<input type="radio" '+rbOC+' '+rbId+' '+rbName+' '+rbValue+' '+rbCheck+'>';
+                radio += value.name;
+                radio += '</p>';  
                 count++;               
             }
         });
@@ -258,9 +300,67 @@ const register = {
         $('#form-define').html(sub.descreption);
     },
     setStep: function(step){
+        let tabs = [
+            {step: 1, id: '#tab-s1', form: '#form-step-1', map: MapField.step.s1},            
+            {step: 2, id: '#tab-s2', form: '#form-step-2', map: MapField.step.s2},
+            {step: 3, id: '#tab-s3', form: '#form-step-3', map: MapField.step.s3},
+            {step: 4, id: '#tab-s4', form: '#form-step-4', map: MapField.step.s4},
+            {step: 5, id: '#tab-s5', form: '#form-step-5', map: MapField.step.s5}
+        ];
 
+        if(register.change){
+            this.saveDraft(this.formData.currentStep);
+            register.change = false;
+        }
+
+        this.formData.currentStep = step;
+
+        if(step == 5){
+            ;[1,2,3,4].forEach(index => {
+                if(!$('#step5-type'+index).hasClass('hide'))
+                    $('#step5-type'+index).addClass('hide');
+
+                if(index == register.formData.step1.appType)
+                    $('#step5-type'+index).removeClass('hide');
+            });
+        }
+
+        $.each(tabs,function(key,tab){
+            let checkRequire = true;
+
+            if(tab.step == step){
+                    $(tab.id).addClass('active');
+                    $(tab.form).removeClass('hide');
+            } else {
+                    $(tab.id).removeClass('active');
+                    $(tab.form).addClass('hide');
+            }
+
+            $.each(tab.map,function(key,map){                
+                if(map.require){
+                    if(empty(register.formData['step'+tab.step][map.variant])){
+                        checkRequire = false;
+                    }
+                }
+            });
+            
+            if(!checkRequire){
+                if($(tab.id).hasClass('complete')){
+                    $(tab.id).removeClass('complete');
+                }
+            } else {
+                if(!$(tab.id).hasClass('complete')){
+                    $(tab.id).addClass('complete');
+                }
+            }
+        });
     },
-    getMapField: function(by,st = 1){
+    saveDraft: function(step){
+        if(register.change){
+            alert.toast({icon: 'success',title: 'บันทึกร่างแบบฟอร์มเรียบร้อยแล้ว'});
+        }
+    },
+    getMapField: function(by,st){
         let map = [];
 
         if(by == 'step'){            
@@ -269,8 +369,7 @@ const register = {
                 map = temp['s'+st]; 
             else 
                 map.concat(temp.s1.concat(temp.s2.concat(temp.s3.concat(temp.s4.concat(temp.s5)))));
-        } else if(by == 'files')
-            map = MapField.files;
+        }
 
         return map;
     },
@@ -344,27 +443,33 @@ const selectType = (type,value) => {
 };
 
 $('#step1-desc').on('keyup', function(){ 
+    register.change = true;
     register.formData.step1.desc = $(this).val(); 
     $('#step1-desc-cc').html(1000 - register.formData.step1.desc.length);
 });
-$('#step1-link').on('keyup', function(){ register.formData.step1.link = $(this).val(); });
+
+$('#step1-link').on('keyup', function(){ 
+    register.change = true;
+    register.formData.step1.link = $(this).val(); 
+});
 
 // Step 2
-$('#step2-siteNameTh').on('keyup', function(){ register.formData.step2.siteNameTh = $(this).val(); });
-$('#step2-siteNameEng').on('keyup', function(){ register.formData.step2.siteNameEng = $(this).val(); });
-$('#step2-address').on('keyup', function(){ register.formData.step2.address = $(this).val(); });
-$('#step2-road').on('keyup', function(){ register.formData.step2.road = $(this).val(); });
-$('#step2-province').on('keyup', function(){ register.formData.step2.province = $(this).val(); });
-$('#step2-district').on('keyup', function(){ register.formData.step2.district = $(this).val(); });
-$('#step2-subDistrict').on('keyup', function(){ register.formData.step2.subDistrict = $(this).val(); });
-$('#step2-zipcode').on('keyup', function(){ register.formData.step2.zipcode = $(this).val(); });
-$('#step2-fb').on('keyup', function(){ register.formData.step2.fb = $(this).val(); });
-$('#step2-ig').on('keyup', function(){ register.formData.step2.ig = $(this).val(); });
-$('#step2-lid').on('keyup', function(){ register.formData.step2.lid = $(this).val(); });
-$('#step2-other').on('keyup', function(){ register.formData.step2.other = $(this).val(); });
+$('#step2-siteNameTh').on('keyup', function(){ register.formData.step2.siteNameTh = $(this).val(); register.change = true;});
+$('#step2-siteNameEng').on('keyup', function(){ register.formData.step2.siteNameEng = $(this).val(); register.change = true;});
+$('#step2-address').on('keyup', function(){ register.formData.step2.address = $(this).val(); register.change = true;});
+$('#step2-road').on('keyup', function(){ register.formData.step2.road = $(this).val(); register.change = true;});
+$('#step2-province').on('keyup', function(){ register.formData.step2.province = $(this).val(); register.change = true;});
+$('#step2-district').on('keyup', function(){ register.formData.step2.district = $(this).val(); register.change = true;});
+$('#step2-subDistrict').on('keyup', function(){ register.formData.step2.subDistrict = $(this).val(); register.change = true;});
+$('#step2-zipcode').on('keyup', function(){ register.formData.step2.zipcode = $(this).val(); register.change = true;});
+$('#step2-fb').on('keyup', function(){ register.formData.step2.fb = $(this).val(); register.change = true;});
+$('#step2-ig').on('keyup', function(){ register.formData.step2.ig = $(this).val(); register.change = true;});
+$('#step2-lid').on('keyup', function(){ register.formData.step2.lid = $(this).val(); register.change = true;});
+$('#step2-other').on('keyup', function(){ register.formData.step2.other = $(this).val(); register.change = true;});
+$('#step2-gm').on('keyup', function(){ register.formData.step2.gm = $(this).val(); register.change = true;});
 
 // Step 3
-$('#step3-companyName').on('keyup', function(){ register.formData.step3.companyName = $(this).val(); });
+$('#step3-companyName').on('keyup', function(){ register.formData.step3.companyName = $(this).val(); register.change = true;});
 
 $('[name=step3-setAddress]').on('click', function(){
     let current;
@@ -372,6 +477,7 @@ $('[name=step3-setAddress]').on('click', function(){
     if($('#step3-setCurrent').is(':checked')) current = true;
     if($('#step3-setNew').is(':checked')) current = false;
 
+    register.change = true;
     register.formData.step3.address = current ? register.formData.step2.address : '';
     register.formData.step3.road = current ? register.formData.step2.road : '';
     register.formData.step3.province = current ? register.formData.step2.province : '';
@@ -387,34 +493,59 @@ $('[name=step3-setAddress]').on('click', function(){
     $('#step3-zipcode').val(register.formData.step3.zipcode);
 });
 
-$('#step3-address').on('keyup', function(){ register.formData.step3.address = $(this).val(); });
-$('#step3-road').on('keyup', function(){ register.formData.step3.road = $(this).val(); });
-$('#step3-province').on('keyup', function(){ register.formData.step3.province = $(this).val(); });
-$('#step3-district').on('keyup', function(){ register.formData.step3.district = $(this).val(); });
-$('#step3-subDistrict').on('keyup', function(){ register.formData.step3.subDistrict = $(this).val(); });
-$('#step3-zipcode').on('keyup', function(){ register.formData.step3.zipcode = $(this).val(); });
-$('#step3-telephone').on('keyup', function(){ register.formData.step3.telephone = $(this).val(); });
-$('#step3-email').on('keyup', function(){ register.formData.step3.email = $(this).val(); });
-$('#step3-lid').on('keyup', function(){ register.formData.step3.lid = $(this).val(); });
+$('#step3-address').on('keyup', function(){ register.formData.step3.address = $(this).val(); register.change = true;});
+$('#step3-road').on('keyup', function(){ register.formData.step3.road = $(this).val(); register.change = true;});
+$('#step3-province').on('keyup', function(){ register.formData.step3.province = $(this).val(); register.change = true;});
+$('#step3-district').on('keyup', function(){ register.formData.step3.district = $(this).val(); register.change = true;});
+$('#step3-subDistrict').on('keyup', function(){ register.formData.step3.subDistrict = $(this).val(); register.change = true;});
+$('#step3-zipcode').on('keyup', function(){ register.formData.step3.zipcode = $(this).val(); register.change = true;});
+$('#step3-telephone').on('keyup', function(){ register.formData.step3.telephone = $(this).val(); register.change = true;});
+$('#step3-email').on('keyup', function(){ register.formData.step3.email = $(this).val(); register.change = true;});
+$('#step3-lid').on('keyup', function(){ register.formData.step3.lid = $(this).val(); register.change = true;});
 
 // Step 4
-$('#step4-name').on('keyup', function(){ register.formData.step4.name = $(this).val(); });
-$('#step4-position').on('keyup', function(){ register.formData.step4.position = $(this).val(); });
-$('#step4-telephone').on('keyup', function(){ register.formData.step4.telephone = $(this).val(); });
-$('#step4-email').on('keyup', function(){ register.formData.step4.email = $(this).val(); });
-$('#step4-lid').on('keyup', function(){ register.formData.step4.lid = $(this).val(); });
+$('#step4-name').on('keyup', function(){ register.formData.step4.name = $(this).val(); register.change = true;});
+$('#step4-position').on('keyup', function(){ register.formData.step4.position = $(this).val(); register.change = true;});
+$('#step4-telephone').on('keyup', function(){ register.formData.step4.telephone = $(this).val(); register.change = true;});
+$('#step4-email').on('keyup', function(){ register.formData.step4.email = $(this).val(); register.change = true;});
+$('#step4-lid').on('keyup', function(){ register.formData.step4.lid = $(this).val(); register.change = true;});
 
 // Step 5
-$('#step5-openYear').on('keyup', function(){      
-    let currntYear = new Date().getFullYear() + 543,
-        openYear = $(this).val();
+$('#step5-openYear').on('change', function(){    
+    if(!empty($(this).val())){
+        let date = new Date(),
+            openDate = $(this).val().split('/');
 
-    let totalYear = Number(currntYear) - Number(openYear);
+        let from = openDate[1]+'/'+openDate[2]+'/'+(Number(openDate[0]) - 543)
+            to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
 
-    register.formData.step5.openYear = openYear;
-    register.formData.step5.totalYear = totalYear;
-    $('#step5-totalYear').val(totalYear+' ปี');
+        let totalYear = calcDate(from,to);
+        
+        register.change = true;
+        register.formData.step5.openYear = $(this).val();
+        register.formData.step5.totalYear = totalYear.result;
+        $('#step5-totalYear').val(totalYear.result);
+    } else { $('#step5-totalYear').val(''); }
 });
 
-$('[name=step5-manageBy]').on('click', function(){ register.formData.step5.manageBy = $(this).val(); });
+$('[name=step5-t1-manageBy]').on('click', function(){ 
+    register.formData.step5.manageBy = $(this).val(); 
+    register.change = true;
+    let title;
+
+    switch($(this).val()){
+        case '1': title = 'สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน'; break;
+        case '2': title = 'สำเนาใบอนุญาตประกอบธุรกิจที่ถูกต้องตามกฎหมาย'; break;
+        case '3': title = 'ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง'; break;
+    }
+    
+    $('#step5-file1-title').html(title+'<span class="required">*</span>');
+});
+
+$('#step5-t2-bussLicense').on('keyup', function(){ register.formData.step5.bussLicense = $(this).val(); register.change = true;});
+$('[name=step5-t2-bussCkRoom]').on('click', function(){ register.formData.step5.bussCkRoom = $(this).val(); register.change = true;});
+$('#step5-t3-bussLicense').on('keyup', function(){ register.formData.step5.bussLicenseT3 = $(this).val(); register.change = true;});
+$('[name=step5-t3-bussCites]').on('click', function(){ register.formData.step5.bussCites = $(this).val(); register.change = true;});
+$('[name=step5-t3-nominee]').on('click', function(){ register.formData.step5.nominee = $(this).val(); register.change = true;});
+$('[name=step5-t3-outlander]').on('click', function(){ register.formData.step5.outlander = $(this).val(); register.change = true;});
 

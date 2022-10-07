@@ -1,6 +1,3 @@
-<?php
-    $noLogin = array('frontend/login', 'frontend/register', 'frontend/forgetpass');
-?>
 <!doctype html>
 <html lang="en">
 
@@ -12,20 +9,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="shortcut icon" href="<?= base_url('assets/images/favicon.png') ?>">
 
-    <?= view('_assets-frontend', ['noLogin' => $noLogin, 'view' => $view]) ?>
+    <?= view('_assets-frontend') ?>
 
 </head>
-<?php if (in_array($view, $noLogin)) : ?>
 
-    <body style="background-color: #eff2fb;">
+    <body class="formlogin">
 
         <!--include header-->
-        <div id="includedheaderuser" class="formlogin">
-            <?= view('frontend/_header-menu') ?>
+        <div id="includedheaderuser">
+            <?= view('_header-menu') ?>
         </div>
 
         <!--include banner-->
-        <div id="includedbanneruser">
+        <div id="includedbanneruser" class="loginform">
             <?= view('frontend/_banner') ?>
         </div>
 
@@ -44,48 +40,12 @@
         <?= view('_recapcha') ?>
     <?php endif; ?>
     <script>
-        jQuery(document).each(function() {
-            var headerheight = $('.header-box').height()+'px';
-            $('.inpform').css({
-                "display": "block",
-                "margin-top": headerheight
+        jQuery(document).each(function () {
+                var headerheight = $('.header-box ').height()+"px";
+                $('#includedbanner').css({ "display": "block", "margin-top": headerheight });
+                $('.formlogin .mainsite').css({ "display": "block", "padding-top": headerheight });
+                $('.regisform .mainsite').css({ "display": "block", "padding-top": headerheight });
             });
-        });
     </script>
-<?php else : ?>
-
-    <body>
-        <div id="wrapper">
-
-            <!--include header-->
-            <div id="includedheader">
-                <?= view('_header-menu') ?>
-            </div>
-
-            <!-- inclide main contents -->
-            <div class="mainsite" style="margin-top: 141.641px;">
-                <?= view($view) ?>
-            </div>
-
-            <!--include footer-->
-            <div id="includedfooter" style="width: 100%;">
-                <?= view('_footer') ?>
-            </div>
-
-            <a href="#0" class="cd-top"></a>
-        </div>
-    </body>
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            jQuery(document).each(function() {
-                var headerheight = $('div.header-box').height()+'px';
-                $('#mainsite').css({
-                    "display": "block",
-                    "margin-top": headerheight
-                });
-            });
-        });
-    </script>
-<?php endif; ?>
 
 </html>

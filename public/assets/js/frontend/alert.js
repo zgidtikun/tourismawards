@@ -2,8 +2,11 @@ const alert = {
     initToast: function(){
         const init = Swal.mixin({
             toast: true,
-            position: 'top-end',
             showConfirmButton: false,
+            position: 'top-end',
+            customClass: {
+                container: 'toast-absolute'
+            },
             timer: 3000,
             timerProgressBar: true,
             didOpen: (toast) => {

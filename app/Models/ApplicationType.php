@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class ApplicationType extends Model
 {
-    protected $table      = 'assessment_group';
+    protected $table      = 'application_type';
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;

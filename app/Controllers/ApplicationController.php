@@ -45,7 +45,7 @@ class ApplicationController extends BaseController
     {
         $data = [
             'title' => 'Application Form',
-            'view' => 'frontend/entrepreneur/app-form'
+            'view' => 'frontend/entrepreneur/application'
         ];
 
         return view('frontend/entrepreneur/_template',$data);

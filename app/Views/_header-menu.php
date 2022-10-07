@@ -6,51 +6,114 @@
             <div class="header-box-col">
                <ul>
                   <?php if(!session()->get('isLoggedIn')) : ?>
-                  <li>
+                  <li class="nonlogin">
                      <a href="<?=route_to('register')?>" title="ลงทะเบียน">
-                        <picture>
-                           <source srcset="<?=base_url('assets/images/register.png')?>">
-                           <source srcset="<?=base_url('assets/images/register.svg')?>">
-                           <img src="<?=base_url('assets/images/register.png')?>" alt="...">
-                        </picture> ลงทะเบียน
+                        <i class="bi bi-person-circle"></i>&nbsp;&nbsp;ลงทะเบียน
                      </a>
                   </li>
-                  <li>
+                  <li class="nonlogin">
                      <a href="<?=route_to('login')?>" title="เข้าสู่ระบบ">
-                        <picture>
-                           <source srcset="<?=base_url('assets/images/login.png')?>">
-                           <source srcset="<?=base_url('assets/images/login.svg')?>">
-                           <img src="<?=base_url('assets/images/login.png')?>" alt="...">
-                        </picture> เข้าสู่ระบบ
+                        <i class="bi bi-box-arrow-in-right"></i>&nbsp;&nbsp;เข้าสู่ระบบ
                      </a>
                   </li>
                   <?php else : ?>
-                  <li>
-                     <a href="<?=base_url('frontend/application')?>" title="Profile">
-                        <picture>
-                           <source srcset="<?=base_url('assets/images/register.png')?>">
-                           <source srcset="<?=base_url('assets/images/register.svg')?>">
-                           <img src="<?=base_url('assets/images/register.png')?>" alt="...">
-                        </picture> สวัสดี, <?=session()->get('user')?>
+                  <li class="userlogin">
+                     <a href="javascript:void(0);" class="btn-noti">
+                        <i class="bi bi-bell-fill"></i>
+                        <span class="noti-alert"></span>
                      </a>
+                     <div class="noti-box" style="display: none;">
+                        <div class="noti-box-overlay"></div>
+                        <div class="noti-box-content">
+                           <div class="noti-box-title">
+                              การแจ้งเตือน 
+                              <a href="javascript:void(0);" class="noti-box-close">
+                                    <i class="bi bi-x"></i>
+                              </a>
+                           </div>
+                           <div class="noti-box-txt">
+                              <ul>
+                                 <li>
+                                    <a href="javascript:void(0);">
+                                       ข้อมูลใบสมัครของท่านอาจยังไม่สมบูรณ์ โปรดดูรายละเอียด
+                                       เพื่อแก้ไขและส่งใบสมัครอีกครั้ง
+                                    </a>
+                                 </li>
+                                 <li>
+                                    <a href="javascript:void(0);">
+                                       ใบสมัครของท่านผ่านการอนุมัติ โปรดกรอกข้อมูลแบบประเมินขั้นต้น
+                                       (Pre-screen)
+                                    </a>
+                                 </li>
+                                 <li>
+                                    <a href="javascript:void(0);">
+                                       ข้อมูลแบบประเมินขั้นต้น (Pre-screen) ของท่านไม่ผ่านเกณฑ์
+                                    </a>
+                                 </li>
+                                 <li>
+                                    <a href="javascript:void(0);">
+                                       แจ้งผลการประเมินขั้นต้น (Pre-screen) ของท่านเรียบร้อยแล้ว
+                                    </a>
+                                 </li>
+                                 <li>
+                                    <a href="javascript:void(0);">
+                                       แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว
+                                    </a>
+                                 </li>
+                              </ul>
+                           </div>
+                        </div>
+                     </div>
                   </li>
-                  <li>
-                     <a href="<?=route_to('auth/logout')?>" title="ออกจากระบบ">
-                        <picture>
-                           <source srcset="<?=base_url('assets/images/login.png')?>">
-                           <source srcset="<?=base_url('assets/images/login.svg')?>">
-                           <img src="<?=base_url('assets/images/login.png')?>" alt="...">
-                        </picture> ออกจากระบบ
+                  <li class="userlogin">
+                     <a href="javascript:void(0)" class="btn-user">
+                        <?=session()->get('user')?>
+                        <i class="bi bi-person-circle ml-2"></i>
                      </a>
+                     <div class="user-box" style="display: none;">
+                        <div class="user-box-overlay"></div>
+                        <div class="user-box-content">
+                           <div class="user-box-title">
+                              ผู้ใช้งาน <a href="javascript:void(0)" class="user-box-close">
+                                 <i class="bi bi-x"></i>
+                              </a>
+                           </div>
+                           <div class="user-box-txt">
+                              <div class="user-status">
+                                 <div class="user-status-img">
+                                    <div class="status-img">
+                                       <div class="status-img-scale">
+                                          <img src="<?=base_url('assets/images/unknown_user.jpg')?>">
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="user-status-txt">
+                                    <p class="username"><?=session()->get('user')?></p>
+                                    <p class="useridentity">
+                                    <?php if(session()->get('role') == 1):?>
+                                       ผู้ประกอบการ
+                                    <?php else: ?>
+                                       คณะกรรมการ
+                                    <?php endif; ?>  
+                                    </p>
+                                    <p class="usermail"><?=session()->get('account')?></p>
+                                    <a href="<?=route_to('auth/logout')?>" class="userlogout">ออกจากระบบ</a>
+                                 </div>
+                              </div>
+                              <div class="user-profile">
+                                 <a href="javascript:void(0)">
+                                    <i class="bi bi-person-fill"></i>
+                                    &nbsp;&nbsp;ข้อมูลส่วนตัว
+                                 </a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                   </li>
                   <?php endif; ?>
                   <li class="social_login">
                      <a href="https://www.facebook.com/ThailandTourismAwardsNew" title="facebook" target="_blank">
-                        <picture>
-                           <source srcset="<?=base_url('assets/images/fb.png')?>">
-                           <source srcset="<?=base_url('assets/images/fb.svg')?>">
-                           <img src="<?=base_url('assets/images/fb.png')?>" alt="...">
-                        </picture>
+                        <i class="bi bi-facebook"></i>
                      </a>
                   </li>
                </ul>
@@ -190,6 +253,30 @@
          $('.menubox').removeClass('active');
       });
 
+   });
+
+   jQuery(document).ready(function () {
+      $('.btn-noti').click(function () {
+         $('.noti-box').slideDown(200).addClass('active lockbody');
+      });
+      $('.noti-box-close').click(function () {
+         $('.noti-box').slideUp(200).removeClass('active lockbody');
+      });
+      $('.noti-box-overlay').click(function () {
+         $('.noti-box').slideUp(200).removeClass('active lockbody');
+      });
+   });
+
+   jQuery(document).ready(function () {
+      $('.btn-user').click(function () {
+         $('.user-box').slideDown(100).addClass('active lockbody');
+      });
+      $('.user-box-close').click(function () {
+         $('.user-box').slideUp(100).removeClass('active lockbody');
+      });
+      $('.user-box-overlay').click(function () {
+         $('.user-box').slideUp(100).removeClass('active lockbody');
+      });
    });
    
    $(".flexnav").flexNav();

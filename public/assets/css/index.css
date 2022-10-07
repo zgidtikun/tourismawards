@@ -95,7 +95,7 @@ margin: 20px 0;
 .btn-ruleyellow a:link, .btn-ruleyellow a:visited, .btn-ruledblue a:link, .btn-ruledblue a:visited {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: baseline;
     font-size: 28px;
     font-weight: bold;
     color: #FFF;
@@ -442,7 +442,7 @@ padding-left: 40px;
 .btn-ruleyellow a:link, .btn-ruleyellow a:visited, .btn-ruledblue a:link, .btn-ruledblue a:visited {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: baseline;
     font-size: 28px;
     font-weight: bold;
     color: #FFF;

@@ -27,8 +27,8 @@
           <ul>
             <li><a href="<?= base_url('backend/Approve') ?>">ตรวจสอบใบสมัคร <div class="badge badge-pill badge-warning">24</div> </a></li>
             <li><a href="<?= base_url('backend/Approve/history') ?>">ประวัติการตรวจสอบใบสมัคร </a></li>
-            <li><a href="<?= base_url('backend/') ?>">ประเมินขั้นต้น (ผู้ประกอบการ)</a></li>
-            <li><a href="<?= base_url('backend/Directors/Initial') ?>">เพิ่มกรรมการประเมินขั้นต้น <div class="badge badge-pill badge-warning">49</div> </a></li>
+            <li><a href="<?= base_url('backend/Approve/check') ?>">ประเมินขั้นต้น (ผู้ประกอบการ)</a></li>
+            <li><a href="<?= base_url('backend/Directors/initial') ?>">เพิ่มกรรมการประเมินขั้นต้น <div class="badge badge-pill badge-warning">49</div> </a></li>
             <li><a href="<?= base_url('backend/') ?>">ประเมินขั้นต้น (กรรมการ)</a></li>
             <li><a href="<?= base_url('backend/Directors/area') ?>">เพิ่มกรรมการรอบลงพื้นที่ <div class="badge badge-pill badge-warning">13</div> </a></li>
             <li><a href="<?= base_url('backend/') ?>">รอบลงพื้นที่ (กรรมการ)</a></li>
@@ -50,8 +50,8 @@
               <i class="fas fa-file"></i> <span class="nav-text">รายงาน</span>
             </a>
             <ul>
-              <li><a href="<?= base_url('backend/') ?>">รายงานรอบ Pre-Screen </a></li>
-              <li><a href="<?= base_url('backend/') ?>">รายงานรอบลงพื้นที่ </a></li>
+              <li><a href="<?= base_url('backend/Report') ?>">Excel </a></li>
+              <!-- <li><a href="<?= base_url('backend/') ?>">รายงานรอบลงพื้นที่ </a></li> -->
             </ul>
           </li>
         <?php endif; ?>

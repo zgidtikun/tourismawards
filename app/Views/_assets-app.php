@@ -22,6 +22,10 @@
 <script src="<?=base_url('assets/js/jquery.cookie.js')?>" type="text/javascript"></script>
 
 <!-- stylesheet -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"> 
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" as="style"> 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"  rel="stylesheet">
+
 <link rel="preload" href="<?= base_url('assets/css/boilerplate.css') ?>" as="style">
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/boilerplate.css')?>" media="all">
 

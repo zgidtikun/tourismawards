@@ -161,7 +161,7 @@
   });
 
   function get_data_option() {
-    var res = main_post(BASE_URL + '/backend/Directors/getAdmin');
+    var res = main_post(BASE_URL + '/backend/Directors/getUserApprove');
 
     if (res.status_1.length > 0) {
       var html = ``;

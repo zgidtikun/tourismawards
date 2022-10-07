@@ -1,14 +1,10 @@
+//------------------- To Top ----------------------//
 jQuery(document).ready(function($){
-	// browser window scroll (in pixels) after which the "back to top" link is shown
 	var offset = 300,
-		//browser window scroll (in pixels) after which the "back to top" link opacity is reduced
 		offset_opacity = 1200,
-		//duration of the top scrolling animation (in ms)
 		scroll_top_duration = 500,
-		//grab the "back to top" link
 		$back_to_top = $('.cd-top');
 
-	//hide or show the "back to top" link
 	$(window).scroll(function(){
 		( $(this).scrollTop() > offset ) ? $back_to_top.addClass('cd-is-visible') : $back_to_top.removeClass('cd-is-visible cd-fade-out');
 		if( $(this).scrollTop() > offset_opacity ) { 
@@ -16,7 +12,6 @@ jQuery(document).ready(function($){
 		}
 	});
 
-	//smooth scroll to top
 	$back_to_top.on('click', function(event){
 		event.preventDefault();
 		$('body,html').animate({
@@ -25,4 +20,18 @@ jQuery(document).ready(function($){
 		);
 	});
 
+});
+
+//------------------- regis-form-step ----------------------//
+jQuery(document).ready(function(){
+    var pgurl = window.location.href.substr(window.location.href.lastIndexOf("/")+1);
+    console.log(pgurl);
+	$(".regis-form-step a").each(function(){
+	if($(this).attr("href") == pgurl || $(this).attr("href") == '' )
+		$(this).addClass("active");
+	});
+	$(".regis-form-step a").each(function(){
+	if($(this).attr("href") == 'index.html' || $(this).attr("href") == '' )
+		$(this).removeClass("active");
+	});
 });

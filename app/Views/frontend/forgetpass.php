@@ -2,12 +2,6 @@
     <div class="row">
         <div class="col6 loginbox">
             <div class="formbox">
-                <div class="formbox_row logo">
-                    <picture>
-                        <source srcset="<?=base_url('assets/images/logo.svg')?>">
-                        <img src="<?=base_url('assets/images/logo.png')?>" width="230" height="89">
-                    </picture>
-                </div>
 
                 <div class="formbox_row">
                     <div class="inp_form forget">

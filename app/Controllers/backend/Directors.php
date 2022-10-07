@@ -45,11 +45,11 @@ class Directors extends BaseController
         return view('backend/template', $data);
     }
 
-    public function getAdmin()
+    public function getUserApprove()
     {
-        $data['status_1'] = $this->db->table('admin')->like('assessment_group', '"1"', 'both')->get()->getResultObject();
-        $data['status_2'] = $this->db->table('admin')->like('assessment_group', '"2"', 'both')->get()->getResultObject();
-        $data['status_3'] = $this->db->table('admin')->like('assessment_group', '"3"', 'both')->get()->getResultObject();
+        $data['status_1'] = $this->db->table('users')->like('assessment_group', '"1"', 'both')->get()->getResultObject();
+        $data['status_2'] = $this->db->table('users')->like('assessment_group', '"2"', 'both')->get()->getResultObject();
+        $data['status_3'] = $this->db->table('users')->like('assessment_group', '"3"', 'both')->get()->getResultObject();
         echo json_encode($data);
     }
 

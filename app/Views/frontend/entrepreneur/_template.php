@@ -11,14 +11,14 @@
         <?=view('frontend/entrepreneur/_assets',['view' => $view])?>
 
     </head>
-    <body>
+    <body class="regisform">
         <!--include header-->
         <div id="includedheader">
             <?= view('_header-menu') ?>
         </div>
 
         <!-- inclide main contents -->
-        <div class="mainsite mb-4">
+        <div class="mainsite">
             <?= view($view) ?>
         </div>
 
@@ -27,6 +27,13 @@
             <?= view('_footer') ?>
         </div>
         <a href="#0" class="cd-top"></a>
-        
+        <script>            
+            jQuery(document).each(function () {
+                var headerheight = $('.header-box ').height()+"px";
+                $('#includedbanner').css({ "display": "block", "margin-top": headerheight });
+                $('.formlogin .mainsite').css({ "display": "block", "padding-top": headerheight });
+                $('.regisform .mainsite').css({ "display": "block", "padding-top": headerheight });
+            });
+        </script>
     </body>
 </html>
