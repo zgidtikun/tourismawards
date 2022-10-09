@@ -298,7 +298,7 @@ const referance = [
         input: '#step1-detail', pointer: ['step1','detail'],
         btn: '#step1-detail-btn', btnrm: '#step1-detail-remove',
         show: '#step1-detail-list', label: '#step1-detail-label',
-        api: '/frontend/app/upload', position: 'paperFiles',
+        api: '/frontend/app/upload', position: 'detailFiles',
         path: 'paper', app: 'frontend/application',
         maxUpload: 5, maxSize: 15
     },

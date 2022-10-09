@@ -49,7 +49,7 @@ const api = async(setting) => {
                 }
             break;
         }
-
+        
         let request = $.ajax(setAjax);
         request.done(function(response){
             resolve(response);

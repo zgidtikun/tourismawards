@@ -11,7 +11,7 @@
                 <div class="formstep">
                     <div class="formstep-col register active">
                         <div class="formstep-title">1. กรอกแบบฟอร์มใบสมัคร</div>
-                        <div class="formstep-status date" data-tab="1">ภายในวันที่ 28 กุมภาพันธ์ 2566</div>
+                        <div class="formstep-status date" data-tab="1"><?=$duedate->expired_str?></div>
                         <div class="formstep-icon"><span><i class="bi bi-pencil-fill"></i></span></div>
                     </div>
                     <div class="formstep-col prescreen">
@@ -49,8 +49,10 @@
                     กรอกแบบฟอร์มใบสมัคร
                 </div>
                 <div class="form-main-btn">
-                    <a href="javascript:void(0)" class="btn-save" data-tab="1">บันทึก</a>
-                    <a href="javascript:void(0)" class="btn-regis" data-tab="2" disabled>ส่งใบสมัคร</a>
+                    <a href="javascript:register.saveDraft(register.formData.currentStep,'save')" 
+                    class="btn-save" data-tab="1">บันทึก</a>
+                    <a href="javascript:register.saveApp()" class="btn-regis" 
+                    data-tab="2" disabled>ส่งใบสมัคร</a>
                 </div>
             </div>
 
@@ -1051,8 +1053,8 @@
 <?php $app = new \Config\App(); ?>
 <link rel="stylesheet" href="<?= base_url('assets/css/jquery.datetimepicker.css') ?>">
 <script src="<?= base_url('assets/js/jquery.datetimepicker.full.js') ?>"></script>
-<script src="<?= base_url('assets/js/frontend/apc.js') ?>?v=<?= $app->script_v ?>"></script>
 <script src="<?= base_url('assets/js/frontend/upload.files.js') ?>?v=<?= $app->script_v ?>"></script>
+<script src="<?= base_url('assets/js/frontend/apc.js') ?>?v=<?= $app->script_v ?>"></script>
 <script>
     $(document).ready(function() {
         register.init(<?= session()->get('id') ?>);

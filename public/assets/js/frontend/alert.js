@@ -16,12 +16,26 @@ const alert = {
         });
         return init;
     },
-    initBootstrap: function(){
+    initBootstrap: function(mode){
+        let css;
+
+        switch(mode){
+            case 'confirm-main':
+                css = {
+                    confirmButton: 'btn btn-confirm-submit',
+                    cancelButton: 'btn btn-confirm-cancel mr-3'
+                }                
+            break;
+            default:  
+                css = {
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-danger mr-3'
+                }
+            break;
+        }
+
         const init = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-primary',
-                cancelButton: 'btn btn-danger mr-3'
-            },
+            customClass: css,
             buttonsStyling: false
         });                
         return init;
@@ -60,7 +74,7 @@ const alert = {
     },
     confirm: async function(setting){
         return new Promise(function(resolve){
-            let init = this.initBootstrap();
+            let init = alert.initBootstrap(setting.mode);
             init.fire({
                 icon: setting.icon,
                 title: setting.title,

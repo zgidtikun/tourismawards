@@ -83,8 +83,8 @@ const MapField = {
 
 const register = {
     id: null,
-    statue: null,
-    count: null,
+    status: null,
+    count: [],
     change: false,
     appType: { main: [], sub: [] },
     formData: {
@@ -155,7 +155,7 @@ const register = {
                     }
 
                     register.change = false;
-                    register.setStep(5);
+                    register.setStep(1);
                     loading('hide');
                 }
             });
@@ -177,7 +177,7 @@ const register = {
                     tmp = [];
                 
                 register.id = app.id;
-                register.statue = app.status;
+                register.status = app.status;
                 register.formData.currentStep = app.current_step;
 
                 for(let i = 1; i <= 5; i++){
@@ -209,56 +209,27 @@ const register = {
                 Object.assign(register.formData.step3, tmp['step3']);
                 Object.assign(register.formData.step4, tmp['step4']);
                 Object.assign(register.formData.step5, tmp['step5']);
-                
-                register.formData.step1.images = [];
-                register.formData.step1.detail = [];
-                register.formData.step1.paper = [];
-                register.formData.step5.landOwner = [];
-                register.formData.step5.businessCert = [];
-                register.formData.step5.otherCert = [];
-                register.count = {
-                    images: 0, detail: 0, paper: 0,
-                    landOwner: 0, businessCert: 0, otherCert: 0
-                };
+
+                $.each(referance, function(key,ref){
+                    let pointer = ref.pointer;
+                    register.formData[pointer[0]][pointer[1]] = [];
+                    register.count.push([pointer[1] = 0]);
+                });
                 
                 if(files.length > 0){
                     $.each(files,function(key,file){
-                        switch(file.file_position){
-                            case 'registerImages':
-                                register.formData.step1.images.push(file);
-                                register.count.images++;
-                            break;
-                            case 'detailFiles': 
-                                register.formData.step1.detail.push(file);
-                                register.count.detail++;
-                            break;
-                            case 'paperFiles':
-                                register.formData.step1.paper.push(file);
-                                register.count.paper++;
-                            break;
-                            case 'businessCertFiles':
-                                register.formData.step5.businessCert.push(file);
-                                register.count.businessCert++;
-                            break;
-                            case 'landOwnerFiles':
-                                register.formData.step5.landOwner.push(file);
-                                register.count.landOwner++;
-                            break;
-                            case 'otherCertFiles':
-                                register.formData.step5.otherCert.push(file);
-                                register.count.otherCert++;
-                            break;
+                        let map = register.find(el => el.position == file.file_position);
+                        let pointer = map.pointer;
+                        register.formData[pointer[0]][pointer[1]].push(file);
+                        register.count[pointer[1]]++;
+                    });
+
+                    $.each(referance, function(key,ref){
+                        let pointer = ref.pointer;
+                        if(register.count[pointer[1]] > 0){
+                            showFiles.registerPaper(ref.input,register.formData[pointer[0]][pointer[1]]);
                         }
                     });
-                    
-                    if(register.count.images > 0)
-                        showFiles.registerPaper('#step1-images',register.formData.step1.images);
-                    
-                    if(register.count.detail > 0)
-                        showFiles.registerPaper('#step1-detail',register.formData.step1.detail);
-                    
-                    if(register.count.paper > 0)
-                        showFiles.registerPaper('#step1-paper',register.formData.step1.paper);
                 }
                 
                 resolve(response);
@@ -309,7 +280,7 @@ const register = {
         ];
 
         if(register.change){
-            this.saveDraft(this.formData.currentStep);
+            this.saveDraft(this.formData.currentStep,'draft');
             register.change = false;
         }
 
@@ -323,17 +294,27 @@ const register = {
                 if(index == register.formData.step1.appType)
                     $('#step5-type'+index).removeClass('hide');
             });
+
+            $('.btn-regis').prop('disabled',false);
+            $('.btn-regis').addClass('active');
+        } else {
+            $('.btn-regis').prop('disabled',true);
+            $('.btn-regis').removeClass('active');
         }
 
         $.each(tabs,function(key,tab){
             let checkRequire = true;
 
             if(tab.step == step){
-                    $(tab.id).addClass('active');
-                    $(tab.form).removeClass('hide');
+                if($(tab.id).hasClass('complete')){
+                    $(tab.id).removeClass('complete');
+                }
+
+                $(tab.id).addClass('active');
+                $(tab.form).removeClass('hide');
             } else {
-                    $(tab.id).removeClass('active');
-                    $(tab.form).addClass('hide');
+                $(tab.id).removeClass('active');
+                $(tab.form).addClass('hide');
             }
 
             $.each(tab.map,function(key,map){                
@@ -355,20 +336,65 @@ const register = {
             }
         });
     },
-    saveDraft: function(step){
-        if(register.change){
-            alert.toast({icon: 'success',title: 'บันทึกร่างแบบฟอร์มเรียบร้อยแล้ว'});
-        }
+    saveDraft: function(step,mode){
+        let formData = new FormData(),
+            mapFData = this.getMapField('step',step),
+            dataStep = this.formData['step'+step],
+            setting = {
+                method: 'action',
+                url: '/frontend/app/draft',
+                data: []
+            };
+            
+        formData.append('id',this.id);
+        formData.append('step',step);
+
+        $.each(mapFData,function(key,map){
+            formData.append(map.api,dataStep[map.variant]);
+        });
+
+        setting.data = formData;
+
+        api(setting).then(function(response){
+            let draft = response;
+
+            if(mode == 'draft'){
+                alert.toast({icon: draft.result, title: draft.message});
+            } else {
+                let title,  message;
+
+                if(draft.result == 'success'){
+                    title = draft.result;
+                    message = 'ท่านสามารถบันทึกข้อมูลได้ตลอดเวลา ด้วยปุ่ม "บันทึก"<br>';
+                    message += 'และกดปุ่ม "ส่งใบสมัคร" เมื่อพร้อม และเมื่อส่งใบสมัครแล้ว';
+                    message += 'ท่านจะไม่สามารถแก้ไขข้อมูลได้อีก ดังนั้น กรุณาตรวจสอบ';
+                    message += 'ความถูกต้องของข้อมูลก่อนส่งใบสมัคร';
+                } else {
+                    title = 'ไม่สามารถบันทึกข้อมูลได้';
+                    message = draft.message;
+                }
+
+                alert.show(
+                    draft.result,
+                    draft.message
+                );
+            }
+        });
     },
     getMapField: function(by,st){
         let map = [];
 
         if(by == 'step'){            
             let temp = MapField.step;
-            if(st != 'finish') 
+            if(st != 'finish'){ 
                 map = temp['s'+st]; 
-            else 
-                map.concat(temp.s1.concat(temp.s2.concat(temp.s3.concat(temp.s4.concat(temp.s5)))));
+            } else {
+                map.concat(
+                    temp.s1.concat(
+                        temp.s2.concat(
+                            temp.s3.concat(
+                                temp.s4.concat(temp.s5)))));
+            }
         }
 
         return map;
@@ -392,40 +418,57 @@ const register = {
         return bool;
 
     },
-    saveStep: function(step){
-        if(this.validate(step)){
-            loading('show');
+    saveApp: function(){
+        if(register.validate('finish')){
+            let setting = {
+                icon: 'info',
+                title: 'ยืนยันการส่งใบสมัคร',
+                text: 'โปรดตรวจสอบข้อมูลของท่านให้เรียบร้อย<br>ก่อนกดปุ่มส่งใบสมัคร',
+                mode: 'confirm-main',
+                button: {
+                    confirm: 'ส่งใบสมัคร',
+                    cancel: 'ยกเลิก'
+                }
+            };
 
-            let formData = new FormData(),
-                mapFData = this.getMapField('step',step);
+            alert.confirm(setting).then(function(response){
+                if(response.result){
+                    loading('show');
 
-            formData.append('id',this.id);
-            formData.append('step',step);
-            formData.append('status',step != 'finish' ? 1 : 2);
-            
-            $.each(mapFData,function(mapk,mapv){
-                formData.append(mapv.api,this.formData['step'+step][mapv.variant]);
-            });
+                    let formData = new FormData();
+                    formData.append('id',thregisteris.id);
+                    formData.append('step',step);
 
-            api({method: 'action', url: '/frontend/app/draft', data: formData}).then(function(res){
-                loading('hide');
-                let save = res;
+                    ;[1,2,3,4,5].forEach(index => {
+                        let mapFData = register.getMapField('step',index),
+                            form = register.formData['step'+index];
 
-                if(save.result == 'error_login'){
-                    alert.login();
-                } else {
-                    if(save.result == 'success'){
-                        var title = 'บันทึกข้อมูลเรียบร้อยแล้ว';
-                    } else {
-                        var title = 'ไม่สามารถบันทึกข้อมูลได้';
-                    }
-                    alert.show(save.result,title,save.message);
-                    return;
+                        $.each(mapFData,function(mapk,mapv){
+                            formData.append(mapv.api,form[mapv.variant]);
+                        });
+                    });            
+
+                    api({method: 'action', url: '/frontend/app/finish', data: formData})
+                    .then(function(res){
+                        loading('hide');
+                        let save = res;
+
+                        if(save.result == 'error_login'){
+                            alert.login();
+                        } else {
+                            if(save.result == 'success'){
+                                var title = 'บันทึกข้อมูลเรียบร้อยแล้ว';
+                            } else {
+                                var title = 'ไม่สามารถบันทึกข้อมูลได้';
+                            }
+                            alert.show(save.result,title,save.message);
+                            return;
+                        }
+                    });
                 }
             });
-
         } else {
-            alert.show('error','ไม่สามารถบันทึกข้อมูลได้','กรุณาตรวจทานข้อมูลอีกครั้ง');
+            alert.show('error','ดำเนินการไม่สำเร็จ','โปรดตรวจสอบแบบฟอร์มใบสมัคร ให้ครบถ้วน ก่อนส่งแบบฟอร์มใบสมัคร');
         }
     },
 }

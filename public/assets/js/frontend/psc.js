@@ -100,7 +100,8 @@ const psc = {
                 icon: 'warning',
                 title: 'กรุณาบันทึกข้อมูล',
                 text: 'คุณมีการเปลี่ยนแปลงข้อมูล กรุณาบันทึกข้อมูลใหม่',
-                button: { confirm: 'บันทึกข้อมูล', cancel: 'ยกเลิก' }
+                button: { confirm: 'บันทึกข้อมูล', cancel: 'ยกเลิก' },
+                mode: 'default'
             };
 
             alert.confirm(setAlert).then(function(alt){

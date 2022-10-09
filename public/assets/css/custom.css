@@ -3951,7 +3951,40 @@ textarea.form-control-lg {
     --bs-btn-disabled-color: #429DF0;
     --bs-btn-disabled-bg: #E5F3FF;
     --bs-btn-disabled-border-color: #E5F3FF;
-    --bs-btn-font-weight: 400;
+}
+
+.btn-confirm-submit {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #C79534;
+    --bs-btn-border-color: #C79534;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #C79534;
+    --bs-btn-hover-border-color: #C79534;
+    --bs-btn-focus-shadow-rgb: 60, 153, 110;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #C79534;
+    --bs-btn-active-border-color: #C79534;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #C79534;
+    --bs-btn-disabled-border-color: #C79534;
+}
+
+.btn-confirm-cancel {
+    --bs-btn-color: #C79534;
+    --bs-btn-bg: #EDEDED;
+    --bs-btn-border-color: #EDEDED;
+    --bs-btn-hover-color: #C79534;
+    --bs-btn-hover-bg: #EDEDED;
+    --bs-btn-hover-border-color: #EDEDED;
+    --bs-btn-focus-shadow-rgb: 60, 153, 110;
+    --bs-btn-active-color: #C79534;
+    --bs-btn-active-bg: #EDEDED;
+    --bs-btn-active-border-color: #EDEDED;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #C79534;
+    --bs-btn-disabled-bg: #EDEDED;
+    --bs-btn-disabled-border-color: #EDEDED;
 }
 
 .btn-file {

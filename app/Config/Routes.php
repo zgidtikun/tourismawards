@@ -64,6 +64,7 @@ $routes->group('frontend', static function ($routes) {
     $routes->group('app', static function ($routes) {
         $routes->get('detail', 'ApplicationController::getApplicationByAjax', ['filter' => 'api:frontend']);
         $routes->post('draft', 'ApplicationController::draftApp', ['filter' => 'api:frontend']);
+        $routes->post('finish', 'ApplicationController::finishApp', ['filter' => 'api:frontend']);
         $routes->get('type-all', 'ApplicationController::getAppTypeAndSubAllByAjax', ['filter' => 'api:frontend']);
         $routes->post('remove/file', 'ApplicationController::removeFiles', ['filter' => 'api:frontend']);
         $routes->post('upload', 'ApplicationController::uploadFiles', ['filter' => 'api:frontend']);        

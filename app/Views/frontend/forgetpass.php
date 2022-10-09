@@ -64,7 +64,8 @@
                                     button: {
                                         confirm: 'ล็อคอินเข้าสู่ระบบ',
                                         cancel: 'ออก'
-                                    }
+                                    },
+                                    mode: 'default'
                                 }
                                 let confirm = alert.confirm(setting);
                                 if(confirm) window.location.href = '<?=base_url('login')?>/'+response.bank;
