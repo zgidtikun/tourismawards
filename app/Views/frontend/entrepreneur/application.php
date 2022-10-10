@@ -11,7 +11,9 @@
                 <div class="formstep">
                     <div class="formstep-col register active">
                         <div class="formstep-title">1. กรอกแบบฟอร์มใบสมัคร</div>
-                        <div class="formstep-status date" data-tab="1"><?=$duedate->expired_str?></div>
+                        <div class="formstep-status hide" id="formstep-sts" data-tab="1">
+                            <?=$duedate->expired_str?>
+                        </div>
                         <div class="formstep-icon"><span><i class="bi bi-pencil-fill"></i></span></div>
                     </div>
                     <div class="formstep-col prescreen">
@@ -44,7 +46,25 @@
                 </div>
             </div>
 
-            <div class="form-main-title">
+            <div class="formstatus info hide" id="formstatus-info">
+                <img src="<?=base_url('/assets/images/complete-regis-form.png')?>">
+                <h3>ส่งใบสมัครเรียบร้อยแล้ว</h3>
+                <p>เจ้าหน้าที่จะใช้เวลาในการตรวจสอบข้อมูลภายใน 7 วัน และจะแจ้งผลให้ท่านทราบทันทีหลังการตรวจสอบ</p>
+            </div>
+
+            <div class="formstatus pass hide" id="formstatus-pass">
+                <img src="<?=base_url('/assets/images/pass-regis-form.png')?>">
+                <h3>ใบสมัครของท่านผ่านการอนุมัติ</h3>
+                <p>โปรดกรอกแบบประเมินขั้นต้น (Pre-screen) ภายในระยะเวลาที่กำหนด</p>
+            </div>
+
+            <div class="formstatus uncomplete hide" id="formstatus-uncomplete">
+                <img src="<?=base_url('/assets/images/uncomplete-regis-form.png')?>">
+                <h3>ไม่ผ่านอนุมัติ</h3>
+                <p>ข้อมูลของท่านอาจยังไม่สมบูรณ์ โปรดดูรายละเอียด เพื่อแก้ไขและส่งใบสมัครอีกครั้ง</p>
+            </div>
+
+            <div class="form-main-title hide">
                 <div class="form-main-title-txt">
                     กรอกแบบฟอร์มใบสมัคร
                 </div>
@@ -102,11 +122,12 @@
                            ระบุคำตอบ<span class="required">*</span> 
                            <span class="text-muted">(จำนวนตัวอักษรคงเหลือ <span id="step1-desc-cc">1,000</span>/1,000)</span>
                            <textarea class="form-control" id="step1-desc" maxlength="1000" rows="12"></textarea>
+                           <div class="invalid-feedback">กรุณาอธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด</div>
                         </div>
                         <div class="regis-form-data-col1 inpvdo">
                            ลิ้งก์เว็บไซต์ หรือ ลิ้งก์วิดีโอ <input type="text" class="form-control" id="step1-link">
                         </div>
-                        <div class="bs-row">
+                        <div class="bs-row selecter-file">
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6">
                                 <div class="col-12">
                                     <div class="card" style="border: 1px solid #E5E6ED;">
@@ -128,7 +149,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div class="bs-row" id="step1-paper-list">
+                                            <div class="bs-row" id="step1-detail-list">
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
@@ -205,7 +226,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="card-body-muted c-lef" id="step1-detail-list">
+                                        <div class="card-body-muted c-lef" id="step1-images-list">
                                         </div>
                                     </div>
                                     
@@ -238,6 +259,7 @@
                            <h4>ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (TH)<span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-siteNameTh">
                            <span style="font-size: 14px;" class="text-muted">(หมายเหตุ: ชื่อโรมแรม ตามใบอนุญาตประกอบการธุรกิจโรงแรม)*</span>
+                           <div class="invalid-feedback">กรุณากรอก ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (TH)</div>
                         </div>
                         <div class="regis-form-data-col1">
                            <h4>ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (EN)</h4>
@@ -246,26 +268,32 @@
                         <div class="regis-form-data-col2">
                            <h4>ที่ตั้ง/เลขที่<span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-address">
+                           <div class="invalid-feedback">กรุณากรอก ที่ตั้ง/เลขที่</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>ถนน<span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-road">
+                           <div class="invalid-feedback">กรุณากรอก ถนน</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>ตำบล<span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-subDistrict">
+                           <div class="invalid-feedback">กรุณากรอก ตำบล</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>อำเภอ<span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-district">
+                           <div class="invalid-feedback">กรุณากรอก อำเภอ</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>จังหวัด<span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-province">
+                           <div class="invalid-feedback">กรุณากรอก จังหวัด</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>รหัสไปรษณีย์<span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-zipcode">
+                           <div class="invalid-feedback">กรุณากรอก รหัสไปรษณีย์</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>Facebook</h4>
@@ -315,66 +343,63 @@
                         <div class="regis-form-data-col1">
                             <h4>ชื่อหน่วยงาน/บริษัท<span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step3-companyName">
+                           <div class="invalid-feedback">กรุณากรอก ชื่อหน่วยงาน/บริษัท</div>
                         </div>
                         <div class="regis-form-data-col1">
                             <h4>ที่อยู่<span class="required">*</span></h4>
                            <div class="selectaddress">
                               <div class="selectaddresscol">
-                                 <p><input type="radio" name="step3-setAddress" id="step3-setCurrent"> สถานที่เดียวกับผลงานที่ส่งเข้าประกวด
+                                 <p><input type="radio" name="step3-setAddress" id="step3-setAddress-1" value="1"> สถานที่เดียวกับผลงานที่ส่งเข้าประกวด
                                  </p>
                               </div>
                               <div class="selectaddresscol">
-                                 <p><input type="radio" name="step3-setAddress" id="step3-setNew"> ระบุที่อยู่ใหม่</p>
+                                 <p><input type="radio" name="step3-setAddress" id="step3-setAddress-2" value="2"> ระบุที่อยู่ใหม่</p>
                               </div>
                            </div>
                         </div>
-                        <div class="hide-address" style="display: none;">
-                            <div class="regis-form-data-col2">
-                                <h4>ที่ตั้ง/เลขที่<span class="required">*</span></h4>
-                                <input type="text" class="form-control" id="step3-address">
-                            </div>
-                            <div class="regis-form-data-col2">
-                                <h4>ถนน<span class="required">*</span></h4>
-                                <input type="text" class="form-control" id="step3-road">
-                            </div>
-                            <div class="regis-form-data-col2">
-                                <h4>ตำบล<span class="required">*</span></h4>
-                                <input type="text" class="form-control" id="step3-subDistrict">
-                            </div>
-                            <div class="regis-form-data-col2">
-                                <h4>อำเภอ<span class="required">*</span></h4>
-                                <input type="text" class="form-control" id="step3-district">
-                            </div>
-                            <div class="regis-form-data-col2">
-                                <h4>จังหวัด<span class="required">*</span></h4>
-                                <input type="text" class="form-control" id="step3-province">
-                            </div>
-                            <div class="regis-form-data-col2">
-                                <h4>รหัสไปรษณีย์<span class="required">*</span></h4>
-                                <input type="text" class="form-control" id="step3-zipcode">
-                            </div>
-                            <div class="regis-form-data-col2">
-                                <h4>หมายเลขโทรศัพท์</h4>
-                                <input type="text" class="form-control" id="step3-telephone">
-                            </div>
-                            <div class="regis-form-data-col2">
-                                <h4>อีเมล</h4>
-                                <input type="email" class="form-control" id="step3-email">
-                            </div>
-                            <div class="regis-form-data-col2">
-                                <h4>Line ID</h4>
-                                <input type="text" class="form-control" id="step3-lid">
-                            </div>
-                            <script>
-                                jQuery(document).ready(function () {
-                                    $('#step3-setNew').click(function () {
-                                        $('.hide-address').slideDown(200);
-                                    });
-                                    $('#step3-setCurrent').click(function () {
-                                        $('.hide-address').slideUp(200);
-                                    });
-                                });
-                            </script>
+                        <div class="regis-form-data-col2">
+                            <h4>ที่ตั้ง/เลขที่<span class="required">*</span></h4>
+                            <input type="text" class="form-control" id="step3-address">
+                            <div class="invalid-feedback">กรุณากรอก ที่ตั้ง/เลขที่</div>
+                        </div>
+                        <div class="regis-form-data-col2">
+                            <h4>ถนน<span class="required">*</span></h4>
+                            <input type="text" class="form-control" id="step3-road">
+                            <div class="invalid-feedback">กรุณากรอก ถนน</div>
+                        </div>
+                        <div class="regis-form-data-col2">
+                            <h4>ตำบล<span class="required">*</span></h4>
+                            <input type="text" class="form-control" id="step3-subDistrict">
+                            <div class="invalid-feedback">กรุณากรอก ตำบล</div>
+                        </div>
+                        <div class="regis-form-data-col2">
+                            <h4>อำเภอ<span class="required">*</span></h4>
+                            <input type="text" class="form-control" id="step3-district">
+                            <div class="invalid-feedback">กรุณากรอก อำเภอ</div>
+                        </div>
+                        <div class="regis-form-data-col2">
+                            <h4>จังหวัด<span class="required">*</span></h4>
+                            <input type="text" class="form-control" id="step3-province">
+                            <div class="invalid-feedback">กรุณากรอก จังหวัด</div>
+                        </div>
+                        <div class="regis-form-data-col2">
+                            <h4>รหัสไปรษณีย์<span class="required">*</span></h4>
+                            <input type="text" class="form-control" id="step3-zipcode">
+                            <div class="invalid-feedback">กรุณากรอก รหัสไปรษณีย์</div>
+                        </div>
+                        <div class="regis-form-data-col2">
+                            <h4>หมายเลขโทรศัพท์<span class="required">*</span></h4>
+                            <input type="text" class="form-control" id="step3-telephone">
+                            <div class="invalid-feedback">กรุณากรอก หมายเลขโทรศัพท์</div>
+                        </div>
+                        <div class="regis-form-data-col2">
+                            <h4>อีเมล<span class="required">*</span></h4>
+                            <input type="email" class="form-control" id="step3-email">
+                            <div class="invalid-feedback">กรุณากรอก อีเมล</div>
+                        </div>
+                        <div class="regis-form-data-col2">
+                            <h4>Line ID</h4>
+                            <input type="text" class="form-control" id="step3-lid">
                         </div>
                     </div>
                     <div class="regis-form-data-row">
@@ -404,14 +429,22 @@
                         <div class="regis-form-data-col2">
                            <h4>ชื่อ-นามสกุลผู้ประสานงาน<span class="required">*</span></h4>
                             <input type="text" class="form-control" id="step4-name">
+                            <div class="invalid-feedback">กรุณากรอก ชื่อ-นามสกุลผู้ประสานงาน</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>ตำแหน่ง<span class="required">*</span></h4>
                             <input type="text" class="form-control" id="step4-position">
+                            <div class="invalid-feedback">กรุณากรอก ตำแหน่ง</div>
+                        </div>
+                        <div class="regis-form-data-col2">
+                            <h4>หมายเลขโทรศัพท์<span class="required">*</span></h4>
+                            <input type="text" class="form-control" id="step4-telephone">
+                            <div class="invalid-feedback">กรุณากรอก หมายเลขโทรศัพท์</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>อีเมล<span class="required">*</span></h4>
                             <input type="email" class="form-control" id="step4-email">
+                            <div class="invalid-feedback">กรุณากรอก อีเมล</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>Line ID</h4>
@@ -445,6 +478,7 @@
                         <div class="regis-form-data-col2">
                             <h4>เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ.<span class="required">*</span></h4>
                             <input type="text" class="form-control" id="step5-openYear">
+                            <div class="invalid-feedback">กรุณากรอก เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ.</div>
                         </div>
                         <div class="regis-form-data-col2">
                             <h4>ระยะเวลารวมทั้งสิ้น</h4>
@@ -458,7 +492,7 @@
                             <p><input type="radio" name="step5-t1-manageBy" id="step5-t1-manageBy-2" value="2"> ชุมชนท่องเที่ยว</p>
                             <p><input type="radio" name="step5-t1-manageBy" id="step5-t1-manageBy-3" value="3"> ภาคเอกชน</p>
                         </div>
-                        <div class="bs-row">
+                        <div class="bs-row selecter-file">
                             <h4>แนบเอกสาร</h4>
                             <hr>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -553,8 +587,9 @@
                         <div class="regis-form-data-col1">
                             <h4>เลขที่ใบอนุญาตประกอบธุรกิจ<span class="required">*</span></h4>
                             <input type="text" class="form-control" id="step5-t2-bussLicense">
+                            <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>               
-                        <div class="bs-row">
+                        <div class="bs-row selecter-file">
                             <span class="fs-18 fw-semibold">แนบเอกสาร</h4>
                             <hr>
                             <div class="bs-row">
@@ -573,7 +608,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-bussLicense-remove"
+                                                    <button class="btn btn-action" id="step5-bussLicense-remove"
                                                     onclick="removeFile('#step5-bussLicense',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -627,7 +662,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <div class="regis-form-data-col1">
                                         <h4>กรณีมีส่วนต่อขยายของอาคารจะต้องแสดงรายงานการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน <span class="required">*</span></h4>
-                                        <p><input type="radio" name="step5-t2-bussCkRoom" id="step5-t2-bussCkRoom-1" value="1" > มี (กรณีที่เลือก ต้องแนบเอกสารการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน)</p>
+                                        <p><input type="radio" name="step5-t2-bussCkRoom" id="step5-t2-bussCkRoom-1" value="1"> มี (กรณีที่เลือก ต้องแนบเอกสารการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน)</p>
                                         <p><input type="radio" name="step5-t2-bussCkRoom" id="step5-t2-bussCkRoom-0" value="0"> ไม่มี</p>
                                     </div> 
                                 </div>
@@ -670,6 +705,7 @@
                         <div class="regis-form-data-col1">
                             <h4>เลขที่ใบอนุญาตประกอบธุรกิจ<span class="required">*</span></h4>
                             <input type="text" class="form-control" id="step5-t3-bussLicense">
+                            <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>
                         <div class="regis-form-data-col1">
                             <h4>จะต้องไม่ประกอบกิจการที่มีการครอบครอง จำหน่าย หรือค้าสัตว์ป่าสงวน 
@@ -686,7 +722,7 @@
                             <p><input type="radio" name="step5-t3-nominee" id="step5-t3-nominee-1" value="1"> มีส่วนได้ส่วนเสีย</p>
                             <p><input type="radio" name="step5-t3-nominee" id="step5-t3-nominee-0" value="0" > ไม่มีส่วนได้ส่วนเสีย</p>
                         </div>
-                        <div class="bs-row">
+                        <div class="bs-row selecter-file">
                             <span class="fs-18 fw-semibold">แนบเอกสาร</h4>
                             <hr>
                             <div class="bs-row">
@@ -906,8 +942,9 @@
                         <div class="regis-form-data-col1">
                             <h4>เลขที่ใบอนุญาตประกอบธุรกิจ<span class="required">*</span></h4>
                             <input type="text" class="form-control" id="step5-t4-bussLicense">
+                            <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>
-                        <div class="bs-row">
+                        <div class="bs-row selecter-file">
                             <h4>แนบเอกสาร</h4>
                             <hr>
                             <div class="bs-row">
@@ -1057,7 +1094,7 @@
 <script src="<?= base_url('assets/js/frontend/apc.js') ?>?v=<?= $app->script_v ?>"></script>
 <script>
     $(document).ready(function() {
-        register.init(<?= session()->get('id') ?>);
+        register.init('<?=$duedate->expired_sts ? 'Expired' : 'Unexpired'?>');
     });
 
     $('.bfd-dropfield-inner').click(function() {

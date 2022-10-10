@@ -28,7 +28,7 @@
             <thead>
               <tr>
                 <th class="text-center" width="1%">#</th>
-                <th class="text-center" width="5%">รูป</th>
+                <th class="text-center" width="3%">รูป</th>
                 <th class="text-center" width="25%">หัวข้อ</th>
                 <th class="text-center" width="10%">หมวดหมู่</th>
                 <th class="text-center" width="5%">สถานะ</th>

@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 use CodeIgniter\Files\File;
-use CodeIgniter\Files\FileCollection;
 use App\Controllers\BaseController;
 use App\Models\ApplicationForm as AppForm;
 use App\Models\ApplicationType as AppType;
@@ -16,7 +15,7 @@ class ApplicationController extends BaseController
             'address_sub_district','address_district','address_province','address_zipcode',
             'facebook','instagram','line_id','other_social','google_map'],
         '3' => ['company_name','company_addr_no','company_addr_road','company_addr_sub_district',
-            'company_addr_district','company_addr_province','company_addr_zipcode',
+            'company_addr_district','company_addr_province','company_addr_zipcode','company_setaddr',
             'mobile','email','line_id'],
         '4' => ['knitter_name','knitter_position','knitter_tel','knitter_email',
             'knitter_line'],
@@ -39,7 +38,8 @@ class ApplicationController extends BaseController
         $app = new \Config\App();
         $duedate = (object) [
             'expired_date' => $app->APPForm_expired,
-            'expired_str' => 'ภายในวันที่ '.FormatTree($app->APPForm_expired,'thailand')
+            'expired_str' => 'ภายในวันที่ '.FormatTree($app->APPForm_expired,'thailand'),
+            'expired_sts' => $app->APPForm_expired <= date('Y-m-d') ? true : false,
         ];
 
         $data = [
@@ -122,12 +122,11 @@ class ApplicationController extends BaseController
 
             $updd = [
                 'step' => $step, 
-                'status' => 1,
                 'updated_by' => session()->get('id'),
             ];
 
             foreach($maps as $map){
-                $updd[$map] = $input[$map];
+                $updd[$map] = @$input[$map];
             }
 
             $update = $this->appForm->update($app_id,$updd);
@@ -147,10 +146,9 @@ class ApplicationController extends BaseController
     {
 
         try{    
-            $step = $this->input->getVar('step');
             $input = $this->input->getVar();
 
-            $map = array_merge(
+            $maps = array_merge(
                 $this->mapFiled['step1'],$this->mapFiled['step2'],
                 $this->mapFiled['step3'],$this->mapFiled['step4'],
                 $this->mapFiled['step5']
@@ -158,7 +156,7 @@ class ApplicationController extends BaseController
             
             $app_id = $input['id'];
             $updd = [
-                'step' => 'finish', 
+                'step' => $this->input->getVar('step'),
                 'status' => 2,
                 'updated_by' => session()->get('id'),
             ];
@@ -224,7 +222,7 @@ class ApplicationController extends BaseController
                 }
 
                 $this->appForm->update($app_id,['pack_file' => json_encode($updd)]);
-                $result['files'] = $updd;
+                $result['files'] = $files_up;
                 
             }
              else {
@@ -251,7 +249,6 @@ class ApplicationController extends BaseController
     {
 
         try{
-            $files = new FileCollection();
             $app_id = $this->input->getVar('id');
             $tmp = [];
             $pack_file = $this->appForm->where('id',$app_id)
@@ -261,7 +258,7 @@ class ApplicationController extends BaseController
             $pack_file = json_decode($pack_file->pack_file,false);
 
             if($this->input->getVar('remove') == 'fixed'){
-                if($files->removeFile(FCPATH.$this->input->getVar('file_path'))){
+                if(unlink(FCPATH.$this->input->getVar('file_path'))){
                     $file_name = $this->input->getVar('file_name');
 
                     foreach($pack_file as $file){
@@ -280,14 +277,14 @@ class ApplicationController extends BaseController
 
                 foreach($pack_file as $file){
                     if($file->file_position == $position){
-                        $files->removeFile(FCPATH.$file->file_path);
+                        unlink(FCPATH.$file->file_path);
                     } else {
                         array_push($tmp,$file);
                     }
                 }
 
                 $this->appForm->update($app_id,['pack_file' => json_encode($tmp)]);
-                $result = ['result' => 'success', 'message' => '', 'files' => $tmp];
+                $result = ['result' => 'success', 'message' => ''];
             }
         } catch(\Exception $e){
             $result = ['result' => 'error', 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()];

@@ -122,7 +122,7 @@ $routes->group('backend', ['namespace' => 'App\Controllers\Backend'], static fun
         $routes->get('edit/(:any)', 'Officer::editTAT/$1', ['filter' => 'auth:4']);
         $routes->post('saveInsert', 'Officer::saveInsertTAT', ['filter' => 'api:4']);
         $routes->post('saveUpdate', 'Officer::saveUpdateTAT', ['filter' => 'api:4']);
-        $routes->post('delete', 'Officer::delete', ['filter' => 'api:4']);
+        $routes->post('deleteTAT', 'Officer::deleteTAT', ['filter' => 'api:4']);
     });
 
     // Approve (แอดมินและเจ้าหน้าที่เข้าถึงได้)
@@ -149,14 +149,14 @@ $routes->group('backend', ['namespace' => 'App\Controllers\Backend'], static fun
         $routes->post('saveInsert', 'News::saveInsert', ['filter' => 'api:backend']);
         $routes->post('saveUpdate', 'News::saveUpdate', ['filter' => 'api:backend']);
         $routes->post('delete', 'News::delete', ['filter' => 'api:backend']);
+        $routes->post('uploadImage', 'News::uploadImage', ['filter' => 'api:backend']);
+        $routes->post('removeImage', 'News::removeImage', ['filter' => 'api:backend']);
     });
 
     // Report (แอดมินและเจ้าหน้าที่เข้าถึงได้)
     $routes->group('Report', static function ($routes) {
         $routes->get('', 'Report::index', ['filter' => 'auth:4']);
     });
-
-
 
     $routes->get('MarkTest', 'MarkTest::index');
     $routes->get('MarkTest/excel', 'MarkTest::excel');

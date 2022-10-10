@@ -49,17 +49,14 @@
 <link rel="preload" as="script" href="<?= base_url('assets/js/jquery.mmenu.min.all.js')?>"> 
 <script src="<?=base_url('assets/js/jquery.mmenu.min.all.js')?>" type="text/javascript" charset="utf-8"></script>
 
-<link rel="preload" as="script" href="<?= base_url('assets/js/main.js')?>?v=<?=$app->script_v?>"> 
-<script src="<?=base_url('assets/js/main.js')?>?v=<?=$app->script_v?>" type="text/javascript"  charset="utf-8"></script>
-
 <link rel="preload" as="script" href="<?= base_url('assets/js/animated-header.js')?>?v=<?=$app->script_v?>"> 
 <script src="<?=base_url('assets/js/animated-header.js')?>?v=<?=$app->script_v?>" charset="utf-8"></script>
 
+<link rel="preload" as="script" href="<?= base_url('assets/js/main.js')?>?v=<?=$app->script_v?>"> 
+<script src="<?=base_url('assets/js/main.js')?>?v=<?=$app->script_v?>" type="text/javascript"  charset="utf-8"></script>
+
 <link rel="preload" as="script" href="<?= base_url('assets/js/jquery.flexnav.min.js')?>?v=<?=$app->script_v?>"> 
 <script src="<?=base_url('assets/js/jquery.flexnav.min.js')?>?v=<?=$app->script_v?>" type="text/javascript"></script>
-
-<link rel="preload" as="script" href="<?= base_url('assets/js/jquery.cookie.js')?>"> 
-<script src="<?=base_url('assets/js/jquery.cookie.js')?>" type="text/javascript"></script>
 
 <link rel="preconnect" href="//cdn.jsdelivr.net/npm/sweetalert2@11"> 
 <link rel="preload" as="script" href="//cdn.jsdelivr.net/npm/sweetalert2@11"> 

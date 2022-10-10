@@ -20,40 +20,57 @@
         <form action="#">
 
           <div class="row justify-content-center">
-            <div class="col-md-8 row">
+            <div class="col-md-5 row">
 
-              <div class="col-md-6">
-                <div class="justify-content-between">
-                  <div>
-                    <div class="form-group">
-                      <label for="">ชื่อเว็บไซต์</label>
-                      <select class="form-control" name="application_type" id="application_type">
-                        <?php
-                        if (!empty($type)) :
-                          foreach ($type as $key => $value) :
-                        ?>
-                            <option value="<?= $value->id ?>"><?= $value->name ?></option>
-                        <?php
-                          endforeach;
-                        endif;
-                        ?>
+              <div class="col-md-4">
+                <label for="application_type">ประเภทอุตสาหกรรม</label>
+              </div>
 
-                      </select>
-                    </div>
-                  </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                  <select class="form-control" name="application_type" id="application_type">
+
+                    <option value="">เลือกประเภทอุตสาหกรรม</option>
+                    <?php
+                    if (!empty($type)) :
+                      foreach ($type as $key => $value) :
+                    ?>
+                        <option value="<?= $value->id ?>"><?= $value->name ?></option>
+                    <?php
+                      endforeach;
+                    endif;
+                    ?>
+
+                  </select>
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <div class="justify-content-between">
-                  <div>
-                    <div class="form-group">
-                      <label for="">อีเมลติดต่อ</label>
-                      <input type="text" class="form-control border-secondary" id="email" name="email" placeholder="อีเมลติดต่อ">
-                    </div>
-                  </div>
+              <div class="col-md-4">
+                <label for="export_type">ประเภทการส่งออก</label>
+              </div>
+
+              <div class="col-md-8">
+                <div class="form-group">
+                  <select class="form-control" name="export_type" id="export_type">
+                    <option value="">เลือกประเภทการส่งออก</option>
+                    <option value="1">Pre-screen (พร้อมคำถาม)</option>
+                    <option value="2">ลงพื้นที่ (พร้อมคำถาม)</option>
+                    <option value="3">Pre Screen (เกณฑ์การตัดสิน)</option>
+                    <option value="4">ลงพื้นที่ (เกณฑ์การตัดสิน)</option>
+                    <option value="5">Pre Screen (ค่าคะแนน๗</option>
+                    <option value="6">ลงพื้นที่ (ค่าคะแนน)</option>
+                    <option value="7">สรุปคะแนน</option>
+                  </select>
                 </div>
               </div>
+
+              <div class="col-md-12">
+                <div class="row justify-content-center">
+                  <button type="button" class="btn btn-light mr-2">ยกเลิก</button>
+                  <button type="button" class="btn btn-primary">ส่งออก</button>
+                </div>
+              </div>
+
 
             </div>
           </div>

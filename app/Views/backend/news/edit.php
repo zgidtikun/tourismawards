@@ -102,7 +102,7 @@
           <div class="row">
             <div class="col-sm-3">
               <div class="form-group">
-                <label for="publish_start">หัวข้อ <span class="text-danger">*</span></label>
+                <label for="publish_start">ระยะเวลาเผยแพร่ <span class="text-danger">*</span></label>
               </div>
             </div>
             <div class="col-sm-3">
@@ -182,6 +182,25 @@
       callbacks: {
         onImageUpload: function(files, editor, welEditable) {
           sendFile(files[0], editor, welEditable);
+        },
+        onMediaDelete: function(files, editor, welEditable) {
+          var imageUrl = $(files[0]).attr('src');
+          var image = imageUrl.split('/');
+          cc(image[6])
+          cc(imageUrl)
+
+          var option = {
+            title: "คุณต้องการลบรูปภาพหรือไม่?",
+            text: "หากทำการกดยืนยันแล้วจะไม่สามารถนำกลับมาใช้ใหม่ได้",
+          }
+          swal_confirm(option).done(function() {
+            var res = main_post(BASE_URL + '/backend/News/removeImage', {
+              path: image[6]
+            });
+            res_swal(res, 1);
+          });
+
+          // deleteImage(image[4]);
         }
       }
     });

@@ -4,6 +4,7 @@ const onFileHandle = (setting,input,type) => {
         ref     = referance.find(el => el.input == input),
         error   = null,
         check   = true;
+        console.log(handle,ref)
         
     if(handle.length > 0){
         switch(ref.app){
@@ -56,7 +57,7 @@ const uploadFile = (setting,input,handleBy) => {
         ref      = referance.find(el => el.input == input),
         handle   = handleBy == 'input' ? $(input)[0].files : setting.files,
         api_setting = {};
-        
+        console.log(111)
     formData.append('id',setting.id);
 
     $.each(handle,function(key,file){
@@ -78,7 +79,7 @@ const uploadFile = (setting,input,handleBy) => {
             formData.append('path',ref.path);
             api_setting.method = 'action';
             api_setting.url = ref.api;
-            api_setting.data = formData;         
+            api_setting.data = formData;      
             
             api(api_setting).then(function(response){
                 let res = response;
@@ -86,8 +87,11 @@ const uploadFile = (setting,input,handleBy) => {
                 if(res.result == 'error_login'){
                     alert.login();
                 } else if(res.result == 'success'){
-                    register.formData[ref.pointer[0]][ref.pointer[1]] = res.files;
-                    showFiles.registerPaper(ref.input,res.files);
+                    $.each(res.files,function(key,file){
+                        register.formData[ref.pointer[0]][ref.pointer[1]].push(file);
+                    });
+                    
+                    showFiles.registerPaper(ref.input,register.formData[ref.pointer[0]][ref.pointer[1]]);
                 } else {
                     alert.show(res.result,'ไม่สามารถอัพโหลดไฟล์ได้',res.message);
                 }
@@ -128,8 +132,22 @@ const removeFile = (input,setting) => {
             if(res.result == 'error_login'){
                 alert.login();
             } else if(res.result == 'success'){
-                register.formData[ref.pointer[0]][ref.pointer[1]] = res.files;
-                showFiles.registerPaper(input,res.files);
+                if(setting.remove == 'fixed'){
+                    register.formData[ref.pointer[0]][ref.pointer[1]] = [];
+                    register.change[ref.pointer[1]] = 0;
+
+                    $.each(res.files,function(key,file){
+                        if(file.file_position == ref.position){
+                            register.formData[ref.pointer[0]][ref.pointer[1]].push(file);
+                            register.change[ref.pointer[1]]++;
+                        }
+                    });
+                } else {
+                    register.formData[ref.pointer[0]][ref.pointer[1]] = [];
+                    register.change[ref.pointer[1]] = 0;
+                }
+
+                showFiles.registerPaper(input,register.formData[ref.pointer[0]][ref.pointer[1]]);
             } else {
                 alert.show(res.result,'ไม่สามารถลบไฟล์ได้',res.message);
             }
@@ -156,28 +174,28 @@ const showFiles = {
         let html, onclick, id, img,
             ref = referance.find(el => el.input == input);
 
-        if(ref.app = 'frontend/application') id = register.id;
+        if(ref.app == 'frontend/application') id = register.id;
         
-        if(ref.app = 'frontend/application' && path == 'paper'){
+        if(ref.app == 'frontend/application' && ref.path == 'paper'){
             onclick = 'onclick="removeFile(\''+input+'\',{id: '+id+',';
             onclick += "file_name: '"+setting.file_name+"',";
             onclick += "file_path: '"+setting.file_path+"',";
             onclick += 'remove: \'fixed\'})"';
 
             html = '<div class="col-12">';
-            html += '   <div class="card card-body-muted"><div class="bs-row">';                
-            html += '       <div class="bs-row">';
-            html += '           <div class="col-xs-12 col-sm-12 col-md-10 col-xl-10">';
-            html += '               <span class="fs-18 fs-file-name">'+setting.file_original+' ';
+            html += '   <div class="card card-body-muted">';
+            html += '       <div class="bs-row">';   
+            html += '           <div class="col-12">';
+            html += '               <span class="fs-file-name">'+setting.file_original+' ';
             html += '               ('+setting.file_size+'MB)</span>';
-            html += '           </div>';
-            html += '           <div class="col-xs-12 col-sm-12 col-md-2 col-xl-2 d-flex justify-content-end">';
-            html += '               <button type="button" class="btn btn-close" '+onclick+'></button>';
+            html += '               <a '+onclick+' class="fs-file-remove float-end" title="ลบไฟล์">';
+            html += '                   <i class="bi bi-trash-fill"></i> ลบ';
+            html += '               </a>';
             html += '           </div>';
             html += '       </div>';
             html += '   </div>';
             html += '</div>';
-        } else if(ref.app = 'frontend/application' && path == 'images'){            
+        } else if(ref.app == 'frontend/application' && ref.path == 'images'){            
             onclick = 'href="javascript:removeFile(\''+input+'\',{id: '+id+',';
             onclick += "file_name: '"+setting.file_name+"',";
             onclick += "file_path: '"+setting.file_path+"',";
@@ -188,13 +206,15 @@ const showFiles = {
             html += '   <img src="'+img+'" class="card-img-left">';
             html += '   <div class="card-body">';
             html += '       <div class="bs-row">';
-            html += '           <span class="fw-semibold">'+setting.file_original+'<span>';
+            html += '           <span class="fs-file-name fw-semibold">'+setting.file_original+'</span>';
             html += '       </div>';
-            html += '       <div class="bs-row">';
-            html += '           <span style="font-size: 14px;" class="text-muted">'+setting.file_size+'MB<span>';
-            html += '           <a '+onclick+' class="text-danger float-end" title="ลบไฟล์">';
-            html += '               <i class="bi bi-trash-fill"></i> ลบ';
-            html += '           </a>';
+            html += '       <div class="bs-row">'; 
+            html += '           <div class="col-12">';
+            html += '               <span style="font-size: 14px;" class="text-muted">'+setting.file_size+'MB</span>';
+            html += '               <a '+onclick+' class="fs-file-remove float-end" title="ลบไฟล์">';
+            html += '                   <i class="bi bi-trash-fill"></i> ลบ';
+            html += '               </a>';
+            html += '           </div>';
             html += '       </div>';
             html += '   </div>';
             html += '</div>';
@@ -306,7 +326,7 @@ const referance = [
         input: '#step1-images', area: '#step1-images-input',
         pointer: ['step1','images'],
         btn: '#step1-images-btn', btnrm: '#step1-images-remove',
-        show: '#step1-detail-list', label: {
+        show: '#step1-images-list', label: {
             input: '#step1-images-input',
             progress: '#step1-images-progress'
         },

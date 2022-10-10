@@ -32,6 +32,9 @@
 <link rel="preload" href="<?= base_url('assets/css/css.css') ?>" as="style">
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/css.css')?>" media="all">
 
+<link rel="preload" href="<?= base_url('assets/css/fonts.css') ?>" as="style">
+<link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/fonts.css')?>" media="all">
+
 <link rel="preload" href="<?= base_url('assets/css/animated-header.css') ?>" as="style">
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/animated-header.css')?>" media="all">
 

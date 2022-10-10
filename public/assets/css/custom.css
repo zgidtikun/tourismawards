@@ -1952,7 +1952,7 @@
     display: block;
     width: 100%;
     padding: 0.375rem 0.75rem;
-    font-size: 1rem;
+    font-size: 18px;
     font-weight: 400;
     line-height: 1.5;
     color: #212529;
@@ -4219,17 +4219,22 @@ textarea.form-control-lg {
 }
 
 .fs-file-name {
-    font-style: normal;
     font-weight: 600;
-    font-size: 0.94em;
+    font-size: 15px;
     color: var(--bs-secondary);
 }
 
 .fs-file-error {
-    font-style: normal;
     font-weight: 400;
     font-size: 13px;
     color: var(--bs-red);
+}
+
+.fs-file-remove, .fs-file-remove:hover {
+    color: var(--bs-red) !important;
+    font-weight: 600;
+    font-size: 15px;    
+    cursor: pointer;
 }
 
 @media (max-width: 576px) {
@@ -4286,4 +4291,8 @@ textarea.form-control-lg {
 .toast-absolute {
     margin-top: 100px;
     position: absolute;
+}
+
+.formstatus.info {
+    background-color: #F1FAFF;
 }
