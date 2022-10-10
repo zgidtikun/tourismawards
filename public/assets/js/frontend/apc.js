@@ -255,7 +255,7 @@ const register = {
                 Object.assign(register.formData.step3, tmp['step3']);
                 Object.assign(register.formData.step4, tmp['step4']);
                 Object.assign(register.formData.step5, tmp['step5']);
-                
+                console.log(register.formData.step5)
                 $.each(referance, function(key,ref){
                     let pointer = ref.pointer;
                     register.formData[pointer[0]][pointer[1]] = [];
@@ -318,11 +318,11 @@ const register = {
     },
     setStep: function(step){
         let tabs = [
-            {step: 1, id: '#tab-s1', form: '#form-step-1', map: MapField.step.s1},            
-            {step: 2, id: '#tab-s2', form: '#form-step-2', map: MapField.step.s2},
-            {step: 3, id: '#tab-s3', form: '#form-step-3', map: MapField.step.s3},
-            {step: 4, id: '#tab-s4', form: '#form-step-4', map: MapField.step.s4},
-            {step: 5, id: '#tab-s5', form: '#form-step-5', map: MapField.step.s5}
+            {step: 1, id: '#tab-s1', form: '#form-step-1'},            
+            {step: 2, id: '#tab-s2', form: '#form-step-2'},
+            {step: 3, id: '#tab-s3', form: '#form-step-3'},
+            {step: 4, id: '#tab-s4', form: '#form-step-4'},
+            {step: 5, id: '#tab-s5', form: '#form-step-5'}
         ];
 
         if(register.change){
@@ -347,7 +347,7 @@ const register = {
             $('.btn-regis').prop('disabled',true);
             $('.btn-regis').removeClass('active');
         }
-
+        
         $.each(tabs,function(key,tab){
             let checkRequire = true;
 
@@ -363,18 +363,12 @@ const register = {
                 $(tab.form).addClass('hide');
             }
 
-            $.each(tab.map,function(key,map){                
+            let maps = register.getMapField('step',tab.step);
+
+            $.each(maps,function(key,map){                
                 if(map.require){
-                    if(tab.step == 5){
-                        if(register.formData.step1.appType == map.type || map.type == 'all'){
-                            if(empty(register.formData['step'+tab.step][map.variant])){
-                                checkRequire = false;
-                            }                            
-                        }
-                    } else {
-                        if(empty(register.formData['step'+tab.step][map.variant])){
-                            checkRequire = false;
-                        }
+                    if(empty(register.formData['step'+tab.step][map.variant])){
+                        checkRequire = false;
                     }
                 }
             });

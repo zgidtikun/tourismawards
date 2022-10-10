@@ -602,19 +602,19 @@
                                         <div class="card-body">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
-                                                    <button class="btn btn-file" id="step5-bussLicense-btn">
-                                                        <span id="step5-bussLicense-label">Upload Files</span>
-                                                        <input type="file" id="step5-bussLicense"
+                                                    <button class="btn btn-file" id="step5-bussLicenseFiles-btn">
+                                                        <span id="step5-bussLicenseFiles-label">Upload Files</span>
+                                                        <input type="file" id="step5-bussLicenseFiles"
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-bussLicense-remove"
-                                                    onclick="removeFile('#step5-bussLicense',{id: register.id,remove: 'all'})">
+                                                    <button class="btn btn-action" id="step5-bussLicenseFiles-remove"
+                                                    onclick="removeFile('#step5-bussLicenseFiles',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div class="bs-row" id="step5-bussLicense-list">
+                                            <div class="bs-row" id="step5-bussLicenseFiles-list">
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>

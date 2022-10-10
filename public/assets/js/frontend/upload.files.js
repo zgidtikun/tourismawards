@@ -359,9 +359,9 @@ const referance = [
         maxUpload: 5, maxSize: 15
     },
     {
-        input: '#step5-bussLicense', pointer: ['step5','bussLicense'],
-        btn: '#step5-bussLicense-btn', btnrm: '#step5-bussLicense-remove',
-        show: '#step5-bussLicense-list', label: '#step5-bussLicense-label',
+        input: '#step5-bussLicenseFiles', pointer: ['step5','bussLicenseFiles'],
+        btn: '#step5-bussLicenseFiles-btn', btnrm: '#step5-bussLicenseFiles-remove',
+        show: '#step5-bussLicenseFiles-list', label: '#step5-bussLicenseFiles-label',
         api: '/frontend/app/upload', position: 'bussLicenseFiles',
         path: 'paper', app: 'frontend/application',
         maxUpload: 5, maxSize: 15
