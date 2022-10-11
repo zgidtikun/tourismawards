@@ -40,7 +40,7 @@ $routes->get('/', 'Home::index', ['as' => 'Home']);
 $routes->get('home', 'Home::index');
 $routes->get('forget-password', 'RegisterController::forgetpass');
 
-$routes->get('login', 'LoginController::index',);
+$routes->get('login', 'LoginController::index');
 $routes->get('login/(:any)', 'LoginController::index/$1');
 
 $routes->group('register', static function ($routes) {
@@ -56,28 +56,35 @@ $routes->group('auth', static function ($routes) {
     $routes->post('ajax-reset-password', 'RegisterController::resetPassword');
 });
 
-$routes->group('frontend', static function ($routes) {
-
-    $routes->get('/', 'Home::frontend', ['filter' => 'auth:frontend']);
-
+$routes->group('awards', static function ($routes) {
+    $routes->get('/', 'frontend::index', ['filter' => 'auth:frontend']);
     $routes->get('application', 'ApplicationController::formIndex', ['filter' => 'auth:1']);
+    $routes->get('pre-screen', 'AnswerController::preScreenIndex', ['filter' => 'auth:1']);
+});
+
+$routes->group('boards', static function ($routes) {
+    $routes->get('/', 'frontend::index', ['filter' => 'auth:frontend']);
+});
+
+$routes->group('inner-api', static function ($routes) {
+
     $routes->group('app', static function ($routes) {
         $routes->get('detail', 'ApplicationController::getApplicationByAjax', ['filter' => 'api:frontend']);
         $routes->post('draft', 'ApplicationController::draftApp', ['filter' => 'api:frontend']);
         $routes->post('finish', 'ApplicationController::finishApp', ['filter' => 'api:frontend']);
         $routes->get('type-all', 'ApplicationController::getAppTypeAndSubAllByAjax', ['filter' => 'api:frontend']);
         $routes->post('remove/file', 'ApplicationController::removeFiles', ['filter' => 'api:frontend']);
-        $routes->post('upload', 'ApplicationController::uploadFiles', ['filter' => 'api:frontend']);        
+        $routes->post('upload', 'ApplicationController::uploadFiles', ['filter' => 'api:frontend']); 
+        $routes->get('download/file/(:num)/(:any)', 'FilesController::downloadApplicationFile/$1/$2', ['filter' => 'auth:frontend']);       
     });
-
-    $routes->get('pre-screen', 'AnswerController::preScreenIndex', ['filter' => 'auth:1']);
+    
     $routes->get('question/get', 'AnswerController::getQuestionByAjax', ['filter' => 'api:frontend']);
     $routes->group('answer', static function ($routes) {
         $routes->get('get/(:any)', 'AnswerController::getAnswerByAjax/$1', ['filter' => 'api:frontend']);
         $routes->post('save', 'AnswerController::saveReply', ['filter' => 'api:frontend']);
     });
-});
 
+});
 
 $routes->group('backend', ['namespace' => 'App\Controllers\Backend'], static function ($routes) {
 

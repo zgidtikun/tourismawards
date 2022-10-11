@@ -8,7 +8,7 @@ const onFileHandle = (setting,input,type) => {
         
     if(handle.length > 0){
         switch(ref.app){
-            case 'frontend/application': 
+            case 'awards/application': 
             
                 if(Number(register.count[ref.pointer[1]]) + Number(handle.length) > ref.maxUpload){
                     alert.show('warning','ไม่สามารถอัพโหลดไฟล์ได้','คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน '+ref.maxUpload+' ไฟล์เท่านั้น');
@@ -65,7 +65,7 @@ const uploadFile = (setting,input,handleBy) => {
     });
 
     switch(ref.app){
-        case 'frontend/application': 
+        case 'awards/application': 
             if(ref.path == 'paper'){
                 $(ref.label).html(setSpinner('Uploading...'));
                 $(ref.btn).prop('disabled',true);
@@ -117,7 +117,7 @@ const removeFile = (input,setting) => {
         ref = referance.find(el => el.input == input),
         api_setting.data = setting;
         api_setting.method = 'post';
-        api_setting.url = '/frontend/app/remove/file';
+        api_setting.url = '/inner-api/app/remove/file';
 
         if(setting.remove == 'all'){
             api_setting.data.position = ref.position;
@@ -158,25 +158,48 @@ const removeFile = (input,setting) => {
     }
 }
 
+const downloadFile = (input) => {
+    let id, url,
+        ref = referance.find(el => el.input == input);
+
+    if(ref.app == 'awards/application') id = register.id;
+
+    url = getBaseUrl()+'/inner-api/app/download/file';
+    url += '/'+id+'/'+ref.position;
+    window.open(url,'_blank');
+}
+
 const showFiles = {
     registerPaper(input,files){
 
         let ref = referance.find(el => el.input == input),
-            html = '';
+            html = '', layout;
             
         $.each(files,function(key,file){
             html += showFiles.setFile(input,file);
         });
         
-        $(ref.show).html(html);
+        if(ref.app = 'awards/application'){
+            if(ref.path == 'images'){
+                if($.inArray(register.status,[1,4]) !== -1){
+                    layout = ref.show;
+                } else {
+                    layout = ref.ablum;
+                }
+            } else {
+                layout = ref.show;
+            }
+        }
+        
+        $(layout).html(html);
     },
     setFile(input,setting){
         let html, onclick, id, img,
             ref = referance.find(el => el.input == input);
 
-        if(ref.app == 'frontend/application') id = register.id;
+        if(ref.app == 'awards/application') id = register.id;
         
-        if(ref.app == 'frontend/application' && ref.path == 'paper'){
+        if(ref.app == 'awards/application' && ref.path == 'paper'){
             onclick = 'onclick="removeFile(\''+input+'\',{id: '+id+',';
             onclick += "file_name: '"+setting.file_name+"',";
             onclick += "file_path: '"+setting.file_path+"',";
@@ -195,29 +218,40 @@ const showFiles = {
             html += '       </div>';
             html += '   </div>';
             html += '</div>';
-        } else if(ref.app == 'frontend/application' && ref.path == 'images'){            
-            onclick = 'href="javascript:removeFile(\''+input+'\',{id: '+id+',';
-            onclick += "file_name: '"+setting.file_name+"',";
-            onclick += "file_path: '"+setting.file_path+"',";
-            onclick += 'remove: \'fixed\'});"';
-            
+        } else if(ref.app == 'awards/application' && ref.path == 'images'){ 
             img = getBaseUrl()+'/'+setting.file_path;
-            html = '<div class="card card-left mt-1 mb-1">';
-            html += '   <img src="'+img+'" class="card-img-left">';
-            html += '   <div class="card-body">';
-            html += '       <div class="bs-row">';
-            html += '           <span class="fs-file-name fw-semibold">'+setting.file_original+'</span>';
-            html += '       </div>';
-            html += '       <div class="bs-row">'; 
-            html += '           <div class="col-12">';
-            html += '               <span style="font-size: 14px;" class="text-muted">'+setting.file_size+'MB</span>';
-            html += '               <a '+onclick+' class="fs-file-remove float-end" title="ลบไฟล์">';
-            html += '                   <i class="bi bi-trash-fill"></i> ลบ';
-            html += '               </a>';
-            html += '           </div>';
-            html += '       </div>';
-            html += '   </div>';
-            html += '</div>';
+
+            if($.inArray(register.status,[1,4]) !== -1){       
+                onclick = 'href="javascript:removeFile(\''+input+'\',{id: '+id+',';
+                onclick += "file_name: '"+setting.file_name+"',";
+                onclick += "file_path: '"+setting.file_path+"',";
+                onclick += 'remove: \'fixed\'});"';                
+                
+                html = '<div class="card card-left mt-1 mb-1">';
+                html += '   <img src="'+img+'" class="card-img-left">';
+                html += '   <div class="card-body">';
+                html += '       <div class="bs-row">';
+                html += '           <span class="fs-file-name fw-semibold">'+setting.file_original+'</span>';
+                html += '       </div>';
+                html += '       <div class="bs-row">'; 
+                html += '           <div class="col-12">';
+                html += '               <span style="font-size: 14px;" class="text-muted">'+setting.file_size+'MB</span>';
+                html += '               <a '+onclick+' class="fs-file-remove float-end" title="ลบไฟล์">';
+                html += '                   <i class="bi bi-trash-fill"></i> ลบ';
+                html += '               </a>';
+                html += '           </div>';
+                html += '       </div>';
+                html += '   </div>';
+                html += '</div>';
+            } else {
+                html = '<div class="ablumbox-col">';
+                html += '    <div class="ablum-mainimg">';
+                html += '        <div class="ablum-mainimg-scale">';
+                html += '            <img src="'+img+'">';
+                html += '       </div>';
+                html += '   </div>';
+                html += '</div>';
+            }
         }
 
         return html;
@@ -235,6 +269,8 @@ let dropArea;
 
 if($('#step1-images-drop').length > 0){
     dropArea = document.getElementById('step1-images-drop');
+} else if($('#images-drop').length > 0){
+    dropArea = document.getElementById('images-drop');
 }
 
 const preventDefaults = (e) => {
@@ -288,7 +324,7 @@ const handleDropImages = (id,files) => {
         return false;
     }
 
-    if(ref.app == 'frontend/application')
+    if(ref.app == 'awards/application')
         appId = register.id;
 
     uploadFile({id: appId, files: temp},ref.input,'drop');
@@ -310,148 +346,170 @@ const referance = [
         input: '#step1-paper', pointer: ['step1','paper'],
         btn: '#step1-paper-btn', btnrm: '#step1-paper-remove',
         show: '#step1-paper-list', label: '#step1-paper-label',
-        api: '/frontend/app/upload', position: 'paperFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'paperFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     { 
         input: '#step1-detail', pointer: ['step1','detail'],
         btn: '#step1-detail-btn', btnrm: '#step1-detail-remove',
         show: '#step1-detail-list', label: '#step1-detail-label',
-        api: '/frontend/app/upload', position: 'detailFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'detailFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     { 
         input: '#step1-images', area: '#step1-images-input',
         pointer: ['step1','images'],
         btn: '#step1-images-btn', btnrm: '#step1-images-remove',
-        show: '#step1-images-list', label: {
+        show: '#step1-images-list', ablum: '#step1-images-ablum', 
+        label: {
             input: '#step1-images-input',
             progress: '#step1-images-progress'
         },
-        api: '/frontend/app/upload', position: 'registerImages',
-        path: 'images', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'registerImages',
+        path: 'images', app: 'awards/application',
         maxUpload: 5, maxSize: 10
     },
     {
         input: '#step5-landOwner', pointer: ['step5','landOwner'],
         btn: '#step5-landOwner-btn', btnrm: '#step5-landOwner-remove',
         show: '#step5-landOwner-list', label: '#step5-landOwner-label',
-        api: '/frontend/app/upload', position: 'landOwnerFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'landOwnerFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-businessCert', pointer: ['step5','businessCert'],
         btn: '#step5-businessCert-btn', btnrm: '#step5-businessCert-remove',
         show: '#step5-businessCert-list', label: '#step5-businessCert-label',
-        api: '/frontend/app/upload', position: 'businessCertFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'businessCertFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-otherCert', pointer: ['step5','otherCert'],
         btn: '#step5-otherCert-btn', btnrm: '#step5-otherCert-remove',
         show: '#step5-otherCert-list', label: '#step5-otherCert-label',
-        api: '/frontend/app/upload', position: 'otherCertFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'otherCertFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-bussLicenseFiles', pointer: ['step5','bussLicenseFiles'],
         btn: '#step5-bussLicenseFiles-btn', btnrm: '#step5-bussLicenseFiles-remove',
         show: '#step5-bussLicenseFiles-list', label: '#step5-bussLicenseFiles-label',
-        api: '/frontend/app/upload', position: 'bussLicenseFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'bussLicenseFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-EIAreport', pointer: ['step5','EIAreport'],
         btn: '#step5-EIAreport-btn', btnrm: '#step5-EIAreport-remove',
         show: '#step5-EIAreport-list', label: '#step5-EIAreport-label',
-        api: '/frontend/app/upload', position: 'EIAreportFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'EIAreportFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-otherT2Cert', pointer: ['step5','otherT2Cert'],
         btn: '#step5-otherT2Cert-btn', btnrm: '#step5-otherT2Cert-remove',
         show: '#step5-otherT2Cert-list', label: '#step5-otherT2Cert-label',
-        api: '/frontend/app/upload', position: 'otherT2CertFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'otherT2CertFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-spaCert', pointer: ['step5','spaCert'],
         btn: '#step5-spaCert-btn', btnrm: '#step5-spaCert-remove',
         show: '#step5-spaCert-list', label: '#step5-spaCert-label',
-        api: '/frontend/app/upload', position: 'spaCertFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'spaCertFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-effluent', pointer: ['step5','effluent'],
         btn: '#step5-effluent-btn', btnrm: '#step5-effluent-remove',
         show: '#step5-effluent-list', label: '#step5-effluent-label',
-        api: '/frontend/app/upload', position: 'effluentFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'effluentFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-wellnessCert', pointer: ['step5','wellnessCert'],
         btn: '#step5-wellnessCert-btn', btnrm: '#step5-wellnessCert-remove',
         show: '#step5-wellnessCert-list', label: '#step5-wellnessCert-label',
-        api: '/frontend/app/upload', position: 'wellnessCertFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'wellnessCertFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-spaManger', pointer: ['step5','spaManger'],
         btn: '#step5-spaManger-btn', btnrm: '#step5-spaManger-remove',
         show: '#step5-spaManger-list', label: '#step5-spaManger-label',
-        api: '/frontend/app/upload', position: 'spaMangerFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'spaMangerFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-titleDeed', pointer: ['step5','titleDeed'],
         btn: '#step5-titleDeed-btn', btnrm: '#step5-titleDeed-remove',
         show: '#step5-titleDeed-list', label: '#step5-titleDeed-label',
-        api: '/frontend/app/upload', position: 'titleDeedFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'titleDeedFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-outlander', pointer: ['step5','outlander'],
         btn: '#step5-outlander-btn', btnrm: '#step5-outlander-remove',
         show: '#step5-outlander-list', label: '#step5-outlander-label',
-        api: '/frontend/app/upload', position: 'outlanderFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'outlanderFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-guideCert', pointer: ['step5','guideCert'],
         btn: '#step5-guideCert-btn', btnrm: '#step5-guideCert-remove',
         show: '#step5-guideCert-list', label: '#step5-guideCert-label',
-        api: '/frontend/app/upload', position: 'guideCertFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'guideCertFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-titleDeedT4', pointer: ['step5','titleDeedT4'],
         btn: '#step5-titleDeedT4-btn', btnrm: '#step5-titleDeedT4-remove',
         show: '#step5-titleDeedT4-list', label: '#step5-titleDeedT4-label',
-        api: '/frontend/app/upload', position: 'gtitleDeedT4Files',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'gtitleDeedT4Files',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
         input: '#step5-otherT4Cert', pointer: ['step5','otherT4Cert'],
         btn: '#step5-otherT4Cert-btn', btnrm: '#step5-otherT4Cert-remove',
         show: '#step5-otherT4Cert-list', label: '#step5-otherT4Cert-label',
-        api: '/frontend/app/upload', position: 'otherT4CertFiles',
-        path: 'paper', app: 'frontend/application',
+        api: '/inner-api/app/upload', position: 'otherT4CertFiles',
+        path: 'paper', app: 'awards/application',
+        maxUpload: 5, maxSize: 15
+    },
+    { 
+        input: '#images', area: '#images-input',
+        pointer: ['','images'],
+        btn: '#images-btn', btnrm: '#images-remove',
+        show: '#images-list', ablum: '#images-ablum', 
+        label: {
+            input: '#images-input',
+            progress: '#images-progress'
+        },
+        api: '/inner-api/app/upload', position: 'images',
+        path: 'images', app: 'awards/pre-screen',
+        maxUpload: 5, maxSize: 10
+    },
+    {
+        input: '#file', pointer: ['','paper'],
+        btn: '#file-btn', btnrm: '#file-remove',
+        show: '#file-list', label: '#file-label',
+        api: '/inner-api/app/upload', position: 'otherT4CertFiles',
+        path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
 ];

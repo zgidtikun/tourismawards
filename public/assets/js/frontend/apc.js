@@ -155,20 +155,40 @@ const register = {
                     if(empty(register.formData.step1.appType)){
                         register.formData.step1.appType = typeId;
                     }
+
                     if(empty(register.formData.step1.appTypeSub)){
                         register.formData.step1.appTypeSub = typeSubId;
                     }
-
                     register.change = false;
                     register.setStep(1);
                     loading('hide');
+
+                    if(register.status == 3){
+                        $('#link-pre-screen').removeClass('disabled');
+                        let setting = {
+                            icon: 'success',
+                            title: 'ใบสมัครของท่านผ่านการอนุมัติ',
+                            text: 'โปรดกรอกแบบประเมินขั้นต้น (Pre-screen) ภายในระยะเวลาที่กำหนด',
+                            mode: 'default',
+                            button: {
+                                confirm: 'ไปตอบแบบประเมินขั้นต้น',
+                                cancel: 'ยกเลิก'
+                            }
+                        }
+
+                        alert.confirm(setting).then(function(response){
+                            if(response.status){
+                                window.location.href = getBaseUrl()+'/awards/pre-screen';
+                            }
+                        });
+                    }
                 }
             });
         });
     },
     getAppType: async function(){
         return new Promise(function(resolve) {            
-            api({method: 'get', url: '/frontend/app/type-all'}).then(function(data){
+            api({method: 'get', url: '/inner-api/app/type-all'}).then(function(data){
                 resolve(data);
             });
         });
@@ -176,7 +196,7 @@ const register = {
     getApc: async function(){
         return new Promise(function(resolve) {
             
-            api({method: 'get', url: '/frontend/app/detail'}).then(function(response){
+            api({method: 'get', url: '/inner-api/app/detail'}).then(function(response){
                 let app = response.data;
                 let files = !empty(app.pack_file) ? app.pack_file : [],
                     tmp = [];
@@ -191,6 +211,7 @@ const register = {
                         case '1': 
                             $('#formstep-sts').addClass('date');
                             $('.form-main-title').removeClass('hide');
+                            $('.attach-file').remove();
                         break;
                         case '2': 
                             $('#formstep-sts').addClass('check');
@@ -211,12 +232,13 @@ const register = {
                             $('#formstep-sts').html('ไม่ผ่านการอนุมัติ');
                             $('.form-main-title').removeClass('hide');
                             $('#formstatus-uncomplete').removeClass('hide');
+                            $('.attach-file').remove();
                         break;
                     }
                 } else {
                     $('#formstep-sts').addClass('notpass');
                     $('#formstep-sts').html('หมดเวลาการส่งใบสมัครแล้ว');
-                    $('.btn-action, .btn-file, .bfd-dropfield').remove();
+                    $('.btn-action, .btn-file, .bfd-dropfield, .attach-file').remove();
                     $('.regis-form-data input, textarea').prop('disabled',true);
                 }
 
@@ -255,7 +277,7 @@ const register = {
                 Object.assign(register.formData.step3, tmp['step3']);
                 Object.assign(register.formData.step4, tmp['step4']);
                 Object.assign(register.formData.step5, tmp['step5']);
-                console.log(register.formData.step5)
+                
                 $.each(referance, function(key,ref){
                     let pointer = ref.pointer;
                     register.formData[pointer[0]][pointer[1]] = [];
@@ -341,10 +363,10 @@ const register = {
                     $('#step5-type'+index).removeClass('hide');
             });
 
-            $('.btn-regis').prop('disabled',false);
+            $('.btn-regis').removeClass('disabled');
             $('.btn-regis').addClass('active');
         } else {
-            $('.btn-regis').prop('disabled',true);
+            $('.btn-regis').addClass('disabled');
             $('.btn-regis').removeClass('active');
         }
         
@@ -390,7 +412,7 @@ const register = {
             dataStep = this.formData['step'+step],
             setting = {
                 method: 'action',
-                url: '/frontend/app/draft',
+                url: '/inner-api/app/draft',
                 data: []
             };
             
@@ -494,12 +516,12 @@ const register = {
             };
 
             alert.confirm(setting).then(function(response){
-                if(response.result){
+                if(response.status){
                     loading('show');
 
                     let formData = new FormData();
-                    formData.append('id',thregisteris.id);
-                    formData.append('step',step);
+                    formData.append('id',register.id);
+                    formData.append('step','finish');
 
                     ;[1,2,3,4,5].forEach(index => {
                         let mapFData = register.getMapField('step',index),
@@ -511,7 +533,7 @@ const register = {
                         });
                     });            
 
-                    api({method: 'action', url: '/frontend/app/finish', data: formData})
+                    api({method: 'action', url: '/inner-api/app/finish', data: formData})
                     .then(function(res){
                         loading('hide');
                         let save = res;
@@ -524,7 +546,9 @@ const register = {
                             } else {
                                 var title = 'ไม่สามารถบันทึกข้อมูลได้';
                             }
+
                             alert.show(save.result,title,save.message);
+                            if(save.result == 'success'){ window.location.reload(); }
                             return;
                         }
                     });

@@ -15,14 +15,6 @@ class Home extends BaseController
         ];
         return view('template-app',$data);
     }
-
-    public function frontend()
-    {
-        if(session()->get('role') == 1)
-            return redirect()->to(base_url('frontend/application'));
-        else return redirect()->to(base_url('frontend/application'));
-    }
-
     public function indexBackend()
     {
         $data['title']  = 'สถิติการใช้งาน';

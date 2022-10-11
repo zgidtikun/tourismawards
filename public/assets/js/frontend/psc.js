@@ -1,42 +1,30 @@
 const MapData = {
     label: {
         title: '#title', sum: '#sum', question: '#question', remark: '#remark', 
+        num: '#num', selection: '#select-dropdown', 
+        model: {
+            selection: '#selection-list', item: '#sl-'
+        }
     },
     input: {
-        reply: {id: '#reply', api: 'reply', require: true},
-        paper: {id: '#paperFile', api: 'paperFile[]', require: false},
-        images: {id: '#imagesFile', api: 'imagesFile[]', require: false},
-    },
-    files: {
-        fixed: {
-            paper: {id: '#paper-fixed-', new: 'div.paper-new', ready: 'div.paper-ready'},
-            images: {id: '#images-fixed-', new: 'div.images-new', ready: 'div.images-ready'}
-        },
-        accept: {
-            paper: ['.doc','docx','application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-            images: ['image/jpg','image/jpeg','image/gif','image/png','image/webp'],
-        }
+        reply: { id: '#reply', api: 'reply', require: true }
     }
 }
 
 const psc = {
     pointer: {
-        category: 0,
-        segment: 0,
+        category: -1,
+        segment: -1,
     },
     questions: null,
     init: function(){
         loading('show');
-        api({method: 'get', url: '/frontend/question/get'}).then(function(response){           
+        api({method: 'get', url: '/inner-api/question/get'}).then(function(response){           
             psc.questions = response;
-
+            console.log(response);
             $.each(psc.questions,function(ckey,cval){
                 $.each(cval.question,function(qkey,qval){
-                    if(empty(qval.answer))
-                        qval.answer = '';
-
-                    qval.images.new = qval.images.delete = [];
-                    qval.paper.new = qval.images.delete = [];
+                    if(empty(qval.answer)){ qval.answer = ''; }                        
                     qval.change = false;
                 });
             });
@@ -117,13 +105,73 @@ const psc = {
             category = this.questions[cate],
             question = this.questions[cate].question[seg];
 
+        if(point.cate != cate){
+            $('.btn-form-step').removeClass('active');
+            $('#tab-'+cate).addClass('active');
+            this.setDropdown(category.question,cate,seg);
+        }
+
+        $('.hide-choice').hide();
+        $('body').removeClass('lockbody');
+
+        if(point.cate == -1){ point.cate = 0; }
+        if(point.seg == -1){ point.seg = 0; }
+
+        if(!empty(this.questions[point.cate].question[point.seg].answer)){
+            $(MapData.label.model.item+point.seg).addClass('complete');
+        } else {
+            $(MapData.label.model.item+point.seg).removeClass('complete');
+        }
+        
+        $('.sl').removeClass('active');
+        $(MapData.label.model.item+seg).addClass('active');
+        
         this.setPointer(cate,seg);
 
         $(MapData.label.title).html(category.group.name);
-        $(MapData.label.sum).html(category.question.length);
-        $(MapData.label.question).html(question.question);
-        $(MapData.label.remark).html(question.remark);
+        $(MapData.label.sum).html(category.question.length); 
+        $(MapData.label.num).html(question.no);
+        $(MapData.label.question).html(question.no+'. '+question.question);
         $(MapData.input.reply.id).val(question.answer);
+
+        if(!empty(question.remark)){
+            $(MapData.label.remark).html(question.remark);
+            $(MapData.label.remark).show();
+        } else {
+            $(MapData.label.remark).hide();
+        }
+
+        let back = seg != 0 ? seg-1 : seg,
+            next = seg != category.question.length-1 ? seg+1 : seg;
+
+        $('#btn-back').attr('onclick','psc.setNewQuestion('+cate+','+back+')');
+        $('#btn-next').attr('onclick','psc.setNewQuestion('+cate+','+next+')');
+
+        if(seg == 0){
+            $('#btn-back').hide();
+            $('#btn-next').show();
+        } else if(seg >= category.question.length-1){
+            $('#btn-back').show();
+            $('#btn-next').hide();
+        } else {
+            $('#btn-back').show();
+            $('#btn-next').show();
+        }
+    },
+    setDropdown: function(qt,cate,seg){
+        let model = '';
+
+        $.each(qt, function(key, value){
+            let hr = 'href="javascript:psc.setNewQuestion('+cate+','+key+');"',
+                id = 'id="sl-'+key+'"',
+                cp = !empty(value.answer) && seg != key ? 'complete' : '',
+                cl;
+            console.log(seg,key,(seg == key))
+            cl = 'class="sl '+cp+'"';
+            model += '<li><a '+hr+' '+id+' '+cl+'> ช้อที่ '+value.no+'</a></li>';
+        })
+
+        $(MapData.label.model.selection).html(model);
     },
     setReply: function(str){
         let point = this.getPointer();
@@ -137,95 +185,8 @@ const psc = {
     getPointer: function(){
         return {cate: this.pointer.category, seg: this.pointer.segment};
     },
-    onFileHandel: function(type){
-        let id = MapData.input[type].id,
-            tag = MapData.files.fixed[type].new,
-            point = this.getPointer(),
-            max = type == 'images' ? 10 : 5,
-            check = true;
-        let files = $(id)[0].files,
-            sysFiles = this.questions[point.cate].question[point.seg][type].list;
-        let count = files.length + sysFiles.length;
-
-        $(tag).remove();
-
-        if(count <= max){
-            let accept = MapData.files.accept[type];
-            this.questions[point.cate].question[point.seg][type].new = [];
-
-            if(type == 'images'){
-                $.each(files,function(key,file){
-                    if($.inArray(file.type,accept) === -1){
-                        check = false;
-                        return false;
-                    } else {
-                        this.questions[point.cate].question[point.seg][type].new.push(file);
-                    }
-                });
-
-                if(!check){
-                    this.questions[point.cate].question[point.seg][type].new = [];
-                    let message = 'กรุณาเลือกเป็นไฟล์ .jpg, .jpeg, .gif, .png, .webp  เท่านั้น';
-                    alert.show('warning','ไม่สามารถอัพโหลดรูปได้',message);
-                }
-            } else {
-                $.each(files,function(key,file){
-                    let mb = (file.size / (1024 * 1024)).toFixed(2);
-
-                    if($.inArray(val.file,accept) === -1){
-                        var text = 'กรุณาเลือกเป็นไฟล์ .docx, .doc, .pdf เท่านั้น'
-                        check = false;
-                        return false;
-                    } else if(mb > 20.00){
-                        var text = 'กรุณาเลือกขนาดไฟล์ไม่เกิน 20 MiB.'
-                        check = false;
-                        return false;
-                    }
-
-                    if(check){
-                        this.questions[point.cate].question[point.seg][type].new.push(file);
-                    } else {
-                        alert.show('warning','ไม่สามารถอัพโหลดไฟล์ได้',text);
-                    }
-                });
-            }
-        } else {
-            check = false;
-            let title = type == 'images' ? 'ไม่สามารถอัพโหลดรูปได้' : 'ไม่สามารถอัพโหลดไฟล์ได้';
-            let text = type == 'images' ? 'คุณสามารถอัพโหลกไฟล์ได้ไม่เกิน '+max+' ไฟล์เท่านั้น' : 'คุณสามารถอัพโหลดรูปได้ไม่เกิน '+max+' รูปเท่านั้น';
-            alert.show('warning',title,text);
-        }
-        
-        if(!check){
-            let ele = $(id);
-            ele.wrap('<form>').closest('form').get(0).reset();
-            ele.unwrap();
-        } else {
-            this.questions[point.cate].question[point.seg].change = true;
-        }
-    },
-    removeFiles: function(type,act,index){
-        let point = this.getPointer();
-        let temp = this.questions[point.cate].question[point.seg][type][act][index];
-        this.questions[point.cate].question[point.seg][type][act].splice(index,1);
-        this.questions[point.cate].question[point.seg].change = true;
-
-        if(act == 'list')
-            this.questions[point.cate].question[point.seg][type].delete.push(temp);
-
-    }
 }
 
 $(MapData.input.reply.id).keyup(function(){
     psc.setReply($(this).val());
-});
-
-$(MapData.input.images.id).change(function(){
-    if($(this)[0].files.length > 0)
-        psc.onFileHandel('images');
-});
-
-$(MapData.input.paper.id).change(function(){
-    if($(this)[0].files.length > 0)
-        psc.onFileHandel('paper');
 });

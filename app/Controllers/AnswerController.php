@@ -22,24 +22,32 @@ class AnswerController extends BaseController
 
     public function preScreenIndex()
     {
-        $data = [
-            'title' => 'Pre-screen',
-            'view' => 'frontend/pre-screen'
+        $app = new \Config\App();
+        $duedate = (object) [
+            'expired_date' => $app->Pre_expired,
+            'expired_str' => 'ภายในวันที่ '.FormatTree($app->Pre_expired,'thailand'),
+            'expired_sts' => $app->Pre_expired <= date('Y-m-d') ? true : false,
         ];
 
-        return view('template-frontend',$data);
+        $data = [
+            'title' => 'Pre-screen',
+            'view' => 'frontend/entrepreneur/pre-screen',
+            'duedate' => $duedate
+        ];
+
+        return view('frontend/entrepreneur/_template',$data);
     }
 
     public function getQuestionByAjax()
     {
-        $result = $this->getQuestion();
+        $result = $this->getQuestion(session()->get('id'));
         return $this->response->setJSON($result);
     }
 
-    public function getQuestion()
+    public function getQuestion($id)
     {
         $instApp = new \App\Controllers\ApplicationController();
-        $app = $instApp->getRequireQuestion(session()->get('id'));
+        $app = $instApp->getRequireQuestion($id);
         $group = $this->assg->findAll();
         $result = [];
         
@@ -53,15 +61,17 @@ class AnswerController extends BaseController
                 'q.application_type_sub_id' => $app->sub_type_id
             ];
 
+            if(session()->get('role') == 1)
+                $where['q.pre_status'] = 1;
+
             $builder = $this->db->table('question q')
                 ->select('q.id,q.question,q.remark,a.id reply_id,a.reply,a.pack_file')
                 ->join('answer a','q.id = a.question_id','left')
                 ->where($where)
                 ->orderBy('id','ASC')
                 ->get();
-            
+           
             foreach($builder->getResult() as $val){   
-                           
                 $val->no = ++$counter;
                 $val->images = $val->paper = (object) ['list' => []]; 
 

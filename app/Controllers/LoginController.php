@@ -23,8 +23,12 @@ class LoginController extends BaseController
             return redirect()->to(base_url('404'));
             
         if(session()->get('isLoggedIn')){
-            if(in_array(session()->get('role'),array(1,3)))
-                return redirect()->to(base_url('frontend/application'));
+            if(session()->get('role') == 1){
+                return redirect()->to(base_url('awards/application'));
+            }
+            elseif(session()->get('role') == 3){
+                return redirect()->to(base_url('boards/managment'));
+            }
             else
                 return redirect()->to(base_url('backend/dashboard'));            
         }
@@ -135,11 +139,11 @@ class LoginController extends BaseController
     }
 
     public function logout()
-    {
-        $default = session()->get('default');
+    {    
+        $url = session()->get('default') == 'frontend' ? 'login' : 'backend/login';
         $list = array('isLoggedIn','id','account','user','role','default');
         session()->remove($list);
-        return redirect()->to(base_url('login/'.$default));
+        return redirect()->to(base_url($url));
     }
 
     public function setSession(){

@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\ApplicationForm as AppForm;
 use App\Models\ApplicationType as AppType;
 use App\Models\ApplicationTypeSub as AppTypeSub;
+
 class ApplicationController extends BaseController
 {
 
@@ -126,7 +127,7 @@ class ApplicationController extends BaseController
             ];
 
             foreach($maps as $map){
-                $updd[$map] = @$input[$map];
+                $updd[$map] = !empty($input[$map]) ? $input[$map] : NULL;
             }
 
             $update = $this->appForm->update($app_id,$updd);
@@ -149,9 +150,9 @@ class ApplicationController extends BaseController
             $input = $this->input->getVar();
 
             $maps = array_merge(
-                $this->mapFiled['step1'],$this->mapFiled['step2'],
-                $this->mapFiled['step3'],$this->mapFiled['step4'],
-                $this->mapFiled['step5']
+                $this->mapDBFiled['1'],$this->mapDBFiled['2'],
+                $this->mapDBFiled['3'],$this->mapDBFiled['4'],
+                $this->mapDBFiled['5']
             );
             
             $app_id = $input['id'];
@@ -162,7 +163,7 @@ class ApplicationController extends BaseController
             ];
 
             foreach($maps as $map){
-                $updd[$map] = $input[$map];
+                $updd[$map] = !empty($input[$map]) ? $input[$map] : NULL;
             }
 
             $update = $this->appForm->update($app_id,$updd);

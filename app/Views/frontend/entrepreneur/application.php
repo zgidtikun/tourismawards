@@ -10,14 +10,18 @@
 
                 <div class="formstep">
                     <div class="formstep-col register active">
-                        <div class="formstep-title">1. กรอกแบบฟอร์มใบสมัคร</div>
+                        <a href="<?=base_url('awards/application')?>">
+                            <div class="formstep-title">1. กรอกแบบฟอร์มใบสมัคร</div>                        
+                        </a>
                         <div class="formstep-status hide" id="formstep-sts" data-tab="1">
                             <?=$duedate->expired_str?>
                         </div>
                         <div class="formstep-icon"><span><i class="bi bi-pencil-fill"></i></span></div>
                     </div>
                     <div class="formstep-col prescreen">
-                        <div class="formstep-title">2. กรอกแบบประเมินขั้นต้น (Pre-Screen)</div>
+                        <a href="<?=base_url('awards/pre-screen')?>" id="link-pre-screen" class="disabled">
+                            <div class="formstep-title">2. กรอกแบบประเมินขั้นต้น (Pre-Screen)</div>                                                
+                        </a>
                         <div class="formstep-status" data-tab="2"></div>
                         <div class="formstep-icon"><span><i class="bi bi-three-dots"></i></span></div>
                     </div>
@@ -71,8 +75,8 @@
                 <div class="form-main-btn">
                     <a href="javascript:register.saveDraft(register.formData.currentStep,'save')" 
                     class="btn-save" data-tab="1">บันทึก</a>
-                    <a href="javascript:register.saveApp()" class="btn-regis" 
-                    data-tab="2" disabled>ส่งใบสมัคร</a>
+                    <a href="javascript:register.saveApp()" class="btn-regis disabled" 
+                    data-tab="2">ส่งใบสมัคร</a>
                 </div>
             </div>
 
@@ -127,14 +131,14 @@
                         <div class="regis-form-data-col1 inpvdo">
                            ลิ้งก์เว็บไซต์ หรือ ลิ้งก์วิดีโอ <input type="text" class="form-control" id="step1-link">
                         </div>
-                        <div class="bs-row selecter-file">
+                        <div class="bs-row mt-2">
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6">
                                 <div class="col-12">
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-header text-center" style="border-bottom: 0;">
                                             <span class="fs-18 fw-semibold">รายละเอียดผลงาน (แนบไฟล์)</span>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step1-detail-btn">
@@ -155,6 +159,17 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step1-detail')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12 mt-4 mb-4">
@@ -162,7 +177,7 @@
                                         <div class="card-header text-center" style="border-bottom: 0;">
                                             <span class="fs-18 fw-semibold">สื่อสิ่งพิมพ์ (แนบไฟล์)</span>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step1-paper-btn">
@@ -183,8 +198,17 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
-                                    </div>
-                                    
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step1-paper')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                    
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -193,7 +217,7 @@
                                         <div class="card-header text-center" style="background-color: rgba(0, 0, 0, 0.03);">
                                             <span class="fs-18 fw-semibold">แนบรูปภาพความละเอียดสูง</span>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row">
                                                 <div class="col-12">                                                                 
                                                     <button class="btn btn-action" id="step1-images-remove"
@@ -226,7 +250,86 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="card-body-muted c-lef" id="step1-images-list">
+                                        <div class="card-body-muted c-lef selecter-file" id="step1-images-list">
+                                        </div>
+                                        <div class="card-body attach-file">
+                                            <div class="ablumbox" id="step1-images-ablum">
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news01.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news02.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news01.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news02.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news01.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news02.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news01.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news02.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news01.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="ablumbox-col">
+                                                    <div class="ablum-mainimg">
+                                                        <div class="ablum-mainimg-scale">
+                                                            <img src="<?=base_url('assets/images/news02.jpg')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -492,7 +595,7 @@
                             <p><input type="radio" name="step5-t1-manageBy" id="step5-t1-manageBy-2" value="2"> ชุมชนท่องเที่ยว</p>
                             <p><input type="radio" name="step5-t1-manageBy" id="step5-t1-manageBy-3" value="3"> ภาคเอกชน</p>
                         </div>
-                        <div class="bs-row selecter-file">
+                        <div class="bs-row">
                             <h4>แนบเอกสาร</h4>
                             <hr>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -501,7 +604,7 @@
                                     <span class="required">*</span>
                                 </span>
                                 <div class="card" style="border: 1px solid #E5E6ED;">
-                                    <div class="card-body">
+                                    <div class="card-body selecter-file">
                                         <div class="bs-row mb-2">
                                             <div class="col-12">
                                                 <button class="btn btn-file" id="step5-landOwner-btn">
@@ -522,6 +625,16 @@
                                             <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                         </div>
                                     </div>
+                                    <div class="card-body attach-file">
+                                        <div class="bs-row">
+                                            <div class="d-grid">
+                                                <button class="btn btn-primary" type="button"
+                                                onclick="downloadFile('#step5-step5')">
+                                                    <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -529,7 +642,7 @@
                                     สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน<span class="required">*</span>
                                 </h4>
                                 <div class="card" style="border: 1px solid #E5E6ED;">
-                                    <div class="card-body">
+                                    <div class="card-body selecter-file">
                                         <div class="bs-row mb-2">
                                             <div class="col-12">
                                                 <button class="btn btn-file" id="step5-businessCert-btn">
@@ -550,6 +663,16 @@
                                             <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                         </div>
                                     </div>
+                                    <div class="card-body attach-file">
+                                        <div class="bs-row">
+                                            <div class="d-grid">
+                                                <button class="btn btn-primary" type="button"
+                                                onclick="downloadFile('#step5-businessCert')">
+                                                    <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6">
@@ -558,7 +681,7 @@
                                     องค์การบริหารการพัฒนาพื้นที่พิเศษเพื่อการท่องเที่ยวอย่างยั่งยืน (องค์การมหาชน) ฯลฯ (ถ้ามี)
                                 </span>
                                 <div class="card" style="border: 1px solid #E5E6ED;">
-                                    <div class="card-body">
+                                    <div class="card-body selecter-file">
                                         <div class="bs-row mb-2">
                                             <div class="col-12">
                                                 <button class="btn btn-file" id="step5-otherCert-btn">
@@ -579,6 +702,16 @@
                                             <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                         </div>
                                     </div>
+                                    <div class="card-body attach-file">
+                                        <div class="bs-row">
+                                            <div class="d-grid">
+                                                <button class="btn btn-primary" type="button"
+                                                onclick="downloadFile('#step5-otherCert')">
+                                                    <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -589,7 +722,7 @@
                             <input type="text" class="form-control" id="step5-t2-bussLicense">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>               
-                        <div class="bs-row selecter-file">
+                        <div class="bs-row">
                             <span class="fs-18 fw-semibold">แนบเอกสาร</h4>
                             <hr>
                             <div class="bs-row">
@@ -599,7 +732,7 @@
                                         นับถึงวันปิดรับสมัคร<span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-bussLicenseFiles-btn">
@@ -620,6 +753,16 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-bussLicenseFiles')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -636,7 +779,7 @@
                                         หรือสำเนาหนังสือให้ความเห็นชอบต่อรายงานการประเมินผลกระทบสิ่งแวดล้อมเบื้องต้น (IEE) ในกรณีที่มีจำนวนห้องพักหรือพื้นที่ใช้สอยต่ำกว่าและอยู่ในพื้นที่ที่กฎหมายกำหนด
                                         <span class="required">*</span></span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-EIAreport-btn">
@@ -657,6 +800,16 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-EIAreport')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -675,7 +828,7 @@
                                         (ถ้ามี)
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-otherT2Cert-btn">
@@ -694,6 +847,16 @@
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-otherT2Cert')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -722,7 +885,7 @@
                             <p><input type="radio" name="step5-t3-nominee" id="step5-t3-nominee-1" value="1"> มีส่วนได้ส่วนเสีย</p>
                             <p><input type="radio" name="step5-t3-nominee" id="step5-t3-nominee-0" value="0" > ไม่มีส่วนได้ส่วนเสีย</p>
                         </div>
-                        <div class="bs-row selecter-file">
+                        <div class="bs-row">
                             <span class="fs-18 fw-semibold">แนบเอกสาร</h4>
                             <hr>
                             <div class="bs-row">
@@ -731,7 +894,7 @@
                                         ให้แสดงหลักฐานการยื่นขอต่ออายุจากกระทรวงสาธารณสุขหรือสำนักงานสาธารณสุขจังหวัดที่สถานประกอบการนั้นตั้งอยู่
                                         <span class="required">*</span></span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-spaCert-btn">
@@ -740,7 +903,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-spaCert-remove"
+                                                    <button class="btn btn-action" id="step5-spaCert-remove"
                                                     onclick="removeFile('#step5-spaCert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -752,6 +915,16 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-spaCert')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -759,7 +932,7 @@
                                         มีผลการตรวจสอบลักษณะน้ำทิ้ง (ในกรณีเป็นสถานประกอบกิจการที่ต้องถูกควบคุมการระบายน้ำทิ้งตามกฎหมายกำหนด)
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-effluent-btn">
@@ -768,7 +941,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-effluent-remove"
+                                                    <button class="btn btn-action" id="step5-effluent-remove"
                                                     onclick="removeFile('#step5-effluent',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -780,6 +953,16 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-effluent')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -788,7 +971,7 @@
                                         <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-wellnessCert-btn">
@@ -797,7 +980,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-wellnessCert-remove"
+                                                    <button class="btn btn-action" id="step5-wellnessCert-remove"
                                                     onclick="removeFile('#step5-wellnessCert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -809,6 +992,16 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-wellnessCert')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -816,7 +1009,7 @@
                                         สำเนาใบอนุญาตเป็นผู้ดำเนินการสปา (Spa Manager)<span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-spaManger-btn">
@@ -825,7 +1018,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-spaManger-remove"
+                                                    <button class="btn btn-action" id="step5-spaManger-remove"
                                                     onclick="removeFile('#step5-spaManger',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -837,6 +1030,16 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-spaManger')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
@@ -845,7 +1048,7 @@
                                         <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-titleDeed-btn">
@@ -854,7 +1057,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-titleDeed-remove"
+                                                    <button class="btn btn-action" id="step5-titleDeed-remove"
                                                     onclick="removeFile('#step5-titleDeed',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -866,13 +1069,23 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-titleDeed')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">เอกสารแนบอื่น ๆ (ถ้ามี) เช่น หนังสือรับรอง GMP ของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ เอกสารรับรอง (Certificate) 
                                         หรือรางวัลมาตรฐานผลิตภัณฑ์ระดับนานาชาติของผลิตภัณฑ์หรือของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ</h4>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-otherT3-btn">
@@ -881,7 +1094,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-otherT3-remove"
+                                                    <button class="btn btn-action" id="step5-otherT3-remove"
                                                     onclick="removeFile('#step5-otherT3',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -891,6 +1104,16 @@
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-titleDeed')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -912,7 +1135,7 @@
                                         <label class="form-check-label mr-2">ไม่มี</label>
                                     </div>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-outlander-btn">
@@ -921,7 +1144,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-outlander-remove"
+                                                    <button class="btn btn-action" id="step5-outlander-remove"
                                                     onclick="removeFile('#step5-outlander',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -931,6 +1154,16 @@
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-outlander')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -944,7 +1177,7 @@
                             <input type="text" class="form-control" id="step5-t4-bussLicense">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>
-                        <div class="bs-row selecter-file">
+                        <div class="bs-row">
                             <h4>แนบเอกสาร</h4>
                             <hr>
                             <div class="bs-row">
@@ -954,7 +1187,7 @@
                                         <span class="required">*</span>
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-guideCert-btn">
@@ -963,7 +1196,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-guideCert-remove"
+                                                    <button class="btn btn-action" id="step5-guideCert-remove"
                                                     onclick="removeFile('#step5-guideCert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -975,6 +1208,16 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-guideCert')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">   
@@ -984,7 +1227,7 @@
                                         <span class="required">*</span>
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-guideOldCert-btn">
@@ -993,7 +1236,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-guideOldCert-remove"
+                                                    <button class="btn btn-action" id="step5-guideOldCert-remove"
                                                     onclick="removeFile('#step5-guideOldCert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1005,6 +1248,16 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-guideOldCert')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">   
@@ -1014,7 +1267,7 @@
                                         <span class="required">*</span>
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-titleDeedT4-btn">
@@ -1023,7 +1276,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-titleDeedT4-remove"
+                                                    <button class="btn btn-action" id="step5-titleDeedT4-remove"
                                                     onclick="removeFile('#step5-titleDeedT4',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1033,6 +1286,16 @@
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-titleDeedT4')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1045,7 +1308,7 @@
 
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body">
+                                        <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
                                                 <div class="col-12">
                                                     <button class="btn btn-file" id="step5-otherT4Cert-btn">
@@ -1054,7 +1317,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-otherT4Cert-remove"
+                                                    <button class="btn btn-action" id="step5-otherT4Cert-remove"
                                                     onclick="removeFile('#step5-otherT4Cert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1064,6 +1327,16 @@
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-otherT4Cert')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

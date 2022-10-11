@@ -92,8 +92,12 @@
                                     <p class="useridentity">
                                     <?php if(session()->get('role') == 1):?>
                                        ผู้ประกอบการ
-                                    <?php else: ?>
+                                    <?php elseif(session()->get('role') == 2): ?>
+                                       เจ้าหน้าที่ ททท.
+                                    <?php elseif(session()->get('role') == 3): ?> 
                                        คณะกรรมการ
+                                    <?php else: ?>   
+                                       ผู้ดูแลระบบ
                                     <?php endif; ?>  
                                     </p>
                                     <p class="usermail"><?=session()->get('account')?></p>
@@ -101,10 +105,30 @@
                                  </div>
                               </div>
                               <div class="user-profile">
-                                 <a href="javascript:void(0)">
+                              <?php if(in_array(session()->get('role'),[1,3])): ?>
+                                 <a href="javascript:void(0)" class="mb-1">
                                     <i class="bi bi-person-fill"></i>
                                     &nbsp;&nbsp;ข้อมูลส่วนตัว
                                  </a>
+                                 <?php  
+                                    if(session()->get('role') == 1){
+                                       $url = 'awards/application';
+                                       $content = 'ข้อมูลการประกวด';
+                                    } else {
+                                       $url = 'bords/management';
+                                       $content = 'ระบบการจัดการ';
+                                    }
+                                 ?>
+                                 <a href="<?=base_url($url)?>">
+                                    <i class="bi bi-award-fill"></i>
+                                    &nbsp;&nbsp;<?=$content?>
+                                 </a>
+                              <?php else: ?>
+                                 <a href="backend/dashboard">
+                                    <i class="bi bi-file-bar-graph-fill"></i>
+                                    &nbsp;&nbsp;Dashboard
+                                 </a>
+                              <?php endif; ?>
                               </div>
                            </div>
                         </div>
