@@ -12,6 +12,7 @@ const MapData = {
 }
 
 const psc = {
+    status: null,
     pointer: {
         category: -1,
         segment: -1,
@@ -19,57 +20,66 @@ const psc = {
     questions: null,
     init: function(){
         loading('show');
-        api({method: 'get', url: '/inner-api/question/get'}).then(function(response){           
-            psc.questions = response;
-            console.log(response);
+        api({method: 'get', url: '/inner-api/question/get'}).then(function(response){   
+            psc.status = response.status;        
+            psc.questions = response.data;
+            
             $.each(psc.questions,function(ckey,cval){
                 $.each(cval.question,function(qkey,qval){
-                    if(empty(qval.answer)){ qval.answer = ''; }                        
+                    if(empty(qval.reply)){ qval.reply = ''; }                        
                     qval.change = false;
                 });
             });
+
+            showFiles.tycoon('#file',psc.questions[0].question[0].paper);
+            showFiles.tycoon('#images',psc.questions[0].question[0].images);
 
             psc.setNewQuestion(0,0);
             loading('hide');
         });
     },
-    setApi: function(act,cate = null,seg = null){
-        let setting = null;
+    setApi: function(act, cate = null, seg = null){
+        let setting;
+
         switch(act){
             case 'fixed':
                 let qt = this.questions[cate].question[seg];
-
+                
                 setting = {
-                    method: 'action',
-                    data: null
+                    method: 'post',
+                    url: '/inner-api/answer/save',
+                    data: {
+                        qid: qt.id,
+                        action: !empty(qt.reply_id) ? 'update' : 'create',
+                        aid: !empty(qt.reply_id) ? qt.reply_id : '',
+                        reply: qt.reply
+                    }
+                };
+                break;
+            case 'finish':                
+                setting = {
+                    method: 'post',
+                    url: '/inner-api/answer/save',
+                    data: {
+                        action: 'finish',
+                        answer: []
+                    }
                 };
 
-                let formData = new FormData(),
-                    paper = qt.paper.new,
-                    images = qt.images.new;
-                
-                formData.append('action',!empty(qt.id) ? 'update' : 'create');
-                formData.append('id',!empty(qt.id) ? qt.id : '');
-                formData.append('oldFiles',qt.paper.list.concat(qt.images.list));
-                formData.append('deleteFies',qt.paper.delete.concat(qt.images.delete))
-
-                if(paper.length > 0){
-                    $.each(paper,function(key,file){
-                        formData.append(MapData.input.paper.api,file);
+                $.each(this.questions, function(keyc,valc){
+                    $.each(valc.question, function(keyq, valq){
+                        if(valq.change){
+                            setting.data.answer.push({
+                                qid: valq.id,
+                                action: !empty(valq.reply_id) ? 'update' : 'create',
+                                aid: !empty(valq.reply_id) ? valq.reply_id : '',
+                                reply: valq.reply
+                            });
+                        }
                     });
-                }
-
-                if(images.length > 0){
-                    $.each(images,function(key,file){
-                        formData.append(MapData.input.images.api,file);
-                    });
-                }
-
-                setting.data = formData;
+                });
                 break;
-            case 'submit':
-                break;
-            case 'adjunct':
+            case 'reject':
                 break;
         }
 
@@ -77,28 +87,73 @@ const psc = {
     },
     reply: function(cate,seg){
         let setting = this.setApi('fixed',cate,seg);
-        console.log(setting);
-    },
-    toStep: function(cate,seg){
-        let point = this.getPointer();
-        this.setPointer(cate,seg);
+        
+        api(setting).then(function(response){
+            let reply = response;
 
-        if(this.questions[point.cate].question[point.seg].change){
+            if(reply.result == 'error_login'){
+                alert.login();
+            } else {
+                if(reply.result == 'success'){
+                    psc.questions[cate].question[seg].reply_id = reply.id;
+                    psc.questions[cate].question[seg].change = false;
+                }
+
+                alert.toast({icon: reply.result, title: reply.message});
+            }
+        });
+    },
+    finish: function(){
+        if(this.validate()){
             let setAlert = {
-                icon: 'warning',
-                title: 'กรุณาบันทึกข้อมูล',
-                text: 'คุณมีการเปลี่ยนแปลงข้อมูล กรุณาบันทึกข้อมูลใหม่',
-                button: { confirm: 'บันทึกข้อมูล', cancel: 'ยกเลิก' },
-                mode: 'default'
+                icon: 'info',
+                title: 'ยืนยันการส่งแบบประเมิน',
+                text: 'โปรดตรวจสอบข้อมูลของท่านให้เรียบร้อย<br>ก่อนกดปุ่มส่งแบบประเมิน',
+                button: { confirm: 'ส่งแบบประเมิน', cancel: 'ยกเลิก' },
+                mode: 'confirm-main'
             };
 
             alert.confirm(setAlert).then(function(alt){
                 if(alt.status){
+                    loading('show');
+                    let setting = this.setApi('finish');
 
+                    api(setting).then(function(response){
+                        loading('hide');
+                        let finish = response;
+
+                        if(finish.result == 'error_login'){
+                            alert.login();
+                        } else {
+                            if(finish.result == 'success'){
+                                let title = 'ส่งแบบประเมินเรียบร้อยแล้ว',
+                                    message = 'เราจะแจ้งผลให้ทราบ<b>ช่วงประมาณกลางเดือนเมษายน 2566';
+
+                                alert.show(finish.result,title,message).then(function(res){
+                                    window.location.reload();
+                                });
+
+                            } else {
+                                alert.show('error','ดำเนินการไม่สำเร็จ',finish.message);
+                            }
+                        }
+                    });
                 }
             });
-        } else this.setNewQuestion()
+        } else {
+            alert.show('error','ดำเนินการไม่สำเร็จ','โปรดตรวจสอบการประเมินของท่าน ให้ครบถ้วน<br>ก่อนส่งแบบประเมินเข้าระบบ');
+        }
+    },
+    validate: function(){
+        let check = true;
 
+        $.each(this.questions, function(keyc,valc){
+            $.each(valc.question, function(keyq, valq){
+                if(empty(valq.reply)){ check = false }
+            });
+        });
+
+        return check;
     },
     setNewQuestion: function(cate,seg){        
         let point = this.getPointer(),
@@ -111,13 +166,17 @@ const psc = {
             this.setDropdown(category.question,cate,seg);
         }
 
-        $('.hide-choice').hide();
-        $('body').removeClass('lockbody');
-
         if(point.cate == -1){ point.cate = 0; }
         if(point.seg == -1){ point.seg = 0; }
 
-        if(!empty(this.questions[point.cate].question[point.seg].answer)){
+        if(this.questions[point.cate].question[point.seg].change){
+            this.reply(point.cate,point.seg);
+        }
+
+        $('.hide-choice').hide();
+        $('body').removeClass('lockbody');
+
+        if(!empty(this.questions[point.cate].question[point.seg].reply)){
             $(MapData.label.model.item+point.seg).addClass('complete');
         } else {
             $(MapData.label.model.item+point.seg).removeClass('complete');
@@ -132,7 +191,7 @@ const psc = {
         $(MapData.label.sum).html(category.question.length); 
         $(MapData.label.num).html(question.no);
         $(MapData.label.question).html(question.no+'. '+question.question);
-        $(MapData.input.reply.id).val(question.answer);
+        $(MapData.input.reply.id).val(question.reply);
 
         if(!empty(question.remark)){
             $(MapData.label.remark).html(question.remark);
@@ -160,13 +219,13 @@ const psc = {
     },
     setDropdown: function(qt,cate,seg){
         let model = '';
-
+        
         $.each(qt, function(key, value){
             let hr = 'href="javascript:psc.setNewQuestion('+cate+','+key+');"',
                 id = 'id="sl-'+key+'"',
-                cp = !empty(value.answer) && seg != key ? 'complete' : '',
+                cp = !empty(value.reply) && seg != key ? 'complete' : '',
                 cl;
-            console.log(seg,key,(seg == key))
+                
             cl = 'class="sl '+cp+'"';
             model += '<li><a '+hr+' '+id+' '+cl+'> ช้อที่ '+value.no+'</a></li>';
         })

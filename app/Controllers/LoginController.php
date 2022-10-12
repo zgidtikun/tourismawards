@@ -85,9 +85,24 @@ class LoginController extends BaseController
         
         $this->saveLogLogin($setting);
         $this->setLoggedIn($setting);
+        
+        if($auth->role_id == 1){
+            
+            if($auth->stage == 2){
+                $redirect = base_url('awards/pre-screen');
+            } elseif($auth->stage == 1){
+                $redirect = base_url('awards/application');
+            } else {
+                $redirect = base_url('404');
+            }
+        } else {
+            $redirect = base_url('boards/management');
+        }
+
         return $this->response->setJSON(array(
             'result' => 'success', 
             'role' => $auth->role_id,
+            'redirect' => @$redirect,
             'message' => 'Login successful.'
         ));
     }

@@ -279,9 +279,11 @@ const register = {
                 Object.assign(register.formData.step5, tmp['step5']);
                 
                 $.each(referance, function(key,ref){
-                    let pointer = ref.pointer;
-                    register.formData[pointer[0]][pointer[1]] = [];
-                    register.count[pointer[1]] = 0;
+                    if(ref.app == 'awards/application'){
+                        let pointer = ref.pointer;
+                        register.formData[pointer[0]][pointer[1]] = [];
+                        register.count[pointer[1]] = 0;
+                    }
                 });
                 
                 if(files.length > 0){
@@ -293,9 +295,13 @@ const register = {
                     });
 
                     $.each(referance, function(key,ref){
-                        let pointer = ref.pointer;
-                        if(register.count[pointer[1]] > 0){                            
-                            showFiles.registerPaper(ref.input,register.formData[pointer[0]][pointer[1]]);
+                        if(ref.app == 'awards/application'){
+                            let pointer = ref.pointer;
+                            if(register.count[pointer[1]] > 0){                            
+                                showFiles.tycoon(
+                                    ref.input,register.formData[pointer[0]][pointer[1]]
+                                );
+                            }
                         }
                     });
                 }
@@ -428,26 +434,30 @@ const register = {
         api(setting).then(function(response){
             let draft = response;
 
-            if(mode == 'draft'){
-                alert.toast({icon: draft.result, title: draft.message});
+            if(draft.result == 'error_login'){
+                alert.login();
             } else {
-                let title,  message;
-
-                if(draft.result == 'success'){
-                    title = draft.result;
-                    message = 'ท่านสามารถบันทึกข้อมูลได้ตลอดเวลา ด้วยปุ่ม "บันทึก"<br>';
-                    message += 'และกดปุ่ม "ส่งใบสมัคร" เมื่อพร้อม และเมื่อส่งใบสมัครแล้ว';
-                    message += 'ท่านจะไม่สามารถแก้ไขข้อมูลได้อีก ดังนั้น กรุณาตรวจสอบ';
-                    message += 'ความถูกต้องของข้อมูลก่อนส่งใบสมัคร';
+                if(mode == 'draft'){
+                    alert.toast({icon: draft.result, title: draft.message});
                 } else {
-                    title = 'ไม่สามารถบันทึกข้อมูลได้';
-                    message = draft.message;
-                }
+                    let title,  message;
 
-                alert.show(
-                    draft.result,
-                    draft.message
-                );
+                    if(draft.result == 'success'){
+                        title = draft.result;
+                        message = 'ท่านสามารถบันทึกข้อมูลได้ตลอดเวลา ด้วยปุ่ม "บันทึก"<br>';
+                        message += 'และกดปุ่ม "ส่งใบสมัคร" เมื่อพร้อม และเมื่อส่งใบสมัครแล้ว';
+                        message += 'ท่านจะไม่สามารถแก้ไขข้อมูลได้อีก ดังนั้น กรุณาตรวจสอบ';
+                        message += 'ความถูกต้องของข้อมูลก่อนส่งใบสมัคร';
+                    } else {
+                        title = 'ไม่สามารถบันทึกข้อมูลได้';
+                        message = draft.message;
+                    }
+
+                    alert.show(
+                        draft.result,
+                        draft.message
+                    );
+                }
             }
         });
     },
@@ -542,14 +552,16 @@ const register = {
                             alert.login();
                         } else {
                             if(save.result == 'success'){
-                                var title = 'บันทึกข้อมูลเรียบร้อยแล้ว';
+                                var title = 'ส่งใบสมัครเรียบร้อยแล้ว',
+                                    message = 'ระบบได้รับใบสมัครของท่านเรียบร้อยแล้ว<br>เจ้าหน้าที่จะใช้เวลาในการตรวจสอบข้อมูลภายใน 7 วัน';
                             } else {
-                                var title = 'ไม่สามารถบันทึกข้อมูลได้';
+                                var title = 'ไม่สามารถบันทึกข้อมูลได้',
+                                    message = save.message;
                             }
 
-                            alert.show(save.result,title,save.message);
-                            if(save.result == 'success'){ window.location.reload(); }
-                            return;
+                            alert.show(save.result,title,message).then(function(res){
+                                if(save.result == 'success'){ window.location.reload(); }
+                            });
                         }
                     });
                 }

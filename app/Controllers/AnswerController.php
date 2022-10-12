@@ -49,7 +49,10 @@ class AnswerController extends BaseController
         $instApp = new \App\Controllers\ApplicationController();
         $app = $instApp->getRequireQuestion($id);
         $group = $this->assg->findAll();
-        $result = [];
+        $result = [
+            'status' => $this->getPrescreenStatus(session()->get('id')),
+            'data' => []
+        ];
         
         foreach($group as $asse){
             $counter = 0;
@@ -64,23 +67,26 @@ class AnswerController extends BaseController
             if(session()->get('role') == 1)
                 $where['q.pre_status'] = 1;
 
+            $subquery = $this->db->table('answer')->where('reply_by',session()->get('id'))
+                ->getCompiledSelect();
+
             $builder = $this->db->table('question q')
                 ->select('q.id,q.question,q.remark,a.id reply_id,a.reply,a.pack_file')
-                ->join('answer a','q.id = a.question_id','left')
+                ->join('('.$subquery.') a','q.id = a.question_id','LEFT')
                 ->where($where)
                 ->orderBy('id','ASC')
                 ->get();
            
             foreach($builder->getResult() as $val){   
                 $val->no = ++$counter;
-                $val->images = $val->paper = (object) ['list' => []]; 
+                $val->images = $val->paper = []; 
 
                 if(!empty($val->pack_file)){
                     $files = json_decode($val->pack_file);
                     foreach($files as $file){
-                        if($file['type'] == 'paper')
-                            array_push($val->paper->list,$file);
-                        else array_push($val->images->list,$file);
+                        if($file->file_position == 'paper')
+                            array_push($val->paper,$file);
+                        else array_push($val->images,$file);
                     }
                 }
                 
@@ -88,10 +94,32 @@ class AnswerController extends BaseController
                 array_push($temp['question'],$val);
             }
 
-            array_push($result,$temp);
+            array_push($result['data'],$temp);
         }
 
         return $result;
+    }
+
+    public function getPrescreenStatus($id)
+    {
+        $draft = $this->ans->select('status')
+            ->where('reply_by',$id)
+            ->where('status',1)
+            ->countAllResults();
+
+        $finish = $this->ans->select('status')
+            ->where('reply_by',$id)
+            ->where('status',2)
+            ->countAllResults();
+
+        $reject = $this->ans->select('status')
+            ->where('reply_by',$id)
+            ->whereIn('status',[3,4])
+            ->countAllResults();
+
+        if($reject > 0) return 'reject';
+        elseif($finish > 0) return 'finish';
+        else return 'draft'; 
     }
 
     public function getAnswerByAjax($qid)
@@ -107,12 +135,12 @@ class AnswerController extends BaseController
         
 
         if($answer){
-            $files = json_decode($answer->pack_file);
+            $files = json_decode($answer->pack_file,false);
             unset($answer->pack_file);
             $result['reply'] = $answer;
             if(!empty($files)){
                 foreach($files as $file){
-                    if($file['type'] == 'paper')
+                    if($file->file_position == 'paper')
                         array_push($result['paper'],$file);
                     else array_push($result['images'],$file);
                 }
@@ -125,66 +153,119 @@ class AnswerController extends BaseController
     public function saveReply()
     {
         try{
-            $tmpFiles = [];                      
-            $accept = [
-                'input' => ['paperFile','imagesFile'],
-                'types' => ['paper','images'],
-                'path' => 'uploads/per-screen/'.session()->get('id').'/',
-                'paper' => ['pdf','doc','docx'],
-                'images' => ['jpg','jpeg','gif','png','webp']
-            ];
-
-            $dtdb = [
-                'reply' => $this->input->getVar('reply'),
-                'reply_by' => session()->get('id'),
-                'status' => 1,
-                'pack_file' => $this->input->getVar('oldFiles')
-            ];  
-            
-            if($files = $this->input->getFiles()){
-                foreach($accept['input'] as $key=>$index){
-                    foreach($files[$index] as $file){
-                        if($file->isValid() && !$file->hasMoved()){
-                            $originalName = $file->getName();
-                            $extension = $file->guessExtension();
-                            $newName = $this->randomFileName($extension);
-
-                            if(in_array($extension,$accept[$accept['type'][$key]])){
-                                $path = $accept['path'].$accept['types'][$key];
-                                $file->move(FCPATH.$path, $newName);
-                                array_push($tmpFiles,[
-                                    'file_name' => $newName,
-                                    'file_original' => $originalName,
-                                    'file_type' => $accept['types'][$key],
-                                    'file_path' => $path.'/'.$newName
-                                ]);
-                            }
-                        }
-                    }
-                }
-                
-                $dtdb['pack_file'] = json_encode(array_merge($dtdb['pack_file'],$tmpFiles));
-            }
-
             switch($this->input->getVar('action')){
-                case 'action': 
+                case 'create': 
+                    $dtdb = [
+                        'question_id' => $this->input->getVar('qid'),
+                        'reply' => $this->input->getVar('reply'),
+                        'reply_by' => session()->get('id'),
+                        'status' => 1,
+                    ]; 
+
                     $ins = $this->ans->insert($dtdb);
                     $insId = $this->ans->getInsertID();
-                    $answer = $this->ans->find($insId)->first();
-                    $result = ['result' => 'success', 'data' => $answer];
                     break;
                 case 'update':
-                    if(!empty($this->input->getVar('deleteFies'))){
-                        $collect = new FileCollection();
-                        foreach($this->input->getVar('deleteFies') as $path){
-                            $collect->removeFile(FCPATH.$this->innput->getVar('path'));
+                    $upd = $this->ans->update(
+                        $this->input->getVar('aid'),
+                        [ 'reply' => $this->input->getVar('reply') ] 
+                    );                    
+                    $insId = $this->input->getVar('aid');
+                    break;
+                case 'finish':
+                    $answers = json_decode(json_encode($this->input->getVar('answer')),false);
+
+                    foreach($answers as $ans){
+                        if($ans->action == 'create'){
+                            $this->ans->insert([
+                                'question_id' => $ans->qid,
+                                'reply' => $ans->reply,
+                                'reply_by' => session()->get('id'),
+                                'status' => 2,
+                            ]);
+                        } else {
+                            $this->ans->update($ans->qid, [ 'reply' => $ans->reply ]);
                         }
                     }
+                break;
+            }
 
-                    $upd = $this->ans->update($this->input->getVar('id'),$dtdb);                    
-                    $answer = $this->ans->find($this->input->getVar('id'))->first();
-                    $result = ['result' => 'success', 'data' => $answer];
-                    break;
+            $result = ['result' => 'success', 'id' => $insId, 'message' => 'บันทึกคำตอบแล้ว'];
+        } catch(\Exception $e){
+            $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
+        }
+
+        return $this->response->setJSON($result);
+    }
+
+    public function uploadFiles()
+    {
+        try{
+            if($files = $this->input->getFiles()){
+                $question_id = $this->input->getVar('qid');
+                $answer_id = $this->input->getVar('aid');
+                $position = $this->input->getVar('position');
+                $path = $this->setFilePath(session()->get('id')).'pre-screen/'.$this->input->getVar('path');
+                $result = ['result' => 'success', 'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 'files' => []];
+                $files_up = [];
+
+                foreach($files['files'] as $file){
+                    if ($file->isValid() && !$file->hasMoved()) {
+                        
+                        $originalName = $file->getName();
+                        $extension = $file->guessExtension();
+                        $newName = randomFileName($extension);
+                        
+                        $file->move(FCPATH.$path, $newName);
+
+                        $tmp_file = array(
+                            'file_name' => $newName,
+                            'file_original' => $originalName,
+                            'file_position' => $position,
+                            'file_path' => $path.'/'.$newName,
+                            'file_size' => $file->getSizeByUnit('mb'),
+                        );
+                        
+                        array_push($files_up,$tmp_file);                            
+
+                    }
+                } 
+
+                if($this->input->getVar('action') == 'create'){
+                    $dtdb = [
+                        'question_id' => $question_id,
+                        'reply_by' => session()->get('id'),
+                        'pack_file' => json_encode($files_up),
+                        'status' => 1,
+                    ]; 
+
+                    $ins = $this->ans->insert($dtdb);
+                    $insId = $this->ans->getInsertID();
+                    $result['id'] = $insId;
+
+                } else {
+                    $pack_file = $this->ans->where('id',$answer_id)
+                        ->select('pack_file')
+                        ->first();
+                    
+                    if(!empty($pack_file->pack_file)){
+                        $pack_file = json_decode($pack_file->pack_file);
+                        $files_up = array_merge($pack_file,$files_up);
+                    }
+
+                    $upd = $this->ans->update($answer_id,['pack_file' => json_encode($files_up)]);
+                }
+
+                $files_up = json_decode(json_encode($files_up),false);
+                
+                foreach($files_up as $file){
+                    if($file->file_position == $position)
+                        array_push($result['files'],$file);
+                }
+                
+            }
+             else {
+                $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์ในการอัพโหลด'];
             }
         } catch(\Exception $e){
             $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
@@ -193,9 +274,71 @@ class AnswerController extends BaseController
         return $this->response->setJSON($result);
     }
 
-    private function randomFileName($type)
+    
+
+    public function removeFiles()
     {
-        return date('Ymd').'_'.bin2hex(random_bytes(6)).'.'.$type;
+
+        try{
+            $answer_id = $this->input->getVar('id');
+            $position = $this->input->getVar('position');
+            $tmp = [];
+            $pack_file = $this->ans->where('id',$answer_id)
+                ->select('pack_file')
+                ->first();
+
+            $pack_file = json_decode($pack_file->pack_file,false);
+
+            if($this->input->getVar('remove') == 'fixed'){
+                if(unlink(FCPATH.$this->input->getVar('file_path'))){
+                    $file_name = $this->input->getVar('file_name');
+                    $result = ['result' => 'success', 'message' => '', 'files' => []];
+
+                    foreach($pack_file as $file){
+                        if($file->file_name != $file_name){
+                            array_push($tmp,$file);
+                        }
+                    }
+
+                    foreach($tmp as $file){
+                        if($file->file_position == $position)
+                            array_push($result['files'],$file);
+                    }
+
+                    $this->ans->update($answer_id,['pack_file' => json_encode($tmp)]);
+                } else {
+                    $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
+                }
+            } else {
+                $position = $this->input->getVar('position');
+
+                foreach($pack_file as $file){
+                    if($file->file_position == $position){
+                        unlink(FCPATH.$file->file_path);
+                    } else {
+                        array_push($tmp,$file);
+                    }
+                }
+
+                $this->ans->update($answer_id,['pack_file' => json_encode($tmp)]);
+                $result = ['result' => 'success', 'message' => ''];
+            }
+        } catch(\Exception $e){
+            $result = ['result' => 'error', 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()];
+        }
+
+        return $this->response->setJSON($result);
+    }
+
+    private function setFilePath($id)
+    {
+        $form = new \App\Models\ApplicationForm();        
+        $at = $form->where('created_by',$id)->select('created_at')->first();
+        $year = date('Y',strtotime($at->created_at));
+        $month = date('m',strtotime($at->created_at));
+        $day = date('d',strtotime($at->created_at));
+        $path = 'uploads/'.$year.'/'.$month.'/'.$day.'/'.session()->get('id').'/';
+        return $path;
     }
 }
 

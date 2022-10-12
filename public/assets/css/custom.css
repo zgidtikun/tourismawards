@@ -4325,3 +4325,13 @@ textarea.form-control-lg {
 .formstep .formstep-col a.inactive {
     color: #b6b4c3;
 }
+
+.hide-choice-box li a.invalid{
+    color: #FFF;
+    background-color: #dc3545;
+}
+
+.hide-choice-box li a.reject{
+    color: #FFF;
+    background-color: #FFA800;
+}

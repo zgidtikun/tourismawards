@@ -2,15 +2,22 @@ const onFileHandle = (setting,input,type) => {
     let handle  = $(input)[0].files,
         filter  = accept[type],
         ref     = referance.find(el => el.input == input),
-        error   = null,
-        check   = true;
-        console.log(handle,ref)
+        check   = true,
+        error, total;
         
     if(handle.length > 0){
         switch(ref.app){
             case 'awards/application': 
+            case 'awards/pre-screen':
+
+                if(ref.app == 'awards/application'){
+                    total = Number(register.count[ref.pointer[1]]) + Number(handle.length);
+                } else if(ref.app == 'awards/pre-screen'){
+                    let length = psc.questions[setting.cate].question[setting.seg][ref.position].length;
+                    total = Number(length) + Number(handle.length);
+                }
             
-                if(Number(register.count[ref.pointer[1]]) + Number(handle.length) > ref.maxUpload){
+                if(total > ref.maxUpload){
                     alert.show('warning','ไม่สามารถอัพโหลดไฟล์ได้','คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน '+ref.maxUpload+' ไฟล์เท่านั้น');
                     return false
                 }
@@ -45,7 +52,7 @@ const onFileHandle = (setting,input,type) => {
                     return false;
                 }
                 
-                uploadFile({id: setting.id},input,'input');
+                uploadFile(setting,input,'input');
 
             break;
         }
@@ -56,9 +63,16 @@ const uploadFile = (setting,input,handleBy) => {
     let formData = new FormData(),
         ref      = referance.find(el => el.input == input),
         handle   = handleBy == 'input' ? $(input)[0].files : setting.files,
-        api_setting = {};
-        console.log(111)
-    formData.append('id',setting.id);
+        api_setting = {};        
+    
+    if(ref.path == 'paper'){
+        $(ref.label).html(setSpinner('Uploading...'));
+        $(ref.btn).prop('disabled',true);
+    } else {
+        $(ref.label.input).addClass('hide');
+        $(ref.label.progress).removeClass('hide');
+        $(ref.label.progress).html(setSpinner('Uploading...'));
+    }
 
     $.each(handle,function(key,file){
         formData.append('files[]',file);
@@ -66,15 +80,7 @@ const uploadFile = (setting,input,handleBy) => {
 
     switch(ref.app){
         case 'awards/application': 
-            if(ref.path == 'paper'){
-                $(ref.label).html(setSpinner('Uploading...'));
-                $(ref.btn).prop('disabled',true);
-            } else {
-                $(ref.label.input).addClass('hide');
-                $(ref.label.progress).removeClass('hide');
-                $(ref.label.progress).html(setSpinner('Uploading...'));
-            }
-
+            formData.append('id',setting.id);
             formData.append('position',ref.position);
             formData.append('path',ref.path);
             api_setting.method = 'action';
@@ -91,7 +97,42 @@ const uploadFile = (setting,input,handleBy) => {
                         register.formData[ref.pointer[0]][ref.pointer[1]].push(file);
                     });
                     
-                    showFiles.registerPaper(ref.input,register.formData[ref.pointer[0]][ref.pointer[1]]);
+                    showFiles.tycoon(ref.input,register.formData[ref.pointer[0]][ref.pointer[1]]);
+                } else {
+                    alert.show(res.result,'ไม่สามารถอัพโหลดไฟล์ได้',res.message);
+                }
+
+                if(ref.path == 'paper'){
+                    $(ref.label).html('Upload Files');
+                    $(ref.btn).prop('disabled',false);
+                } else {
+                    $(ref.label.input).removeClass('hide');
+                    $(ref.label.progress).addClass('hide');
+                    $(ref.label.progress).html('');
+                }
+            });
+        break;
+        case 'awards/pre-screen':
+            console.log(setting)
+            let answer = psc.questions[setting.cate].question[setting.seg];
+
+            formData.append('qid',answer.id);
+            formData.append('aid',!empty(answer.reply_id) ? answer.reply_id : '');
+            formData.append('action',!empty(answer.reply_id) ? 'update' : 'create');
+            formData.append('position',ref.position);
+            formData.append('path',ref.path);
+            api_setting.method = 'action';
+            api_setting.url = ref.api;
+            api_setting.data = formData;   
+            
+            api(api_setting).then(function(response){
+                let res = response;
+
+                if(res.result == 'error_login'){
+                    alert.login();
+                } else if(res.result == 'success'){
+                    psc.questions[setting.cate].question[setting.seg][ref.position] = res.files;
+                    showFiles.tycoon(ref.input,psc.questions[setting.cate].question[setting.seg][ref.position]);
                 } else {
                     alert.show(res.result,'ไม่สามารถอัพโหลดไฟล์ได้',res.message);
                 }
@@ -111,27 +152,32 @@ const uploadFile = (setting,input,handleBy) => {
 }
 
 const removeFile = (input,setting) => {
-    let api_setting = {}, ref;
-    
-    if($.inArray(input,['#step1-images','#step1-detail','#step1-paper']) !== -1){
-        ref = referance.find(el => el.input == input),
-        api_setting.data = setting;
-        api_setting.method = 'post';
-        api_setting.url = '/inner-api/app/remove/file';
-
-        if(setting.remove == 'all'){
-            api_setting.data.position = ref.position;
-        }
+    let api_setting = {}, pointer,
+        ref = referance.find(el => el.input == input);        
         
-        $(ref.btnrm).prop('disabled',true);
-        $(ref.btnrm).html(setSpinner('Removing...'));
+    $(ref.btnrm).prop('disabled',true);
+    $(ref.btnrm).html(setSpinner('Removing...'));
+    
+    if($.inArray(ref.app,['awards/application','awards/pre-screen'])){        
+        api_setting.method = 'post';
+
+        if(ref.app == 'awards/application'){
+            api_setting.data = setting;
+            api_setting.url = '/inner-api/app/remove/file';
+        } else if(ref.app == 'awards/pre-screen') {            
+            pointer = psc.getPointer();
+            api_setting.id = psc.questions[pointer.cate].question[pointer.seg].id;
+            api_setting.url = '/inner-api/answer/remove/file';
+        }
+
+        api_setting.data.position = ref.position;
 
         api(api_setting).then(function(response){
             let res = response;
 
             if(res.result == 'error_login'){
                 alert.login();
-            } else if(res.result == 'success'){
+            } else if(res.result == 'success' && ref.app == 'awards/application'){
                 if(setting.remove == 'fixed'){
                     register.formData[ref.pointer[0]][ref.pointer[1]] = [];
                     register.change[ref.pointer[1]] = 0;
@@ -147,7 +193,15 @@ const removeFile = (input,setting) => {
                     register.change[ref.pointer[1]] = 0;
                 }
 
-                showFiles.registerPaper(input,register.formData[ref.pointer[0]][ref.pointer[1]]);
+                showFiles.tycoon(input,register.formData[ref.pointer[0]][ref.pointer[1]]);
+            } else if(res.result == 'success' && ref.app == 'awards/pre-screen'){
+                if(setting.remove == 'fixed'){
+                    psc.questions[pointer.cate].question[pointer.seg][ref.position] = res.files;
+                } else {
+                    psc.questions[pointer.cate].question[pointer.seg][ref.position] = [];
+                }
+
+                showFiles.tycoon(input,psc.questions[pointer.cate].question[pointer.seg][ref.position]);
             } else {
                 alert.show(res.result,'ไม่สามารถลบไฟล์ได้',res.message);
             }
@@ -170,8 +224,7 @@ const downloadFile = (input) => {
 }
 
 const showFiles = {
-    registerPaper(input,files){
-
+    tycoon: function(input,files){
         let ref = referance.find(el => el.input == input),
             html = '', layout;
             
@@ -179,16 +232,17 @@ const showFiles = {
             html += showFiles.setFile(input,file);
         });
         
-        if(ref.app = 'awards/application'){
-            if(ref.path == 'images'){
-                if($.inArray(register.status,[1,4]) !== -1){
-                    layout = ref.show;
-                } else {
-                    layout = ref.ablum;
-                }
-            } else {
+        if(ref.path == 'images'){
+            if(
+                (ref.app == 'awards/application' && $.inArray(register.status,[1,4]) !== -1)
+                || (ref.app == 'awards/pre-screen' && $.inArray(psc.status,['draft','reject']) !== -1)
+            ){
                 layout = ref.show;
+            } else {
+                layout = ref.ablum;
             }
+        } else {
+            layout = ref.show;
         }
         
         $(layout).html(html);
@@ -197,10 +251,18 @@ const showFiles = {
         let html, onclick, id, img,
             ref = referance.find(el => el.input == input);
 
-        if(ref.app == 'awards/application') id = register.id;
+        if(ref.app == 'awards/application'){ id = register.id; }
         
-        if(ref.app == 'awards/application' && ref.path == 'paper'){
-            onclick = 'onclick="removeFile(\''+input+'\',{id: '+id+',';
+        if(
+            $.inArray(ref.app,['awards/application','awards/pre-screen']) !== -1 
+            && ref.path == 'paper'
+        ){            
+            onclick = 'onclick="removeFile(\''+input+'\',{';
+
+            if(ref.app == 'awards/application'){
+                onclick += 'id: '+id+','
+            }
+
             onclick += "file_name: '"+setting.file_name+"',";
             onclick += "file_path: '"+setting.file_path+"',";
             onclick += 'remove: \'fixed\'})"';
@@ -218,11 +280,22 @@ const showFiles = {
             html += '       </div>';
             html += '   </div>';
             html += '</div>';
-        } else if(ref.app == 'awards/application' && ref.path == 'images'){ 
+        } else if(
+            $.inArray(ref.app,['awards/application','awards/pre-screen']) !== -1 
+            && ref.path == 'images'
+        ){ 
             img = getBaseUrl()+'/'+setting.file_path;
 
-            if($.inArray(register.status,[1,4]) !== -1){       
-                onclick = 'href="javascript:removeFile(\''+input+'\',{id: '+id+',';
+            if(
+                (ref.app == 'awards/application' && $.inArray(register.status,[1,4]) !== -1)
+                || (ref.app == 'awards/pre-screen' && $.inArray(psc.status,['draft','reject']) !== -1)
+            ){       
+                onclick = 'href="javascript:removeFile(\''+input+'\',{';
+
+                if(ref.app == 'awards/application'){
+                    onclick += 'id: '+id+','
+                }
+
                 onclick += "file_name: '"+setting.file_name+"',";
                 onclick += "file_path: '"+setting.file_path+"',";
                 onclick += 'remove: \'fixed\'});"';                
@@ -286,10 +359,18 @@ const imagesDrop = (e) => {
 }
 
 const handleDropImages = (id,files) => {
-    let temp = [], check = true, error, appId,
+    let temp = [], check = true, error, appId, total, pointer, setting,
         ref = referance.find(el => el.area == id || el.input == id);
+
+    if(ref.app == 'awards/application'){
+        total = Number(register.count[ref.pointer[1]]) + Number([...files].length);
+    } else if(ref.app == 'awards/pre-screen'){
+        pointer = psc.getPointer();
+        let length = psc.questions[pointer.cate].question[pointer.seg][ref.position].length;
+        total = Number(length) + Number([...files].length);
+    }
         
-    if((Number(register.count[ref.pointer[1]]) + Number([...files].length)) > ref.maxUpload){
+    if(total > ref.maxUpload){
         alert.show('warning','ไม่สามารถอัพโหลดรูปได้','คุณสามารถอัพโหลดรูปได้ไม่เกิน '+ref.maxUpload+' ไฟล์เท่านั้น');
     }
 
@@ -324,10 +405,14 @@ const handleDropImages = (id,files) => {
         return false;
     }
 
-    if(ref.app == 'awards/application')
-        appId = register.id;
+    if(ref.app == 'awards/application'){
+        setting = {id: register.id, files: temp};
+    } else if(ref.app == 'awards/pre-screen'){
+        setting = pointer;
+        setting.files = temp;
+    }
 
-    uploadFile({id: appId, files: temp},ref.input,'drop');
+    uploadFile(setting,ref.input,'drop');
 }
 
 ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -369,7 +454,7 @@ const referance = [
         },
         api: '/inner-api/app/upload', position: 'registerImages',
         path: 'images', app: 'awards/application',
-        maxUpload: 5, maxSize: 10
+        maxUpload: 10, maxSize: 10
     },
     {
         input: '#step5-landOwner', pointer: ['step5','landOwner'],
@@ -500,16 +585,16 @@ const referance = [
             input: '#images-input',
             progress: '#images-progress'
         },
-        api: '/inner-api/app/upload', position: 'images',
+        api: '/inner-api/answer/upload', position: 'images',
         path: 'images', app: 'awards/pre-screen',
-        maxUpload: 5, maxSize: 10
+        maxUpload: 10, maxSize: 10
     },
     {
         input: '#file', pointer: ['','paper'],
         btn: '#file-btn', btnrm: '#file-remove',
         show: '#file-list', label: '#file-label',
-        api: '/inner-api/app/upload', position: 'otherT4CertFiles',
-        path: 'paper', app: 'awards/application',
+        api: '/inner-api/answer/upload', position: 'paper',
+        path: 'paper', app: 'awards/pre-screen',
         maxUpload: 5, maxSize: 15
     },
 ];

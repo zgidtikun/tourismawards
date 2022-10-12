@@ -61,7 +61,8 @@
                     กรอกแบบประเมินขั้นต้น
                 </div>
                 <div class="form-main-btn">
-                    <a href="javascript:void(0)" class="btn-regis active" data-tab="1">
+                    <a href="javascript:void(0)" class="btn-regis active" data-tab="1"
+                    onclick="psc.finish()">
                         ส่งแบบประเมิน
                     </a>
                 </div>
@@ -174,7 +175,7 @@
                                             <div class="bs-row">
                                                 <div class="col-12">                                                                 
                                                     <button class="btn btn-action" id="images-remove"
-                                                    onclick="removeFile('#step1-images',{id: register.id,remove: 'all'})">
+                                                    onclick="removeFile('#step1-images',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
                                                         Remove All
                                                     </button>
                                                 </div>
@@ -187,7 +188,7 @@
                                                                     <span id="images-label">Upload Files</span>
                                                                     <input type="file" id="images"
                                                                     accept=".jpg,.jpeg,.png" multiple
-                                                                    onchange="onFileHandle({id: register.id},'#'+this.id,'images')"/>
+                                                                    onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'images')"/>
                                                                 </button>   
                                                             </div>
                                                             <div class="mt-4 mb-4 hide" id="images-progress">
@@ -199,9 +200,11 @@
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">
-                                                    จำกัดแค่ไฟล์ .jpg, .jpeg, .png เท่านั้น ขนาดไฟล์ไม่เกิน 10MB และอัพโหลดได้ไม่เกิน 5 รูป
+                                                    จำกัดแค่ไฟล์ .jpg, .jpeg, .png เท่านั้น ขนาดไฟล์ไม่เกิน 10MB และอัพโหลดได้ไม่เกิน 10 รูป
                                                 </span>
                                             </div>
+                                        </div>
+                                        <div class="card-body-muted c-lef selecter-file" id="images-list">
                                         </div>
                                     </div>
                                 </div>
@@ -219,10 +222,10 @@
                                                         <span id="file-label">Upload Files</span>
                                                         <input type="file" id="file"
                                                         accept=".pdf" multiple
-                                                        onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
+                                                        onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
                                                     <button class="btn btn-action" id="file-remove"
-                                                    onclick="removeFile('#file',{id: register.id,remove: 'all'})">
+                                                    onclick="removeFile('#file',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
                                                         Remove All
                                                     </button>
                                                 </div>
@@ -244,12 +247,11 @@
                             <button class="btn btn-action" id="btn-back">
                                 ย้อนกลับ
                             </button>                                                                                                                 
-                            <button class="btn btn-action" id="btn-next" 
-                            onclick="">
+                            <button class="btn btn-action" id="btn-next">
                                 ถัดไป
                             </button>                                                                                                               
                             <button class="btn btn-main" id="btn-next" 
-                            onclick="">
+                            onclick="psc.reply(psc.pointer.category,psc.pointer.segment)">
                                 บันทึก
                             </button>
                         </div>

@@ -82,6 +82,8 @@ $routes->group('inner-api', static function ($routes) {
     $routes->group('answer', static function ($routes) {
         $routes->get('get/(:any)', 'AnswerController::getAnswerByAjax/$1', ['filter' => 'api:frontend']);
         $routes->post('save', 'AnswerController::saveReply', ['filter' => 'api:frontend']);
+        $routes->post('upload', 'AnswerController::uploadFiles', ['filter' => 'api:frontend']);
+        $routes->post('remove/file', 'AnswerController::removeFiles', ['filter' => 'api:frontend']);
     });
 
 });

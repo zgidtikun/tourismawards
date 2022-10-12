@@ -52,19 +52,18 @@
                     async: false,
                     success: function(response) {
                         if (response.result == 'success') {
-                            let message,url;
+                            let message;
 
                             if(response.role == 1){
                                 message = 'คุณสามารถบันทึกข้อมูลได้ตลอดเวลา<br>';
-                                message += 'ด้วยปุ่ม "บันทึก" และกดปุ่ม "ส่งใบสมัคร" เมื่อพร้อม';                                                                
-                                url = '<?= base_url('awards/application') ?>';
+                                message += 'ด้วยปุ่ม "บันทึก" และกดปุ่ม "ส่งใบสมัคร" เมื่อพร้อม';    
                             } else {
                                 message = 'คุณสามารถกลับมาประเมินต่อ หรือแก้ไขการประเมินได้<br>';
                                 message += 'ก่อนส่งผลการประเมินเข้าระบบ';
                             }
 
                             alert.show('info','คำแนะนำการใช้งาน', message).then(function(data){
-                                window.location.href = url;
+                                window.location.href = response.redirect;
                             });
                         } else {
                             alert.show('error','Oops Login Fail...!', response.message);                               

@@ -167,6 +167,8 @@ class ApplicationController extends BaseController
             }
 
             $update = $this->appForm->update($app_id,$updd);
+            $user = new \App\Models\Users();
+            $user->update(session()->get('id'),['stage' => 2]);
             $result = ['result' => 'success', 'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว'];
 
         } catch(\Exception $e){
@@ -181,7 +183,6 @@ class ApplicationController extends BaseController
 
     public function uploadFiles()
     {
-
         try{
             if($files = $this->input->getFiles()){
                 $app_id = $this->input->getVar('id');
