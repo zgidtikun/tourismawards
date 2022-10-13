@@ -87,6 +87,9 @@ class FilesController extends BaseController
         header('Content-type: application/zip');
         readfile($tmp_file);
 
+        if (file_exists($tmp_file)) {
+            unlink($tmp_file);	
+        }
     }
 
 }
