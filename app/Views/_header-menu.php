@@ -83,7 +83,7 @@
                                  <div class="user-status-img">
                                     <div class="status-img">
                                        <div class="status-img-scale">
-                                          <img src="<?=base_url('assets/images/unknown_user.jpg')?>">
+                                          <img src="<?=base_url(session()->get('profile'))?>">
                                        </div>
                                     </div>
                                  </div>
@@ -106,7 +106,7 @@
                               </div>
                               <div class="user-profile">
                               <?php if(in_array(session()->get('role'),[1,3])): ?>
-                                 <a href="javascript:void(0)" class="mb-1">
+                                 <a href="<?=base_url('profile')?>" class="mb-1">
                                     <i class="bi bi-person-fill"></i>
                                     &nbsp;&nbsp;ข้อมูลส่วนตัว
                                  </a>

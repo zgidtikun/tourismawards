@@ -20,7 +20,7 @@
                         <a href="<?= base_url('awards/pre-screen') ?>">
                             <div class="formstep-title">2. กรอกแบบประเมินขั้นต้น (Pre-Screen)</div>
                         </a>
-                        <div class="formstep-status date" id="formstep-sts" data-tab="2">
+                        <div class="formstep-status" id="formstep-sts" data-tab="2">
                             <?= $duedate->expired_str ?>
                         </div>
                         <div class="formstep-icon"><span><i class="bi bi-pencil-fill"></i></span></div>
@@ -50,13 +50,25 @@
                 </div>
             </div>
 
-            <div class="formstatus pass" id="formstatus-pass">
+            <div class="formstatus pass hide" id="formstatus-pass">
                 <img src="<?=base_url('/assets/images/pass-regis-form.png')?>">
                 <h3>ใบสมัครของท่านผ่านการอนุมัติ</h3>
                 <p>โปรดกรอกแบบประเมินขั้นต้น (Pre-screen) ภายในระยะเวลาที่กำหนด</p>
             </div>
 
-            <div class="form-main-title">
+            <div class="formstatus pass hide" id="formstatus-complete">
+                <img src="<?=base_url('/assets/images/pass-regis-form.png')?>">
+                <h3>ส่งแบบประเมินขั้นต้น (Pre-screen) เรียบร้อยแล้ว</h3>
+                <p>โปรดติดตามรายละเอียดการแจ้งผลประเมินได้ทางหน้าเว็บไซต์ หรือการแจ้งเตือนต่าง ๆ</p>
+            </div>
+            
+            <div class="formstatus uncomplete hide" id="formstatus-unpass">
+                <img src="<?=base_url('/assets/images/uncomplete-regis-form.png')?>">
+                <h3>หมดเวลาการส่งแบบประเมินขั้นต้น</h3>
+                <p>เวลาในการกรอกแบบประเมินขั้นต้น (Pre-screen) หมดลงแล้ว</p>
+            </div>
+
+            <div class="form-main-title hide">
                 <div class="form-main-title-txt">
                     กรอกแบบประเมินขั้นต้น
                 </div>
@@ -175,7 +187,7 @@
                                             <div class="bs-row">
                                                 <div class="col-12">                                                                 
                                                     <button class="btn btn-action" id="images-remove"
-                                                    onclick="removeFile('#step1-images',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
+                                                    onclick="removeFile('#images',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
                                                         Remove All
                                                     </button>
                                                 </div>
@@ -205,6 +217,11 @@
                                             </div>
                                         </div>
                                         <div class="card-body-muted c-lef selecter-file" id="images-list">
+                                        </div>
+                                        <div class="card-body attach-file">
+                                            <div class="ablumbox" id="images-ablum">
+                                                
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -236,13 +253,23 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#file')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
-                    <div class="regis-form-data-row">
+                    <div class="regis-form-data-row label-action hide">
                         <div class="regis-form-data-col1 continue">                                                                                                               
                             <button class="btn btn-action" id="btn-back">
                                 ย้อนกลับ
@@ -270,6 +297,6 @@
 
 <script>
     $(document).ready(function(){        
-        psc.init();
+        psc.init(<?=$duedate->expired_sts?>);
     });
 </script>

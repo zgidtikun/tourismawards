@@ -113,7 +113,7 @@ const uploadFile = (setting,input,handleBy) => {
             });
         break;
         case 'awards/pre-screen':
-            console.log(setting)
+            
             let answer = psc.questions[setting.cate].question[setting.seg];
 
             formData.append('qid',answer.id);
@@ -162,15 +162,15 @@ const removeFile = (input,setting) => {
         api_setting.method = 'post';
 
         if(ref.app == 'awards/application'){
-            api_setting.data = setting;
             api_setting.url = '/inner-api/app/remove/file';
         } else if(ref.app == 'awards/pre-screen') {            
             pointer = psc.getPointer();
-            api_setting.id = psc.questions[pointer.cate].question[pointer.seg].id;
+            setting.id = psc.questions[pointer.cate].question[pointer.seg].id;            
             api_setting.url = '/inner-api/answer/remove/file';
-        }
-
-        api_setting.data.position = ref.position;
+        }        
+        
+        setting.position = ref.position;
+        api_setting.data = setting;
 
         api(api_setting).then(function(response){
             let res = response;
@@ -213,12 +213,18 @@ const removeFile = (input,setting) => {
 }
 
 const downloadFile = (input) => {
-    let id, url,
+    let id, url, point,
         ref = referance.find(el => el.input == input);
 
-    if(ref.app == 'awards/application') id = register.id;
+    if(ref.app == 'awards/application'){
+        id = register.id;
+        url = getBaseUrl()+'/inner-api/app/download/file';
+    } else if(ref.app == 'awards/pre-screen'){
+        pointer = psc.getPointer();
+        id = psc.questions[pointer.cate].question[pointer.seg].reply_id;
+        url = getBaseUrl()+'/inner-api/answer/download/file';
+    }
 
-    url = getBaseUrl()+'/inner-api/app/download/file';
     url += '/'+id+'/'+ref.position;
     window.open(url,'_blank');
 }

@@ -13,16 +13,44 @@ const MapData = {
 
 const psc = {
     status: null,
+    expired: false,
     pointer: {
         category: -1,
         segment: -1,
     },
     questions: null,
-    init: function(){
+    init: function(expired){
         loading('show');
-        api({method: 'get', url: '/inner-api/question/get'}).then(function(response){   
+        api({method: 'get', url: '/inner-api/question/get'}).then(function(response){
+            psc.expired = expired;               
             psc.status = response.status;        
             psc.questions = response.data;
+
+            if(!psc.expired){
+                switch(psc.status){
+                    case 'draft':                        
+                    case 'reject':
+                        $('#formstep-sts').addClass('date');
+                        $('.form-main-title').removeClass('hide');
+                        $('.label-action').removeClass('hide');
+                        $('.attach-file').remove();                        
+                        $('#formstatus-pass').removeClass();
+                    break;
+                    case 'finish':
+                        $('#formstep-sts').addClass('pass');
+                        $('#formstep-sts').html('ส่งแบบประเมินเรียบร้อยแล้ว');                      
+                        $('#formstatus-complete').removeClass('hide');
+                        $('.regis-form-data textarea').prop('disabled',true);
+                        $('.btn-action, .selecter-file, .bfd-dropfield').remove();
+                    break;
+                }
+            } else {                   
+                $('#formstatus-unpass').removeClass('hide');
+                $('#formstep-sts').addClass('notpass');
+                $('#formstep-sts').html('หมดเวลาการส่งแบบประเมินขั้นต้น');
+                $('.btn-action, .btn-file, .bfd-dropfield, file-list').remove();
+                $('.regis-form-data textarea').prop('disabled',true);
+            }
             
             $.each(psc.questions,function(ckey,cval){
                 $.each(cval.question,function(qkey,qval){

@@ -80,6 +80,7 @@ class LoginController extends BaseController
             'username' => $auth->username,
             'fullname' => $auth->name.' '.$auth->surname,
             'role' => $auth->role_id,
+            'profile' => !empty($auth->profile) ? $auth->profile : 'assets/images/unknown_user.jpg',
             'bank' => $bank
         );
         
@@ -149,6 +150,7 @@ class LoginController extends BaseController
             'account' => $data->username,
             'user' => $data->fullname,
             'role' => $data->role,
+            'profile' => $data->profile,
             'default' => $data->bank
         ));
     }

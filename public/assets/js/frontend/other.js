@@ -18,7 +18,7 @@ const empty = (data) =>{
             return true;
     }
     else if($.type(data) === 'object'){
-        if(!$.isEmptyObject(data))
+        if($.isEmptyObject(data))
             return true;
     }
     else if(data == '' || data === null || data === undefined || data === 'undefined' || data === 0)

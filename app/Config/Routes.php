@@ -56,6 +56,10 @@ $routes->group('auth', static function ($routes) {
     $routes->post('ajax-reset-password', 'RegisterController::resetPassword');
 });
 
+$routes->group('profile', ['filter' => 'auth:frontend'], static function ($routes) {
+    $routes->get('/', 'frontend::profile');
+});
+
 $routes->group('awards', static function ($routes) {
     $routes->get('/', 'frontend::index', ['filter' => 'auth:frontend']);
     $routes->get('application', 'ApplicationController::formIndex', ['filter' => 'auth:1']);
@@ -67,6 +71,10 @@ $routes->group('boards', static function ($routes) {
 });
 
 $routes->group('inner-api', static function ($routes) {
+    $routes->group('profile', static function ($routes){
+        $routes->post('update', 'frontend::updateProfile', ['filter' => 'auth:frontend']);
+        $routes->post('upload/image', 'FilesController::uploadProfile', ['filter' => 'auth:frontend']);
+    });
 
     $routes->group('app', static function ($routes) {
         $routes->get('detail', 'ApplicationController::getApplicationByAjax', ['filter' => 'api:frontend']);
@@ -84,6 +92,7 @@ $routes->group('inner-api', static function ($routes) {
         $routes->post('save', 'AnswerController::saveReply', ['filter' => 'api:frontend']);
         $routes->post('upload', 'AnswerController::uploadFiles', ['filter' => 'api:frontend']);
         $routes->post('remove/file', 'AnswerController::removeFiles', ['filter' => 'api:frontend']);
+        $routes->get('download/file/(:num)/(:any)', 'FilesController::downloadAnswerFile/$1/$2', ['filter' => 'auth:frontend']); 
     });
 
 });

@@ -14,8 +14,9 @@ class Users extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['prefix', 'name', 'surname', 'member_type', 'mobile', 'email', 
-        'username', 'password', 'role_id', 'status'];
+    protected $allowedFields = ['prefix', 'name', 'surname', 'member_type', 'award_type',
+        'assessment_group', 'mobile', 'email', 'username', 'password', 'role_id', 'status',
+        'position', 'stage', 'status_delete', 'profile'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

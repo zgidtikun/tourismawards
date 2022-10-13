@@ -1,6 +1,8 @@
 .formrow {
     display: flex;
-    margin: 0 -5px;
+    margin: 0;
+    justify-content: flex-start;
+    column-gap: 5px;
 }
 .fileup-file {
     background-color: #F5F5F5;
@@ -112,7 +114,7 @@
     display: flex;
     background-color: #e2f1fe;
     color: #359efc!important;
-    padding: 0.4vw;
+    padding: 10px;
     font-size: 16px;
     font-weight: bold;
     border-radius: 10px;
@@ -121,7 +123,7 @@
     text-align: center;
     display: inline-flex;
     justify-content: center;
-    margin: 0 5px;
+    align-items: center;
 }
 .fileup-btn input {
     position: absolute;

@@ -297,12 +297,11 @@ class AnswerController extends BaseController
                     foreach($pack_file as $file){
                         if($file->file_name != $file_name){
                             array_push($tmp,$file);
-                        }
-                    }
 
-                    foreach($tmp as $file){
-                        if($file->file_position == $position)
-                            array_push($result['files'],$file);
+                            if($file->file_position == $position){
+                                array_push($result['files'],$file);
+                            }
+                        }
                     }
 
                     $this->ans->update($answer_id,['pack_file' => json_encode($tmp)]);

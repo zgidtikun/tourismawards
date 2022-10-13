@@ -66,6 +66,7 @@ body:after {
     display: flex;
     align-self: center;
 }
+
 .header-box-col.menu nav{
 display: none;
 }
@@ -75,6 +76,14 @@ display: none;
     padding: 0 20px;
     max-width: none;
     overflow: hidden;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 40px -10px;
+    padding: 0;
+    width: auto;
+    align-items: flex-start;
 }
 .login_list .header-box-col, .header-box-row.menulist, .container.footer, .container.copyright {
     padding: 0 20px;
@@ -87,11 +96,13 @@ display: none;
 .banner-txt h1 {
     margin: 20px 0;
     line-height: 1;
+    font-size: 40px;
 }
 .banner-txt h2 {
     font-weight: normal;
     margin: 0;
     line-height: 1;
+    font-size: 30px;
 }
 .btn-banner:link {
     background-color: #0d2c55;
@@ -146,6 +157,17 @@ width: 50%;
     width: 100%;
     padding: 0 0 0 40px;
     margin: 0;
+}
+.award-list li {
+    padding: 20px;
+    margin: 0;
+    width: 50%;
+}
+.award-section-txt {
+    font-size: 20px;
+}
+.contact-list li {
+    width: 50%;
 }
 }
 
@@ -218,10 +240,28 @@ max-height: 50px;
     text-align: center;
     margin-bottom: 20px;
 }
+.award-section-col {
+    width: 50%;
+    padding: 20px;
+}
+.judge-list li {
+    width: 50%;
+}
+.news-list li {
+    width: 50%;
+}
 }
 
 @media screen and (max-width:767px) and (orientation:portrait){
-.row {
+.mainsite.awardbranch .container,
+.mainsite.awardotherbranch .container {
+    margin: 0 auto;
+    padding: 0;
+    max-width: none;
+    overflow: hidden;
+}
+.mainsite.awardbranch .row,
+.mainsite.awardotherbranch .row {
     display: flex;
     flex-wrap: wrap;
     margin: 40px -10px;
@@ -229,6 +269,7 @@ max-height: 50px;
     width: auto;
     align-items: flex-start;
 }
+
 .banner-txt {
     max-width: 85%;
 }
@@ -241,7 +282,7 @@ max-height: 50px;
     -webkit-box-orient: vertical;
 }
 .banner-box-scale {
-    padding-top: 100%;
+    padding-top: 75%;
 }
 .banner-txt h1 {
     margin: 10px 0;
@@ -267,11 +308,126 @@ max-height: 50px;
     padding: 13px 20px;
     font-size: 1em;
 }
-.header-box img {
+.header-box-col.logo img {
+    width: auto;
+    max-width: 100%;
     height: 40px;
+    max-height: 100%;
+    object-fit: contain;
+    transition: all 0.3s;
 }
+.award-list li {
+    padding: 20px;
+    margin: 0;
+    width: 100%;
+}
+.txt-banner {
+    background-color: #0d2c55;
+    padding: 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    font-size: 24px;
+    flex-direction: column;
+    line-height: normal;
+}
+.main-title-txt h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0d2c55;
+    margin: 10px 0;
+    line-height: normal;
+}
+.award-section-col {
+    width: 100%;
+    padding: 20px;
+}
+.awardsection-list ul{
+    display: flex;
+    overflow: auto;
+    flex: none;
+    width: 100%;
+    flex-flow: row nowrap;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    margin: 0;
+    -webkit-appearance: none;
 }
 
+.awardsection-list li,
+.awardotherbranch .awardsection-list li {
+    display: flex;
+    padding: 0 0 0 20px;
+    margin: 0 -10px 0 0;
+    position: relative;
+    scroll-snap-align: start;
+    flex: none;
+    color: #222;
+    align-content: flex-start;
+    width: calc((100% - 20px) / 1.15);
+    margin-left: 0;
+    text-align: center;
+}
+.awardsection-list li:last-child,
+.awardotherbranch .awardsection-list li:last-child{
+margin-right: 20px;
+}
+.award-othlist li {
+    width: 100%;
+    padding: 0 20px 0 35px;
+    margin: 5px 0;
+    position: relative;
+}
+.awardyear {
+    margin: 0 0 40px 0;
+}
+.awardyear-col {
+    flex: auto;
+    padding: 10px 20px;
+}
+.awardbranch .main-title,
+.awardotherbranch .main-title {
+    text-align: left;
+    padding: 0 20px;
+}
+.awardbranch .gold-award, .awardbranch .silver-award,
+.awardotherbranch .gold-award, .awardotherbranch .silver-award {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 20px;
+}
+.award-list {
+    margin: 40px 0;
+    width: 100%;
+    padding: 0 20px;
+}
+.award-othlist {
+    width: 100%;
+    display: block;
+    margin-top: 40px;
+    padding: 0 20px;
+}
+.awardsection-list li a {
+    padding: 10px;
+    font-size: 18px;
+}
+.judge-list li {
+    width: 100%;
+}
+.news-list li {
+    width: 100%;
+}
+.contact-list li {
+    width: 100%;
+}
+.contact-map {
+    padding-top: 100%;
+}
+.contact-form-col2 {
+    width: 100%;
+}
+}
 
 @media screen and (max-width:1023px) and (orientation:landscape){
 .banner-txt p {
