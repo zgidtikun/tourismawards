@@ -11,7 +11,7 @@ const boards = {
                 opt = '<option value="'+v.name+'">'+v.name+'</option>';
                 $(mf.s[0].ip).append(opt);
             });
-            console.log(boards.at)
+            
             loading('hide');
         });
     },
