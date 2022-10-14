@@ -27,7 +27,7 @@ class LoginController extends BaseController
                 return redirect()->to(base_url('awards/application'));
             }
             elseif(session()->get('role') == 3){
-                return redirect()->to(base_url('boards/managment'));
+                return redirect()->to(base_url('boards'));
             }
             else
                 return redirect()->to(base_url('backend/dashboard'));            
@@ -97,7 +97,7 @@ class LoginController extends BaseController
                 $redirect = base_url('404');
             }
         } else {
-            $redirect = base_url('boards/management');
+            $redirect = base_url('boards');
         }
 
         return $this->response->setJSON(array(

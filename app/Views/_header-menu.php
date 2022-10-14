@@ -67,7 +67,7 @@
                   </li>
                   <li class="userlogin">
                      <a href="javascript:void(0)" class="btn-user">
-                        <?=session()->get('user')?>
+                        <?=session()->get('user')?>&nbsp;&nbsp;
                         <i class="bi bi-person-circle ml-2"></i>
                      </a>
                      <div class="user-box" style="display: none;">
@@ -210,11 +210,7 @@
                      </li>
                      <li class="search">
                         <a href="javascript:void(0)">
-                           <picture>
-                              <source srcset="<?= base_url('assets/images/search_btn.png')?>">
-                              <source srcset="<?= base_url('assets/images/search_btn.svg')?>">
-                              <img src="<?= base_url('assets/images/search_btn.png')?>" alt="...">
-                           </picture>
+                           <i class="bi bi-search"></i>
                         </a>
                      </li>
                   </ul>
@@ -230,10 +226,7 @@
 
             <div class="menubox">
                <a href="javascript:void(0)" class="menuclose">
-                  <picture>
-                     <source srcset="<?= base_url('assets/images/btnclose.svg')?>">
-                     <img src="<?= base_url('assets/images/btnclose.png')?>">
-                  </picture>
+                  <i class="bi bi-x"></i>
                </a>
                <div class="menulogo">
                   <picture>

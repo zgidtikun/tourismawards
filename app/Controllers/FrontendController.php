@@ -4,7 +4,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use Exception;
 
-class frontend extends BaseController
+class FrontendController extends BaseController
 {
     public function index()
     {
@@ -13,7 +13,7 @@ class frontend extends BaseController
                 return redirect()->to(base_url('awards/application'));
             }
             elseif(session()->get('role') == 3){
-                return redirect()->to(base_url('awards/application'));
+                return redirect()->to(base_url('boards'));
             }
             else
                 return redirect()->to(base_url('403'));            
@@ -104,5 +104,15 @@ class frontend extends BaseController
         }
 
         return  $this->response->setJSON($result);
+    }
+
+    public function boards()
+    {
+        $data = [
+            'title' => 'ระบบการประเมิน',
+            'view' => 'frontend/boards/index',
+        ];
+        
+        return view('frontend/entrepreneur/_template',$data);
     }
 }

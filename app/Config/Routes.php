@@ -57,7 +57,7 @@ $routes->group('auth', static function ($routes) {
 });
 
 $routes->group('profile', ['filter' => 'auth:frontend'], static function ($routes) {
-    $routes->get('/', 'frontend::profile');
+    $routes->get('/', 'FrontendController::profile');
 });
 
 $routes->group('awards', static function ($routes) {
@@ -67,12 +67,12 @@ $routes->group('awards', static function ($routes) {
 });
 
 $routes->group('boards', static function ($routes) {
-    $routes->get('/', 'frontend::index', ['filter' => 'auth:frontend']);
+    $routes->get('/', 'FrontendController::boards', ['filter' => 'auth:3']);
 });
 
 $routes->group('inner-api', static function ($routes) {
     $routes->group('profile', static function ($routes){
-        $routes->post('update', 'frontend::updateProfile', ['filter' => 'auth:frontend']);
+        $routes->post('update', 'FrontendController::updateProfile', ['filter' => 'auth:frontend']);
         $routes->post('upload/image', 'FilesController::uploadProfile', ['filter' => 'auth:frontend']);
     });
 
