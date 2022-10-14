@@ -115,4 +115,9 @@ class FrontendController extends BaseController
         
         return view('frontend/entrepreneur/_template',$data);
     }
+
+    public function listDataBoards()
+    {
+        
+    }
 }

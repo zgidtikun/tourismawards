@@ -95,6 +95,10 @@ $routes->group('inner-api', static function ($routes) {
         $routes->get('download/file/(:num)/(:any)', 'FilesController::downloadAnswerFile/$1/$2', ['filter' => 'auth:frontend']); 
     });
 
+    $routes->group('boards', static function ($routes) {
+        $routes->get('/', 'FrontendController::listDataBoards', ['filter' => 'auth:3']);
+    });
+
 });
 
 $routes->group('backend', ['namespace' => 'App\Controllers\Backend'], static function ($routes) {

@@ -373,8 +373,6 @@
     $(document).ready(function() {
         boards.init();
 
-        $('#modal-detail').modal('show');
-
         let table = $('#tbl-boards').DataTable({
             pageLength: 25,
             procressing: true,
