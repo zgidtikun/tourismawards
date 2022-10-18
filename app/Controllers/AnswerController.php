@@ -7,6 +7,8 @@ use App\Controllers\BaseController;
 use App\Models\AssessmentGroup;
 use App\Models\Question;
 use App\Models\Answer;
+use App\Models\UsersStage;
+
 
 class AnswerController extends BaseController
 {
@@ -15,6 +17,7 @@ class AnswerController extends BaseController
         $this->qt = new Question();
         $this->assg = new AssessmentGroup();
         $this->ans = new Answer();
+        $this->usStg = new UsersStage();
 
         if(!isset($this->db))
             $this->db = \Config\Database::connect();
@@ -187,9 +190,11 @@ class AnswerController extends BaseController
                             $this->ans->update($ans->qid, [ 'reply' => $ans->reply ]);
                         }
                     }
+                    
+                    $this->usStg->insert(['user_id' => session()->get('id'), 'stage' => 1, 'status' => 1]);
                 break;
             }
-
+            
             $result = ['result' => 'success', 'id' => $insId, 'message' => 'บันทึกคำตอบแล้ว'];
         } catch(\Exception $e){
             $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];

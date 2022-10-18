@@ -16,7 +16,10 @@
                                     <i class="bi bi-file-earmark-text"></i>
                                     รอบ Pre-screen<br>ที่รอประเมิน
                                 </div>
-                                <div class="estimat-amount">0 รายการ</div>
+                                <div class="estimat-amount" id="count-tab1">
+                                    <span class="spinner-border spinner-border-sm" role="status" 
+                                    aria-hidden="true"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -26,7 +29,10 @@
                                     <i class="bi bi-file-earmark-text"></i>
                                     รอบ Pre-screen<br>ที่ประเมินแล้ว
                                 </div>
-                                <div class="estimat-amount">0 รายการ</div>
+                                <div class="estimat-amount" id="count-tab2">
+                                    <span class="spinner-border spinner-border-sm" role="status" 
+                                    aria-hidden="true"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -36,7 +42,10 @@
                                     <i class="bi bi-geo-alt"></i>
                                     รอบลงพื้นที่<br>ที่รอประเมิน
                                 </div>
-                                <div class="estimat-amount">0 รายการ</div>
+                                <div class="estimat-amount" id="count-tab3">
+                                    <span class="spinner-border spinner-border-sm" role="status" 
+                                    aria-hidden="true"></span>
+                                </div>
                             </div>
                         </div>
 
@@ -46,7 +55,10 @@
                                     <i class="bi bi-geo-alt"></i>
                                     รอบลงพื้นที่<br>ที่ประเมินแล้ว
                                 </div>
-                                <div class="estimat-amount">0 รายการ</div>
+                                <div class="estimat-amount" id="count-tab4">                                    
+                                    <span class="spinner-border spinner-border-sm" role="status" 
+                                    aria-hidden="true"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -98,23 +110,24 @@
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
                             <div class="form-floating">
-                                <select class="form-select" id="sat-main">
-                                    <option value="0" selected>ทั้งหมด</option>
+                                <select class="form-select" id="sat-main" col-num="2" disabled>
+                                    <option value="" selected>ทั้งหมด</option>
                                 </select>
                                 <label>กรองด้วย ประเภท</label>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
                             <div class="form-floating">
-                                <select class="form-select" id="sat-sub">
-                                    <option value="0" selected>ทั้งหมด</option>
+                                <select class="form-select" id="sat-sub" col-num="3" disabled>
+                                    <option value="" selected>ทั้งหมด</option>
                                 </select>
                                 <label>กรองด้วย สาขา</label>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="sip" placeholder="ค้นหารายชื่อ">
+                                <input type="text" class="form-control" id="sip" 
+                                placeholder="ค้นหารายชื่อ" disabled>
                                 <label>ค้นหารายชื่อ</label>
                             </div>
                         </div>
@@ -132,194 +145,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="no">1</td>
-                                <td class="landmark">
-                                    ศูนย์การเรียนรู้ช้างทรัพย์ไพรวัลย์ โดยทรัพย์ไพรวัลย์รีสอร์ท
-                                </td>
-                                <td class="type">
-                                    โรงแรม เลอ เมอริเดียน เชียงราย รีสอร์ท
-                                </td>
-                                <td class="section">
-                                    แหล่งท่องเที่ยว (Attraction)
-                                </td>
-                                <td class="status">
-                                    <span class="wait">รอการประเมิน</span>
-                                </td>
-                                <td class="date">
-                                    15-10-2022
-                                </td>
-                                <td class="edit">
-                                    <a href="javascript:;">
-                                        <i class="bi bi-toggles"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="no">1</td>
-                                <td class="landmark">
-                                    ศูนย์การเรียนรู้ช้างทรัพย์ไพรวัลย์ โดยทรัพย์ไพรวัลย์รีสอร์ท
-                                </td>
-                                <td class="type">
-                                    โรงแรม เลอ เมอริเดียน เชียงราย รีสอร์ท
-                                </td>
-                                <td class="section">
-                                    แหล่งท่องเที่ยว (Attraction)
-                                </td>
-                                <td class="status">
-                                    <span class="wait">รอการประเมิน</span>
-                                </td>
-                                <td class="date">
-                                    15-10-2022
-                                </td>
-                                <td class="edit">
-                                    <a href="javascript:;">
-                                        <i class="bi bi-toggles"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="no">1</td>
-                                <td class="landmark">
-                                    ศูนย์การเรียนรู้ช้างทรัพย์ไพรวัลย์ โดยทรัพย์ไพรวัลย์รีสอร์ท
-                                </td>
-                                <td class="type">
-                                    โรงแรม เลอ เมอริเดียน เชียงราย รีสอร์ท
-                                </td>
-                                <td class="section">
-                                    แหล่งท่องเที่ยว (Attraction)
-                                </td>
-                                <td class="status">
-                                    <span class="wait">รอการประเมิน</span>
-                                </td>
-                                <td class="date">
-                                    15-10-2022
-                                </td>
-                                <td class="edit">
-                                    <a href="javascript:;">
-                                        <i class="bi bi-toggles"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="no">1</td>
-                                <td class="landmark">
-                                    ศูนย์การเรียนรู้ช้างทรัพย์ไพรวัลย์ โดยทรัพย์ไพรวัลย์รีสอร์ท
-                                </td>
-                                <td class="type">
-                                    โรงแรม เลอ เมอริเดียน เชียงราย รีสอร์ท
-                                </td>
-                                <td class="section">
-                                    แหล่งท่องเที่ยว (Attraction)
-                                </td>
-                                <td class="status">
-                                    <span class="wait">รอการประเมิน</span>
-                                </td>
-                                <td class="date">
-                                    15-10-2022
-                                </td>
-                                <td class="edit">
-                                    <a href="javascript:;">
-                                        <i class="bi bi-toggles"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="no">1</td>
-                                <td class="landmark">
-                                    <a href="javascript:showmodal();">
-                                        <i class="bi bi-arrow-right-square-fill text-success mr-2"></i>
-                                        ศูนย์การเรียนรู้ช้างทรัพย์ไพรวัลย์ โดยทรัพย์ไพรวัลย์รีสอร์ท
-                                        <span class="badge badge-wait ml-1">รอการประเมิน</span>
-                                        <a>
-                                </td>
-                                <td class="type">
-                                    โรงแรม เลอ เมอริเดียน เชียงราย รีสอร์ท
-                                </td>
-                                <td class="section">
-                                    สาขา Outdoor & Adventure Activities (แหล่งท่องเที่ยวเพื่อการผจญภัย)
-                                </td>
-                                <td class="status">
-                                    <span class="wait">รอการประเมิน</span>
-                                </td>
-                                <td class="date">
-                                    15-10-2022
-                                </td>
-                                <td class="edit">
-                                    <a href="javascript:;">
-                                        <i class="bi bi-toggles"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="no">1</td>
-                                <td class="landmark">
-                                    ศูนย์การเรียนรู้ช้างทรัพย์ไพรวัลย์ โดยทรัพย์ไพรวัลย์รีสอร์ท
-                                </td>
-                                <td class="type">
-                                    แหล่งท่องเที่ยว (Attraction)
-                                </td>
-                                <td class="section">
-                                    สาขา Outdoor & Adventure Activities (แหล่งท่องเที่ยวเพื่อการผจญภัย)
-                                </td>
-                                <td class="status">
-                                    <span class="wait">รอการประเมิน</span>
-                                </td>
-                                <td class="date">
-                                    13-10-2022
-                                </td>
-                                <td class="edit">
-                                    <a href="javascript:;">
-                                        <i class="bi bi-toggles"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                    <a href="javascript:;">
-                                        <i class="bi bi-trash-fill"></i>
-                                    </a>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
-
                 </div>
             </div>
 
         </div>
     </div>
 </div>
-<div class="loading" id="loading-page"></div>
+<div class="" id="loading-page"></div>
 <!-- Modal -->
 <div class="modal fade" id="modal-detail" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -327,22 +161,22 @@
             <div class="modal-header">
                 <span class="modal-title text-base-main fw-semibold">
                     <i class="bi bi-geo-alt-fill mr-2"></i>
-                    <span id="modal-plate">ศูนย์การเรียนรู้ช้างทรัพย์ไพรวัลย์ โดยทรัพย์ไพรวัลย์รีสอร์ท</span>
+                    <span id="modal-plate"></span>
                 </span>                
             </div>
             <div class="modal-body" style="font-size: 16px;">
                 <div class="bs-row">
                     <div class="col-12 text-base-main fw-semibold">ประเภทแหล่งท่องเที่ยว</div>
                     <div class="col-12 mb-2"
-                    id="modal-appt">แหล่งท่องเที่ยว (Attraction)</div>
+                    id="modal-appt"></div>
                     <div class="col-12 text-base-main fw-semibold">สาขาที่ประกวด</div>
                     <div class="col-12 mb-2"
-                    id="modal-appts">สาขา Outdoor & Adventure Activities (แหล่งท่องเที่ยวเพื่อการผจญภัย)</div>
+                    id="modal-appts"></div>
                     <div class="col-12 text-base-main fw-semibold mb-2">
-                        สถานะ <span id="modal-badge" class="badge badge-wait ml-1">รอการประเมิน</span>
+                        สถานะ <span id="modal-badge" class="badge ml-1"></span>
                     </div>
                     <div class="col-12 text-base-main fw-semibold">วันที่ประเมินล่าสุด</div>
-                    <div class="col-12 mb-4" id="modal-date">13-10-2022</div>
+                    <div class="col-12 mb-4" id="modal-date"></div>
                     <div class="col-12">
                         <button type="button" class="btn btn-sm btn-success">
                             <i class="bi bi-toggles"></i>
@@ -373,39 +207,8 @@
     $(document).ready(function() {
         boards.init();
 
-        let table = $('#tbl-boards').DataTable({
-            pageLength: 25,
-            procressing: true,
-            info: true,
-            filter: false,
-            lengthChange: false,
-            language: {
-                emptyTable: "ไม่มีรายการข้อมูล",
-                info: "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
-                infoEmpty: "",
-            },
-            drawCallback: function(data, type, row, meta) {
-                $('.dataTables_paginate ul').addClass('pagination-sm justify-content-end');
-            }
+        $('#sip, #sat-main, #sat-sub').on('keyup change',function() {
+            boards.searchAll();
         });
-
-        table.on('order.dt search.dt', function() {
-            let i = 1;
-
-            table.cells(null, 0, {
-                search: 'applied',
-                order: 'applied'
-            }).every(function(cell) {
-                this.data(i++);
-            });
-        }).draw();
-
-        $('#sip').keyup(function() {
-            table.search($(this).val()).draw();
-        })
-    });
-
-    const showmodal = () => {
-        $('#modal-detail').modal('show');
-    }
+    });    
 </script>

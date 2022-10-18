@@ -68,6 +68,10 @@ $routes->group('awards', static function ($routes) {
 
 $routes->group('boards', static function ($routes) {
     $routes->get('/', 'FrontendController::boards', ['filter' => 'auth:3']);
+
+    $routes->group('estimate', static function ($routes) {
+        $routes->get('pre-screen/(:num)', 'FrontendController::prescreenEstimate/$1', ['filter' => 'auth:3']);
+    });
 });
 
 $routes->group('inner-api', static function ($routes) {
@@ -96,7 +100,9 @@ $routes->group('inner-api', static function ($routes) {
     });
 
     $routes->group('boards', static function ($routes) {
-        $routes->get('/', 'FrontendController::listDataBoards', ['filter' => 'auth:3']);
+        $routes->post('/', 'FrontendController::listDataBoards', ['filter' => 'api:3']);
+        $routes->get('count-stage', 'FrontendController::sumStage', ['filter' => 'api:3']);
+        $routes->get('estimate/(:num)', 'QuestionController::estimateQuestion/$1', ['filter' => 'api:3']);
     });
 
 });

@@ -666,6 +666,19 @@ $('#step5-openYear').on('change', function(){
         register.formData.step5.openYear = $(this).val();
         register.formData.step5.totalYear = totalYear.result;
         $('#step5-totalYear').val(totalYear.result);
+
+        let app = register.formData.step1.appType;
+        let confYear = register.appType.main.find(el => el.id = app);
+        
+        if(Number(totalYear.total_year) < Number(confYear.fixe_year_open)){
+            Swal.fire({
+                icon: 'error',
+                title: 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                showDenyButton: false,
+            });
+        }
     } else { $('#step5-totalYear').val(''); }
 });
 

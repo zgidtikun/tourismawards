@@ -470,7 +470,7 @@ class App extends BaseConfig
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
     public $APPForm_expired = '2023-02-28';
     public $Pre_expired = '2023-03-05';
-    public $script_v = 1;
+    public $script_v = 1555555;
 
     public function __construct()
     {

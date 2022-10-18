@@ -5615,7 +5615,7 @@
 			columnCount = columns.length,
 			visibleColumns = _fnGetColumns( oSettings, 'bVisible' ),
 			headerCells = $('th', oSettings.nTHead),
-			tableWidthAttr = table.getAttribute('width'), // from DOM element
+			tableWidthAttr = table.getAttribute('width'), 
 			tableContainer = table.parentNode,
 			userInputs = false,
 			i, column, columnIdx, width, outerWidth,
@@ -5788,7 +5788,7 @@
 				columns[ visibleColumns[i] ].sWidth = _fnStringToCss( bounding - border );
 			}
 	
-			table.style.width = _fnStringToCss( total );
+			// table.style.width = _fnStringToCss( total );
 	
 			// Finished with the table - ditch it
 			holder.remove();
@@ -6602,7 +6602,7 @@
 			}
 	
 			if ( type == 'alert' ) {
-				alert( msg );
+				alert.show("error","", msg );
 			}
 			else if ( type == 'throw' ) {
 				throw new Error(msg);
@@ -9242,7 +9242,7 @@
 	
 	_api_register( 'search()', function ( input, regex, smart, caseInsen ) {
 		var ctx = this.context;
-	
+		
 		if ( input === undefined ) {
 			// get
 			return ctx.length !== 0 ?
@@ -9252,6 +9252,7 @@
 	
 		// set
 		return this.iterator( 'table', function ( settings ) {
+			
 			if ( ! settings.oFeatures.bFilter ) {
 				return;
 			}
@@ -19180,7 +19181,7 @@ var DataTable = $.fn.dataTable;
 var Scroller = function ( dt, opts ) {
 	/* Sanity check - you just know it will happen */
 	if ( ! (this instanceof Scroller) ) {
-		alert( "Scroller warning: Scroller must be initialised with the 'new' keyword." );
+		alert.show("error","","Scroller warning: Scroller must be initialised with the 'new' keyword." );
 		return;
 	}
 
@@ -23762,7 +23763,7 @@ return Scroller;
                         (type.includes('date') ||
                             type.includes('moment') ||
                             type.includes('luxon'))) {
-                        alert('SearchBuilder Requires DateTime when used with dates.');
+                        alert.show("error","",'SearchBuilder Requires DateTime when used with dates.');
                         throw new Error('SearchBuilder requires DateTime');
                     }
                 }

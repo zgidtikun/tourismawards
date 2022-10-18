@@ -168,7 +168,7 @@ class ApplicationController extends BaseController
 
             $update = $this->appForm->update($app_id,$updd);
             $user = new \App\Models\Users();
-            $user->update(session()->get('id'),['stage' => 2]);
+            $user->update(session()->get('id'),['stage' => 2]);            
             $result = ['result' => 'success', 'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว'];
 
         } catch(\Exception $e){

@@ -116,8 +116,48 @@ class FrontendController extends BaseController
         return view('frontend/entrepreneur/_template',$data);
     }
 
+    public function sumStage()
+    {
+        $stage = new \App\Models\UsersStage();
+        $count_1 = $stage->where('stage',1)->whereIn('status',[1,2])->countAllResults();
+        $count_2 = $stage->where('stage',1)->whereIn('status',[3,4])->countAllResults();
+        $count_3 = $stage->where('stage',2)->whereIn('status',[1,2])->countAllResults();
+        $count_4 = $stage->where('stage',2)->whereIn('status',[3,4])->countAllResults();
+
+        $result = [
+            'pre_wait' => $count_1,
+            'pre_comp' => $count_2,
+            'inst_wait' => $count_3,
+            'inst_comp' => $count_4
+        ];
+
+        return $this->response->setJSON($result);
+    }
+
     public function listDataBoards()
     {
+        $question = new \App\Controllers\QuestionController();
         
+        switch($this->input->getVar('stage')){
+            case 'pre-screen':
+                $result = $question->getListPrescreenFinish($this->input->getVar('status'));
+            break;
+            default:
+                $result = ['result' => 'success', 'data' => []];
+            break;
+        }
+        
+        return $this->response->setJSON($result);
+    }
+
+    public function prescreenEstimate($id)
+    {
+        $data = [
+            'title' => 'ประเมินรอบ Pre-screen',
+            'view' => 'frontend/boards/pre-screen-estimate',
+            'app_id' => $id
+        ];
+        
+        return view('frontend/entrepreneur/_template',$data);
     }
 }

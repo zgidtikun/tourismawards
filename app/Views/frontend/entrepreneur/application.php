@@ -1050,6 +1050,7 @@
                                         การจ้างแรงงานต่างด้าวจะต้องแสดงหลักฐานการจ้างแรงงานที่ถูกต้องตามกฎหมายกำหนด
                                         <span class="required">*</span>
                                     </span>
+                                    <div></div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" 
                                         name="step5-t3-outlander" id="step5-t3-outlander-1" value="1">

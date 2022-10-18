@@ -108,6 +108,7 @@ const calcDate = (date1, date2) => {
             days_passed + ' ' + daysTxt[1] : '');
             
     return {
+        "total_year": years_passed,
         "total_days": Math.round(total_days),
         "result": result.trim()
     }
