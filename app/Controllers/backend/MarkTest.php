@@ -65,4 +65,71 @@ class MarkTest extends BaseController
         // $writer->save('world.xlsx');
         // return $this->response->download('world.xlsx', null)->setFileName('sample.xlsx');
     }
+
+    public function question()
+    {
+        $where = [];
+        // $where['pre_score'] = 0;
+        // $where['onside_score'] = 0;
+        // $where = "id >= 91 && id <= 189";
+        $data['fields'] = $this->db->getFieldNames('question');
+        $data['result'] = $this->db->table('question')->orderBy('id', 'desc')->where($where)->limit(10)->get()->getResultObject();
+        echo count($data['result']);
+        pp_sql();
+        // pp($data['fields']);
+
+        // Template
+        $data['title']  = 'Question';
+        $data['view']   = 'backend/test/question';
+        $data['ci']     = $this;
+        
+        return view('backend/template', $data);
+    }
+
+    public function getData()
+    {
+        $post = $this->input->getVar();
+        $result = $this->db->table($post['table'])->where('id', $post['id'])->get()->getRowObject();
+        echo json_encode($result);
+    }
+
+    public function delete()
+    {
+        $post = $this->input->getVar();
+        $result = $this->db->table($post['table'])->where('id', $post['id'])->delete();
+        if ($result) {
+            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'ทำการลบข้อมูลสำเร็จ']);
+        } else {
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการลบข้อมูลไม่สำเร็จ']);
+        }
+    }
+
+    public function saveInsert()
+    {
+        $post = $this->input->getVar();
+        $table = $post['table'];
+        unset($post['table']);
+        $result = $this->db->table($table)->insert($post);
+        if ($result) {
+            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
+        } else {
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
+        }
+    }
+
+    public function saveUpdate()
+    {
+        $post = $this->input->getVar();
+        // px($post);
+        $id = $post['id'];
+        $table = $post['table'];
+        unset($post['id']);
+        unset($post['table']);
+        $result = $this->db->table($table)->where('id', $id)->update($post);
+        if ($result) {
+            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
+        } else {
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
+        }
+    }
 }

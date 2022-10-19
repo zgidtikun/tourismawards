@@ -7,7 +7,6 @@ use App\Models\AssessmentGroup;
 use App\Models\ApplicationForm;
 use App\Models\Question;
 use App\Models\Answer;
-use CodeIgniter\HTTP\Response;
 use Exception;
 
 class QuestionController extends BaseController
@@ -100,14 +99,30 @@ class QuestionController extends BaseController
             $sqans = $this->db->table('answer')->where('id',$id)
                 ->getCompiledSelect();
 
+            $sqset = $this->db->table('estimate')
+                ->where('estimate_by',session()->get('id'))
+                ->select('
+                    id, question_id, score_pre, score_onsite, comment_pre, 
+                    comment_onsite, note_pre, note_onsite, status, request_list, 
+                    request_date, request_status, estimate_by, tscore_pre,
+                    tscore_onsite'
+                )
+                ->getCompiledSelect();
+
             $builder = $this->db->table('question q')
-                ->select(
-                    'q.id, q.question, q.remark, q.pre_status, onside_status,
+                ->select('
+                    q.id, q.question, q.remark, q.pre_status, onside_status,
                     q.pre_evaluation_criteria pre_eva, q.pre_scoring_criteria pre_scor,
                     q.pre_score, q.onside_evaluation_criteria os_eva,
                     q.onside_scoring_criteria os_scor, q.onside_score, q.weight,
-                    a.id reply_id, a.reply, a.pack_file', false)
+                    a.id reply_id, a.reply, a.pack_file,
+                    b.id est_id, b.score_pre, b.score_onsite, b.comment_pre, 
+                    b.comment_onsite, b.note_pre, b.note_onsite, b.status, b.request_list, 
+                    b.request_date, b.request_status, b.estimate_by, b.tscore_pre,
+                    b.tscore_onsite
+                ')
                 ->join('('.$sqans.') a','q.id = a.question_id','LEFT')
+                ->join('('.$sqset.') b','q.id = b.question_id','LEFT')
                 ->where($where)
                 ->orderBy('id','ASC')
                 ->get();

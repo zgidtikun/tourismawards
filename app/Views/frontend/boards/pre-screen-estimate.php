@@ -81,13 +81,13 @@
 
             <div class="formmainbox">
                 <div class="regis-form-step">
-                    <a href="javascript:void(0);" class="btn-form-step active">
+                    <a href="javascript:setQuestion(0,0);" id="tab-0" class="btn-form-step active">
                         1. Tourism Excellence
                     </a>
-                    <a href="javascript:void(0);" class="btn-form-step">
+                    <a href="javascript:setQuestion(1,0);" id="tab-1" class="btn-form-step">
                         2. Suporting Business & Marketing Factors
                     </a>
-                    <a href="javascript:void(0);" class="btn-form-step">
+                    <a href="javascript:setQuestion(2,0);" id="tab-2" class="btn-form-step">
                         3. Responsibility and Safety & Health
                     </a>
                 </div>
@@ -100,15 +100,17 @@
                                     <source srcset="<?= base_url('assets/images/formicon-type.svg') ?>">
                                     <img src="<?= base_url('assets/images/formicon-type.png') ?>">
                                 </picture>
-                                Tourism Excellence
+                                <span id="qTitle"></span>
                                 <br>
-                                <span class="txt-yellow title-comment">คำถามทั้งหมด 50 ข้อ</span>
+                                <span class="txt-yellow title-comment">
+                                    คำถามทั้งหมด <span id="qSum"></span> ข้อ
+                                </span>
                             </h3>
 
                             <div class="choicebox">
                                 <div class="choicebox-col select-choice">
                                     คำถามข้อที่
-                                    <span id="num" class="fs-20 mr-2 ml-2">1</span>
+                                    <span id="qNum" class="fs-20 mr-2 ml-2">1</span>
                                 </div>
                                 <div class="choicebox-col">
                                     <a href="javascript:void(0)" class="btn-choice">
@@ -127,20 +129,7 @@
                                         </a>
                                     </div>
                                     <div class="hide-choice-content">
-                                        <ul>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 1 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 2 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete active"> ข้อที่ 3 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 4 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 5 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 6 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 7 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 8 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 9 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 10 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 11 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 12 </a></li>
-                                            <li><a href="javascript:void(0);" class="complete"> ข้อที่ 13 </a></li>
+                                        <ul id="selection-list">
                                         </ul>
                                     </div>
                                 </div>
@@ -163,109 +152,35 @@
                             </div>
                         </div>
 
-                        <div class="regis-form-data-col1">
-                            <h4>3 อธิบายลักษณะเด่นของสถานที่และกิจกรรมท่องเที่ยวโดยสังเขป</h4>
-                            ระบุคำตอบ<span class="required">*</span>
-                            <span class="commentrequired">
-                                (จำนวนตัวอักษรคงเหลือ 0/1,000)
-                            </span>
-                            <textarea rows="6" disabled>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. 
+                        <div class="regis-form-data-col1 none-estimate" style="display: none;">
+                            <h4 id="hSubject"></h4>
+                            <div class="alert alert-danger" role="alert">
+                                <span style="font-size: 18px;" class="fw-semibold">
+                                    <i class="bi bi-exclamation-diamond-fill mr-2"></i>
+                                    ไม่มีการประเมินในรอบ Pre-screen
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="regis-form-data-col1 is-estimate">
+                            <h4 id="qSubject"></h4>
+                            คำตอบ
+                            <textarea class="form-control" id="qReply" rows="12" readonly>
                             </textarea>
                         </div>
 
-                        <div class="regis-form-data-col2 attachfile">
+                        <div class="regis-form-data-col2 attachfile is-estimate">
                             <div class="attachinp">
                                 <h4>รูปภาพ</h4>
-                                <div class="ablumbox">
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news01.jpg') ?>" style="cursor: pointer;" onclick="zoomImages(this)">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news02.jpg') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news03.jpg') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news04.jpg') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news01.jpg') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news02.jpg') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news03.jpg') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news04.jpg') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news01.jpg') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="ablumbox-col">
-                                        <div class="ablum-mainimg">
-                                            <div class="ablum-mainimg-scale">
-                                                <img src="<?= base_url('assets/images/news02.jpg') ?>">
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                <div class="ablumbox" id="qAblum">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="regis-form-data-col2 attachfile">
+                        <div class="regis-form-data-col2 attachfile is-estimate">
                             <div class="attachinp">
                                 <h4>แนบไฟล์</h4>
-                                <a href="javascript:void(0)" class="btn-download">ดาวน์โหลดไฟล์แนบ</a>
+                                <a href="javascript:downloadFile();" class="btn-download">ดาวน์โหลดไฟล์แนบ</a>
                             </div>
                             <div class="attachinp border-0">
                                 <a href="javascript:void(0)" class="btn-getdata active" data-tab="2">
@@ -277,7 +192,7 @@
 
                 </div>
 
-                <div class="regis-form-data judge-form-data">
+                <div class="regis-form-data judge-form-data is-estimate">
                     <div class="regis-form-data-row">
                         <div class="regis-form-data-col1 title">
                             <h3>
@@ -285,31 +200,19 @@
                                     <source srcset="<?= base_url('assets/images/formicon-type.svg') ?>">
                                     <img src="<?= base_url('assets/images/formicon-type.png') ?>">
                                 </picture>
-                                เกณฑ์การประเมินผล<br><span class="txt-yellow title-comment">-
-                                    จุดแตกต่างแฃะความสวยงามของสถานที่</span>
+                                เกณฑ์การประเมินผล
+                                <div id="qEva">
+                                </div>
                             </h3>
                         </div>
 
-                        <div class="regis-form-data-col1">
-                            <h4>เกณฑ์การให้คะแนนรอบ Pre-Screen</h4>
-                            <p><input type="radio" name="c1" checked>
-                                สถานที่ไม่มีความสวยงามและกิจกรรมไม่น่าสนใจหรือไม่สร้างความประทับใจให้นักท่องเที่ยว
-                                รวมทั้งไม่แตกต่างจากสถานที่ท่องเที่ยวอื่น</p>
-                            <p><input type="radio" name="c1">
-                                สถานที่ไม่มีความสวยงามและกิจกรรมไม่น่าสนใจหรือไม่สร้างความประทับใจให้นักท่องเที่ยว
-                                รวมทั้งไม่แตกต่างจากสถานที่ท่องเที่ยวอื่น</p>
-                            <p><input type="radio" name="c1">
-                                สถานที่ไม่มีความสวยงามและกิจกรรมไม่น่าสนใจหรือไม่สร้างความประทับใจให้นักท่องเที่ยว
-                                รวมทั้งไม่แตกต่างจากสถานที่ท่องเที่ยวอื่น</p>
-                            <p><input type="radio" name="c1">
-                                สถานที่ไม่มีความสวยงามและกิจกรรมไม่น่าสนใจหรือไม่สร้างความประทับใจให้นักท่องเที่ยว
-                                รวมทั้งไม่แตกต่างจากสถานที่ท่องเที่ยวอื่น</p>
+                        <div class="regis-form-data-col1" id="qSco">
                         </div>
 
                         <div class="regis-form-data-col1">
-                            <h4>ข้อเสนอแนะ</h4>
-                            ระบุคำตอบ<span class="required">*</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
-                            <textarea rows="6" id="field" onkeyup="countChar(this)"></textarea>
+                            <span class="fw-semibold">ความคิดเห็นของกรรมการ</span>
+                            <span class="text-muted">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
+                            <textarea class="form-control" rows="6" id="comment" onkeyup="countChar(this)"></textarea>
                             <script>
                                 function countChar(val) {
                                     var len = val.value.length;
@@ -325,24 +228,25 @@
                     </div>
                 </div>
 
-                <div class="regis-form-data">
+                <div class="regis-form-data is-estimate">
                     <div class="regis-form-data-row">
                         <div class="regis-form-data-col2 clear">
-                            <button class="btn btn-danger">
+                            <button class="btn btn-danger" onclick="resetEstimate(pointer.cate,pointer.seg)">
                                 ล้างข้อมูลการให้คะแนน
                             </button>
                         </div>
                         <div class="regis-form-data-col2 continue">
-                            <button class="btn-next">ถัดไป</button>
-                            <a href="javascript:void(0)" class="btn-save" data-tab="3">บันทึก</a>
+                            <button class="btn-next" id="btn-back">ย้อนกลับ</button>
+                            <button class="btn-next" id="btn-next">ถัดไป</button>
+                            <button class="btn-save" id="btn-save">บันทึก</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="judge-memo">
+            <div class="judge-memo is-estimate">
                 <h4>บันทึกส่วนตัว (Private Memo)</h4>
-                <textarea rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </textarea>
+                <textarea class="form-control" id="note" rows="6"></textarea>
                 <p style="text-align: right"><a href="javascript:void(0)" class="btn-memosave" data-tab="3">บันทึก</a></p>
             </div>
 
@@ -366,15 +270,15 @@ aria-hidden="true">
                     <div class="col-sm-12 col-md-4 text-sm-center mb-sm-3">
                         <span class="text-base-main fw-semibold">
                             <i class="bi bi-bookmark-fill"></i>
-                            ข้อมูลเพิ่มเติมข้อที่ 1.1
+                            ข้อมูลเพิ่มเติมข้อที่ <span id="mTNum"></span>
                         </span>
                     </div>
                     <div class="col-sm-12 col-md-8 text-sm-center text-end">
-                        <span class="mr-3">คำถามข้อที่</span>
-                        <select style="width: 70px; height: 40px;">
+                        <!-- <span class="mr-3">คำถามข้อที่ <span id="mNum" class="fs-20"></span></span> -->
+                        <!-- <select style="width: 70px; height: 40px;">
                             <option value="1">1</option>
-                        </select>
-                        <span class="ml-4">ทั้งหมด 8 ข้อ </span>                  
+                        </select> -->
+                        <span class="">ทั้งหมด <span id="mSum"></span> ข้อ </span>                  
                     </div>
                 </div>
             </div>
@@ -398,11 +302,15 @@ aria-hidden="true">
                 </script>
             </div>
             <div class="modal-footer border-0" style="display: block;">
-                <button class="btn btn-sm btn-confirm-submit float-start">
+                <button class="btn btn-sm btn-confirm-submit float-start" disabled>
                     ส่งคำขอข้อมูลทั้งหมด
                 </button>
-                <button type="button" style="width: 80px !important;" class="btn btn-sm btn-action float-end" data-bs-dismiss="modal">ยกเลิก</button>
-                <button type="button" style="width: 80px !important;" class="btn btn-sm btn-main float-end">บันทึก</button>
+                <button type="button" style="width: 80px !important;" 
+                class="btn btn-sm btn-action float-end" data-bs-dismiss="modal">ยกเลิก</button>
+                <button type="button" style="width: 80px !important;" 
+                class="btn btn-sm btn-main float-end">
+                    บันทึก
+                </button>
             </div>
         </div>
     </div>
@@ -410,9 +318,9 @@ aria-hidden="true">
 <div class="loading" id="loading-page"></div>
 
 <?php $app = new \Config\App(); ?>
-<script src="<?= base_url('assets/js/frontend/psce.js') ?>?v=<?= $app->script_v ?>" async></script>
 <script src="<?= base_url('assets/js/frontend/bootstrap/bootstrap.bundle.min.js') ?>"></script>
-<script>
+<script src="<?= base_url('assets/js/frontend/psce.js') ?>?v=<?= $app->script_v ?>" async></script>
+<script defer>
     $(document).ready(function() {
         setPage(<?=$app_id?>);
     });

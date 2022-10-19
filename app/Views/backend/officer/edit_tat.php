@@ -166,14 +166,14 @@
           toastr.error('E-Mail นี้มีการสมัครเข้าใช้งานแล้ว');
           return false;
         }
-        var res = main_save(BASE_URL + '/backend/TAT/saveInsert', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/TAT/saveInsert', '#input_form');
         res_swal(res, 0, function() {
           if (res.type == 'success') {
             window.location.href = '<?= base_url('backend/TAT') ?>';
           }
         });
       } else {
-        var res = main_save(BASE_URL + '/backend/TAT/saveUpdate', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/TAT/saveUpdate', '#input_form');
         res_swal(res, 0, function() {
           if (res.type == 'success') {
             window.location.href = '<?= base_url('backend/TAT') ?>';
@@ -190,7 +190,7 @@
 
   function validated_email() {
     var email = $('#email').val();
-    var res = main_post(BASE_URL + '/backend/Admin/checkData', {
+    var res = main_post(BASE_URL_BACKEND + '/Admin/checkData', {
       email: email
     });
     return res;

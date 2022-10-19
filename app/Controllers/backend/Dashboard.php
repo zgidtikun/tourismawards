@@ -8,10 +8,12 @@ class Dashboard extends BaseController
 {
     public function index()
     {
+        $data['role']   = $this->db->table("role")->get()->getRowObject();
+        
         $data['title']  = 'สถิติการใช้งาน';
-        $data['view']   = 'backend/dashboard/index';
+        $data['view']   = 'administrator/dashboard/index';
         $data['ci']     = $this;
 
-        return view('backend/template', $data);
+        return view('administrator/template', $data);
     }
 }

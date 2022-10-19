@@ -1,63 +1,33 @@
-# CodeIgniter 4 Application Starter
+แจ้ง Dev
+- เรื่อง Status ใบสมัคร
+    - 1 รอตรวจสอบ
+    - 2 ขอข้อมูลเพิ่มเติม -> ผปก ส่งกลับมา: 3 ตอบรับคำขอ / 4 ไม่มีการตอบกลับ
+    - 5 อนุมัติ / 6 ไม่อนุมัติ
 
-## What is CodeIgniter?
+- เรื่อง Status ของแบบประเมิน Pre Screen 
+    - 1 รอตรวจสอบ
+    - 2 ขอข้อมูลเพิ่มเติม -> ผปก ส่งกลับมา: 3 ตอบรับคำขอ / 4 ไม่มีการตอบกลับ
+    - 5 ประเมินสำเร็จ
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
+- การนับวัน ผปก. ตอบกลับ หากกรรมการส่งข้อมูลไม่พร้อมกัน ระบบจะนับวันยังไง (ภายใน 5 วัน) แล้วกรณีกรรมการคนที่ 2 ส่งขอข้อมูลเพิ่มเติมภายหลัง จากกรรมการคนที่ 1 เป็นวันที่ 6 จะนับรอบวันอย่างไร
+  - 📌 ถ้าระบบกำหนดให้ ผู้ประกอบการตอบกลับขอขอข้อมูลได้ภายใน 5 วัน แปลว่า ทุกหลังคำขอจะสามารถตอบกลับได้ภายใน 5 วันค่ะ เช่น กรรมการคนที่ 1 ขอข้อมูลวันที่ 1 : ผปกก จะตอบกลับได้ช้าสุดวันที่ 6 กรรมการคนที่ 2 ขอข้อมูลวันที่ 2 : ผปกก จะตอบกลับได้ช้าสุดวันที่ 7
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+เหมือน Topup เวลาไปเรื่อยๆ
+- หากมีการอัพเดทหรือขอข้อมูลเพิ่มเติมระบบจะแจ้งอีเมล์ไปยังผู้ประกอบการไหมและแจ้งอย่างไร หากกรรมการร้องขอหลายครั้ง เพื่อให้ ผปก. เข้าใจ
+  - 📌ทุกการร้องขอ มีการแจ้งเตือนทางอีเมลและ Notification ค่ะ
 
-More information about the plans for version 4 can be found in [the announcement](http://forum.codeigniter.com/thread-62615.html) on the forums.
+- ทาง ททท ขอว่า ถ้าขอให้เพิ่ม เจ้าหน้าที่ ททท มี 4 ประเภท ตามการสมัคร ทำได้ไหมเพราะอยากให้ เห็นแค่ใบสมัครของประเภทที่ตัวเองดูแลค่ะ ส่วน เลขาใหญ่ หยกให้เค้าใช้ admin ไปเลย จะได้เห็นทุกใบสมัคร
 
-The user guide corresponding to this version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+--------------------------------------------------
+สรุปรายละเอียดระบบ 10/10/2022
 
-## Installation & updates
+- การ Add สมาชิกประเภทกรรมการเข้าระบบ ให้ admin เป็นผู้ Add 
+กรรมการ 1 คน/ 1 ประเภท 
+แต่สามารถเลือกความเชี่ยวชาญได้หลายด้าน
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+- การแสดงเนื้อหาชุดคำตอบของ ผปกก ให้แสดงทุกข้อ หากข้อไหนไม่มีการประเมินในรอบนั้น ตรงเกณฑ์การประเมินให้ขึ้นว่า "ไม่มีการประเมินในรอบพรีสกรีน หรือ ไม่มีการประเมินในรอบลงพื้นที่"
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+- ตอน export คอมเม้น ขอชื่อกรรมการด้วย
 
-## Setup
-
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
-
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 7.4 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
-- xml (enabled by default - don't turn it off)
+- ตอนร้องขอข้อมูลเพิ่มเติม ให้ระบุ ลำดับกรรมการ และด้าน
+เช่น กรรมการท่านที่ 1 ด้าน xxxxxxxx

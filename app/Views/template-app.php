@@ -43,4 +43,22 @@
     <?php if(!empty($_recapcha) && $_recapcha) : ?>
     <?=view('_recapcha')?>
     <?php endif; ?>
+    
+    <script>           
+        $(document).ready(function(){
+            <?php if(session()->get('isLoggedIn')) : ?>
+                $('.login_list li.userlogin').css('display','block');
+            <?php endif; ?> 
+        });
+
+        jQuery(document).each(function () {
+            var headerheight = $('#header-inner').height()+'px';
+            // console.log("headerheight = "+headerheight);
+            $('#includedbanner').css({ "display": "block", "margin-top": headerheight });
+            $('.banner-box').css({ "display": "block", "margin-top": headerheight });
+            $('.winneraward').css({ "display": "block", "margin-top": headerheight });
+            $('.formlogin .mainsite').css({ "display": "block", "padding-top": headerheight });
+            $('.regisform .mainsite').css({ "display": "block", "padding-top": headerheight });
+        });
+    </script>
 </body>

@@ -256,7 +256,7 @@ const psc = {
                 
             cl = 'class="sl '+cp+'"';
             model += '<li><a '+hr+' '+id+' '+cl+'> ช้อที่ '+value.no+'</a></li>';
-        })
+        });
 
         $(MapData.label.model.selection).html(model);
     },

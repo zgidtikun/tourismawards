@@ -21,7 +21,7 @@ const empty = (data) =>{
         if($.isEmptyObject(data))
             return true;
     }
-    else if(data == '' || data === null || data === undefined || data === 'undefined' || data === 0)
+    else if(data == '' || data === null || data === 'null' || data === undefined || data === 'undefined' || data === 0)
         return true;
     return false;
 }

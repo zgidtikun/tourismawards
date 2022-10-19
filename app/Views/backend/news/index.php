@@ -61,7 +61,7 @@
                     <td class="text-center"><?= docDate($value->updated_at) ?></td>
                     <td class="text-center">
                       <i class="fa fa-eye text-success mr-2" data-toggle="tooltip" title="ดูรายละเอียด" onclick="view_item(this)"></i>
-                      <i class="fas fa-edit text-primary mr-2" data-toggle="tooltip" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"></i></a>
+                      <i class="fas fa-edit text-primary mr-2" data-toggle="tooltip" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"></i>
                       <i class="fas fa-trash-alt text-danger mr-2" data-toggle="tooltip" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"></i>
                     </td>
                   </tr>
@@ -105,7 +105,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL + '/backend/News/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/News/delete', {
         id: id,
         image_cover: $('#image_cover_old').val(),
       });

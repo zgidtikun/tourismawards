@@ -29,8 +29,11 @@
         <a href="#0" class="cd-top"></a>
         <script>            
             jQuery(document).each(function () {
-                var headerheight = $('.header-box ').height()+"px";
+                var headerheight = $('#header-inner').height()+'px';
+                // console.log("headerheight = "+headerheight);
                 $('#includedbanner').css({ "display": "block", "margin-top": headerheight });
+                $('.banner-box').css({ "display": "block", "margin-top": headerheight });
+                $('.winneraward').css({ "display": "block", "margin-top": headerheight });
                 $('.formlogin .mainsite').css({ "display": "block", "padding-top": headerheight });
                 $('.regisform .mainsite').css({ "display": "block", "padding-top": headerheight });
             });

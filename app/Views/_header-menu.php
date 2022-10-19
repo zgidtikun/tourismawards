@@ -2,7 +2,7 @@
    <div id="header-inner">
 
       <div class="header-box">
-         <div class="header-box-row login_list">
+         <div class="header-box-row regisform login_list">
             <div class="header-box-col">
                <ul>
                   <?php if(!session()->get('isLoggedIn')) : ?>
@@ -271,7 +271,7 @@
       });
 
    });
-
+   
    jQuery(document).ready(function () {
       $('.btn-noti').click(function () {
          $('.noti-box').slideDown(200).addClass('active lockbody');

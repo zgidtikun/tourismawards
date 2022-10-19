@@ -9,7 +9,7 @@ class News extends BaseController
 {
     public function __construct()
     {
-        helper('main');
+        // helper('main');
         // pp(session()->role);
         // if (session()->role == 2) {
         //     return redirect()->to('404');
@@ -19,8 +19,12 @@ class News extends BaseController
     public function index()
     {
         // pp(session()->get());
-        $data['result'] = $this->db->table('blog')->get()->getResultObject();
-        $data['category'] = $this->db->table('blog_category')->get()->getResultObject();
+        $where = [];
+        if (!empty($_GET["keyword"])) {
+            $where['title'] = $_GET["keyword"];
+        }
+        $data['result'] = $this->db->table('news')->where($where)->get()->getResultObject();
+        $data['category'] = $this->db->table('news_category')->get()->getResultObject();
         $category = [];
         foreach ($data['category'] as $key => $value) {
             $category[$value->id] = $value->name;
@@ -30,35 +34,35 @@ class News extends BaseController
 
         // Template
         $data['title']  = 'ข่าวประชาสัมพันธ์';
-        $data['view']   = 'backend/news/index';
+        $data['view']   = 'administrator/news/index';
         $data['ci']     = $this;
 
-        return view('backend/template', $data);
+        return view('administrator/template', $data);
     }
 
     public function add()
     {
-        $data['category'] = $this->db->table('blog_category')->get()->getResultObject();
+        $data['category'] = $this->db->table('news_category')->get()->getResultObject();
 
         // Template
         $data['title']  = 'ข่าวประชาสัมพันธ์';
-        $data['view']   = 'backend/news/edit';
+        $data['view']   = 'administrator/news/edit';
         $data['ci']     = $this;
 
-        return view('backend/template', $data);
+        return view('administrator/template', $data);
     }
 
     public function edit($id)
     {
-        $data['result'] = $this->db->table('blog')->where('id', $id)->get()->getRowObject();
-        $data['category'] = $this->db->table('blog_category')->get()->getResultObject();
+        $data['result'] = $this->db->table('news')->where('id', $id)->get()->getRowObject();
+        $data['category'] = $this->db->table('news_category')->get()->getResultObject();
 
         // Template
         $data['title']  = 'ข่าวประชาสัมพันธ์';
-        $data['view']   = 'backend/news/edit';
+        $data['view']   = 'administrator/news/edit';
         $data['ci']     = $this;
 
-        return view('backend/template', $data);
+        return view('administrator/template', $data);
     }
 
     public function saveInsert()
@@ -85,7 +89,7 @@ class News extends BaseController
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
-        $result = $this->db->table('blog')->insert($data);
+        $result = $this->db->table('news')->insert($data);
         $insert_id = $this->db->insertID();
 
         if ($result) {
@@ -97,7 +101,7 @@ class News extends BaseController
                 $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
                 if (in_array($extension, $accept)) {
                     $img->move($path, $newName);
-                    $this->db->table('blog')->where('id', $insert_id)->update(['image_cover' => $newName]);
+                    $this->db->table('news')->where('id', $insert_id)->update(['image_cover' => $newName]);
                 }
             }
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
@@ -145,7 +149,7 @@ class News extends BaseController
             // 'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
-        $result = $this->db->table('blog')->where('id', $post['insert_id'])->update($data);
+        $result = $this->db->table('news')->where('id', $post['insert_id'])->update($data);
         if ($result) {
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
         } else {
@@ -157,7 +161,7 @@ class News extends BaseController
     {
         $id = $this->input->getVar('id');
         $image_cover = $this->input->getVar('image_cover');
-        $result = $this->db->table('blog')->where('id', $id)->delete();
+        $result = $this->db->table('news')->where('id', $id)->delete();
         if ($result) {
             $path = FCPATH . 'uploads/news/images/';
             @unlink($path . $image_cover);

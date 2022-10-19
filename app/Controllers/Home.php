@@ -18,10 +18,10 @@ class Home extends BaseController
     public function indexBackend()
     {
         $data['title']  = 'สถิติการใช้งาน';
-        $data['view']   = 'backend/dashboard/index';
+        $data['view']   = 'administrator/dashboard/index';
         $data['ci']     = $this;
 
-        return view('backend/template', $data);
+        return view('administrator/template', $data);
     }
 
     public function error_403()

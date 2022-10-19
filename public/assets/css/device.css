@@ -92,7 +92,12 @@ display: none;
     width: auto;
     padding: 0;
 }
-
+.formlogin .header-box-col.logo {
+    width: auto;
+    max-width: none;
+    flex: none;
+    padding: 0;
+}
 .banner-txt h1 {
     margin: 20px 0;
     line-height: 1;
@@ -172,6 +177,7 @@ width: 50%;
 }
 
 @media screen and (max-width:768px) {
+
 .banner-box .slick-dots {
     bottom: 10px;
 }
@@ -253,6 +259,9 @@ max-height: 50px;
 }
 
 @media screen and (max-width:767px) and (orientation:portrait){
+.formlogin .banner-logo{
+display: none;
+}
 .mainsite.awardbranch .container,
 .mainsite.awardotherbranch .container {
     margin: 0 auto;
@@ -273,25 +282,28 @@ max-height: 50px;
 .banner-txt {
     max-width: 85%;
 }
-.banner-txt p{
+.banner-txt p {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     line-clamp: 3;
     -webkit-box-orient: vertical;
+    margin: 0 0 10px 0;
 }
 .banner-box-scale {
-    padding-top: 75%;
+    padding-top: 100%;
 }
 .banner-txt h1 {
     margin: 10px 0;
     line-height: 1;
+    font-size: 20px;
 }
 .banner-txt h2 {
     font-weight: normal;
     margin: 0;
     line-height: 1;
+    font-size: 18px;
 }
 .banner-box .slick-prev, .banner-box .slick-next {
     z-index: 1;

@@ -23,14 +23,14 @@
             <div class="col-md-5 row">
 
               <div class="col-md-4">
-                <label for="application_type">ประเภทอุตสาหกรรม</label>
+                <label for="application_type">ประเภทรางวัลอุตสาหกรรมท่องเที่ยวไทย</label>
               </div>
 
               <div class="col-md-8">
                 <div class="form-group">
                   <select class="form-control" name="application_type" id="application_type">
 
-                    <option value="">เลือกประเภทอุตสาหกรรม</option>
+                    <option value="">เลือกประเภท</option>
                     <?php
                     if (!empty($type)) :
                       foreach ($type as $key => $value) :
@@ -57,7 +57,7 @@
                     <option value="2">ลงพื้นที่ (พร้อมคำถาม)</option>
                     <option value="3">Pre Screen (เกณฑ์การตัดสิน)</option>
                     <option value="4">ลงพื้นที่ (เกณฑ์การตัดสิน)</option>
-                    <option value="5">Pre Screen (ค่าคะแนน๗</option>
+                    <option value="5">Pre Screen (ค่าคะแนน)</option>
                     <option value="6">ลงพื้นที่ (ค่าคะแนน)</option>
                     <option value="7">สรุปคะแนน</option>
                   </select>
@@ -70,7 +70,6 @@
                   <button type="button" class="btn btn-primary">ส่งออก</button>
                 </div>
               </div>
-
 
             </div>
           </div>

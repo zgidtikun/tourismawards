@@ -52,7 +52,7 @@ class Auth implements FilterInterface
                 if(in_array($arg[0],array('frontend','1','3')))
                     return base_url('login/forntend');
                 elseif(in_array($arg[0],array('backend','2','4')))
-                    return base_url('backend/login');
+                    return base_url('administrator/login');
                 else return base_url('login');
             } else return base_url($arg);
         } else return base_url('login');

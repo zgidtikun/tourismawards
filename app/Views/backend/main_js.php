@@ -2,6 +2,7 @@
 <script>
   const ENVIRONMENT = '<?php echo $_ENV['CI_ENVIRONMENT'] ?>';
   const BASE_URL = '<?php echo base_url() ?>';
+  const BASE_URL_BACKEND = '<?php echo base_url('backend') ?>';
   $(function() {
     <?php if (session('success')) { ?>
       toastr.success("<?php echo session('success'); ?>");

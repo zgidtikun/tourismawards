@@ -266,7 +266,7 @@
   });
 
   $('[name="application_type"]').change(function(e) {
-    var res = main_post(BASE_URL + '/backend/Approve/getAplicationTypeSub/' + $(this).val());
+    var res = main_post(BASE_URL_BACKEND + '/Approve/getAplicationTypeSub/' + $(this).val());
     var html = ``;
     if (!$.isEmptyObject(res)) {
       $.each(res, function(index, value) {

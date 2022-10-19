@@ -204,20 +204,36 @@ position: absolute;
 left: 10px;
 color: #748dfd;
 }
-.backendmenu-list-row li{
+.backendmenu-list-row li {
     display: flex;
-    padding: 10px 50px 10px 40px;
+    padding: 0;
+}
+.backendmenu-list-row li:hover{
+background-color: #171724;
+cursor: pointer;
+}
+
+.backendmenu-list-row li a.active{
+    background-color: #171724;
+    }
+    .backendmenu-list-row li label {
+        position: relative;
+        padding-right: 20px;
+    }
+.backendmenu-list-row li label:hover{
+    cursor: pointer;
 }
 .backendmenu-list-row a{
     display: flex;
     padding: 10px 50px 10px 40px;
     color: #FFF;
+    width: 100%;
 }
 
 .backendmenu-list-row li a:link, .backendmenu-list-row li a:visited {
     color: #FFF;
     position: relative;
-    padding: 0;
+    padding: 10px 26px 10px 40px;
 }
 
 .btn-menulist:before {
@@ -260,10 +276,11 @@ margin: 0;
 }
 .backendcontent {
     display: flex;
-    padding: 40px 40px 0 40px;
+    padding: 40px;
     margin: 0;
     gap: 0 20px;
     font-size: 16px;
+    background-color: #edeff7;
 }
 .backendcontent-row {
     width: 100%;
@@ -410,10 +427,10 @@ flex: none;
 width: 170px;
 flex: none;
 }
-.userstatus{
-border-radius: 5px;
-padding: 5px;
-font-size: 16px;
+.userstatus {
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
 }
 .userstatus.judge{
 background-color: #ccf7f5;
@@ -430,6 +447,13 @@ color: #f9aa1c;
 .userstatus.officer {
     background-color: #fee1e5;
     color: #f4465f;
+}.userstatus.chk {
+    background-color: #dfe2f0;
+    color: #000;
+}
+.userstatus.morechk {
+    background-color: #bed7e3;
+    color: #5688bb;
 }
 .form-table-col.edit {
     display: flex;
@@ -475,7 +499,8 @@ color: #4f94fd;
     margin-left: 10px;
     padding: 0;
     position: absolute;
-    right: 0;
+    right: -7px;
+    top: 0;
 }
 .dashboard-nav {
     display: flex;
@@ -769,7 +794,6 @@ span.required {
     margin-bottom: 20px;
 }
 [class^="backendform-col"] label {
-    margin-bottom: 10px;
     display: block;
 }
 .backendform-col1{
@@ -919,7 +943,7 @@ display: none;
 }
 .hidebox-login-content h1 {
     color: #0c2e54;
-    margin: 20px 0 0 0;
+    margin: 20px 0;
 }
 .hidebox-login-content p {
     margin-top: 0;
@@ -1149,21 +1173,9 @@ border: 0;
 }
 
 .editjudge-out {
-    border: 1px solid #EEE;
-    border-radius: 10px;
-    padding: 10px;
     margin-top: 20px;
-    min-height: 150px;
 }
-.editjudge-out span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f5f6fa;
-    border-radius: 10px;
-    padding: 5px 10px;
-    margin: 5px 5px 5px 0;
-}
+
 .editjudge-out span a {
     width: 20px;
     height: 20px;
@@ -1306,6 +1318,9 @@ table.dataTable th.no,
 table.dataTable td.no{
 width: 100px!important;
 }
+table.dataTable th.noid,table.dataTable td.noid {
+    width: 150px!important;
+}
 table.dataTable th.name,
 table.dataTable td.name{
 text-align: left;
@@ -1326,15 +1341,25 @@ width: 100px!important;
 
 table.dataTable th.status,
 table.dataTable td.status{
-width: 160px!important;
+width: 150px!important;
+}
+table.dataTable th.type, table.dataTable th.section,
+table.dataTable td.type, table.dataTable td.section {
+    width: 170px!important;
 }
 table.dataTable th.date,
 table.dataTable td.date{
-width: 140px!important;
+width: 180px!important;
+}
+table.dataTable th.score,table.dataTable td.score {
+    width: 120px!important;
 }
 table.dataTable th.edit,
 table.dataTable td.edit{
 width: 120px!important;
+}
+table.dataTable th.admin,table.dataTable td.admin {
+    width: 130px!important;
 }
 .dataTables_wrapper .dataTables_filter input {
     border: 1px solid #E0E0E0;
@@ -1404,4 +1429,76 @@ table.dataTable.display>tbody>tr.odd>.sorting_1, table.dataTable.order-column.st
     color: #FFF;
     border: 0;
     color: #FFF!important;
+}
+table.dataTable.hover>tbody>tr:hover>*, table.dataTable.display>tbody>tr:hover>* {
+    box-shadow: none;
+}
+.btn-hidebox-login:link, .btn-hidebox-login:visited {
+    background-color: #e5f4ff;
+    display: inline-flex;
+    margin: 20px 0!important;
+    padding: 7px 20px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #43a1ee;
+    width: 150px;
+    border-radius: 10px;
+}
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #E0E0E0!important;
+    border-radius: 5px!important;
+    padding: 10px!important;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #E0E0E0!important;
+    display: flex;
+    align-items: center;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    border: 1px solid #E0E0E0!important;
+    border-radius: 5px!important;
+    margin: 5px 10px 5px 0!important;
+    padding: 5px 24px 5px 15px!important;
+}
+.select2-container .select2-search--inline .select2-search__field {
+    margin: 0!important;
+    height: auto!important;
+    font-size: initial!important;
+}
+.select2-container .select2-selection--multiple {
+    min-height: auto!important;
+}
+.select2-container .select2-selection--multiple .select2-selection__rendered {
+    margin: -5px 0;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    border: 0!important;
+    border-radius: 0!important;
+    min-width: auto!important;
+    padding: 0!important;
+    left: auto!important;
+    right: 5px;
+    top: 50%!important;
+    transform: translateY(-50%);
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover, .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
+    background-color: transparent!important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    padding: 0!important;
+}
+.select2-dropdown {
+    border: 1px solid #e0e0e0!important;
+    border-radius: 5px!important;
+    overflow: hidden;
+}
+.select2-container--open .select2-dropdown--above {
+    border-radius: 5px!important;
+}
+.select2-results__option {
+    font-size: 16px;
+}
+.select2-search.select2-search--inline {
+    opacity: 0;
 }

@@ -5358,7 +5358,22 @@ img.profile {
 
 .hide-choice-box li a.reject {
     color: #FFF;
-    background-color: #FFA800;
+    background-color: #b5b5c3;
+}
+
+.hide-choice-box li a.hold{
+    color: #FFF;
+    background-color: #B5B5C3;
+}
+
+.ablum-img {
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.ablum-img:hover, .ablum-img:focus {
+    border:5px solid #86b7fe;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .images-modal {
@@ -5378,6 +5393,10 @@ img.profile {
     margin: auto;
     display: block;
     position: absolute;
+    width: auto;
+    max-width: 70%;
+    height: auto;
+    max-height: 70%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

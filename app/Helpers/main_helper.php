@@ -57,6 +57,14 @@ function checkPermission($role = [])
     return false;
 }
 
+function roleName($id)
+{
+    $db = \Config\Database::connect();
+    $role = $db->table('role')->get()->getRowObject();
+    return $role->user_groups;
+
+}
+
 function show_404()
 {
     header('Location: ' . base_url() . '/404');

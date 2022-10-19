@@ -156,12 +156,12 @@
   });
 
   $('#btn_save').click(function(e) {
-    var res = main_post(BASE_URL + '/backend/Directors/saveInsert');
+    var res = main_post(BASE_URL_BACKEND + '/Directors/saveInsert');
     res_swal(res, 1);
   });
 
   function get_data_option() {
-    var res = main_post(BASE_URL + '/backend/Directors/getUserApprove');
+    var res = main_post(BASE_URL_BACKEND + '/Directors/getUserApprove');
 
     if (res.status_1.length > 0) {
       var html = ``;

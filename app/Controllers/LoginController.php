@@ -19,7 +19,7 @@ class LoginController extends BaseController
 
     public function index($bank = 'frontend')
     {   
-        if(!in_array($bank,array('frontend','backend')))
+        if(!in_array($bank,array('frontend','administrator')))
             return redirect()->to(base_url('404'));
             
         if(session()->get('isLoggedIn')){
@@ -30,7 +30,7 @@ class LoginController extends BaseController
                 return redirect()->to(base_url('boards'));
             }
             else
-                return redirect()->to(base_url('backend/dashboard'));            
+                return redirect()->to(base_url('administrator/dashboard'));            
         }
            
         if($bank == 'frontend')
@@ -40,12 +40,12 @@ class LoginController extends BaseController
                 'view' => 'frontend/login'
             ));
         else
-            return redirect()->to(base_url('backend/login'));
+            return redirect()->to(base_url('administrator/login'));
     }
 
     public function authentication($bank = 'frontend')
     {
-        if(!in_array($bank,array('frontend','backend')))
+        if(!in_array($bank,array('frontend','administrator')))
             return redirect()->to(base_url('404'));
 
         if($this->recapcha){
@@ -157,7 +157,7 @@ class LoginController extends BaseController
 
     public function logout()
     {    
-        $url = session()->get('default') == 'frontend' ? 'login' : 'backend/login';
+        $url = session()->get('default') == 'frontend' ? 'login' : 'administrator/login';
         $list = array('isLoggedIn','id','account','user','role','default');
         session()->remove($list);
         return redirect()->to(base_url($url));

@@ -122,10 +122,6 @@ display: none;
     margin: 10px 0;
     justify-content: space-between;
 }
-.header-box-col.logo {
-    width: auto;
-    padding: 0;
-}
 }
 
 @media screen and (max-width:768px) {
@@ -133,10 +129,14 @@ display: none;
   fill: black;
 }
 .formlogin .header-box {
-    position: absolute;
+    position: relative;
     background-color: transparent;
     z-index: 999;
+    width: 100%;
 }
+}
+
+@media screen  and (max-width:767px) and (orientation:portrait){
 }
 
 @media screen and (max-width:1023px) and (orientation:landscape){

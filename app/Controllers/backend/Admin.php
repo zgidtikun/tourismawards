@@ -21,10 +21,10 @@ class Admin extends BaseController
 
         // Template
         $data['title']  = 'ผู้ดูแลระะบบ';
-        $data['view']   = 'backend/admin/index';
+        $data['view']   = 'administrator/admin/index';
         $data['ci']     = $this;
 
-        return view('backend/template', $data);
+        return view('administrator/template', $data);
     }
 
     public function add()
@@ -35,10 +35,10 @@ class Admin extends BaseController
 
         // Template
         $data['title']  = 'เพิ่มคณะกรรมการ';
-        $data['view']   = 'backend/admin/edit';
+        $data['view']   = 'administrator/admin/edit';
         $data['ci']     = $this;
 
-        return view('backend/template', $data);
+        return view('administrator/template', $data);
     }
 
     public function edit($id)
@@ -49,15 +49,18 @@ class Admin extends BaseController
 
         // Template
         $data['title']  = 'แก้ไขคณะกรรมการ';
-        $data['view']   = 'backend/admin/edit';
+        $data['view']   = 'administrator/admin/edit';
         $data['ci']     = $this;
 
-        return view('backend/template', $data);
+        return view('administrator/template', $data);
     }
 
     public function saveInsert()
     {
         $post = $this->input->getVar();
+        $imagefile = $this->input->getFiles('profile');
+        $img = $imagefile['profile'];
+
         if (!empty($post['password'])) {
             $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
         }
@@ -80,7 +83,19 @@ class Admin extends BaseController
             'updated_at'            => date('Y-m-d H:i:s'),
         ];
         $result = $this->db->table('admin')->insert($data);
+        $insert_id = $this->db->insertID();
         if ($result) {
+            if ($img->isValid() && !$img->hasMoved()) {
+                $path = FCPATH . 'uploads/profile/images/';
+                $originalName = $img->getName();
+                $extension = $img->guessExtension();
+                $newName = genFileName($extension);
+                $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
+                if (in_array($extension, $accept)) {
+                    $img->move($path, $newName);
+                    $this->db->table('admin')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
+                }
+            }
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -90,6 +105,23 @@ class Admin extends BaseController
     public function saveUpdate()
     {
         $post = $this->input->getVar();
+        $imagefile = $this->input->getFiles('profile');
+        $img = $imagefile['profile'];
+
+        if ($img->isValid() && !$img->hasMoved()) {
+            $path = FCPATH . 'uploads/profile/images/';
+            $extension = $img->guessExtension();
+            $newName = genFileName($extension);
+            $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
+            if (in_array($extension, $accept)) {
+                $img->move($path, $newName);
+                $post['profile'] = 'uploads/profile/images/' . $newName;
+                @unlink($path . $post['profile_old']);
+            }
+        } else {
+            $post['profile'] = 'uploads/profile/images/' . $post['profile_old'];
+        }
+        
         if (!empty($post['password'])) {
             $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
         }
@@ -98,6 +130,7 @@ class Admin extends BaseController
             'prefix'                => $post["prefix"],
             'name'                  => $post["name"],
             'surname'               => $post["surname"],
+            'profile'               => $post['profile'],
             // 'member_type'           => 4,
             // 'award_type'            => json_encode($post["award_type"]),
             // 'assessment_group'      => json_encode($post["assessment_group"]),
