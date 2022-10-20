@@ -7,7 +7,12 @@
                     ประเมินรอบขั้นต้น (Pre-screen)
                 </div>
                 <div class="form-main-btn">
-                    <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold">
+                    <button style="width: 100px;" class="btn btn-action fw-semibold"
+                    onclick="window.open('<?=base_url('boards')?>','_self')">
+                        ย้อนกลับ
+                    </button>
+                    <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold"
+                    onclick="setRequest()">
                         ส่งคำขอข้อมูลทั้งหมด
                     </button>
                     <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold">
@@ -183,7 +188,8 @@
                                 <a href="javascript:downloadFile();" class="btn-download">ดาวน์โหลดไฟล์แนบ</a>
                             </div>
                             <div class="attachinp border-0">
-                                <a href="javascript:void(0)" class="btn-getdata active" data-tab="2">
+                                <a href="javascript:void(0)" class="btn-getdata active"
+                                >
                                     ขอข้อมูลเพิ่มเติม
                                 </a>
                             </div>
@@ -231,7 +237,8 @@
                 <div class="regis-form-data is-estimate">
                     <div class="regis-form-data-row">
                         <div class="regis-form-data-col2 clear">
-                            <button class="btn btn-danger" onclick="resetEstimate(pointer.cate,pointer.seg)">
+                            <button class="btn btn-danger" onclick="resetEstimate(pointer.cate,pointer.seg)"
+                            id="btn-reset">
                                 ล้างข้อมูลการให้คะแนน
                             </button>
                         </div>
@@ -268,17 +275,16 @@ aria-hidden="true">
             <div class="modal-header border-0 mb-0">
                 <div class="bs-row choicebox">
                     <div class="col-sm-12 col-md-4 text-sm-center mb-sm-3">
-                        <span class="text-base-main fw-semibold">
+                        <span style="font-size: 20px;" class="text-base-main fw-semibold">
                             <i class="bi bi-bookmark-fill"></i>
                             ข้อมูลเพิ่มเติมข้อที่ <span id="mTNum"></span>
                         </span>
                     </div>
                     <div class="col-sm-12 col-md-8 text-sm-center text-end">
-                        <!-- <span class="mr-3">คำถามข้อที่ <span id="mNum" class="fs-20"></span></span> -->
-                        <!-- <select style="width: 70px; height: 40px;">
-                            <option value="1">1</option>
-                        </select> -->
-                        <span class="">ทั้งหมด <span id="mSum"></span> ข้อ </span>                  
+                        <span class="mr-3">คำถามข้อที่ <span id="mNum" class="fs-20"></span></span>
+                        <select id="mSelect" style="width: 70px; height: 40px;">
+                        </select>
+                        <span class="ml-3">ทั้งหมด <span id="mSum"></span> ข้อ </span>                  
                     </div>
                 </div>
             </div>
@@ -289,7 +295,13 @@ aria-hidden="true">
                         (จำนวนตัวอักษรคงเหลือ <span id="charNum1">1,000</span>/1,000)
                     </span>
                 </span>
-                <textarea rows="9" id="field1" onkeyup="countChar1(this)"></textarea>
+                <div class="alert alert-warning mt-2" role="alert" id="rq-wait" style="display: none;">
+                    <b><i class="bi bi-exclamation-triangle-fill mr-2"></i>รอการตอบกลับจากผู้ประกอบการ</b>
+                </div>
+                <div class="alert alert-success mt-2" role="alert" id="rq-finish" style="display: none;">
+                    <b><i class="bi bi-check-circle-fill mr-2"></i>ผู้ประกอบการตอบกลับแล้ว</b>
+                </div>
+                <textarea rows="9" id="qRequest" onkeyup="countChar1(this)"></textarea>
                 <script>
                     function countChar1(val) {
                         var len = val.value.length;
@@ -308,7 +320,7 @@ aria-hidden="true">
                 <button type="button" style="width: 80px !important;" 
                 class="btn btn-sm btn-action float-end" data-bs-dismiss="modal">ยกเลิก</button>
                 <button type="button" style="width: 80px !important;" 
-                class="btn btn-sm btn-main float-end">
+                class="btn btn-sm btn-main float-end" id="btn-request">
                     บันทึก
                 </button>
             </div>
@@ -322,15 +334,6 @@ aria-hidden="true">
 <script src="<?= base_url('assets/js/frontend/psce.js') ?>?v=<?= $app->script_v ?>" async></script>
 <script defer>
     $(document).ready(function() {
-        setPage(<?=$app_id?>);
+        setPage(<?=$app_id?>,{ stage: <?=$stage->stage?>, status: <?=$stage->status?> });
     });
-
-    $('.btn-getdata').click(function() {
-        $('#modal-add-paper').modal('show');
-    });
-
-    const zoomImages = (el) => {
-        $("#img-modal").attr('src', el.src);
-        $("#images-modal").show();
-    }
 </script>

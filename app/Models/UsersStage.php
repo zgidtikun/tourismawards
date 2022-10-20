@@ -14,7 +14,7 @@ class UsersStage extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['user_id', 'stage', 'status'];
+    protected $allowedFields = ['user_id', 'stage', 'status', 'duedate'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

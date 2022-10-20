@@ -14,10 +14,9 @@ class Estimate extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['answer_id', 'question_id', 'score_pre', 'tscore_per',
-    'score_onsite', 'tscore_onsite', 'comment_pre', 'comment_onsite', 'note_pre', 
-    'note_onsite', 'status', 'request_list', 'request_date', 'request_status', 
-    'estimate_by'];
+    protected $allowedFields = ['application_id', 'answer_id', 'question_id', 'score_pre', 
+    'tscore_pre', 'score_onsite', 'tscore_onsite', 'comment_pre', 'comment_onsite', 'note_pre', 
+    'note_onsite', 'status', 'request_list', 'request_date', 'request_status', 'estimate_by'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

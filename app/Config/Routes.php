@@ -106,8 +106,9 @@ $routes->group('inner-api', static function ($routes) {
     });
 
     $routes->group('estimate', static function ($routes) {
-        $routes->group('pre-sceen', static function ($routes) {
+        $routes->group('pre-screen', static function ($routes) {
             $routes->post('draft', 'EstimateController::draftEstimateProscreen', ['filter' => 'api:3']);
+            $routes->post('request', 'EstimateController::setEstimateRequest', ['filter' => 'api:3']);
         });
     });
 

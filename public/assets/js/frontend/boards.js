@@ -155,7 +155,7 @@ const boards = {
 
                             content = '<a href="javascript:;">';
                             content += '<i class="bi bi-toggles"></i></a>';
-                            content += '<a href="'+href+'" target="_blank">';
+                            content += '<a href="'+href+'">';
                             content += '<i class="bi bi-pencil-square"></i></a>';
                             return content;
                         }

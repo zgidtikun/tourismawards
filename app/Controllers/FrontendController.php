@@ -152,12 +152,27 @@ class FrontendController extends BaseController
 
     public function prescreenEstimate($id)
     {
+        $stage = $this->getStage($id,1);
+        
         $data = [
             'title' => 'ประเมินรอบ Pre-screen',
             'view' => 'frontend/boards/pre-screen-estimate',
-            'app_id' => $id
+            'app_id' => $id,
+            'stage' => $stage
         ];
         
         return view('frontend/entrepreneur/_template',$data);
+    }
+
+    private function getStage($id,$stage)
+    {
+        $builder = $this->db->table('application_form a')
+            ->select('u.stage, u.status')
+            ->join('users_stage u','a.created_by = u.user_id')
+            ->where(['a.id' => $id, 'u.stage' => $stage])
+            ->get();
+
+        foreach($builder->getResult() as $val) $result = $val;
+        return $result;
     }
 }
