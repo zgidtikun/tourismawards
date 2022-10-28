@@ -60,6 +60,10 @@ const MapField = {
                 api: 'buss_ckroom', id: '#step5-t2-bussCkRoom-', require: false 
             },
             { 
+                input: '[name=step5-t2-buildExt]', variant: 'buildExt', type: 2, div: '#step5-type2',
+                api: 'buss_buildExt', id: '#step5-t2-buildExt-', require: false 
+            },
+            { 
                 nput: '#step5-t3-bussLicense', variant: 'bussLicenseT3', type: 3, div: '#step5-type3', 
                 api: 'buss_license', require: true 
             },

@@ -14,41 +14,51 @@ const MapData = {
 const psc = {
     status: null,
     expired: false,
+    stage: null,
     pointer: {
         category: -1,
         segment: -1,
     },
     questions: null,
-    init: function(expired){
+    init: function(expired,stage){
         loading('show');
         api({method: 'get', url: '/inner-api/question/get'}).then(function(response){
-            psc.expired = expired;               
+            psc.expired = expired === 'true' ? true : false;               
             psc.status = response.status;        
             psc.questions = response.data;
-
+            psc.stage = stage;
+            console.log(response)
             if(!psc.expired){
                 switch(psc.status){
-                    case 'draft':                        
-                    case 'reject':
+                    case 'draft':   
                         $('#formstep-sts').addClass('date');
                         $('.form-main-title').removeClass('hide');
                         $('.label-action').removeClass('hide');
                         $('.attach-file').remove();                        
-                        $('#formstatus-pass').removeClass();
+                        $('#formstatus-pass').removeClass();                          
+                    break;
+                    case 'reject':
+                        $('#formstep-sts').addClass('date');
+                        $('#formstep-sts').html('ตอบกลับภายใน '+stage.duedateStr);    
+                        $('.form-main-title').removeClass('hide');
+                        $('.label-action').removeClass('hide');                     
+                        $('#formstatus-reject').removeClass('hide');
+                        $('.regis-form-data textarea').prop('disabled',true);
+                        $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
                     break;
                     case 'finish':
                         $('#formstep-sts').addClass('pass');
                         $('#formstep-sts').html('ส่งแบบประเมินเรียบร้อยแล้ว');                      
                         $('#formstatus-complete').removeClass('hide');
                         $('.regis-form-data textarea').prop('disabled',true);
-                        $('.btn-action, .selecter-file, .bfd-dropfield').remove();
+                        $('.btn-main, .btn-action, .selecter-file, .bfd-dropfield').remove();
                     break;
                 }
             } else {                   
                 $('#formstatus-unpass').removeClass('hide');
                 $('#formstep-sts').addClass('notpass');
                 $('#formstep-sts').html('หมดเวลาการส่งแบบประเมินขั้นต้น');
-                $('.btn-action, .btn-file, .bfd-dropfield, file-list').remove();
+                $('.btn-main, .btn-action, .btn-file, .bfd-dropfield, file-list').remove();
                 $('.regis-form-data textarea').prop('disabled',true);
             }
             
@@ -205,13 +215,20 @@ const psc = {
         $('body').removeClass('lockbody');
 
         if(!empty(this.questions[point.cate].question[point.seg].reply)){
-            $(MapData.label.model.item+point.seg).addClass('complete');
+            if(
+                !empty(this.questions[point.cate].question[point.seg].reply_sts)
+                && this.questions[point.cate].question[point.seg].reply_sts == 3
+            ) {
+                $(MapData.label.model.item+point.seg).addClass('request');
+            } else {
+                $(MapData.label.model.item+point.seg).addClass('complete');
+            }
         } else {
             $(MapData.label.model.item+point.seg).removeClass('complete');
         }
-        
+              
         $('.sl').removeClass('active');
-        $(MapData.label.model.item+seg).addClass('active');
+        $(MapData.label.model.item+seg).addClass('active');            
         
         this.setPointer(cate,seg);
 
@@ -221,11 +238,39 @@ const psc = {
         $(MapData.label.question).html(question.no+'. '+question.question);
         $(MapData.input.reply.id).val(question.reply);
 
+        showFiles.tycoon('#file',question.paper);
+        showFiles.tycoon('#images',question.images);
+
         if(!empty(question.remark)){
-            $(MapData.label.remark).html(question.remark);
+            $(MapData.label.remark).html('หมายเหตุ : '+question.remark);
             $(MapData.label.remark).show();
         } else {
             $(MapData.label.remark).hide();
+        }
+
+        if(
+            !empty(question.reply_sts)
+            && question.reply_sts == 3
+        ) {
+            let req = '';
+
+            $.each(question.request,function(rk,rv){
+                req += '<li>'+rv.request_list+'</li>';
+            });
+
+            $('#request-list').html(req);
+            $('#reject').removeClass('hide');            
+            $('.regis-form-data textarea').prop('disabled',false);
+            $('.attach-file').css('display','none');
+            $('.btn-main, .selecter-file, .bfd-dropfield').css('display','block');
+        } else {
+            if(psc.status == 'reject'){
+                $('.regis-form-data textarea').prop('disabled',true);
+                $('.attach-file').css('display','block');
+                $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
+            }
+
+            $('#reject').addClass('hide');
         }
 
         let back = seg != 0 ? seg-1 : seg,
@@ -251,8 +296,17 @@ const psc = {
         $.each(qt, function(key, value){
             let hr = 'href="javascript:psc.setNewQuestion('+cate+','+key+');"',
                 id = 'id="sl-'+key+'"',
-                cp = !empty(value.reply) && seg != key ? 'complete' : '',
-                cl;
+                cp, cl;
+            
+            if(this.stage !== 'reject'){
+                cp = !empty(value.reply) && seg != key ? 'complete' : '';
+            } else {
+                if(!empty(value.reply_sts) && Number(value.reply_sts) == 3 ){
+                    cp = 'request';
+                } else {
+                    cp = 'complete';
+                }
+            }
                 
             cl = 'class="sl '+cp+'"';
             model += '<li><a '+hr+' '+id+' '+cl+'> ช้อที่ '+value.no+'</a></li>';

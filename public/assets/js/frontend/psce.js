@@ -1,4 +1,4 @@
-var appid, sp, tycoon, dataset,
+var appid, sp, tycoon, dataset, assign,
     pointer     = { cate: -1, seg: -1 };
 
 const btnSave   = $('#btn-save');
@@ -23,10 +23,10 @@ const esNote    = $('#note');
 const qRequest  = $('#qRequest');
 const mSelect   = $('#mSelect');
 
-const setPage = (id,stage) => {
+const setPage = (id,stage,ass) => {
     appid = id;
     sp = stage;
-    console.log(stage)
+    assign = ass;
     init();
 }
 
@@ -66,9 +66,13 @@ const init = () =>{
         $('#tyAttnEn').html(tycoon.attn_en);    
         $('#tyUdat').html(tycoon.updated_at);    
         $('#tyTel').html(tycoon.knitter_tel);
+
+        $.each(assign,(k,v) => {
+            $('#tab-'+(v-1)).removeClass('disabled');
+        });
         
         loading('hide');
-        setQuestion(0,0);
+        setQuestion(assign[0]-1,0);
         checkComplete();
     });
 }
@@ -95,14 +99,75 @@ const setRequest = () => {
 
         alert.show(rs.result,title,msg).then((al) => {
             if(rs.result == 'success'){
-
+                disabledForm();
             }
         });
     });
 }
 
 const setFinish = () => {
+    let pscore, tscore, mscore;
+    pscore = tscore = mscore = 0;
 
+    $.each(assign,(ak,av) => {
+        let index = av-1;
+
+        $.each(dataset[index].question,(qk,qv) => {
+            if(!empty(qv.score_pre)){
+                pscore += Number(qv.score_pre);
+                tscore += Number(qv.pre_score) / Number(qv.weight);
+                mscore += Number(qv.pre_score);
+            }
+        });
+    });
+
+    const sscore = ((pscore * tscore) / mscore).toFixed(2);
+    
+    alert.confirm({
+        mode: 'confirm-main',
+        icon: 'info',
+        title: 'ยืนยันการส่งผลประเมินเข้าระบบ'
+            + '<br>'
+            + 'คะแนนที่ประเมินคือ <span class="txt-yellow">'
+            + sscore
+            + '</span> คะแนน',
+        text: 'กรุณาตรวจสอบความถูกต้องก่อนส่งผลประเมินเข้าระบบ',
+        button: {
+            confirm: 'ส่งผลประเมินเข้าระบบ',
+            cancel: 'ยกเลิก'
+        }
+    })
+    .then((rs) => {
+        if(rs.status){
+            loading('show');
+
+            const st = {
+                method: 'post',
+                url: '/inner-api/estimate/pre-screen/complete',
+                data: {
+                    appId: appid,
+                    stage: 1,
+                    score: sscore
+                }
+            }
+
+            api(st).then((rs) => {
+                loading('hide');
+
+                if(rs.result == 'error_login'){
+                    alert.login();
+                }
+                else if(rs.result == 'error'){
+                    alert.show(rs.result,'ไม่สามารถส่งผลประเมินเข้าระบบได้',rs.message);
+                }
+                else {
+                    alert.show(rs.result, 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '').then(() => {
+                        window.location.reload();
+                    });
+                }
+            });
+        }
+    });
 }
 
 const draft = (cate,seg) => {
@@ -118,7 +183,7 @@ const draft = (cate,seg) => {
             est_id: question.est_id,
             answer_id: question.reply_id,
             score_pre: question.score_pre,
-            tscore_per: question.tscore_per,
+            tscore_pre: question.tscore_pre,
             comment_pre: question.comment_pre,
             note_pre: question.note_pre,
             request_list: question.request_list,
@@ -155,8 +220,8 @@ const setQuestion = (cate,seg) => {
         setDropdown(dataset[cate].question,cate,seg);
     }
 
-    if(point.cate == -1){ point.cate = 0; }
-    if(point.seg == -1){ point.seg = 0; }
+    if(point.cate == -1){ point.cate = cate; }
+    if(point.seg == -1){ point.seg = seg; }
     
     const category = dataset[cate];
     const question = category.question[seg];
@@ -190,7 +255,6 @@ const setQuestion = (cate,seg) => {
 
     setPointer(cate,seg);
 
-    console.log(question);
     qTitle.attr('data-id',question.reply_id);
     qTitle.html(category.group.name);
     qSum.html(category.question.length);
@@ -250,7 +314,7 @@ const setQuestion = (cate,seg) => {
         let tmp = v.split('='),
             dis = ck = '';
             
-        if($.inArray(Number(getStageStatus()),[0,3,4]) !== -1){
+        if($.inArray(Number(getStageStatus()),[3,6,7]) !== -1){
             dis = 'disabled';
         }
 
@@ -263,6 +327,7 @@ const setQuestion = (cate,seg) => {
             + dis+' '+ck
             + ' onclick="calScore(this)">'
                 + tmp[1].trim()
+                + ' ('+tmp[0].trim()+' คะแนน)'
             + '</p>'
         );
     });
@@ -297,8 +362,7 @@ const setDropdown = (qt,cate,seg) => {
     $.each(qt, function(k, v){
         let hr = 'href="javascript:setQuestion('+cate+','+k+');"',
             id = 'id="sl-'+k+'"',
-            cp, cl;
-        
+            cp, cl;        
             
         if(Number(v.pre_status) == 1){            
             if($.inArray(
@@ -323,13 +387,14 @@ const setDropdown = (qt,cate,seg) => {
 }
 
 const checkComplete = () => {
-    const cp = dataset.length;
+    const cp = assign.length;
     let ccp = 0;
 
-    $.each(dataset,(ck,cv) => {
-        let check = true;
-
-        $.each(cv.question,(qk,qv) => {
+    $.each(assign,(ak,av) => {
+        let check = true,
+            index = av-1;
+            
+        $.each(dataset[index].question,(qk,qv) => {
             if(Number(qv.pre_status ) == 1){
                 if(empty(qv.score_pre) && qv.score_pre != 0){
                     check = false;
@@ -345,17 +410,17 @@ const checkComplete = () => {
         }
     });
 
-    // if(ccp < 3){
-    //     $('.btn-confirm-submit').prop('disabled',true);
-    // } else {
+    if(ccp < cp){
+        $('.btn-confirm-submit').prop('disabled',true);
+    } else {
         $('.btn-confirm-submit').prop('disabled',false);
-    // }
+    }
 
-    // disabledForm();
+    disabledForm();
 }
 
 const disabledForm = () => {
-    if($.inArray(Number(getStageStatus()),[0,3,4]) !== -1){
+    if($.inArray(Number(getStageStatus()),[3,6,7]) !== -1){
         $('.btn-confirm-submit').prop('disabled',true);
         esCmm.prop('readonly','readyonly');
         qRequest.prop('readonly','readyonly');
@@ -378,21 +443,20 @@ const resetEstimate = (cate,seg) => {
     const point = getPointer();
     dataset[point.cate].question[point.seg].comment_pre = null;
     dataset[point.cate].question[point.seg].score_pre = null;
-    dataset[point.cate].question[point.seg].tscore_per = null;
+    dataset[point.cate].question[point.seg].tscore_pre = null;
     dataset[point.cate].question[point.seg].estimate = true;
 }
 
 const calScore = (ele) => {
     const point = getPointer();
     const question = dataset[point.cate].question[point.seg];
-    const maxscore = question.onside_status;
+    const maxscore = question.pre_score;
     const weight = question.weight;
-    const fullscore = parseFloat(maxscore) * parseFloat(weight);
     const selfscore = parseFloat(ele.value) * parseFloat(weight);
-    const totalscore = selfscore / fullscore;
+    const totalscore = selfscore / maxscore;
     
     dataset[point.cate].question[point.seg].score_pre = ele.value;
-    dataset[point.cate].question[point.seg].tscore_per = totalscore;
+    dataset[point.cate].question[point.seg].tscore_pre = totalscore;
     dataset[point.cate].question[point.seg].estimate = true;
 }
 
@@ -442,7 +506,7 @@ qRequest.keyup(() => {
 $('.btn-getdata').click(function() {
     const point = getPointer();
     const question =  dataset[point.cate].question[point.seg];
-    console.log(question)
+    
     mTNum.html(question.no);
     mNum.html(question.no);
     mSelect.val(point.seg);

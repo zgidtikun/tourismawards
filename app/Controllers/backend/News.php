@@ -56,6 +56,9 @@ class News extends BaseController
     {
         $data['result'] = $this->db->table('news')->where('id', $id)->get()->getRowObject();
         $data['category'] = $this->db->table('news_category')->get()->getResultObject();
+        if (empty($data['result'])) {
+            return redirect()->to(session()->_ci_previous_url);
+        }
 
         // Template
         $data['title']  = 'ข่าวประชาสัมพันธ์';

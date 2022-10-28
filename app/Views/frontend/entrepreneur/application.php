@@ -31,19 +31,26 @@
                         <div class="formstep-icon"><span><i class="bi bi-three-dots"></i></span></div>
                     </div>
                     <script>
-                        jQuery(document).ready(function() {
-                            var formstepdate = $('.formstep-status').length;
-                            var formsteptab = [];
-                            for (var i = 1; i <= formstepdate;) {
-                                formsteptab[i] = $('.formstep-status[data-tab="' + i + '"]').height();
-                                i++
-                            }
-                            var formstepdate = formsteptab.reduce(function(a, b) {
-                                return Math.max(a, b);
-                            });
-                            $('.formstep-status').css({
-                                "height": formstepdate
-                            });
+                        jQuery(document).ready(function () {
+                           var formstepdate = $('.formstep-title').length;
+                           var formsteptab = [];
+                           for (var i = 1; i <= formstepdate;) {
+                              formsteptab[i] = $('.formstep-title[data-tab="' + i + '"]').height();
+                              i++
+                           }
+                           var formstepdate = formsteptab.reduce(function (a, b) { return Math.max(a, b); });
+                           $('.formstep-title').css({ "height": formstepdate });
+                        });
+
+                        jQuery(document).ready(function () {
+                           var formstepdate = $('.formstep-status').length;
+                           var formsteptab = [];
+                           for (var i = 1; i <= formstepdate;) {
+                              formsteptab[i] = $('.formstep-status[data-tab="' + i + '"]').height();
+                              i++
+                           }
+                           var formstepdate = formsteptab.reduce(function (a, b) { return Math.max(a, b); });
+                           $('.formstep-status').css({ "height": formstepdate });
 
                         });
                     </script>
@@ -129,7 +136,7 @@
                            <div class="invalid-feedback">กรุณาอธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด</div>
                         </div>
                         <div class="regis-form-data-col1 inpvdo">
-                           ลิ้งก์เว็บไซต์ หรือ ลิ้งก์วิดีโอ <input type="text" class="form-control" id="step1-link">
+                            <label>ลิ้งก์เว็บไซต์ หรือ ลิ้งก์วิดีโอ</label> <input type="text" class="form-control" id="step1-link">
                         </div>
                         <div class="bs-row mt-2">
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6">
@@ -566,7 +573,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                 <span class="fs-18 fw-semibold" id="step5-file1-title">
                                     สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน<span class="required">*</span>
-                                </h4>
+                                </span>
                                 <div class="card" style="border: 1px solid #E5E6ED;">
                                     <div class="card-body selecter-file">
                                         <div class="bs-row mb-2">
@@ -741,8 +748,8 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <div class="regis-form-data-col1">
                                         <h4>กรณีมีส่วนต่อขยายของอาคารจะต้องแสดงรายงานการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน <span class="required">*</span></h4>
-                                        <p><input type="radio" name="step5-t2-bussCkRoom" id="step5-t2-bussCkRoom-1" value="1"> มี (กรณีที่เลือก ต้องแนบเอกสารการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน)</p>
-                                        <p><input type="radio" name="step5-t2-bussCkRoom" id="step5-t2-bussCkRoom-0" value="0"> ไม่มี</p>
+                                        <p><input type="radio" name="step5-t2-buildExt" id="step5-t2-buildExt-1" value="1"> มี (กรณีที่เลือก ต้องแนบเอกสารการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน)</p>
+                                        <p><input type="radio" name="step5-t2-buildExt" id="step5-t2-buildExt-0" value="0"> ไม่มี</p>
                                     </div> 
                                 </div>
                             </div>                            
@@ -1297,9 +1304,9 @@
         register.init('<?=$duedate->expired_sts ? 'Expired' : 'Unexpired'?>');
     });
 
-    $('.bfd-dropfield-inner').click(function() {
-        $('#step1-images')[0].click();
-    });
+    // $('.bfd-dropfield-inner').click(function() {
+    //     $('#step1-images')[0].click();
+    // });
 
     $.datetimepicker.setLocale('th');
 

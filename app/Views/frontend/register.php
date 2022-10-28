@@ -12,7 +12,7 @@
                         <div class="alert alert-success" id="success">
                             <b>
                                 <i class="bi bi-check-circle-fill"></i> 
-                                สมัครสมาชิกเรียบร้อยแล้ว กรุณารอการตรวจสอบจากผู้ดำเนินงาน 
+                                สมัครสมาชิกเรียบร้อยแล้ว กรุณารอการตรวจสอบจากผู้ดำเนินงาน <br><br>
                                 <a class="alert-link alert-link-fixed-end" href="<?=route_to('login')?>" title="กลับหน้าแรก">
                                     <i class="bi bi-cursor-fill"></i> ล็อคอินเข้าสู่ระบบ
                                 </a>
@@ -72,8 +72,8 @@
                                 </div>
                                 <div class="inp_form_col1">
                                 <?php 
-                                    $attr = ['id' => 'role', 'disabled' => 'disabled'];
-                                    $options = ['1' => 'ผู้ประกอบการ', '2' => 'คณะกรรมการ'];
+                                    $attr = ['id' => 'role', 'readonly' => 'readonly'];
+                                    $options = ['1' => 'ผู้ประกอบการ'/*, '2' => 'คณะกรรมการ'*/];
                                     $selected = !empty($_signup->data->role) ? $_signup->data->role  : '1';
                                     echo form_dropdown('role', $options, $selected,$attr);
                                 ?>

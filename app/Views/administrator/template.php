@@ -13,9 +13,11 @@
 
   <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- DataTable -->
   <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" src="<?= base_url() ?>/assets/js/main.js" charset="utf-8"></script>
+  <script src="<?= base_url() ?>/assets/js/dataTables.responsive.min.js"></script>
 
+  <script type="text/javascript" src="<?= base_url() ?>/assets/js/main.js" charset="utf-8"></script>
   <link rel="stylesheet" href="<?= base_url() ?>/assets/css/boilerplate.css" type="text/css" />
 
   <!-- Bootstrap 5 -->
@@ -23,7 +25,12 @@
   <!-- Bootstrap 4 -->
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"> -->
 
+
+  <!-- DataTable -->
   <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/site.css" />
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/responsive.dataTables.min.css" />
+
   <link rel="stylesheet" href="<?= base_url() ?>/assets/css/fonts.css" />
   <link rel="stylesheet" href="<?= base_url() ?>/assets/css/totop.css" />
   <link rel="stylesheet" href="<?= base_url() ?>/assets/css/cookie.css" />
@@ -77,7 +84,7 @@
             </div>
           </div>
 
-          <div class="backendcontent">
+          <div class="">
             <?php echo view($view) ?>
           </div>
 

@@ -29,15 +29,37 @@ class AnswerController extends BaseController
         $duedate = (object) [
             'expired_date' => $app->Pre_expired,
             'expired_str' => 'ภายในวันที่ '.FormatTree($app->Pre_expired,'thailand'),
-            'expired_sts' => $app->Pre_expired <= date('Y-m-d') ? true : false,
+            'expired_sts' => $app->Pre_expired <= date('Y-m-d') ? 'true' : 'false',
         ];
+
+        $stage = $this->usStg->where(['user_id' => session()->get('id'), 'stage' => 1])
+            ->select('status,duedate')
+            ->first();
+
+        if(!empty($stage->duedate)) 
+            $stage->duedate_str = FormatTree($stage->duedate,'thailand');
+
+        if($stage->status == 2){
+            $duedate->expired_date = $stage->duedate;
+            $duedate->expired_sts = $stage->duedate <= date('Y-m-d') ? 'true' : 'false';
+        }
+
+        if($duedate->expired_sts == 'true'){            
+            $this->usStg->where([
+                'user_id' => session()->get('id'), 
+                'stage' => 1
+            ])
+            ->set(['status' => 5])
+            ->update();
+        }
 
         $data = [
             'title' => 'Pre-screen',
             'view' => 'frontend/entrepreneur/pre-screen',
-            'duedate' => $duedate
+            'duedate' => $duedate,
+            'stage' => $stage
         ];
-
+        
         return view('frontend/entrepreneur/_template',$data);
     }
 
@@ -50,6 +72,7 @@ class AnswerController extends BaseController
     public function getQuestion($id)
     {
         $instApp = new \App\Controllers\ApplicationController();
+        $instEstimate = new \App\Models\Estimate();
         $app = $instApp->getRequireQuestion($id);
         $group = $this->assg->findAll();
         $result = [
@@ -74,7 +97,11 @@ class AnswerController extends BaseController
                 ->getCompiledSelect();
 
             $builder = $this->db->table('question q')
-                ->select('q.id,q.question,q.remark,a.id reply_id,a.reply,a.pack_file')
+                ->select('
+                    q.id, q.question, q.remark,
+                    a.id reply_id, a.reply, a.pack_file,
+                    a.status reply_sts
+                ')
                 ->join('('.$subquery.') a','q.id = a.question_id','LEFT')
                 ->where($where)
                 ->orderBy('id','ASC')
@@ -83,6 +110,13 @@ class AnswerController extends BaseController
             foreach($builder->getResult() as $val){   
                 $val->no = ++$counter;
                 $val->images = $val->paper = []; 
+                $val->request = [];
+
+                if($val->reply_sts == 3){
+                    $val->request = $instEstimate->where('answer_id',$val->reply_id)
+                        ->select('request_list')
+                        ->findAll();
+                }
 
                 if(!empty($val->pack_file)){
                     $files = json_decode($val->pack_file);
@@ -190,8 +224,26 @@ class AnswerController extends BaseController
                             $this->ans->update($ans->qid, [ 'reply' => $ans->reply ]);
                         }
                     }
+
+                    $cusstg = $this->usStg->where([
+                        'user_id' => session()->get('id'), 
+                        'stage' => 1
+                    ])->countAllResult();
                     
-                    $this->usStg->insert(['user_id' => session()->get('id'), 'stage' => 1, 'status' => 1]);
+                    if($cusstg > 0){
+                        $this->usStg->where([
+                            'user_id' => session()->get('id'), 
+                            'stage' => 1
+                        ])
+                        ->set(['status' => 4])
+                        ->update();
+                    } else {
+                        $this->usStg->insert([
+                            'user_id' => session()->get('id'), 
+                            'stage' => 1, 
+                            'status' => 1
+                        ]);
+                    }
                 break;
             }
             

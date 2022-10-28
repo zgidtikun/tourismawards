@@ -119,10 +119,10 @@ class FrontendController extends BaseController
     public function sumStage()
     {
         $stage = new \App\Models\UsersStage();
-        $count_1 = $stage->where('stage',1)->whereIn('status',[1,2])->countAllResults();
-        $count_2 = $stage->where('stage',1)->whereIn('status',[3,4])->countAllResults();
-        $count_3 = $stage->where('stage',2)->whereIn('status',[1,2])->countAllResults();
-        $count_4 = $stage->where('stage',2)->whereIn('status',[3,4])->countAllResults();
+        $count_1 = $stage->where('stage',1)->whereIn('status',[1,2,3,4,5])->countAllResults();
+        $count_2 = $stage->where('stage',1)->whereIn('status',[6,7])->countAllResults();
+        $count_3 = $stage->where('stage',2)->whereIn('status',[1,2,3,4,5])->countAllResults();
+        $count_4 = $stage->where('stage',2)->whereIn('status',[6,7])->countAllResults();
 
         $result = [
             'pre_wait' => $count_1,
@@ -137,10 +137,14 @@ class FrontendController extends BaseController
     public function listDataBoards()
     {
         $question = new \App\Controllers\QuestionController();
+        $input = (object) $this->input->getVar();
         
-        switch($this->input->getVar('stage')){
+        switch($input->stage){
             case 'pre-screen':
-                $result = $question->getListPrescreenFinish($this->input->getVar('status'));
+                $result = $question->getListEstimate($input->stage,$input->status);
+            break;
+            case 'onsite':
+                $result = $question->getListEstimate($input->stage,$input->status);
             break;
             default:
                 $result = ['result' => 'success', 'data' => []];
@@ -153,15 +157,51 @@ class FrontendController extends BaseController
     public function prescreenEstimate($id)
     {
         $stage = $this->getStage($id,1);
+        $assign = $this->getGroupEstimate('asm',session()->get('id'));
         
         $data = [
             'title' => 'ประเมินรอบ Pre-screen',
             'view' => 'frontend/boards/pre-screen-estimate',
             'app_id' => $id,
-            'stage' => $stage
+            'stage' => $stage,
+            'assign' => $assign
         ];
         
         return view('frontend/entrepreneur/_template',$data);
+    }
+
+    public function onsiteEstimate($id)
+    {
+        $stage = $this->getStage($id,2);
+        $assign = $this->getGroupEstimate('asm',session()->get('id'));
+        
+        $data = [
+            'title' => 'ประเมินรอบ ลงพื้นที่',
+            'view' => 'frontend/boards/onsite-estimate',
+            'app_id' => $id,
+            'stage' => $stage,
+            'assign' => $assign
+        ];
+        
+        return view('frontend/entrepreneur/_template',$data);
+    }
+
+    private function getGroupEstimate($group,$id)
+    {
+        $user = new \App\Models\Users();
+
+        if($group == 'awt'){
+            $result = $user->where('id',$id)
+                ->select('award_type')
+                ->first();
+            return json_decode($result->award_type);
+        }
+        else {
+            $result = $user->where('id',$id)
+                ->select('assessment_group')
+                ->first();
+            return json_decode($result->assessment_group);
+        }
     }
 
     private function getStage($id,$stage)

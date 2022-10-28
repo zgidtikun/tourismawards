@@ -15,7 +15,8 @@
                     onclick="setRequest()">
                         ส่งคำขอข้อมูลทั้งหมด
                     </button>
-                    <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold">
+                    <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold"
+                    onclick="setFinish()">
                         ส่งผลประเมินเข้าระบบ
                     </button>
                 </div>
@@ -35,47 +36,47 @@
                     <div class="bs-row" style="font-size: 16px;">
                         <div class="col-sm-12 col-md-4 mb-2">
                             <span class="fw-semibold text-base-main">
-                                รหัสใบสมัคร : <span class="fw-normal" id="tyCode">xxxx</span>
+                            รหัสใบสมัคร : <span class="fw-normal" id="tyCode"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2"">
                             <span class="fw-semibold text-base-main">
-                            ประเภท : <span class="fw-normal" id="tyType">xxxx</span>
+                            ประเภท : <span class="fw-normal" id="tyType"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2"">
                             <span class="fw-semibold text-base-main">
-                            ชื่อ-นามสกุล : <span class="fw-normal" id="tyName">xxxx</span>
+                            ชื่อ-นามสกุล : <span class="fw-normal" id="tyName"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2"">
                             <span class="fw-semibold text-base-main">
-                            ชื่อสถานประกอบการ : <span class="fw-normal" id="tyAttnTh">xxxx</span>
+                            ชื่อสถานประกอบการ : <span class="fw-normal" id="tyAttnTh"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2"">
                             <span class="fw-semibold text-base-main">
-                            สาขา : <span class="fw-normal" id="tyTSbu">xxxx</span>
+                            สาขา : <span class="fw-normal" id="tyTSbu"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2"">
                             <span class="fw-semibold text-base-main">
-                            อีเมล : <span class="fw-normal" id="tyEmail">xxxx</span>
+                            อีเมล : <span class="fw-normal" id="tyEmail"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2"">
                             <span class="fw-semibold text-base-main">
-                            Establishment : <span class="fw-normal" id="tyAttnEn">xxxx</span>
+                            Establishment : <span class="fw-normal" id="tyAttnEn"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2"">
                             <span class="fw-semibold text-base-main">
-                            วันที่ส่งใบสมัคร : <span class="fw-normal" id="tyUdat">xxxx</span>
+                            วันที่ส่งใบสมัคร : <span class="fw-normal" id="tyUdat"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2"">
                             <span class="fw-semibold text-base-main">
-                            เบอร์ติดต่อ : <span class="fw-normal" id="tyTel">xxxx</span>
+                            เบอร์ติดต่อ : <span class="fw-normal" id="tyTel"></span>
                             </span>
                         </div>
                     </div>
@@ -86,13 +87,13 @@
 
             <div class="formmainbox">
                 <div class="regis-form-step">
-                    <a href="javascript:setQuestion(0,0);" id="tab-0" class="btn-form-step active">
+                    <a href="javascript:setQuestion(0,0);" id="tab-0" class="btn-form-step disabled active">
                         1. Tourism Excellence
                     </a>
-                    <a href="javascript:setQuestion(1,0);" id="tab-1" class="btn-form-step">
+                    <a href="javascript:setQuestion(1,0);" id="tab-1" class="btn-form-step disabled">
                         2. Suporting Business & Marketing Factors
                     </a>
-                    <a href="javascript:setQuestion(2,0);" id="tab-2" class="btn-form-step">
+                    <a href="javascript:setQuestion(2,0);" id="tab-2" class="btn-form-step disabled">
                         3. Responsibility and Safety & Health
                     </a>
                 </div>
@@ -162,7 +163,7 @@
                             <div class="alert alert-danger" role="alert">
                                 <span style="font-size: 18px;" class="fw-semibold">
                                     <i class="bi bi-exclamation-diamond-fill mr-2"></i>
-                                    ไม่มีการประเมินในรอบ Pre-screen
+                                    ไม่มีการประเมินในรอบ ลงพื้นที่
                                 </span>
                             </div>
                         </div>
@@ -212,7 +213,7 @@
                             </h3>
                         </div>
 
-                        <div class="regis-form-data-col1" id="qSco">
+                        <div class="regis-form-data-col1 mt-2" id="qSco">
                         </div>
 
                         <div class="regis-form-data-col1">
@@ -254,7 +255,9 @@
             <div class="judge-memo is-estimate">
                 <h4>บันทึกส่วนตัว (Private Memo)</h4>
                 <textarea class="form-control" id="note" rows="6"></textarea>
-                <p style="text-align: right"><a href="javascript:void(0)" class="btn-memosave" data-tab="3">บันทึก</a></p>
+                <p style="text-align: right">
+                    <a href="javascript:void(0)" class="btn-memosave">บันทึก</a>
+                </p>
             </div>
 
         </div>
@@ -334,6 +337,10 @@ aria-hidden="true">
 <script src="<?= base_url('assets/js/frontend/psce.js') ?>?v=<?= $app->script_v ?>" async></script>
 <script defer>
     $(document).ready(function() {
-        setPage(<?=$app_id?>,{ stage: <?=$stage->stage?>, status: <?=$stage->status?> });
+        setPage(
+            <?=$app_id?>,
+            { stage: <?=$stage->stage?>, status: <?=$stage->status?> },
+            [<?=implode(",",$assign)?>]
+        );
     });
 </script>

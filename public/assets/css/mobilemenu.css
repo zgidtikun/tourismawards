@@ -13,7 +13,7 @@ overflow: hidden;
 
 @media screen and (max-width:1320px) {
 .header-box-col.menu li {
-    font-size: 15px;
+    font-size: 0.95rem;
 }
 }
 
@@ -32,12 +32,13 @@ z-index: 999;
 .menubox {
     display: block;
     width: 300px;
+    max-height: 600px;
     position: absolute;
     background-color: #0d2c55;
     border-radius: 20px;
     top: 50px;
     right: 20px;
-    padding: 20px 30px 40px 30px;
+    padding: 20px;
     transform: translateY(-10px);
     opacity: 0;
     transition: all 0.5s ease;
@@ -53,19 +54,31 @@ z-index: 999;
     visibility: initial;
     overflow: hidden;
 }
+.menulogo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: #0d2c55;
+    padding-bottom: 20px;
+}
 .menulogo img {
     height: 50px;
     margin: 0 auto;
     display: block;
 }
-.menubox ul{
-list-style: none;
-padding: 0;
-margin: 30px -5px 0 -5px;
+.menubox ul {
+    list-style: none;
+    height: 100%;
+    margin: 0;
+    padding: 75px 0 0 0;
+    overflow: scroll;
+}
+.menubox ul::-webkit-scrollbar{
+display: none;
 }
 .menubox li {
     display: block;
-    padding: 0 5px;
+    padding: 0;
     margin: 5px 0 10px 0;
     
 }
@@ -82,9 +95,10 @@ margin: 30px -5px 0 -5px;
     right: 15px;
     width: auto;
     height: auto;
+    z-index: 1;
 }
 .menubox a.menuclose i::before{
-font-size: 24px;
+font-size: 30px;
 color: #FFF;
 }
 .menubox a.menuclose img{
@@ -135,17 +149,32 @@ display: none;
     width: 100%;
 }
 }
+@media screen  and (max-width:1024px) and (orientation:portrait){
+.menubox {
+    height: calc(100vh - 30vw);
+}
+}
 
 @media screen  and (max-width:767px) and (orientation:portrait){
+.menubox {
+    height: calc(100vh - 50vw);
+}
 }
 
 @media screen and (max-width:1023px) and (orientation:landscape){
+.menubox {
+    width: 95vw;
+    height: 75vh;
+}
 .menubox.active {
-    width: 95%;
-    height: 90%;
-    top: 50%;
-    transform: translateY(-50%);
     position: fixed;
+    top: 50%!important;
+    transform: translateY(-50%);
+    opacity: 1;
+    transition: all 0.3s ease;
+    z-index: 9999;
+    visibility: initial;
+    overflow: hidden;
 }
 .menubox ul {
     list-style: none;
@@ -161,4 +190,5 @@ display: none;
     margin: 5px 0 10px 0;
     width: 33.33%;
 }
+
 }

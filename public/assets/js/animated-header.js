@@ -1,78 +1,78 @@
-jQuery(document).ready(function( $ ) {
+jQuery(document).ready(function ($) {
 
-var screen_w = $(window).width();
+  var screen_w = $(window).width();
 
-if(screen_w > 1024){
-var speed = 0;
-var header = 0;
+  if (screen_w > 1024) {
+    var speed = 0;
+    var header = 0;
 
-$(window).scroll(function(){
-    if($(document).scrollTop() > 0) {
-		
-		if(header == 0) {
-			
-           header = 1;
-            $("#header").css({"top":'-60px'});
-            $(".header-box-col.logo img").css({"height":"40px"});
-            $(".header-box-col.logo").css({"padding":"0 0 10px 0"});
-            $(".header-box-col.menu ul").css({"align-items":"baseline"});
-            $(".header-box-col.menu li").css({"padding-bottom":"15px"});
+    $(window).scroll(function () {
+      if ($(document).scrollTop() > 0) {
+
+        if (header == 0) {
+
+          header = 1;
+          $("#header").css({ "top": '-60px' });
+          $(".header-box-col.logo img").css({ "height": "40px" });
+          $(".header-box-col.logo").css({ "padding": "0 0 10px 0" });
+          $(".header-box-col.menu ul").css({ "align-items": "baseline" });
+          $(".header-box-col.menu li").css({ "padding-bottom": "15px" });
           //
         }
-		
-    } else {
-        
-		if(header == 1) {
-			
-           header = 0;
-            $("#header").css({"top":'0px'});
-            $(".header-box-col.logo img").css({"height":"5vw"});
-            $(".header-box-col.logo").css({"padding":"0 0 20px 0"});
-            $(".header-box-col.menu ul").css({"align-items":"initial"});
-            $(".header-box-col.menu li").css({"padding-bottom":"0"});
-           //
-        }  
-    }
-});
 
-$(window).on('load',function () {   
+      } else {
 
-if($(document).scrollTop() > 0) {
-					
-           header = 1;
-            $("#header").css({"top":'-60px'});
-            $(".header-box-col.logo img").css({"height":"40px"});
-            $(".header-box-col.logo").css({"padding":"0 0 10px 0"});
-            $(".header-box-col.menu ul").css({"align-items":"baseline"});
-            $(".header-box-col.menu li").css({"padding-bottom":"15px"});
+        if (header == 1) {
+
+          header = 0;
+          $("#header").css({ "top": '0px' });
+          $(".header-box-col.logo img").css({ "height": "5vw" });
+          $(".header-box-col.logo").css({ "padding": "0 0 20px 0" });
+          $(".header-box-col.menu ul").css({ "align-items": "initial" });
+          $(".header-box-col.menu li").css({ "padding-bottom": "0" });
           //
-}
+        }
+      }
+    });
 
-$('*[data-button]').click(function() {
-    $('html, body').animate({
-        scrollTop: $('*[data-section="'+$(this).attr('data-button')+'"]').offset().top
-    }, speed);
-});
+    $(window).on('load', function () {
 
-function resize(){
-	
-    $('.tab').height(window.innerHeight);
+      if ($(document).scrollTop() > 0) {
 
-	$('.tab-headline').each(function(index, element) {
-	
-	$(this).css('margin-left',-$(this).width()/2);
-	$(this).css('margin-top',-$(this).height()/2);	
-	
-	});	
-	
-	}
+        header = 1;
+        $("#header").css({ "top": '-60px' });
+        $(".header-box-col.logo img").css({ "height": "40px" });
+        $(".header-box-col.logo").css({ "padding": "0 0 10px 0" });
+        $(".header-box-col.menu ul").css({ "align-items": "baseline" });
+        $(".header-box-col.menu li").css({ "padding-bottom": "15px" });
+        //
+      }
 
-$( window ).resize(function() {
-resize();
-});
+      $('*[data-button]').click(function () {
+        $('html, body').animate({
+          scrollTop: $('*[data-section="' + $(this).attr('data-button') + '"]').offset().top
+        }, speed);
+      });
 
-resize();
+      function resize() {
 
-});
-}
+        $('.tab').height(window.innerHeight);
+
+        $('.tab-headline').each(function (index, element) {
+
+          $(this).css('margin-left', -$(this).width() / 2);
+          $(this).css('margin-top', -$(this).height() / 2);
+
+        });
+
+      }
+
+      $(window).resize(function () {
+        resize();
+      });
+
+      resize();
+
+    });
+  }
 });

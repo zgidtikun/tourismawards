@@ -25,7 +25,8 @@ const boards = {
             let opt;
 
             $.each(r.main, function(k,v){
-                opt = '<option value="'+v.name+'">'+v.name+'</option>';
+                let temp = v.name.split('(');
+                opt = '<option value="'+temp[0].trim()+'">'+temp[0].trim()+'</option>';
                 $(mf.s[0].ip).append(opt);
             });
 
@@ -53,11 +54,11 @@ const boards = {
                 st.data.status = 'finish';
             break;
             case 3:
-                st.data.stage = 'in-plate';
+                st.data.stage = 'onsite';
                 st.data.status = 'wait';
             break;
             case 4:
-                st.data.stage = 'in-plate';
+                st.data.stage = 'onsite';
                 st.data.status = 'finish';
             break;
         }
@@ -66,7 +67,6 @@ const boards = {
             $('#sat-main').val('');
             $('#sat-sub').val('');
             $('#sip').val('');
-            
             if(rs.result == 'success'){
                 boards.dt = rs.data;
                 boards.setDataTable(rs.data);
@@ -105,10 +105,22 @@ const boards = {
                                     content += 'กำลังประเมิน</span>';
                                 break;
                                 case 3:
+                                    content += '<span class="badge badge-request ml-1">';
+                                    content += 'ขอข้อมูลเพิ่มเติม</span>';
+                                break;
+                                case 4:
+                                    content += '<span class="badge badge-estcon ml-1">';
+                                    content += 'ตรวจข้อมูลเพิ่มเติม</span>';
+                                break;
+                                case 5:
+                                    content += '<span class="badge badge-norecall ml-1">';
+                                    content += 'ไม่มีการตอบรับ</span>';
+                                break;
+                                case 6:
                                     content += '<span class="badge badge-pass ml-1">';
                                     content += 'ประเมินเรียบร้อย</span>';
                                 break;
-                                case 4:
+                                case 7:
                                     content += '<span class="badge badge-notpass ml-1">';
                                     content += 'ไม่ผ่านประเมิน</span>';
                                 break;
@@ -118,8 +130,32 @@ const boards = {
                             return content;
                         }
                     },
-                    { data: 'type' },
-                    { data: 'section' },
+                    { 
+                        data: 'type',
+                        render: function(data, type, row, meta){
+                            let tmp = data.split('(');
+                            let content = tmp[0].trim();
+                            
+                            if(tmp.length > 1){
+                                content += '<br>('+tmp[1].trim();
+                            }
+
+                            return content;
+                        } 
+                    },
+                    { 
+                        data: 'section',
+                        render: function(data, type, row, meta){
+                            let tmp = data.split('(');
+                            let content = tmp[0].trim();
+                            
+                            if(tmp.length > 1){
+                                content += '<br>('+tmp[1].trim();
+                            }
+
+                            return content;
+                        }  
+                    },
                     { 
                         data: 'status',
                         render: function(data, type, row, meta){
@@ -134,10 +170,22 @@ const boards = {
                                     content += 'กำลังประเมิน</span>';
                                 break;
                                 case 3:
-                                    content = '<span class="pass">';
-                                    content += 'ประเมินเรียบร้อย</span>';
+                                    content = '<span class="request">';
+                                    content += 'ขอข้อมูลเพิ่มเติม</span>';
                                 break;
                                 case 4:
+                                    content = '<span class="estcon">';
+                                    content += 'ตรวจข้อมูลเพิ่มเติม</span>';
+                                break;
+                                case 5:
+                                    content = '<span class="norecall">';
+                                    content += 'ไม่มีการตอบรับ</span>';
+                                break;
+                                case 6:
+                                    content = '<span class="request">';
+                                    content += 'ประเมินเรียบร้อย</span>';
+                                break;
+                                case 7:
                                     content = '<span class="notpass">';
                                     content += 'ไม่ผ่านประเมิน</span>';
                                 break;
@@ -150,10 +198,19 @@ const boards = {
                     { 
                         data: 'status',
                         render: function(data, type, row, meta){
-                            let content,href;
-                            href = getBaseUrl()+'/boards/estimate/pre-screen/'+row.id;
+                            const vt = $('.btn-dashboard.active').attr('data-tab');
+                            let content, href, oc, round;
 
-                            content = '<a href="javascript:;">';
+                            if($.inArray(Number(vt),[1,2]) !== -1){
+                                round = 'pre-screen';
+                            } else {
+                                round = 'onsite';
+                            }
+
+                            href = getBaseUrl()+'/boards/estimate/'+round+'/'+row.id;
+                            oc = "'tbl',"+row.id;
+
+                            content = '<a href="javascript:boards.score('+oc+');">';
                             content += '<i class="bi bi-toggles"></i></a>';
                             content += '<a href="'+href+'">';
                             content += '<i class="bi bi-pencil-square"></i></a>';
@@ -185,7 +242,8 @@ const boards = {
                     emptyTable: "ไม่มีรายการข้อมูล",
                     info: "แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ",
                     infoEmpty: "",
-                    zeroRecords: "ไม่พบข้อมูลที่ค้นหา"
+                    zeroRecords: "ไม่พบข้อมูลที่ค้นหา",
+                    infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)"
                 },
                 drawCallback: function(data, type, row, meta) {
                     $('.dataTables_paginate ul').addClass('pagination-sm justify-content-end');
@@ -223,7 +281,7 @@ const boards = {
         $('#modal-appt').html(ref.type);
         $('#modal-appts').html(ref.section);
         
-        $('#modal-badge').removeClass('badge-wait, badge-estimate, badge-pass, badge-notpass');
+        $('#modal-badge').removeClass('badge-wait, badge-estimate, badge-request, badge-estcon, badge-norecall, badge-pass, badge-notpass');
         switch(Number(ref.status)){
             case 1: 
                 $('#modal-badge').html('รอการประเมิน');
@@ -234,10 +292,22 @@ const boards = {
                 $('#modal-badge').addClass('badge-estimate');
             break;
             case 3: 
+                $('#modal-badge').html('ขอข้อมูลเพิ่มเติม');
+                $('#modal-badge').addClass('badge-request');
+            break;
+            case 4: 
+                $('#modal-badge').html('ตรวจข้อมูลเพิ่มเติม');
+                $('#modal-badge').addClass('badge-estcon');
+            break;
+            case 5: 
+                $('#modal-badge').html('ไม่มีการตอบรับ');
+                $('#modal-badge').addClass('badge-norecall');
+            break;
+            case 6: 
                 $('#modal-badge').html('ประเมินเรียบร้อย');
                 $('#modal-badge').addClass('badge-pass');
             break;
-            case 4: 
+            case 7: 
                 $('#modal-badge').html('ไม่ผ่านประเมิน');
                 $('#modal-badge').addClass('badge-notpass');
             break;
@@ -245,7 +315,33 @@ const boards = {
 
         $('#modal-date').html(ref.updated_at);
         $('#modal-detail').attr('data-id',ref.id);
+
+        const link = getBaseUrl()+'/boards/estimate/pre-screen/'+ref.id;
+        $('#btn-estimate').attr('onclick',"window.location.href='"+link+"'");
+
         $('#modal-detail').modal('show');
+    },
+    score(f, id){
+        if(f == 'md'){
+            $('#modal-detail').modal('hide');
+        }
+
+        const ref = this.dt.find(el => el.id == id);
+        const spre = ref.score_pre;
+        const sons = ref.score_onsite;
+        const stt = (parseFloat(spre) + parseFloat(sons)).toFixed(2);
+
+        $('#td-spre').html(spre);
+        $('#td-sons').html(sons);
+        $('#td-stt').html(stt);
+        $('#modal-score').modal('show');
+    },
+    closeScore(){
+        $('#modal-score').modal('hide');
+        const width = $(window).width();
+        if(width <= 576){
+            $('#modal-detail').modal('show');
+        }
     }
 }
 
@@ -256,10 +352,12 @@ $('#sat-main').on('change',function(){
 
     if(!empty(val)){        
         $.each(boards.at.main, function(km,vm){
-            if(vm.name == val){
+            let mtemp = vm.name.split('(');
+            if(mtemp[0].trim() == val){
                 $.each(boards.at.sub, function(ks,vs){
-                    if(vs.application_type_id == vm.id){
-                        opt += '<option value="'+vs.name+'">'+vs.name+'</option>';
+                    if(vs.application_type_id == vm.id){                        
+                        let stemp = vs.name.split('(');
+                        opt += '<option value="'+stemp[0].trim()+'">'+stemp[0].trim()+'</option>';
                     }
                 });
 

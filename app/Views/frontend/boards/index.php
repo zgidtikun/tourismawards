@@ -17,8 +17,7 @@
                                     รอบ Pre-screen<br>ที่รอประเมิน
                                 </div>
                                 <div class="estimat-amount" id="count-tab1">
-                                    <span class="spinner-border spinner-border-sm" role="status" 
-                                    aria-hidden="true"></span>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </div>
                             </div>
                         </div>
@@ -30,8 +29,7 @@
                                     รอบ Pre-screen<br>ที่ประเมินแล้ว
                                 </div>
                                 <div class="estimat-amount" id="count-tab2">
-                                    <span class="spinner-border spinner-border-sm" role="status" 
-                                    aria-hidden="true"></span>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </div>
                             </div>
                         </div>
@@ -43,8 +41,7 @@
                                     รอบลงพื้นที่<br>ที่รอประเมิน
                                 </div>
                                 <div class="estimat-amount" id="count-tab3">
-                                    <span class="spinner-border spinner-border-sm" role="status" 
-                                    aria-hidden="true"></span>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </div>
                             </div>
                         </div>
@@ -55,9 +52,8 @@
                                     <i class="bi bi-geo-alt"></i>
                                     รอบลงพื้นที่<br>ที่ประเมินแล้ว
                                 </div>
-                                <div class="estimat-amount" id="count-tab4">                                    
-                                    <span class="spinner-border spinner-border-sm" role="status" 
-                                    aria-hidden="true"></span>
+                                <div class="estimat-amount" id="count-tab4">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </div>
                             </div>
                         </div>
@@ -126,8 +122,7 @@
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="sip" 
-                                placeholder="ค้นหารายชื่อ" disabled>
+                                <input type="text" class="form-control" id="sip" placeholder="ค้นหารายชื่อ" disabled>
                                 <label>ค้นหารายชื่อ</label>
                             </div>
                         </div>
@@ -162,30 +157,26 @@
                 <span class="modal-title text-base-main fw-semibold">
                     <i class="bi bi-geo-alt-fill mr-2"></i>
                     <span id="modal-plate"></span>
-                </span>                
+                </span>
             </div>
             <div class="modal-body" style="font-size: 16px;">
                 <div class="bs-row">
                     <div class="col-12 text-base-main fw-semibold">ประเภทแหล่งท่องเที่ยว</div>
-                    <div class="col-12 mb-2"
-                    id="modal-appt"></div>
+                    <div class="col-12 mb-2" id="modal-appt"></div>
                     <div class="col-12 text-base-main fw-semibold">สาขาที่ประกวด</div>
-                    <div class="col-12 mb-2"
-                    id="modal-appts"></div>
+                    <div class="col-12 mb-2" id="modal-appts"></div>
                     <div class="col-12 text-base-main fw-semibold mb-2">
                         สถานะ <span id="modal-badge" class="badge ml-1"></span>
                     </div>
                     <div class="col-12 text-base-main fw-semibold">วันที่ประเมินล่าสุด</div>
                     <div class="col-12 mb-4" id="modal-date"></div>
                     <div class="col-12">
-                        <button type="button" class="btn btn-sm btn-success">
+                        <button type="button" class="btn btn-sm btn-success" id="btn-score"
+                        onclick="boards.score('md')">
                             <i class="bi bi-toggles"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-warning">
+                        <button type="button" class="btn btn-sm btn-warning" id="btn-estimate">
                             <i class="bi bi-pencil-square"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-danger">
-                            <i class="bi bi-trash-fill"></i>
                         </button>
                     </div>
                 </div>
@@ -199,6 +190,39 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-score" data-bs-backdrop="static" data-bs-keyboard="false" 
+tabindex="-1" aria-labelledby="modal-score-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <span class="modal-title text-base-main fw-semibold" id="modal-score-label">
+                    สรุปผลการประเมิน
+                </span>
+                <button type="button" class="btn-close"
+                onclick="boards.closeScore()"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table boards" style="font-size: 14px;">
+                    <thead class="align-middle">
+                        <tr>
+                            <th class="text-center" width="33.34%">คะแนนรวม<br>(Pre-screen)</th>
+                            <th class="text-center" width="33.34%">คะแนนรวม<br>(รอบลงพื้นที่)</th>
+                            <th class="text-center" width="33.34%">คะแนนรวมทั้งหมด</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center" id="td-spre">1.00</td>
+                            <td class="text-center" id="td-sons">5.00</td>
+                            <td class="text-center fw-semibold" id="td-stt">6.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php $app = new \Config\App(); ?>
 <script src="<?= base_url('assets/DataTables/datatables.js') ?>?v=<?= $app->script_v ?>"></script>
 <script src="<?= base_url('assets/js/frontend/boards.js') ?>?v=<?= $app->script_v ?>"></script>
@@ -206,9 +230,9 @@
 <script>
     $(document).ready(function() {
         boards.init();
-
-        $('#sip, #sat-main, #sat-sub').on('keyup change',function() {
+        
+        $('#sip, #sat-main, #sat-sub').on('keyup change', function() {
             boards.searchAll();
         });
-    });    
+    });
 </script>

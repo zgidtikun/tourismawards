@@ -1,7 +1,8 @@
 nav {
     position: relative;
-    display: block;
+    display: flex;
     width: 100%;
+    justify-content: space-between;
 }
 .flexnav {
     width: auto;

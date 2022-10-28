@@ -14,7 +14,7 @@ class Users extends BaseController
             // $where['surname'] = $_GET['keyword'];
             // $where['email'] = $_GET['keyword'];
         }
-        $data['result']  = $this->db->table('users')->where('role_id', 1)->where('status', 1)->where('status_delete', 1)->like($where, 'match', 'both')->orderBy('id', 'desc')->get()->getResultObject();
+        $data['result']  = $this->db->table('users')->where('role_id', 1)->where('status_delete', 1)->like($where, 'match', 'both')->orderBy('id', 'desc')->get()->getResultObject();
 
         // $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name, R.user_groups AS role_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('award_type AT', 'AT.id = U.award_type', 'left')->join('assessment_group AG', 'AG.id = U.assessment_group', 'left')->where('U.member_type = 1 AND status_delete = 1')->join('role R', 'R.id = U.role_id', 'left')->orderBy('U.id', 'desc')->get()->getResultObject();
 
@@ -41,6 +41,9 @@ class Users extends BaseController
     {
         $data['result'] = $this->db->table('users')->where('id', $id)->get()->getRowObject();
         // $data['member_type'] = $this->db->table('member_type')->get()->getResultObject();
+        if (empty($data['result'])) {
+            return redirect()->to(session()->_ci_previous_url);
+        }
 
         // Template
         $data['title']  = 'แก้ไขผู้ประกอบการ';
@@ -98,6 +101,7 @@ class Users extends BaseController
             'username'      => $post['email'],
             'password'      => $post['password'],
             // 'captcha'       => $post[''],
+            'stage'         => 1,
             'role_id'       => 1,
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
@@ -139,7 +143,7 @@ class Users extends BaseController
                 @unlink($path . $post['profile_old']);
             }
         } else {
-            $post['profile'] = 'uploads/profile/images/' . $post['profile_old'];
+            $post['profile'] = $post['profile_old'];
         }
 
         $data = [
@@ -154,6 +158,7 @@ class Users extends BaseController
             // 'username'      => $post['email'],
             // 'password'      => $post['password'],
             // 'captcha'       => $post[''],
+            'stage'         => 1,
             'role_id'       => 1,
             // 'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
@@ -178,9 +183,9 @@ class Users extends BaseController
             $data = [];
             $data['users'] = $this->db->table('users')->where('id', $id)->get()->getRowObject();
             $this->sendMail($data);
-            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'ทำการเปลี่ยนสถานะสำเร็จ']);
+            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'ทำการยืนยันการสมัครสำเร็จ']);
         } else {
-            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการเปลี่ยนสถานะไม่สำเร็จ']);
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการยืนยันการสมัครไม่สำเร็จ']);
         }
     }
 

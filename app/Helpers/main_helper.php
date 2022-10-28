@@ -60,9 +60,29 @@ function checkPermission($role = [])
 function roleName($id)
 {
     $db = \Config\Database::connect();
-    $role = $db->table('role')->get()->getRowObject();
-    return $role->user_groups;
+    $result = $db->table('role')->where('id', $id)->get()->getRowObject();
+    return $result->user_groups;
+}
 
+function adminName($id)
+{
+    $db = \Config\Database::connect();
+    $result = $db->table('admin')->where('id', $id)->get()->getRowObject();
+    return $result->name;
+}
+
+function applicationType($id)
+{
+    $db = \Config\Database::connect();
+    $result = $db->table('application_type')->where('id', $id)->get()->getRowObject();
+    return @$result->name;
+}
+
+function applicationTypeSub($id)
+{
+    $db = \Config\Database::connect();
+    $result = $db->table('application_type_sub')->where('id', $id)->get()->getRowObject();
+    return @$result->name;
 }
 
 function show_404()

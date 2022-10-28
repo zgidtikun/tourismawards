@@ -5,6 +5,8 @@ use App\Controllers\BaseController;
 use App\Models\ApplicationForm;
 use App\Models\Estimate;
 use App\Models\UsersStage;
+use App\Models\EstimateIndividual;
+use App\Models\EstimateScore;
 use Exception;
 
 class EstimateController extends BaseController
@@ -12,6 +14,8 @@ class EstimateController extends BaseController
     public function __construct()
     {
         $this->estimate = new Estimate();
+        $this->estInd = new EstimateIndividual();
+        $this->estScr = new EstimateScore();
         $this->stage = new UsersStage();
         $this->appForm = new ApplicationForm();
 
@@ -24,34 +28,36 @@ class EstimateController extends BaseController
 
         try {
             $current = date('Y-m-d');
-            $duedate = date('Y-m-d',strtotime($current.' + 5 day'));
+            $duedate = date('Y-m-d',strtotime($current.' + 3 day'));
             $appid = $this->input->getVar('application_id');
             $form = $this->appForm->where('id',$appid)->select('created_by')->first();
 
             $this->estimate->where([
                     'application_id' => $appid,
                     'request_status' => 0
-                ])            
-                ->update([ 
+                ])     
+                ->set([ 
                     'request_status' => 1,
                     'request_date' => $current
-                ]);
-
-            $this->db->table('answer a')
-                ->join('estimate e','a.id = e.answer_id')
-                ->where([
-                    'e.application_id' => $this->input->getVar('application_id'),
-                    'e.request_status' => 1
-                ])
-                ->set(['a.status' => 3])
+                ])       
                 ->update();
+
+            $this->db->query(
+                "UPDATE answer a INNER JOIN estimate e ON a.id = e.answer_id
+                SET a.status = 3
+                WHERE e.application_id = $appid
+                    AND e.request_status = 1;"
+            );
             
-            $this->stage->where(['user_id' => $form->create_by, 'stage' => 1 ])
+            $this->stage->where([
+                    'user_id' => $form->created_by, 
+                    'stage' => 1 
+                ])
                 ->set(['status' => 3, 'duedate' => $duedate])
                 ->update();
-            
+                
             $result = ['result' => 'success'];
-        } catch(Exception $e){
+        } catch(\Exception $e){
             $result = [
                 'result' => 'error',
                 'messsage' => $e->getMessage()
@@ -77,10 +83,10 @@ class EstimateController extends BaseController
                 $data['score_pre'] = NULL;
             }
 
-            if(!empty($input->tscore_per)){
-                $data['tscore_per'] = $input->tscore_per;
+            if(!empty($input->tscore_pre)){
+                $data['tscore_pre'] = $input->tscore_pre;
             } else {
-                $data['tscore_per'] = NULL;
+                $data['tscore_pre'] = NULL;
             }
 
             if(!empty($input->comment_pre)){
@@ -133,9 +139,77 @@ class EstimateController extends BaseController
                 ->select('created_by')
                 ->first();
             
-            $this->stage->where(['user_id' => $form->create_by, 'stage' => 1 ])
+            $this->stage->where(['user_id' => $form->created_by, 'stage' => 1 ])
                 ->set(['status' => 2])
                 ->update();
+        } catch(Exception $e) {
+            $result = [
+                'result' => 'error',
+                'message' => $e->getMessage()
+            ];
+        }
+
+        return $this->response->setJSON($result);
+    }
+
+    public function setCompleteEstimate()
+    {
+        try {     
+            $sys = new \Config\App();         
+            $answer = new \App\Models\Answer();
+            $input = (object) $this->input->getVar();
+
+            $form = $this->appForm->where('id',$input->appId)
+                ->select('created_by')
+                ->first();
+
+            $answer->where('reply_by',$form->created_by)
+                ->set(['status'  => 4])
+                ->update();
+
+            $this->estimate->where('application_id',$input->appId)
+                ->set(['status' => 3, 'request_status' => 3])
+                ->update();
+
+            $inst_estind = [
+                'application_id' => $input->appId,
+                'estimate_by' => session()->get('id')
+            ];
+
+            if($input->stage == 1)
+                $inst_estind['score_pre'] = $input->score;
+            else $inst_estind['score_onsite'] = $input->score;
+
+            $this->estInd->insert($inst_estind);
+
+            $count_est = $this->estInd->where('application_id',$input->appId)
+                ->countAll();
+                
+            $avg = $input->score / $count_est;
+
+            $inst_avg['application_id'] = $input->appId;
+
+            if($input->stage == 1) 
+                $inst_avg['score_prescreen'] = $avg;
+            else $inst_avg['score_onsite'] = $avg;
+
+            $this->estScr->insert($inst_avg);
+
+            $pass = $input->score > $sys->JudgingCriteriaPre ? true : false;
+
+            $this->stage->where(['user_id' => $form->created_by, 'stage' => $input->stage])
+                ->set(['status' => $pass ? 6 : 7])
+                ->update();
+
+            if($pass){
+                $this->stage->insert([
+                    'user_id' => $form->created_by,
+                    'stage' => 2,
+                    'status' => 1
+                ]);
+            }
+
+            $result = ['result' => 'success'];
         } catch(Exception $e) {
             $result = [
                 'result' => 'error',

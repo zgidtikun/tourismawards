@@ -329,7 +329,7 @@ display: none;
     transition: all 0.3s;
 }
 .award-list li {
-    padding: 20px;
+    padding: 20px 0;
     margin: 0;
     width: 100%;
 }

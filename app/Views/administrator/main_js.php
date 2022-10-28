@@ -43,6 +43,18 @@
     // init_selectpicker();
   });
 
+  function active_page(pgurl) {
+    $(".backendmenu-list li").each(function() {
+      if ($(this).find("a").attr("href") == pgurl) {
+        $(".backendmenu-list li a").removeClass("active");
+        $(this).find("a").addClass("active");
+        var datatype = $(this).find("a").attr("data-type");
+        $('.btn-menulist[data-type="' + datatype + '"]').addClass("active");
+        $('.hide-menu-list[data-type="' + datatype + '"]').show().addClass("active");
+      }
+    });
+  }
+
   function F2C(number) {
     number = Number(Math.round(Number(number) * 100) / 100);
     number = number.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");

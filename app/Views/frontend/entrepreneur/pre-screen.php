@@ -61,6 +61,12 @@
                 <h3>ส่งแบบประเมินขั้นต้น (Pre-screen) เรียบร้อยแล้ว</h3>
                 <p>โปรดติดตามรายละเอียดการแจ้งผลประเมินได้ทางหน้าเว็บไซต์ หรือการแจ้งเตือนต่าง ๆ</p>
             </div>
+
+            <div class="formstatus uncomplete hide" id="formstatus-reject">
+                <img src="<?=base_url('/assets/images/uncomplete-regis-form.png')?>">
+                <h3>ขอข้อมูลเพิ่มเติม</h3>
+                <p>ข้อมูลของท่านอาจยังไม่สมบูรณ์ โปรดดูรายละเอียด เพื่อแก้ไขและส่งใบสมัครอีกครั้ง</p>
+            </div>
             
             <div class="formstatus uncomplete hide" id="formstatus-unpass">
                 <img src="<?=base_url('/assets/images/uncomplete-regis-form.png')?>">
@@ -157,13 +163,20 @@
                         </div>
 
                         <div class="regis-form-data-col1">
-                            <h4 id="question"></h4>                          
-                            <div id="remark" class="alert alert-warning fs-18" role="alert">
-                            
-                            </div>
+                            <h4 id="question"></h4> 
                             ระบุคำตอบ<span class="required">*</span>   
+                            <div class="mt-3 hide" id="reject">
+                                ขอข้อมูลเพิ่มเติม (กรรมการ)
+                                <div class="alert alert-warning fs-18 mt-2" role="alert">   
+                                    รายละเอียดขอข้อมูลเพิ่มเติม ดังต่อไปนี้
+                                    <ul class="ml-3" id="request-list">
+                                    </ul>                       
+                                </div>
+                            </div>
                             <span class="text-muted">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
-                            <textarea class="form-control" id="reply" onkeyup="countChar(this)" maxlength="1000" rows="12"></textarea>
+                            <textarea class="form-control" id="reply" onkeyup="countChar(this)" maxlength="1000" rows="12"></textarea>                                                     
+                            <div id="remark" class="alert alert-info fs-18 mt-3" role="alert">                            
+                            </div>
                             <script>
                                 function countChar(val) {
                                     var len = val.value.length;
@@ -296,7 +309,11 @@
 <script src="<?= base_url('assets/js/frontend/psc.js') ?>?v=<?= $app->script_v ?>"></script>
 
 <script>
-    $(document).ready(function(){        
-        psc.init(<?=$duedate->expired_sts?>);
-    });
+    $(document).ready(function(){      
+        psc.init(<?=$duedate->expired_sts?>,{status: <?=$stage->status?>, duedate: '<?=$stage->duedate?>', duedateStr: '<?=$stage->duedate_str?>' });
+    });    
+
+    // $('.bfd-dropfield-inner').click(function() {
+    //     $('#file')[0].click();
+    // });
 </script>

@@ -124,6 +124,11 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    border: 0;
+}
+.fileup-btn:hover, .control-button:hover {
+    background-color: #e2f1fe;
+    color: #359efc!important;
 }
 .fileup-btn input {
     position: absolute;
@@ -135,4 +140,6 @@
     font-size: 200px;
     direction: ltr;
     cursor: pointer;
+}
+.fileup-btn input:hover{
 }

@@ -602,6 +602,9 @@ color: #cca22a;
 .link_yellow:link,.link_yellow:visited{
 color: #cca22a;
 }
+.catagory-txt{
+text-align: center;
+}
 .catagory-txt img{
 max-height: 50px;
 }
@@ -784,8 +787,9 @@ top: 0;
 .award-section-txt {
     font-size: 2vw;
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
 }
 .winner-title {
     color: #FFF;
@@ -857,7 +861,9 @@ width: 50%;
     width: 100%;
     border-radius: 0;
     display: block;
-font-size: 20px;
+    font-size: 20px;
+    max-height: none;
+    text-align: center;
 }
 .awardsection-list li a.active {
     background-color: #0d2c55;
@@ -1148,9 +1154,82 @@ color: #0d2c55;
     font-weight: bold!important;
     background-color: #CCC;
     border-radius: 100%;
+}
+[class^=regis-form-data-col].inputfield{
+display: flex;
+flex-direction: column;
+}
+[class^=regis-form-data-col].inputfield > div{
+flex: auto;
+width: 100%;
+}
+[class^=regis-form-data-col].inputfield input,[class^=regis-form-data-col].inputfield textarea{
+padding-right: 30px;
+margin: 0;
+}
+.hide-search-box {
+    position: absolute;
+    top: auto;
+    right: 30px;
+    opacity: 0;
+    z-index: -1;
+    margin-top: 8px;
+}
+.hide-search-box.active {
+    opacity: 1;
+    z-index: 1;
+}
+.hide-search-overlay{
+position: fixed;
+width: 100vw;
+height: 100vh;
+top: 0;
+left: 0;
+background-color: rgba(0,0,0,0.75);
+}
+.hide-search-row {
     display: flex;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    text-align: center;
+    column-gap: 5px;
+    white-space: nowrap;
+    align-items: baseline;
+    background-color: #FFF;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.2s;
+    width: 100vw;
+    max-width: 320px;
+}
+.active .hide-search-row {
+    opacity: 1;
+    transform: translateX(0px);
+    transition: all 0.2s;
+}
+.hide-search-row input{
+border: 0;
+}
+.hide-search-row button {
+    background-color: #eee;
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    min-width: auto;
+}
+.header-box-col.menu li.search a.btn-close-search {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    min-width: auto;
+    padding: 0;
+    margin: 0;
+}
+.header-box-col.menu li.search a.btn-close-search i{
+line-height: 0;
+}
+.header-box-col.menu li.search a.btn-close-search i::before {
+    color: #FFF;
+    background-color: #C00;
+    border-radius: 100%;
 }

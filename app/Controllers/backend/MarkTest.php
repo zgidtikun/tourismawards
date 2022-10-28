@@ -69,12 +69,12 @@ class MarkTest extends BaseController
     public function question()
     {
         $where = [];
-        // $where['pre_score'] = 0;
+        $where['pre_score'] = 0;
         // $where['onside_score'] = 0;
-        // $where = "id >= 91 && id <= 189";
+        $where = "assessment_group_id = 3 AND application_type_id = 1 AND application_type_sub_id = 5";
         $data['fields'] = $this->db->getFieldNames('question');
-        $data['result'] = $this->db->table('question')->orderBy('id', 'desc')->where($where)->limit(10)->get()->getResultObject();
-        echo count($data['result']);
+        $data['result'] = $this->db->table('question')->orderBy('id', 'desc')->where($where)->get()->getResultObject();
+        // pp(count($data['result']));
         pp_sql();
         // pp($data['fields']);
 
@@ -111,9 +111,9 @@ class MarkTest extends BaseController
         unset($post['table']);
         $result = $this->db->table($table)->insert($post);
         if ($result) {
-            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
+            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
-            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
         }
     }
 

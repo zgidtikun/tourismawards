@@ -35,7 +35,7 @@ class RegisterController extends BaseController
             if($this->recapcha){
                 $checkReCapcha = $this->checkCaptcha($data->recapcha_token);            
             } else $checkReCapcha = (object) array('result' => true);
-
+            
             if($checkReCapcha->result){
                 $valid = $this->validation->run((array)$data,'signup');
                 if($valid){  
@@ -58,7 +58,7 @@ class RegisterController extends BaseController
                         $status = false;
                         array_push($error,$result->error);
                     } else {
-                        // return redirect()->to(base_url('login/frontend'));
+                        $status = true;
                     }
                 } else {
                     $status = false;

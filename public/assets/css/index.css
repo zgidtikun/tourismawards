@@ -294,8 +294,8 @@ object-fit: cover;
 .comment_slide .slick-dots li {
     position: relative;
     display: inline-block;
-    width: auto;
-    height: auto;
+    width: 10px;
+    height: 10px;
     margin: 0 5px;
     padding: 0;
     cursor: pointer;
@@ -303,7 +303,7 @@ object-fit: cover;
 .comment_slide .slick-dots li button {
     font-size: 0;
     line-height: 0;
-    display: block;
+    display: inline-block;
     width: 10px;
     height: 10px;
     padding: 0;
@@ -316,8 +316,8 @@ object-fit: cover;
 }
 
 .comment_slide .slick-dots li button:before {
-    width: 100%;
-    height: 100%;
+    width: 10px;
+    height: 10px;
     content: '';
     opacity: .5;
     background-color: #bab5b5;

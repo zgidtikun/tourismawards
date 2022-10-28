@@ -46,6 +46,9 @@ class Admin extends BaseController
         $data['result'] = $this->db->table('admin')->where('id', $id)->get()->getRowObject();
         $data['award_type'] = $this->db->table('award_type')->get()->getResultObject();
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
+        if (empty($data['result'])) {
+            return redirect()->to(session()->_ci_previous_url);
+        }
 
         // Template
         $data['title']  = 'แก้ไขคณะกรรมการ';
@@ -119,9 +122,9 @@ class Admin extends BaseController
                 @unlink($path . $post['profile_old']);
             }
         } else {
-            $post['profile'] = 'uploads/profile/images/' . $post['profile_old'];
+            $post['profile'] = $post['profile_old'];
         }
-        
+
         if (!empty($post['password'])) {
             $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
         }

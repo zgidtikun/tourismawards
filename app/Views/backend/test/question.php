@@ -24,7 +24,7 @@
         // pp($result);
         ?>
         <div class="table-responsive">
-          <table id="main_datatable1" class="table table-striped" style="width:100%">
+          <table id="main_datatable" class="table table-striped" style="width:100%">
             <thead>
               <tr>
                 <th class="text-center" width="1%">#</th>
@@ -57,7 +57,9 @@
                     <td>
                       <input type="text" name="onside_score" class="form-control text-center onside_score" value="<?= $value->onside_score ?>">
                     </td>
-                    <td class="text-center"><?= $value->weight ?></td>
+                    <td>
+                      <input type="text" name="weight" class="form-control text-center weight" value="<?= $value->weight ?>">
+                    </td>
                     <!-- <td><?= $value->question ?></td> -->
                     <!-- <td><?= $value->remark ?></td> -->
                     <td class="text-center">
@@ -142,7 +144,7 @@
         id: id,
         table: 'question',
       });
-      res_swal(res, 1);
+      res_swal(res, 0);
     })
   }
 
@@ -161,12 +163,14 @@
 
   function insert_item(elm) {
     $('#form_input')[0].reset();
-    $('#application_type_id').val(4);
-    // $('#application_type_sub_id').val(13);
+
     $('#assessment_group_id').val(3);
+    $('#application_type_id').val(1);
+    $('#application_type_sub_id').val(1);
+
     $('#pre_status').val(1);
     $('#onside_status').val(1);
-    $('#criteria_topic').val('ด้านการส่งเสริมศิลปวัฒนธรรม และวิถีชีวิตของท้องถิ่น');
+    $('#criteria_topic').val('ด้านความปลอดภัย');
 
     $('#exampleModal').modal('show');
   }
@@ -175,13 +179,15 @@
     var tr = $(elm).closest('tr');
     var pre_score = $(tr).find('.pre_score').val();
     var onside_score = $(tr).find('.onside_score').val();
+    var weight = $(tr).find('.weight').val();
 
     var res = main_post(BASE_URL_BACKEND + '/MarkTest/saveUpdate', {
       id: id,
       pre_score: pre_score,
       onside_score: onside_score,
+      weight: weight,
       table: 'question',
     });
-    res_swal(res, 1);
+    res_swal(res, 0);
   }
 </script>

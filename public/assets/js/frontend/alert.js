@@ -67,6 +67,10 @@ const alert = {
                 html: text,
                 confirmButtonColor: '#3085d6',
                 confirmButtonText: 'ตกลง',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
             }).then((result) => {
                 resolve({status: true});
             });

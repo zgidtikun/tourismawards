@@ -15,7 +15,7 @@
     <?php } ?>
 
     $('#main_datatable').DataTable({
-      pageLength: 10,
+      pageLength: 50,
       // pagingType: "numbers",
       // dom: 'plrtip',
       // dom: 'Bfrtip',

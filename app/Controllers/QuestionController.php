@@ -17,29 +17,38 @@ class QuestionController extends BaseController
             $this->db = \Config\Database::connect();        
     }
 
-    public function getListPrescreenFinish($status = 'wait')
+    public function getListEstimate($round,$status = 'wait')
     {
         try{
-            $subquery = $this->db->table('answer')
-                ->select('reply_by, MAX(updated_at) updated_at',false)
-                ->groupBy('reply_by')
+            $subquery = $this->db->table('estimate')
+                ->select('application_id app_id, MAX(updated_at) updated_at',false)
+                ->groupBy('application_id')
                 ->getCompiledSelect();
 
             $builder = $this->db->table('application_form af')
                 ->select(
                     'af.id, af.attraction_name_th att_name, at.name type, ats.name section,
-                    us.stage, us.status, ina.updated_at'
+                    us.stage, us.status, 
+                    IFNULL(ina.updated_at,\'-\') updated_at,
+                    IFNULL(es.score_prescreen,0) score_pre,
+                    IFNULL(es.score_onsite,0) score_onsite'
                 )
                 ->join('application_type at','af.application_type_id = at.id')
                 ->join('application_type_sub ats','af.application_type_sub_id = ats.id')
                 ->join('users_stage us','af.created_by = us.user_id')
-                ->join('('.$subquery.') ina','af.created_by = ina.reply_by')
-                ->where('us.stage',1);
+                ->join('estimate_score es','af.id = es.id','LEFT')
+                ->join('('.$subquery.') ina','af.id = ina.app_id','LEFT');
+
+            if($round == 'pre-screen'){
+                $builder = $builder->where('us.stage',1);
+            } else {
+                $builder = $builder->where('us.stage',2);
+            }
 
             if($status == 'wait'){
-                $builder = $builder->whereIn('us.status',[1,2]);
+                $builder = $builder->whereIn('us.status',[1,2,3,4,5]);
             } else {
-                $builder = $builder->whereIn('us.status',[3,4]);
+                $builder = $builder->whereIn('us.status',[6,7]);
             }
 
             $builder = $builder->get();
@@ -47,7 +56,10 @@ class QuestionController extends BaseController
             
             foreach($builder->getResult() as $val){
                 $val->no = 0;
-                $val->updated_at = date('d-m-Y',strtotime($val->updated_at));
+
+                if(!empty($val->updated_at))
+                    $val->updated_at = date('d-m-Y',strtotime($val->updated_at));
+
                 array_push($list,$val);
             }
             
@@ -55,7 +67,8 @@ class QuestionController extends BaseController
         } catch(Exception $e){
             $result = [
                 'result' => 'error',
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
+                'data' => []
             ];
         }
 

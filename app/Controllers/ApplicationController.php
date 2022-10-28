@@ -20,7 +20,7 @@ class ApplicationController extends BaseController
             'mobile','email','line_id'],
         '4' => ['knitter_name','knitter_position','knitter_tel','knitter_email',
             'knitter_line'],
-        '5' => ['year_open','year_total','manage_by','buss_license','buss_ckroom',
+        '5' => ['year_open','year_total','manage_by','buss_license','buss_ckroom','buss_buildExt',
             'buss_cites','admin_nominee','has_outlander']
     ];
 
