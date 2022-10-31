@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class EstimateScore extends Model
+class Committees extends Model
 {
-    protected $table      = 'estimate_score';
+    protected $table      = 'committees';
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
@@ -14,9 +14,9 @@ class EstimateScore extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['application_id', 'score_prescreen_te', 'score_prescreen_sb', 
-    'score_prescreen_rs', 'score_prescreen_tt', 'score_onsite_te', 'score_onsite_sb', 
-    'score_onsite_rs', 'score_onsite_tt'];
+    protected $allowedFields = ['application_form_id', 'users_id', 'admin_id_tourism', 
+    'admin_id_supporting', 'admin_id_responsibility', 'assessment_round', 'created_by', 
+    'updated_by'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

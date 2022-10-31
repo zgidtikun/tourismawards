@@ -116,6 +116,11 @@
                                         <i class="bi bi-toggles"></i>
                                     </a>
                                 </div>
+                                <div class="choicebox-col label-score">
+                                    <button class="btn btn-action">
+                                        คะแนนรอบ Pre-screen : <?=$score?> คะแนน
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="hide-choice" style="display: none;">
@@ -228,24 +233,24 @@
                                             <div class="card-body selecter-file">
                                                 <div class="bs-row">
                                                     <div class="col-12">                                                                 
-                                                        <button class="btn btn-action" id="images-remove"
-                                                        onclick="removeFile('#images',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
+                                                        <button class="btn btn-action" id="etm-images-remove"
+                                                        onclick="removeFile('#etm-images',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
                                                             Remove All
                                                         </button>
                                                     </div>
                                                     <div class="col-12"> 
                                                         <div class='bfd-dropfield'> 
-                                                            <div class='bfd-dropfield-inner' id="images-drop">
-                                                                <div class="mt-4 mb-4" id="images-input">
+                                                            <div class='bfd-dropfield-inner' id="etm-images-drop">
+                                                                <div class="mt-4 mb-4" id="etm-images-input">
                                                                     <span class="fw-semibold">Drop File Here</span><br>
-                                                                    <button class="btn btn-file" style="font-size: 16px;" id="images-btn">
+                                                                    <button class="btn btn-file" style="font-size: 16px;" id="etm-images-btn">
                                                                         <span id="images-label">Upload Files</span>
-                                                                        <input type="file" id="images"
+                                                                        <input type="file" id="etm-images"
                                                                         accept=".jpg,.jpeg,.png" multiple
                                                                         onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'images')"/>
                                                                     </button>   
                                                                 </div>
-                                                                <div class="mt-4 mb-4 hide" id="images-progress">
+                                                                <div class="mt-4 mb-4 hide" id="etm-images-progress">
 
                                                                 </div>
                                                             </div>
@@ -258,10 +263,10 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="card-body-muted c-lef selecter-file" id="images-list">
+                                            <div class="card-body-muted c-lef selecter-file" id="etm-images-list">
                                             </div>
                                             <div class="card-body attach-file">
-                                                <div class="ablumbox" id="images-ablum">
+                                                <div class="ablumbox" id="etm-images-ablum">
                                                     
                                                 </div>
                                             </div>

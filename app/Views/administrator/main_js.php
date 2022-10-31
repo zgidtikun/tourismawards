@@ -62,9 +62,14 @@
   }
 
   function DF2C(number) {
-    number = String(number);
-    number = number.replace(/,/g, '');
-    return number;
+    if (number != undefined) {
+      number = String(number);
+      number = number.replace(/,/g, '');
+      return number;
+    } else {
+      return "0.00";
+    }
+
   }
 
   function cc(str) {

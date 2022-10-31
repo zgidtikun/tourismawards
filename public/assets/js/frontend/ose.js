@@ -48,6 +48,15 @@ const init = () =>{
     .then((rs) => {
         tycoon = rs.tycoon;     
         dataset = rs.data;
+
+        if($.inArray(Number(getStageStatus()),[1,2,3,4,5]) !== -1){
+            $('.attach-file').remove();             
+        } else { 
+            $('.regis-form-data textarea, #note').prop('readonly','readonly');
+            $('.btn-main, .btn-action, .selecter-file, .bfd-dropfield').remove();
+            $('.image-gallery .remove, .btn-memosave').remove();
+            $('#btn-reset, #btn-save').remove();
+        }
         
         let tmp = tycoon.t_name.split('(');
         tycoon.t_name = tmp[0].trim();
@@ -64,14 +73,52 @@ const init = () =>{
         $('#tyAttnEn').html(tycoon.attn_en);    
         $('#tyUdat').html(tycoon.updated_at);    
         $('#tyTel').html(tycoon.knitter_tel);
-        console.log(assign)
+        
         $.each(assign,(k,v) => {
             $('#tab-'+(v-1)).removeClass('disabled');
         });
         
         loading('hide');
         setQuestion(assign[0]-1,0);
-        // checkComplete();
+        checkComplete();
+    });
+}
+
+const draft = (cate,seg) => {
+    const question = dataset[cate].question[seg];
+
+    const st = {
+        method: 'post',
+        url: '/inner-api/estimate/onsite/draft',
+        data: {
+            target: 'onsite',
+            action: 'update',
+            application_id: appid,
+            question_id: question.id,
+            est_id: question.est_id,
+            answer_id: question.reply_id,
+            score: question.score_onsite,
+            tscore: question.tscore_onsite,
+            comment: question.comment_onsite,
+            note: question.note_onsite,
+        }
+    };
+    
+    api(st).then((rs) => {
+        if(rs.result == 'success'){
+            if(st.data.action == 'create'){
+                dataset[cate].question[seg].est_id = rs.id;
+            }
+
+            dataset[cate].question[seg].estimate = false;
+            checkComplete();
+            alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'});
+        }
+        else if(rs.result == 'error_login'){
+            alert.login();
+        } else {
+            alert.toast({icon: rs.result, title: rs.message});
+        }
     });
 }
 
@@ -106,8 +153,8 @@ const setQuestion = (cate,seg) => {
         && $.inArray(Number(category.question[point.seg].request_status),[0,1,2]) === -1
     ){
         if(
-            !empty(category.question[point.seg].score_pre) 
-            || category.question[point.seg].score_pre == 0
+            !empty(category.question[point.seg].score_onsite) 
+            || category.question[point.seg].score_onsite == 0
         ){
             $('#sl-'+point.seg).addClass('complete');
         } else {
@@ -244,6 +291,48 @@ const setDropdown = (qt,cate,seg) => {
 
     md.html(modal);
     mSelect.html(slt);
+}
+
+const checkComplete = () => {
+    const cp = assign.length;
+    let ccp = 0;
+
+    $.each(assign,(ak,av) => {
+        let check = true,
+            index = av-1;
+            
+        $.each(dataset[index].question,(qk,qv) => {
+            if(Number(qv.onside_status ) == 1){
+                if(empty(qv.score_onsite) && qv.score_onsite != 0){
+                    check = false;
+                }
+            }
+        });
+
+        if(check){
+            $('tap-'+ck).addClass('complete');
+            ccp++;
+        } else {
+            $('tap-'+ck).removeClass('complete');
+        }
+    });
+
+    if(ccp < cp){
+        $('.btn-confirm-submit').prop('disabled',true);
+    } else {
+        $('.btn-confirm-submit').prop('disabled',false);
+    }
+
+    disabledForm();
+}
+
+const disabledForm = () => {
+    if($.inArray(Number(getStageStatus()),[3,6,7]) !== -1){
+        $('.btn-confirm-submit').prop('disabled',true);
+        $('.btn-main, .btn-action, .selecter-file, .bfd-dropfield').remove();
+        esCmm.prop('readonly','readyonly');
+        btnSave.prop('disabled',true);
+    }
 }
 
 const zoomImages = (el) => {

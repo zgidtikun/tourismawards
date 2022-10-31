@@ -31,12 +31,24 @@
         <a href="javascript:void(0)" class="btn-menulist" data-tab="2" data-type="process"><i class="bi bi-toggles"></i> ขั้นตอนการดำเนินการ</a>
         <div class="hide-menu-list" data-tab="2" data-type="process">
           <ul>
-            <li><a href="<?= base_url() ?>/administrator/Approve" data-type="process"><label>ตรวจสอบใบสมัคร<span class="menu-list-amount">24</span></label></a></li>
+            <li>
+              <a href="<?= base_url() ?>/administrator/Approve" data-type="process">
+                <label>ตรวจสอบใบสมัคร <span class="menu-list-amount"><?= countNotification(1) ?></span></label>
+              </a>
+            </li>
             <li><a href="<?= base_url() ?>/administrator/Approve/history" data-type="process"><label>ประวัติการตรวจสอบใบสมัคร</label></a></li>
             <li><a href="<?= base_url() ?>/administrator/PreScreen" data-type="process"><label>ใบสมัครที่ผ่านการอนุมัติ</label></a></li>
-            <li><a href="admin_addprescreen.html" data-type="process"><label>แบบประเมินขั้นต้น (Prescreen)<span class="menu-list-amount">99</span></label></a></li>
-            <li><a href="admin_judgeprescreen.html" data-type="process"><label>การประเมินขั้นต้น</label></a></li>
-            <li><a href="admin_addjudgelocal.html" data-type="process"><label>เพิ่มกรรมการรอบลงพื้นที่<span class="menu-list-amount">13</span></label></a></li>
+            <li>
+              <a href="<?= base_url() ?>/administrator/Estimate" data-type="process">
+                <label>แบบประเมินขั้นต้น (Prescreen) <span class="menu-list-amount"><?= countNotification(2) ?></span></label>
+              </a>
+            </li>
+            <li><a href="<?= base_url() ?>/administrator/Estimate/prescreen" data-type="process"><label>การประเมินขั้นต้น</label></a></li>
+            <li>
+              <a href="<?= base_url() ?>/administrator/OnSide" data-type="process">
+                <label>เพิ่มกรรมการรอบลงพื้นที่ <span class="menu-list-amount"><?= countNotification(3) ?></span></label>
+              </a>
+            </li>
             <li><a href="admin_judgeonsite.html" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
             <li><a href="admin_complete.html" data-type="process"><label>ดำเนินการเสร็จสมบูรณ์</label></a></li>
           </ul>

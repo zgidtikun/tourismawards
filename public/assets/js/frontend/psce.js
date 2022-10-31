@@ -106,22 +106,42 @@ const setRequest = () => {
 }
 
 const setFinish = () => {
-    let pscore, tscore, mscore;
-    pscore = tscore = mscore = 0;
+    let pscore, tscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
+    tscore = 0 
+    tescore = sbscoe = rsscore = 0;
+    ttescore = tsbscoe = trsscore = 0;
 
     $.each(assign,(ak,av) => {
         let index = av-1;
 
         $.each(dataset[index].question,(qk,qv) => {
             if(!empty(qv.score_pre)){
-                pscore += Number(qv.score_pre);
-                tscore += Number(qv.pre_score) / Number(qv.weight);
+                let score = Number(qv.score_pre);
+                const total = score / Number(qv.weight);
+
+                if(av == 1){ 
+                    tescore += total;
+                    ttescore += Number(qv.pre_score);
+                }
+                else if(av == 2){ 
+                    sbscoe += total;
+                    tsbscoe += Number(qv.pre_score);
+                }
+                else{
+                    rsscore += total;
+                    trsscore += Number(qv.pre_score);
+                }
+
+                tscore += total;
                 mscore += Number(qv.pre_score);
             }
         });
     });
 
-    const sscore = ((pscore * tscore) / mscore).toFixed(2);
+    const stescore = ((tescore * ttescore) / ttescore).toFixed(2);
+    const ssbscore = ((sbscoe * tsbscoe) / tsbscoe).toFixed(2);
+    const srsscore = ((rsscore * trsscore) / trsscore).toFixed(2);
+    const sscore = ((tscore * mscore) / mscore).toFixed(2);
     
     alert.confirm({
         mode: 'confirm-main',
@@ -147,7 +167,10 @@ const setFinish = () => {
                 data: {
                     appId: appid,
                     stage: 1,
-                    score: sscore
+                    score_te: stescore,
+                    score_sb: ssbscore,
+                    score_rs: srsscore,
+                    score_tt: sscore
                 }
             }
 
@@ -177,15 +200,16 @@ const draft = (cate,seg) => {
         method: 'post',
         url: '/inner-api/estimate/pre-screen/draft',
         data: {
+            target: 'pre-screen',
             action: empty(question.est_id) ? 'create' : 'update',
             application_id: appid,
             question_id: question.id,
             est_id: question.est_id,
             answer_id: question.reply_id,
-            score_pre: question.score_pre,
-            tscore_pre: question.tscore_pre,
-            comment_pre: question.comment_pre,
-            note_pre: question.note_pre,
+            score: question.score_pre,
+            tscore: question.tscore_pre,
+            comment: question.comment_pre,
+            note: question.note_pre,
             request_list: question.request_list,
             request_date: question.request_date,
             request_status: question.request_status,

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
+use App\Models\EstimateScore;
 use Exception;
 
 class FrontendController extends BaseController
@@ -119,11 +120,40 @@ class FrontendController extends BaseController
     public function sumStage()
     {
         $stage = new \App\Models\UsersStage();
-        $count_1 = $stage->where('stage',1)->whereIn('status',[1,2,3,4,5])->countAllResults();
-        $count_2 = $stage->where('stage',1)->whereIn('status',[6,7])->countAllResults();
-        $count_3 = $stage->where('stage',2)->whereIn('status',[1,2,3,4,5])->countAllResults();
-        $count_4 = $stage->where('stage',2)->whereIn('status',[6,7])->countAllResults();
+        $committees = new \App\Models\Committees();
+        $users = [];
 
+        $comm = $committees->like('admin_id_tourism','"'.session()->get('id').'"')
+            ->orLike('admin_id_supporting','"'.session()->get('id').'"')
+            ->orLike('admin_id_responsibility','"'.session()->get('id').'"')
+            ->select('users_id')
+            ->distinct()
+            ->findAll();
+            
+        foreach($comm as $user){
+            array_push($users,$user->users_id);
+        }
+
+        $count_1 = $stage->where('stage',1)
+            ->whereIn('user_id',$users)
+            ->whereIn('status',[1,2,3,4,5])
+            ->countAllResults();
+
+        $count_2 = $stage->where('stage',1)
+            ->whereIn('user_id',$users)
+            ->whereIn('status',[6,7])
+            ->countAllResults();
+
+        $count_3 = $stage->where('stage',2)
+            ->whereIn('user_id',$users)
+            ->whereIn('status',[1,2,3,4,5])
+            ->countAllResults();
+
+        $count_4 = $stage->where('stage',2)
+            ->whereIn('user_id',$users)
+            ->whereIn('status',[6,7])
+            ->countAllResults();
+        
         $result = [
             'pre_wait' => $count_1,
             'pre_comp' => $count_2,
@@ -174,13 +204,18 @@ class FrontendController extends BaseController
     {
         $stage = $this->getStage($id,2);
         $assign = $this->getGroupEstimate('asm',session()->get('id'));
+        $obj = new EstimateScore();
+        $score = $obj->where('application_id',$id)
+            ->select('score_prescreen_tt')
+            ->first();
         
         $data = [
             'title' => 'ประเมินรอบ ลงพื้นที่',
             'view' => 'frontend/boards/onsite-estimate',
             'app_id' => $id,
             'stage' => $stage,
-            'assign' => $assign
+            'assign' => $assign,
+            'score' => $score->score_prescreen_tt
         ];
         
         return view('frontend/entrepreneur/_template',$data);

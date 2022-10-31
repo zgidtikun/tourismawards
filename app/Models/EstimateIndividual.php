@@ -14,7 +14,9 @@ class EstimateIndividual extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['application_id', 'estimate_by', 'score_pre', 'score_onsite'];
+    protected $allowedFields = ['application_id', 'estimate_by', 'score_pte', 
+    'score_psb', 'score_prs', 'score_pre', 'score_ote', 'score_osb', 'score_ors', 
+    'score_onsite'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

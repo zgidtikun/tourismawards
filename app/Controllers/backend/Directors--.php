@@ -56,7 +56,7 @@ class Directors extends BaseController
     public function saveInsert()
     {
         $post = $this->input->getVar();
-        px($post);
+        px($post); 
         $data = [
             // 'id'                    => $post[''],
             'application_form_id'   => $post['application_form_id'],

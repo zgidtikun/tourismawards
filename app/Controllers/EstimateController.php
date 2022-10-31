@@ -67,53 +67,57 @@ class EstimateController extends BaseController
         return $this->response->setJSON($result);
     }
 
-    public function draftEstimateProscreen()
+    public function draftEstimate()
     {
         try {
             $input = (object) $this->input->getVar();
             $data = [];
 
+            $target = $input->target == 'pre-screen' ? 'pre' : 'onsite';
+
             if(!empty($input->answer_id)){
                 $data['answer_id'] = $input->answer_id;
             }
 
-            if(!empty($input->score_pre)){
-                $data['score_pre'] = $input->score_pre;
+            if(!empty($input->score)){
+                $data['score_'.$target] = $input->score;
             } else {
-                $data['score_pre'] = NULL;
+                $data['score_'.$target] = NULL;
             }
 
-            if(!empty($input->tscore_pre)){
-                $data['tscore_pre'] = $input->tscore_pre;
+            if(!empty($input->tscore)){
+                $data['tscore_'.$target] = $input->tscore;
             } else {
-                $data['tscore_pre'] = NULL;
+                $data['tscore_'.$target] = NULL;
             }
 
-            if(!empty($input->comment_pre)){
-                $data['comment_pre'] = $input->comment_pre;
+            if(!empty($input->comment)){
+                $data['comment_'.$target] = $input->comment;
             } else {
-                $data['comment_pre'] = NULL;
+                $data['comment_'.$target] = NULL;
             }
 
-            if(!empty($input->note_pre)){
-                $data['note_pre'] = $input->instd;
+            if(!empty($input->note)){
+                $data['note_'.$target] = $input->note;
             } else {
-                $data['note_pre'] = NULL;
+                $data['note_'.$target] = NULL;
             }
 
-            if(!empty($input->request_list)){
-                $data['request_list'] = $input->request_list;
-                $data['request_date'] = $input->request_date;
-                $data['request_status'] = $input->request_status;
-            } else {
-                $data['request_list'] = NULL;
-                $data['request_date'] = NULL;
-                $data['request_status'] = NULL;
+            if($input->target == 'pre-screen'){
+                if(!empty($input->request_list)){
+                    $data['request_list'] = $input->request_list;
+                    $data['request_date'] = $input->request_date;
+                    $data['request_status'] = $input->request_status;
+                } else {
+                    $data['request_list'] = NULL;
+                    $data['request_date'] = NULL;
+                    $data['request_status'] = NULL;
+                }
             }
             
             $data['application_id'] = $input->application_id;
             $data['question_id'] = $input->question_id;
-
+           
             switch($input->action){
                 case 'create':
 
@@ -157,6 +161,7 @@ class EstimateController extends BaseController
         try {     
             $sys = new \Config\App();         
             $answer = new \App\Models\Answer();
+            $commit = new \App\Models\Committees();
             $input = (object) $this->input->getVar();
 
             $form = $this->appForm->where('id',$input->appId)
@@ -176,37 +181,66 @@ class EstimateController extends BaseController
                 'estimate_by' => session()->get('id')
             ];
 
-            if($input->stage == 1)
-                $inst_estind['score_pre'] = $input->score;
-            else $inst_estind['score_onsite'] = $input->score;
+            if($input->stage == 1){
+                $inst_estind['score_pte'] = $input->score_te;
+                $inst_estind['score_psb'] = $input->score_sb;
+                $inst_estind['score_prs'] = $input->score_rs;
+                $inst_estind['score_pre'] = $input->score_tt;
+            }
+            else {
+                $inst_estind['score_ote'] = $input->score_te;
+                $inst_estind['score_osb'] = $input->score_sb;
+                $inst_estind['score_ors'] = $input->score_rs;
+                $inst_estind['score_onsite'] = $input->score_tt;
+            }
 
             $this->estInd->insert($inst_estind);
 
-            $count_est = $this->estInd->where('application_id',$input->appId)
+
+            $count_adm = $commit->where('application_form_id',$input->appId)
+                ->select('admin_count')->first();
+
+            $count_est = $this->estInd->where('application_id',$input->score_tt)
                 ->countAll();
-                
-            $avg = $input->score / $count_est;
 
-            $inst_avg['application_id'] = $input->appId;
+            if($count_adm->admin_count >= $count_est){
+            
+                $avg_te = $input->score_te / $count_est;
+                $avg_sb = $input->score_sb / $count_est;
+                $avg_rs = $input->score_rs / $count_est;
+                $avg_tt = $avg_te + $avg_sb + $avg_rs;
 
-            if($input->stage == 1) 
-                $inst_avg['score_prescreen'] = $avg;
-            else $inst_avg['score_onsite'] = $avg;
+                $inst_avg['application_id'] = $input->appId;
 
-            $this->estScr->insert($inst_avg);
+                if($input->stage == 1) {
+                    $inst_avg['score_prescreen_te'] = $avg_te;
+                    $inst_avg['score_prescreen_sb'] = $avg_sb;
+                    $inst_avg['score_prescreen_rs'] = $avg_rs;
+                    $inst_avg['score_prescreen_tt'] = $avg_tt;
+                }
+                else {
+                    $inst_avg['score_onsite_te'] = $avg_te;
+                    $inst_avg['score_onsite_sb'] = $avg_sb;
+                    $inst_avg['score_onsite_rs'] = $avg_rs;
+                    $inst_avg['score_onsite_tt'] = $avg_tt;
+                }
 
-            $pass = $input->score > $sys->JudgingCriteriaPre ? true : false;
+                $this->estScr->insert($inst_avg);
 
-            $this->stage->where(['user_id' => $form->created_by, 'stage' => $input->stage])
-                ->set(['status' => $pass ? 6 : 7])
-                ->update();
+                $pass = $input->score_tt > $sys->JudgingCriteriaPre ? true : false;
 
-            if($pass){
-                $this->stage->insert([
-                    'user_id' => $form->created_by,
-                    'stage' => 2,
-                    'status' => 1
-                ]);
+                $this->stage->where(['user_id' => $form->created_by, 'stage' => $input->stage])
+                    ->set(['status' => $pass ? 6 : 7])
+                    ->update();
+
+                if($pass){
+                    $this->stage->insert([
+                        'user_id' => $form->created_by,
+                        'stage' => 2,
+                        'status' => 1
+                    ]);
+                }
+
             }
 
             $result = ['result' => 'success'];

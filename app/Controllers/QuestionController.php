@@ -20,24 +20,32 @@ class QuestionController extends BaseController
     public function getListEstimate($round,$status = 'wait')
     {
         try{
-            $subquery = $this->db->table('estimate')
+            $subEstimate = $this->db->table('estimate')
                 ->select('application_id app_id, MAX(updated_at) updated_at',false)
                 ->groupBy('application_id')
                 ->getCompiledSelect();
-
+            
+            $subComm = $this->db->table('committees')
+                ->select('application_form_id afid')
+                ->like('admin_id_tourism','"'.session()->get('id').'"')
+                ->orLike('admin_id_supporting','"'.session()->get('id').'"')
+                ->orLike('admin_id_responsibility','"'.session()->get('id').'"')
+                ->getCompiledSelect();
+                
             $builder = $this->db->table('application_form af')
                 ->select(
                     'af.id, af.attraction_name_th att_name, at.name type, ats.name section,
                     us.stage, us.status, 
-                    IFNULL(ina.updated_at,\'-\') updated_at,
-                    IFNULL(es.score_prescreen,0) score_pre,
-                    IFNULL(es.score_onsite,0) score_onsite'
+                    IFNULL(inse.updated_at,\'-\') updated_at,
+                    IFNULL(es.score_prescreen_tt,0) score_pre,
+                    IFNULL(es.score_onsite_tt,0) score_onsite'
                 )
                 ->join('application_type at','af.application_type_id = at.id')
                 ->join('application_type_sub ats','af.application_type_sub_id = ats.id')
                 ->join('users_stage us','af.created_by = us.user_id')
+                ->join('('.$subComm.') insc','insc.afid = at.id')
                 ->join('estimate_score es','af.id = es.id','LEFT')
-                ->join('('.$subquery.') ina','af.id = ina.app_id','LEFT');
+                ->join('('.$subEstimate.') inse','af.id = inse.app_id','LEFT');
 
             if($round == 'pre-screen'){
                 $builder = $builder->where('us.stage',1);

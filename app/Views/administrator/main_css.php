@@ -80,4 +80,8 @@
   .row {
     height: unset;
   }
+
+  /* table.dataTable.display tbody td img {
+    position: unset;
+  } */
 </style>

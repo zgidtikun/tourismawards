@@ -450,60 +450,81 @@
 
   </div>
 </div>
-<?php
-// px($result);
-?>
 
 <div class="backendcontent forminput">
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>การอนุมัติใบสมัคร</h3>
+        <h3>รายชื่อคณะกรรมการสำหรับประเมินใบสมัคร: รอบประเมินขั้นต้น (Pre-screen)</h3>
       </div>
     </div>
 
     <div class="backendform">
 
-      <div class="backendform-row">
-        <div class="backendform-col1 subject">
-          สถานะ
-        </div>
-        <input type="hidden" name="insert_id" id="insert_id" value="<?= $id ?>">
-        <div class="backendform-col1 judgeradio">
-          <div class="judgeradio-col">
-            <input type="radio" id="status_2" name="status" value="2" <?= ($result->status == 2) ? 'checked' : ''; ?> readonly>
-            <label for="status_2">ขอข้อมูลเพิ่มเติม</label>
+      <form id="input_form">
+        <input type="hidden" name="users_id" id="users_id" value="<?= $result->created_by ?>">
+        <input type="hidden" name="application_form_id" id="application_form_id" value="<?= $result->id ?>">
+        <div class="backendform-row">
+          <div class="backendform-col3">
+            <label data-tab="1">1. Tourism Excellence (Product/Service) <span class="required">*</span></label>
+            <div class="editjudge-out">
+              <select class="js-example-basic-multiple" id="status_1" name="tourism[]" multiple disabled>
+                <?php
+                if (!empty($status_1)) {
+                  foreach ($status_1 as $key => $value) {
+                    $admin_id = explode(',', $committees->admin_id_tourism);
+                ?>
+                    <option value="<?= $value->id ?>" <?= (in_array($value->id, $admin_id)) ? 'selected' : ''; ?>><?= $value->name ?></option>
+                <?php
+                  }
+                }
+                ?>
+              </select>
+            </div>
           </div>
-          <div class="judgeradio-col">
-            <input type="radio" id="status_3" name="status" value="3" <?= ($result->status == 3) ? 'checked' : ''; ?> readonly>
-            <label for="status_3">อนุมัติ</label>
+
+          <div class="backendform-col3">
+            <label data-tab="2">2. Supporting Business & Marketing Factors <span class="required">*</span></label>
+            <div class="editjudge-out">
+              <select class="js-example-basic-multiple" id="status_2" name="supporting[]" multiple disabled>
+                <?php
+                if (!empty($status_2)) {
+                  foreach ($status_2 as $key => $value) {
+                    $admin_id = explode(',', $committees->admin_id_supporting);
+                ?>
+                    <option value="<?= $value->id ?>" <?= (in_array($value->id, $admin_id)) ? 'selected' : ''; ?>><?= $value->name ?></option>
+                <?php
+                  }
+                }
+                ?>
+              </select>
+            </div>
           </div>
-          <div class="judgeradio-col">
-            <input type="radio" id="status_4" name="status" value="4" <?= ($result->status == 4) ? 'checked' : ''; ?> readonly>
-            <label for="status_4">ไม่อนุมัติ</label>
+
+          <div class="backendform-col3">
+            <label data-tab="3">3. Responsibility and Safety & Health Administration <span class="required">*</span></label>
+            <div class="editjudge-out">
+              <select class="js-example-basic-multiple" id="status_3" name="responsibility[]" multiple disabled>
+                <?php
+                if (!empty($status_3)) {
+                  foreach ($status_3 as $key => $value) {
+                    $admin_id = explode(',', $committees->admin_id_responsibility);
+                ?>
+                    <option value="<?= $value->id ?>" <?= (in_array($value->id, $admin_id)) ? 'selected' : ''; ?>><?= $value->name ?></option>
+                <?php
+                  }
+                }
+                ?>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="backendform-row">
-        <div class="backendform-col1 subject">
-          ความคิดเห็น
+        <div class="form-main-btn">
+          <a href="javascript: history.back(1)" class="btn-cancle">ยกเลิก</a>
+          <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
         </div>
-        <div class="backendform-col1 inpfield">
-          <textarea rows="5" name="judge_comment" id="judge_comment" readonly><?= $result->judge_comment ?></textarea>
-        </div>
-      </div>
-
-      <div class="text-end">
-        <?php if (!empty($result->approve_time)) : ?>
-          ผู้อนุมัติ: <?= $result->approve_name ?> อัพเดทวันที่ <?= docDate($result->approve_time, 3) ?> <?= date('H:i', strtotime($result->approve_time)) ?> น.
-        <?php endif; ?>
-      </div>
-
-      <!-- <div class="form-main-btn">
-        <a href="javascript: history.back(1)" class="btn-cancle">ยกเลิก</a>
-        <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
-      </div> -->
+      </form>
 
     </div>
   </div>
@@ -512,7 +533,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/PreScreen';
+    var pgurl = BASE_URL_BACKEND + '/Estimate';
     active_page(pgurl);
 
     $('#field').keyup();
@@ -534,21 +555,52 @@
         req[0].classList.add("active");
       });
     });
+
+
+    $(".js-example-basic-multiple").prop("disabled", true);
+    $('.js-example-basic-multiple').select2({
+      maximumSelectionLength: 2
+    });
+
   });
 
   $('#btn_save').click(function(e) {
-    var status = $('input[name="status"]:checked').val();
-    var insert_id = $('#insert_id').val();
-    var judge_comment = $('#judge_comment').val();
-    var data = {
-      status: status,
-      insert_id: insert_id,
-      judge_comment: judge_comment,
+    if (validated()) {
+      var res = main_save(BASE_URL_BACKEND + '/Estimate/saveInsert', '#input_form');
+      res_swal(res, 1);
     }
-    var res = main_post(BASE_URL_BACKEND + '/Approve/saveStatus', data);
-    cc(res)
-    res_swal(res, 1);
   });
+
+  function validated() {
+    var status_1 = $('#status_1 option:selected').map(function(i, e) {
+      return $(e).val();
+    }).get();
+
+    var status_2 = $('#status_2 option:selected').map(function(i, e) {
+      return $(e).val();
+    }).get();
+
+    var status_3 = $('#status_3 option:selected').map(function(i, e) {
+      return $(e).val();
+    }).get();
+
+    if (status_1.length < 2) {
+      toastr.error('กรุณาระบุกรรมการสำหรับ Tourism Excellence อย่างน้อย 2 คน');
+      return false;
+    }
+
+    if (status_2.length < 2) {
+      toastr.error('กรุณาระบุกรรมการสำหรับ Supporting Business อย่างน้อย 2 คน');
+      return false;
+    }
+
+    if (status_3.length < 2) {
+      toastr.error('กรุณาระบุกรรมการสำหรับ Responsibility อย่างน้อย 2 คน');
+      return false;
+    }
+
+    return true;
+  }
 
   $('[name="application_type"]').change(function(e) {
     var res = main_post(BASE_URL_BACKEND + '/Approve/getAplicationTypeSub/' + $(this).val());

@@ -85,6 +85,17 @@ function applicationTypeSub($id)
     return @$result->name;
 }
 
+function countNotification($type)
+{
+    $db = \Config\Database::connect();
+    if ($type == 1) {
+        $application_form = $db->table('application_form')->where('status <= 2')->get()->getResultObject();
+        return count($application_form);
+    }
+    return 0;
+    
+}
+
 function show_404()
 {
     header('Location: ' . base_url() . '/404');
@@ -94,6 +105,9 @@ function show_404()
 // รูปแบบวันที่ที่ใช้ในเอกสาร
 function docDate($date, $format = 3, $lang = 'thailand')
 {
+    if (empty($date)) {
+        return null;
+    }
     if ($date == '0000-00-00') {
         return null;
     }

@@ -787,4 +787,23 @@ const referance = [{
         maxUpload: 5,
         maxSize: 15
     },
+    {
+        input: '#etm-images',
+        area: '#etm-images-input',
+        pointer: ['', 'etm-images'],
+        btn: '#etm-images-btn',
+        btnrm: '#ietm-mages-remove',
+        show: '#etm-images-list',
+        ablum: '#etm-images-ablum',
+        label: {
+            input: '#etm-images-input',
+            progress: '#etm-images-progress'
+        },
+        api: '/inner-api/estimate/onsite/upload',
+        position: 'images',
+        path: 'images',
+        app: 'estimate/onsite',
+        maxUpload: 10,
+        maxSize: 10
+    },
 ];
