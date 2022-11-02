@@ -29,7 +29,7 @@ class PreScreen extends BaseController
         // $like['status'] = 0;
         // $like['status'] = 4;
         if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
-            $like['attraction_name_th'] = $_GET['keyword'];
+            // $like['attraction_name_th'] = $_GET['keyword'];
             $like['company_name'] = $_GET['keyword'];
         }
         if (!empty($_GET['application_type_id']) && $_GET['application_type_id'] != "") {
@@ -43,7 +43,7 @@ class PreScreen extends BaseController
             $like['status'] = $_GET['status'];
         }
 
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->where('US.stage', 1)->where('AP.status', 3)->orLike($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->where('US.stage', 1)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
         // pp_sql();
         // px($data['result']);
         $data['application_type'] = $this->ApplicationType->findAll();

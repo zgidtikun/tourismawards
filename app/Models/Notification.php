@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Estimate extends Model
+class Notification extends Model
 {
-    protected $table      = 'estimate';
+    protected $table      = 'estimate_score';
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
@@ -14,10 +14,7 @@ class Estimate extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['application_id', 'answer_id', 'question_id', 'score_pre', 
-    'tscore_pre', 'score_onsite', 'tscore_onsite', 'comment_pre', 'comment_onsite', 'note_pre', 
-    'note_onsite', 'status_pre', 'status_onsite', 'request_list', 'request_date', 'request_status', 
-    'estimate_by', 'pack_file'];
+    protected $allowedFields = ['user_id', 'pack_noti'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

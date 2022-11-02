@@ -96,6 +96,21 @@
     });
   }
 
+  function main_get(url, data = null) {
+    var return_ = false;
+    $.ajax({
+      url: url,
+      type: 'GET',
+      data: data,
+      dataType: 'json',
+      async: false,
+      success: function(res) {
+        return_ = res;
+      }
+    });
+    return return_;
+  }
+
   function main_post(url, data = null) {
     var return_ = false;
     $.ajax({

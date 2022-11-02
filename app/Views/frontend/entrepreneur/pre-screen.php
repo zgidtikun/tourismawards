@@ -26,8 +26,10 @@
                         <div class="formstep-icon"><span><i class="bi bi-pencil-fill"></i></span></div>
                     </div>
                     <div class="formstep-col estimate">
-                        <div class="formstep-title">3. สรุปผลการประเมิน</div>
-                        <div class="formstep-status" data-tab="3"></div>
+                        <a href="<?= base_url('awards/result') ?>" class="disabled">
+                            <div class="formstep-title">3. สรุปผลการประเมิน</div>
+                        </a>
+                        <div class="formstep-status check" id="formstep-result" data-tab="3"></div>
                         <div class="formstep-icon"><span><i class="bi bi-three-dots"></i></span></div>
                     </div>
                     <script>

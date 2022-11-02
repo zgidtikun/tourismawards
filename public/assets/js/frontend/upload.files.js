@@ -9,11 +9,15 @@ const onFileHandle = (setting, input, type) => {
         switch (ref.app) {
             case 'awards/application':
             case 'awards/pre-screen':
+            case 'estimate/onsite':
 
                 if (ref.app == 'awards/application') {
                     total = Number(register.count[ref.pointer[1]]) + Number(handle.length);
                 } else if (ref.app == 'awards/pre-screen') {
                     let length = psc.questions[setting.cate].question[setting.seg][ref.position].length;
+                    total = Number(length) + Number(handle.length);
+                } else if (ref.app == 'estimate/onsite') {
+                    let length = dataset[setting.cate].question[setting.seg].estFiles[ref.position].length;
                     total = Number(length) + Number(handle.length);
                 }
 
@@ -63,9 +67,11 @@ const uploadFile = (setting, input, handleBy) => {
     let formData = new FormData(),
         ref = referance.find(el => el.input == input),
         handle = handleBy == 'input' ? $(input)[0].files : setting.files,
-        api_setting = {};
+        api_setting = {},
+        label_html;
 
-    if (ref.path == 'paper') {
+    if (ref.path == 'paper' || ref.position == 'camera') {
+        label_html = $(ref.label).html();
         $(ref.label).html(setSpinner('Uploading...'));
         $(ref.btn).prop('disabled', true);
     } else {
@@ -103,7 +109,7 @@ const uploadFile = (setting, input, handleBy) => {
                 }
 
                 if (ref.path == 'paper') {
-                    $(ref.label).html('Upload Files');
+                    $(ref.label).html(label_html);
                     $(ref.btn).prop('disabled', false);
                 } else {
                     $(ref.label.input).removeClass('hide');
@@ -138,7 +144,38 @@ const uploadFile = (setting, input, handleBy) => {
                 }
 
                 if (ref.path == 'paper') {
-                    $(ref.label).html('Upload Files');
+                    $(ref.label).html(label_html);
+                    $(ref.btn).prop('disabled', false);
+                } else {
+                    $(ref.label.input).removeClass('hide');
+                    $(ref.label.progress).addClass('hide');
+                    $(ref.label.progress).html('');
+                }
+            });
+            break;
+        case 'estimate/onsite':
+            let estimate = dataset[setting.cate].question[setting.seg];
+            formData.append('id',estimate.est_id);
+            formData.append('position',ref.position);
+            formData.append('path', ref.path);
+            api_setting.method = 'action';
+            api_setting.url = ref.api;
+            api_setting.data = formData;
+
+            api(api_setting).then(function(response) {
+                let res = response;
+
+                if (res.result == 'error_login') {
+                    alert.login();
+                } else if (res.result == 'success') {
+                    dataset[setting.cate].question[setting.seg].estFiles[ref.position] = res.files;
+                    showFiles.tycoon(ref.input, dataset[setting.cate].question[setting.seg].estFiles[ref.position]);
+                } else {
+                    alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
+                }
+
+                if (ref.path == 'paper' || ref.position == 'camera') {
+                    $(ref.label).html(label_html);
                     $(ref.btn).prop('disabled', false);
                 } else {
                     $(ref.label.input).removeClass('hide');
@@ -159,7 +196,7 @@ const removeFile = (input, setting) => {
     $(ref.btnrm).prop('disabled', true);
     $(ref.btnrm).html(setSpinner('Removing...'));
 
-    if ($.inArray(ref.app, ['awards/application', 'awards/pre-screen'])) {
+    if ($.inArray(ref.app, ['awards/application', 'awards/pre-screen', 'estimate/onstie'])) {
         api_setting.method = 'post';
 
         if (ref.app == 'awards/application') {
@@ -168,6 +205,10 @@ const removeFile = (input, setting) => {
             pointer = psc.getPointer();
             setting.id = psc.questions[pointer.cate].question[pointer.seg].id;
             api_setting.url = '/inner-api/answer/remove/file';
+        } else if (ref.app == 'estimate/onstie') {
+            pointer = getPointer();
+            setting.id = dataset[pointer.cate].question[pointer.seg].est_id;
+            api_setting.url = '/inner-api/estimate/onsite/files/remove';
         }
 
         setting.position = ref.position;
@@ -178,7 +219,8 @@ const removeFile = (input, setting) => {
 
             if (res.result == 'error_login') {
                 alert.login();
-            } else if (res.result == 'success' && ref.app == 'awards/application') {
+            } 
+            else if (res.result == 'success' && ref.app == 'awards/application') {
                 if (setting.remove == 'fixed') {
                     register.formData[ref.pointer[0]][ref.pointer[1]] = [];
                     register.change[ref.pointer[1]] = 0;
@@ -195,7 +237,8 @@ const removeFile = (input, setting) => {
                 }
 
                 showFiles.tycoon(input, register.formData[ref.pointer[0]][ref.pointer[1]]);
-            } else if (res.result == 'success' && ref.app == 'awards/pre-screen') {
+            } 
+            else if (res.result == 'success' && ref.app == 'awards/pre-screen') {
                 if (setting.remove == 'fixed') {
                     psc.questions[pointer.cate].question[pointer.seg][ref.position] = res.files;
                 } else {
@@ -203,7 +246,17 @@ const removeFile = (input, setting) => {
                 }
 
                 showFiles.tycoon(input, psc.questions[pointer.cate].question[pointer.seg][ref.position]);
-            } else {
+            } 
+            else if (res.result == 'success' && ref.app == 'estimate/onsite') {
+                if (setting.remove == 'fixed') {
+                    dataset[pointer.cate].question[pointer.seg].estFiles[ref.position] = res.files;
+                } else {
+                    dataset[pointer.cate].question[pointer.seg].estFiles[ref.position] = [];
+                }
+
+                showFiles.tycoon(input, dataset[pointer.cate].question[pointer.seg].estFiles[ref.position]);
+            } 
+            else {
                 alert.show(res.result, 'ไม่สามารถลบไฟล์ได้', res.message);
             }
 
@@ -214,7 +267,7 @@ const removeFile = (input, setting) => {
 }
 
 const downloadFile = (input) => {
-    let id, url, point,
+    let id, url, pointer,
         ref = referance.find(el => el.input == input);
 
     if (ref.app == 'awards/application') {
@@ -224,6 +277,10 @@ const downloadFile = (input) => {
         pointer = psc.getPointer();
         id = psc.questions[pointer.cate].question[pointer.seg].reply_id;
         url = getBaseUrl() + '/inner-api/answer/download/file';
+    } else if (ref.app == 'estimate/onsite') {
+        pointer = getPointer();
+        id = dataset[pointer.cate].question[pointer.seg].est_id;
+        url = getBaseUrl() + '/inner-api/estimate/onsite/files/download';
     }
 
     url += '/' + id + '/' + ref.position;
@@ -233,8 +290,8 @@ const downloadFile = (input) => {
 const showFiles = {
     tycoon: function(input, files) {
         let ref = referance.find(el => el.input == input),
-            html, layout;
-
+            html;
+            
         if (ref.app == 'awards/pre-screen' && psc.status == 'reject' && ref.path == 'images') {
             html = [];
         } else {
@@ -252,7 +309,8 @@ const showFiles = {
         if (ref.path == 'images') {
             if (
                 (ref.app == 'awards/application' && $.inArray(Number(register.status), [1, 4]) !== -1) ||
-                (ref.app == 'awards/pre-screen' && psc.status == 'draft')
+                (ref.app == 'awards/pre-screen' && psc.status == 'draft') || 
+                (ref.app == 'estimate/onsite' && $.inArray(Number(getStageStatus()),[6,7]) === -1)
             ) {
                 $(ref.show).html(html);
             } else if (ref.app == 'awards/pre-screen' && psc.status == 'reject') {
@@ -283,7 +341,7 @@ const showFiles = {
         if (ref.app == 'awards/application') { id = register.id; }
 
         if (
-            $.inArray(ref.app, ['awards/application', 'awards/pre-screen']) !== -1 &&
+            $.inArray(ref.app, ['awards/application', 'awards/pre-screen', 'estimate/onsite']) !== -1 &&
             ref.path == 'paper'
         ) {
             onclick = 'onclick="removeFile(\'' + input + '\',{';
@@ -296,57 +354,69 @@ const showFiles = {
             onclick += "file_path: '" + setting.file_path + "',";
             onclick += 'remove: \'fixed\'})"';
 
-            html = '<div class="col-12">';
-            html += '   <div class="card card-body-muted">';
-            html += '       <div class="bs-row">';
-            html += '           <div class="col-12">';
-            html += '               <span class="fs-file-name">' + setting.file_original + ' ';
-            html += '               (' + setting.file_size + 'MB)</span>';
-            html += '               <a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">';
-            html += '                   <i class="bi bi-trash-fill"></i> ลบ';
-            html += '               </a>';
-            html += '           </div>';
-            html += '       </div>';
-            html += '   </div>';
-            html += '</div>';
+            html = '<div class="col-12">'
+                        + '<div class="card card-body-muted">'
+                            + '<div class="bs-row">'
+                                + '<div class="col-12">'
+                                    + '<span class="fs-file-name">' + setting.file_original + ' '
+                                    + '(' + setting.file_size + 'MB)</span>'
+                                    + '<a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">'
+                                        + '<i class="bi bi-trash-fill"></i> ลบ'
+                                    + '</a>'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>'
+                    + '</div>';
 
             return html;
         } else if (
-            $.inArray(ref.app, ['awards/application', 'awards/pre-screen']) !== -1 &&
+            $.inArray(ref.app, ['awards/application', 'awards/pre-screen', 'estimate/onsite']) !== -1 &&
             ref.path == 'images'
         ) {
             img = getBaseUrl() + '/' + setting.file_path;
 
             if (
                 (ref.app == 'awards/application' && $.inArray(Number(register.status), [1, 4]) !== -1) ||
-                (ref.app == 'awards/pre-screen' && psc.status == 'draft')
+                (ref.app == 'awards/pre-screen' && psc.status == 'draft') ||
+                (ref.app == 'estimate/onsite' && $.inArray(Number(getStageStatus()),[6,7]) === -1)
             ) {
-                onclick = 'href="javascript:removeFile(\'' + input + '\',{';
+                if(ref.app == 'estimate/onsite' && ref.position == 'camera'){
+                    html = '<div class="list">'
+                                + '<img src="' + img + '" onclick="zoomImages(this)">'
+                            + '</div>';
+                } else {
+                    onclick = 'href="javascript:removeFile(\'' + input + '\',{';
 
-                if (ref.app == 'awards/application') {
-                    onclick += 'id: ' + id + ','
+                    if (ref.app == 'awards/application') {
+                        onclick += 'id: ' + id + ','
+                    }
+
+                    onclick += "file_name: '" + setting.file_name + "',";
+                    onclick += "file_path: '" + setting.file_path + "',";
+                    onclick += 'remove: \'fixed\'});"';
+
+                    html = '<div class="card card-left mt-1 mb-1">'
+                                + '<img src="' + img + '" class="card-img-left">'
+                                + '<div class="card-body">'
+                                    + '<div class="bs-row">'
+                                        + '<span class="fs-file-name fw-semibold">' 
+                                            + setting.file_original 
+                                        + '</span>'
+                                    + '</div>'
+                                    + '<div class="bs-row">'
+                                        + '<div class="col-12">'
+                                            + '<span style="font-size: 14px;" class="text-muted">' 
+                                                + setting.file_size 
+                                            + 'MB</span>'
+                                            + '<a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">'
+                                                + '<i class="bi bi-trash-fill"></i> ลบ'
+                                            + '</a>'
+                                        + '</div>'
+                                    + '</div>'
+                                + '</div>'
+                            + '</div>';
                 }
 
-                onclick += "file_name: '" + setting.file_name + "',";
-                onclick += "file_path: '" + setting.file_path + "',";
-                onclick += 'remove: \'fixed\'});"';
-
-                html = '<div class="card card-left mt-1 mb-1">';
-                html += '   <img src="' + img + '" class="card-img-left">';
-                html += '   <div class="card-body">';
-                html += '       <div class="bs-row">';
-                html += '           <span class="fs-file-name fw-semibold">' + setting.file_original + '</span>';
-                html += '       </div>';
-                html += '       <div class="bs-row">';
-                html += '           <div class="col-12">';
-                html += '               <span style="font-size: 14px;" class="text-muted">' + setting.file_size + 'MB</span>';
-                html += '               <a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">';
-                html += '                   <i class="bi bi-trash-fill"></i> ลบ';
-                html += '               </a>';
-                html += '           </div>';
-                html += '       </div>';
-                html += '   </div>';
-                html += '</div>';
                 return html;
             } else if (ref.app == 'awards/pre-screen' && psc.status == 'reject') {
                 html = { input: '', ablum: '' };
@@ -355,41 +425,45 @@ const showFiles = {
                 onclick += "file_path: '" + setting.file_path + "',";
                 onclick += 'remove: \'fixed\'});"';
 
-                html.input = '<div class="card card-left mt-1 mb-1">';
-                html.input += '   <img src="' + img + '" class="card-img-left">';
-                html.input += '   <div class="card-body">';
-                html.input += '       <div class="bs-row">';
-                html.input += '           <span class="fs-file-name fw-semibold">' + setting.file_original + '</span>';
-                html.input += '       </div>';
-                html.input += '       <div class="bs-row">';
-                html.input += '           <div class="col-12">';
-                html.input += '               <span style="font-size: 14px;" class="text-muted">' + setting.file_size + 'MB</span>';
-                html.input += '               <a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">';
-                html.input += '                   <i class="bi bi-trash-fill"></i> ลบ';
-                html.input += '               </a>';
-                html.input += '           </div>';
-                html.input += '       </div>';
-                html.input += '   </div>';
-                html.input += '</div>';
+                html.input = '<div class="card card-left mt-1 mb-1">'
+                                + '<img src="' + img + '" class="card-img-left">'
+                                + '<div class="card-body">'
+                                    + '<div class="bs-row">'
+                                        + '<span class="fs-file-name fw-semibold">' 
+                                        + setting.file_original + '</span>'
+                                    + '</div>'
+                                    + '<div class="bs-row">'
+                                        + '<div class="col-12">'
+                                            + '<span style="font-size: 14px;" class="text-muted">' 
+                                                + setting.file_size + 'MB</span>'
+                                            + '<a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">'
+                                                + '<i class="bi bi-trash-fill"></i> ลบ'
+                                            + '</a>'
+                                        + '</div>'
+                                    + '</div>'
+                                + '</div>'
+                            + '</div>';
 
 
-                html.ablum = '<div class="ablumbox-col">';
-                html.ablum += '    <div class="ablum-mainimg">';
-                html.ablum += '        <div class="ablum-mainimg-scale">';
-                html.ablum += '            <img src="' + img + '">';
-                html.ablum += '       </div>';
-                html.ablum += '   </div>';
-                html.ablum += '</div>';
+                html.ablum = '<div class="ablumbox-col">'
+                                + '<div class="ablum-mainimg">'
+                                    + '<div class="ablum-mainimg-scale">'
+                                        + '<img src="' + img + '" '
+                                        + 'class="ablum-img" onclick="zoomImages(this)">'
+                                    + '</div>'
+                                + '</div>'
+                        + '</div>';
 
                 return html;
             } else {
-                html = '<div class="ablumbox-col">';
-                html += '    <div class="ablum-mainimg">';
-                html += '        <div class="ablum-mainimg-scale">';
-                html += '            <img src="' + img + '">';
-                html += '       </div>';
-                html += '   </div>';
-                html += '</div>';
+                html = '<div class="ablumbox-col">'
+                            + '<div class="ablum-mainimg">'
+                                + '<div class="ablum-mainimg-scale">'
+                                    + '<img src="' + img + '" '
+                                    + 'class="ablum-img" onclick="zoomImages(this)">'
+                                + '</div>'
+                            + '</div>'
+                        + '</div>';
                 return html;
             }
         }
@@ -410,6 +484,8 @@ if ($('#step1-images-drop').length > 0) {
     dropArea = document.getElementById('step1-images-drop');
 } else if ($('#images-drop').length > 0) {
     dropArea = document.getElementById('images-drop');
+} else if ($('#etm-images-drop').length > 0) {
+    dropArea = document.getElementById('etm-images-drop');
 }
 
 const preventDefaults = (e) => {
@@ -436,6 +512,11 @@ const handleDropImages = (id, files) => {
         pointer = psc.getPointer();
         let length = psc.questions[pointer.cate].question[pointer.seg][ref.position].length;
         total = Number(length) + Number([...files].length);
+    } else if (ref.app ==  'estimate/onsite') {
+        pointer = getPointer();
+        let length = dataset[pointer.cate].question[pointer.seg].estFiles[ref.position].length;
+        total = Number(length) + Number([...files].length)
+
     }
 
     if (total > ref.maxUpload) {
@@ -475,7 +556,7 @@ const handleDropImages = (id, files) => {
 
     if (ref.app == 'awards/application') {
         setting = { id: register.id, files: temp };
-    } else if (ref.app == 'awards/pre-screen') {
+    } else if ($.inArray(ref.app,['awards/pre-screen','estimate/onsite']) !==  -1) {
         setting = pointer;
         setting.files = temp;
     }
@@ -792,18 +873,47 @@ const referance = [{
         area: '#etm-images-input',
         pointer: ['', 'etm-images'],
         btn: '#etm-images-btn',
-        btnrm: '#ietm-mages-remove',
+        btnrm: '#etm-mages-remove',
         show: '#etm-images-list',
         ablum: '#etm-images-ablum',
         label: {
             input: '#etm-images-input',
             progress: '#etm-images-progress'
         },
-        api: '/inner-api/estimate/onsite/upload',
+        api: '/inner-api/estimate/onsite/files/upload',
         position: 'images',
         path: 'images',
         app: 'estimate/onsite',
         maxUpload: 10,
         maxSize: 10
+    },
+    {
+        input: '#camera',
+        pointer: ['', 'camera'],
+        btn: '#camera-btn',
+        btnrm: '#camera-remove',
+        show: '#camera-gallery',
+        ablum: '#camera-gallery',
+        label: '#camera-label',
+        api: '/inner-api/estimate/onsite/files/upload',
+        position: 'camera',
+        path: 'images',
+        app: 'estimate/onsite',
+        maxUpload: 999,
+        maxSize: 1000000
+    },
+    {
+        input: '#etm-file',
+        pointer: ['', 'paper'],
+        btn: '#etm-file-btn',
+        btnrm: '#etm-file-remove',
+        show: '#etm-file-list',
+        label: '#etm-file-label',
+        api: '/inner-api/estimate/onsite/files/upload',
+        position: 'paper',
+        path: 'paper',
+        app: 'estimate/onsite',
+        maxUpload: 5,
+        maxSize: 15
     },
 ];

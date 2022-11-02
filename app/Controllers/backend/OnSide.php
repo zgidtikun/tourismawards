@@ -25,7 +25,7 @@ class OnSide extends BaseController
         // $like['status'] = 0;
         // $like['status'] = 4;
         if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
-            $like['attraction_name_th'] = $_GET['keyword'];
+            // $like['attraction_name_th'] = $_GET['keyword'];
             $like['company_name'] = $_GET['keyword'];
         }
         if (!empty($_GET['application_type_id']) && $_GET['application_type_id'] != "") {
@@ -39,7 +39,9 @@ class OnSide extends BaseController
             $like['status'] = $_GET['status'];
         }
 
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->where('US.stage', 2)->where('AP.status', 3)->orLike($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id', 'left')->where('US.stage', 2)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->where('C.application_form_id', NULL)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
+        // pp_sql();
+        // exit;
 
         $data['application_type'] = $this->ApplicationType->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
@@ -71,7 +73,7 @@ class OnSide extends BaseController
         // px($data['committees']);
 
         // Template
-        $data['title']  = 'ตรวจสอบใบสมัคร';
+        $data['title']  = 'ลงพื้นที่';
         $data['view']   = 'administrator/onside/edit';
         $data['ci']     = $this;
 
@@ -141,5 +143,68 @@ class OnSide extends BaseController
     {
         $result = $this->db->table('estimate_score')->where('id', $id)->get()->getRowObject();
         echo json_encode($result);
+    }
+
+    public function estimate()
+    {
+        $like = [];
+        $where = [];
+        $sub_id = 1;
+        // $like['status'] = 0;
+        // $like['status'] = 4;
+        if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
+            // $like['attraction_name_th'] = $_GET['keyword'];
+            $like['company_name'] = $_GET['keyword'];
+        }
+        if (!empty($_GET['application_type_id']) && $_GET['application_type_id'] != "") {
+            $where['application_type_id'] = $_GET['application_type_id'];
+            $sub_id = $_GET['application_type_id'];
+        }
+        if (!empty($_GET['application_type_sub_id']) && $_GET['application_type_sub_id'] != "") {
+            $where['application_type_sub_id'] = $_GET['application_type_sub_id'];
+        }
+        if (!empty($_GET['status']) && $_GET['status'] != "") {
+            $like['status'] = $_GET['status'];
+        }
+
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id', 'left')->where('US.stage', 2)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
+        // pp_sql();
+        // pp($data['result']);
+
+        $data['application_type'] = $this->ApplicationType->findAll();
+        $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
+
+        // Template
+        $data['title']  = "การประเมินรอบลงพื้นที่";
+        $data['view']   = 'administrator/onside/estimate';
+        $data['ci']     = $this;
+
+        return view('administrator/template', $data);
+    }
+
+    public function view($id)
+    {
+        $data['result'] = $this->ApplicationForm->find($id);
+        // pp($data['result']);
+        if (empty($data['result'])) {
+            show_404();
+        }
+        $data['id'] = $id;
+        $data['application_type'] = $this->ApplicationType->findAll();
+        $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $data['result']->application_type_id)->findAll();
+
+        $data['status_1'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"1"', 'both')->get()->getResultObject();
+        $data['status_2'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"2"', 'both')->get()->getResultObject();
+        $data['status_3'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"3"', 'both')->get()->getResultObject();
+        
+        $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->get()->getRowObject();
+        // px($data['committees']);
+
+        // Template
+        $data['title']  = 'ลงพื้นที่';
+        $data['view']   = 'administrator/onside/view_edit';
+        $data['ci']     = $this;
+
+        return view('administrator/template', $data);
     }
 }

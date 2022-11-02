@@ -50,6 +50,8 @@
             <?php
                 }
               }
+            } else {
+              echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
             }
             ?>
           </div>
@@ -79,6 +81,8 @@
             <?php
                 }
               }
+            } else {
+              echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
             }
             ?>
           </div>
@@ -108,6 +112,8 @@
             <?php
                 }
               }
+            } else {
+              echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
             }
             ?>
           </div>
@@ -138,6 +144,8 @@
             <?php
                 }
               }
+            } else {
+              echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
             }
             ?>
           </div>

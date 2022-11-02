@@ -122,7 +122,8 @@ class EstimateController extends BaseController
                 case 'create':
 
                     $data['estimate_by'] = session()->get('id');  
-                    $data['status'] = 1;                   
+                    $data['status_pre'] = 1;
+                    $data['status_onsite'] = 1;                          
 
                     $this->estimate->insert($data);
                     $instId = $this->estimate->getInsertID();
@@ -231,6 +232,15 @@ class EstimateController extends BaseController
 
                 $this->stage->where(['user_id' => $form->created_by, 'stage' => $input->stage])
                     ->set(['status' => $pass ? 6 : 7])
+                    ->update();
+                
+                $answer->where('reply_by',$form->created_by)
+                    ->set(['status' => $pass ? 4 : 0])
+                    ->update();
+                
+                $users = new \App\Models\Users();
+                $users->where('id',$form->created_by)
+                    ->set(['stage' => 3])
                     ->update();
 
                 if($pass){

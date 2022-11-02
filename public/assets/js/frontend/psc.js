@@ -35,7 +35,7 @@ const psc = {
                         $('.form-main-title').removeClass('hide');
                         $('.label-action').removeClass('hide');
                         $('.attach-file').remove();                        
-                        $('#formstatus-pass').removeClass();                          
+                        $('#formstatus-pass').removeClass('hide');                          
                     break;
                     case 'reject':
                         $('#formstep-sts').addClass('date');
@@ -47,11 +47,18 @@ const psc = {
                         $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
                     break;
                     case 'finish':
+                    case 'estimate':
                         $('#formstep-sts').addClass('pass');
                         $('#formstep-sts').html('ส่งแบบประเมินเรียบร้อยแล้ว');                      
                         $('#formstatus-complete').removeClass('hide');
                         $('.regis-form-data textarea').prop('disabled',true);
                         $('.btn-main, .btn-action, .selecter-file, .bfd-dropfield').remove();
+
+                        if(psc.status == 'estimate'){
+                            $('#formstep-result').html('สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว');
+                            $('.formstep-col.estimate > a').removeClass('disabled');
+                            $('.formstep-col.estimate > a').addClass('inactive');
+                        }
                     break;
                 }
             } else {                   

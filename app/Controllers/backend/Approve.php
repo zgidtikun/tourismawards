@@ -28,7 +28,7 @@ class Approve extends BaseController
         $where = [];
         $sub_id = 1;
         if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
-            $like['attraction_name_th'] = $_GET['keyword'];
+            // $like['attraction_name_th'] = $_GET['keyword'];
             $like['company_name'] = $_GET['keyword'];
         }
         if (!empty($_GET['application_type_id']) && $_GET['application_type_id'] != "") {
@@ -39,7 +39,7 @@ class Approve extends BaseController
             $where['application_type_sub_id'] = $_GET['application_type_sub_id'];
             $sub_id = $_GET['application_type_id'];
         }
-        $data['result'] = $this->ApplicationForm->orLike($like, 'match', 'both')->where($where)->where('status <= 2')->orderBy('id', 'desc')->findAll();
+        $data['result'] = $this->ApplicationForm->like($like, 'match', 'both')->where($where)->where('status <= 2')->orderBy('id', 'desc')->findAll();
         // pp_sql();
 
         $data['application_type'] = $this->ApplicationType->findAll();
@@ -93,7 +93,7 @@ class Approve extends BaseController
         // $like['status'] = 0;
         // $like['status'] = 4;
         if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
-            $like['attraction_name_th'] = $_GET['keyword'];
+            // $like['attraction_name_th'] = $_GET['keyword'];
             $like['company_name'] = $_GET['keyword'];
         }
         if (!empty($_GET['application_type_id']) && $_GET['application_type_id'] != "") {
@@ -107,7 +107,7 @@ class Approve extends BaseController
             $like['status'] = $_GET['status'];
         }
 
-        $data['result'] = $this->ApplicationForm->orLike($like, 'match', 'both')->where($where)->where('status > 2')->orderBy('id', 'desc')->findAll();
+        $data['result'] = $this->ApplicationForm->like($like, 'match', 'both')->where($where)->where('status > 2')->orderBy('id', 'desc')->findAll();
         // pp_sql();
         // exit;
 

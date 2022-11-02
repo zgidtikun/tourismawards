@@ -211,31 +211,40 @@ const register = {
                 register.formData.step1.appType = app.application_type_id;
 
                 if(!register.expired){
-                    switch(register.status){
-                        case '1': 
+                    switch(Number(register.status)){
+                        case 1: 
                             $('#formstep-sts').addClass('date');
                             $('.form-main-title').removeClass('hide');
                             $('.attach-file').remove();
                         break;
-                        case '2': 
+                        case 2: 
                             $('#formstep-sts').addClass('check');
                             $('#formstep-sts').html('รอตรวจสอบ');
                             $('#formstatus-info').removeClass('hide');
                             $('.regis-form-data input, textarea').prop('disabled',true);
                             $('.btn-action, .selecter-file').remove();
                         break;
-                        case '3': 
+                        case 3: 
                             $('#formstep-sts').addClass('pass');
                             $('#formstep-sts').html('ผ่านการตรวจสอบ');
                             $('#formstatus-pass').removeClass('hide');
                             $('.regis-form-data input, textarea').prop('disabled',true);
                             $('.btn-action, .selecter-file').remove();
                         break;
-                        case '4': 
+                        case 4: 
+                            $('#comoment').html(app.judge_comment);
+                            $('#formstep-sts').addClass('notpass');
+                            $('#formstep-sts').html('ไม่ผ่านการอนุมัติ');
+                            $('.form-main-title, .formstatus-comoment').removeClass('hide');
+                            $('#formstatus-uncomplete').removeClass('hide');
+                            $('.attach-file').remove();
+                        break;
+                        case 0: 
                             $('#formstep-sts').addClass('notpass');
                             $('#formstep-sts').html('ไม่ผ่านการอนุมัติ');
                             $('.form-main-title').removeClass('hide');
                             $('#formstatus-uncomplete').removeClass('hide');
+                            $('.regis-form-data input, textarea').prop('disabled',true);
                             $('.attach-file').remove();
                         break;
                     }

@@ -122,6 +122,94 @@ const draft = (cate,seg) => {
     });
 }
 
+const setFinish = () => {
+    let tscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
+    tscore = 0 
+    tescore = sbscoe = rsscore = 0;
+    ttescore = tsbscoe = trsscore = 0;
+
+    $.each(assign,(ak,av) => {
+        let index = av-1;
+
+        $.each(dataset[index].question,(qk,qv) => {
+            if(!empty(qv.score_onsite)){
+                let score = Number(qv.score_onsite);
+                const total = score / Number(qv.weight);
+
+                if(av == 1){ 
+                    tescore += total;
+                    ttescore += Number(qv.onside_score);
+                }
+                else if(av == 2){ 
+                    sbscoe += total;
+                    tsbscoe += Number(qv.onside_score);
+                }
+                else{
+                    rsscore += total;
+                    trsscore += Number(qv.onside_score);
+                }
+
+                tscore += total;
+                mscore += Number(qv.onside_score);
+            }
+        });
+    });
+
+    const stescore = ((tescore * ttescore) / ttescore).toFixed(2);
+    const ssbscore = ((sbscoe * tsbscoe) / tsbscoe).toFixed(2);
+    const srsscore = ((rsscore * trsscore) / trsscore).toFixed(2);
+    const sscore = ((tscore * mscore) / mscore).toFixed(2);
+    
+    alert.confirm({
+        mode: 'confirm-main',
+        icon: 'info',
+        title: 'ยืนยันการส่งผลประเมินเข้าระบบ'
+            + '<br>'
+            + 'คะแนนที่ประเมินคือ <span class="txt-yellow">'
+            + sscore
+            + '</span> คะแนน',
+        text: 'กรุณาตรวจสอบความถูกต้องก่อนส่งผลประเมินเข้าระบบ',
+        button: {
+            confirm: 'ส่งผลประเมินเข้าระบบ',
+            cancel: 'ยกเลิก'
+        }
+    })
+    .then((rs) => {
+        if(rs.status){
+            loading('show');
+
+            const st = {
+                method: 'post',
+                url: '/inner-api/estimate/onsite/complete',
+                data: {
+                    appId: appid,
+                    stage: 2,
+                    score_te: stescore,
+                    score_sb: ssbscore,
+                    score_rs: srsscore,
+                    score_tt: sscore
+                }
+            }
+
+            api(st).then((rs) => {
+                loading('hide');
+
+                if(rs.result == 'error_login'){
+                    alert.login();
+                }
+                else if(rs.result == 'error'){
+                    alert.show(rs.result,'ไม่สามารถส่งผลประเมินเข้าระบบได้',rs.message);
+                }
+                else {
+                    alert.show(rs.result, 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '').then(() => {
+                        window.location.reload();
+                    });
+                }
+            });
+        }
+    });
+}
+
 const setQuestion = (cate,seg) => {
     let point = getPointer();
     setPointer(cate,seg);
@@ -147,22 +235,14 @@ const setQuestion = (cate,seg) => {
 
     $('.sl').removeClass('active');
     $('#sl-'+seg).addClass('active');
-
+    
     if(
-        !empty(category.question[point.seg].request_status)
-        && $.inArray(Number(category.question[point.seg].request_status),[0,1,2]) === -1
+        !empty(category.question[point.seg].score_onsite) 
+        || category.question[point.seg].score_onsite == 0
     ){
-        if(
-            !empty(category.question[point.seg].score_onsite) 
-            || category.question[point.seg].score_onsite == 0
-        ){
-            $('#sl-'+point.seg).addClass('complete');
-        } else {
-            $('#sl-'+point.seg).removeClass('complete');
-        }
+        $('#sl-'+point.seg).addClass('complete');
     } else {
         $('#sl-'+point.seg).removeClass('complete');
-        $('#sl-'+point.seg).addClass('request');
     }
 
     setPointer(cate,seg);
@@ -206,6 +286,10 @@ const setQuestion = (cate,seg) => {
     });
 
     qAblum.html(ap);
+    
+    showFiles.tycoon('#etm-images',question.estFiles.images);
+    showFiles.tycoon('#etm-file',question.estFiles.paper);
+    showFiles.tycoon('#camera',question.estFiles.camera);
 
     const eva = question.os_eva.split(',');
     const sco = question.os_scor.split(',');

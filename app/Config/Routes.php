@@ -64,6 +64,7 @@ $routes->group('awards', static function ($routes) {
     $routes->get('/', 'frontend::index', ['filter' => 'auth:frontend']);
     $routes->get('application', 'ApplicationController::formIndex', ['filter' => 'auth:1']);
     $routes->get('pre-screen', 'AnswerController::preScreenIndex', ['filter' => 'auth:1']);
+    $routes->get('result', 'FrontendController::AssessmentResults', ['filter' => 'auth:1']);
 });
 
 $routes->group('boards', static function ($routes) {
@@ -115,6 +116,13 @@ $routes->group('inner-api', static function ($routes) {
 
         $routes->group('onsite', static function ($routes) {
             $routes->post('draft', 'EstimateController::draftEstimate', ['filter' => 'api:3']);
+            $routes->post('complete', 'EstimateController::setCompleteEstimate', ['filter' => 'api:3']);
+
+            $routes->group('files', static function ($routes) {
+                $routes->post('upload', 'FilesController::uploadEstimate', ['filter' => 'api:frontend']);
+                $routes->get('remove', 'FilesController::removeEstimate', ['filter' => 'api:frontend']);
+                $routes->get('download/(:any)/(:any)', 'FilesController::dowanloadEstimateFile/$1/$2', ['filter' => 'api:frontend']);
+            });
         });
     });
 
@@ -216,6 +224,14 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], stat
         $routes->post('saveUpdate', 'OnSide::saveUpdate', ['filter' => 'api:backend']);
         
         $routes->post('getScore/(:any)', 'OnSide::getScore/$1', ['filter' => 'api:backend']);
+        $routes->get('estimate', 'OnSide::estimate', ['filter' => 'auth:backend']);
+        $routes->get('view/(:any)', 'OnSide::view/$1', ['filter' => 'auth:backend']);
+    });
+
+    // Complete (แอดมินและเจ้าหน้าที่เข้าถึงได้)
+    $routes->group('Complete', static function ($routes) {
+        $routes->get('', 'Complete::index', ['filter' => 'auth:4']);
+        $routes->get('register', 'Complete::register', ['filter' => 'api:backend']);
     });
 
     // Report (แอดมินและเจ้าหน้าที่เข้าถึงได้)

@@ -5,9 +5,10 @@
         <h3>รายการใบสมัครที่รอเพิ่มกรรมการรอบลงพื้นที่</h3>
       </div>
       <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
+      <a href="#" onclick="export_data()" class="btn-export"><i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i> Export</a>
     </div>
 
-    <form action="" method="get">
+    <form action="" method="get" id="search_form">
       <div class="backendcontent-subrow row">
         <div class="backendcontent-subcol searchbox col-sm-2">
           <input type="text" class="form-control" name="keyword" id="keyword" value="<?= @$_GET['keyword'] ?>" placeholder="ค้นหา">
@@ -45,6 +46,14 @@
           </select>
         </div>
 
+        <div class="backendcontent-subcol selectbox col-sm-3">
+          <label>เรียง</label>
+          <select id="sort" name="sort">
+            <option value="desc" <?= (@$_GET['sort'] == 'desc') ? 'selected' : ''; ?>>มากไปน้อย</option>
+            <option value="asc" <?= (@$_GET['sort'] == 'asc') ? 'selected' : ''; ?>>น้อยไปมาก</option>
+          </select>
+        </div>
+
         <div class="backendcontent-subcol btn col-sm-3">
           <button type="submit" class="but-blue" id="btn_search">ค้นหา</button>
         </div>
@@ -60,14 +69,14 @@
             <table id="example" class="display" style="width: 100%;">
               <thead>
                 <tr>
-                  <th class="text-center no">#</th>
-                  <th class="text-center noid">รหัสใบสมัคร</th>
-                  <th class="text-center name">ชื่อ</th>
-                  <th class="text-center type">ประเภทที่ตัดสิน</th>
-                  <th class="text-center section">สาขารางวัล</th>
-                  <th class="text-center status">สถานะ</th>
-                  <th class="text-center date">สิ้นสุดประเมิน</th>
-                  <th class="text-center edit">จัดการ</th>
+                  <th data-priority="2">ลำดับ</th>
+                  <th>รหัสใบสมัคร</th>
+                  <th data-priority="1">ชื่อ</th>
+                  <th>ประเภทที่ตัดสิน</th>
+                  <th>สาขารางวัล</th>
+                  <th>สถานะ</th>
+                  <th>คะแนนรวม</th>
+                  <th>จัดการ</th>
                 </tr>
               </thead>
               <tbody>
@@ -100,6 +109,7 @@
                       <td class="text-center">
                         <?php echo docDate($value->created_at, 3) ?>
                       </td>
+                      <td><?= $value->score_prescreen_tt + $value->score_onsite_tt ?></td>
                       <td>
                         <div class="form-table-col edit">
                           <a href="#" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
@@ -174,7 +184,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/OnSide';
+    var pgurl = BASE_URL_BACKEND + '/Complete';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -184,12 +194,6 @@
       columnDefs: [{
         responsivePriority: 1,
         targets: 2
-      }, {
-        responsivePriority: 10001,
-        targets: 6
-      }, {
-        responsivePriority: 10001,
-        targets: 4
       }, {
         responsivePriority: 10001,
         targets: 3
@@ -226,13 +230,17 @@
     $('#btn_search').click();
   });
 
+  $('#sort').change(function(e) {
+    $('#btn_search').click();
+  });
+
   function delete_item(id) {
     var option = {
       title: "Warning!",
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/OnSide/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/Complete/delete', {
         id: id,
         image_cover: $('#image_cover_old').val(),
       });
@@ -241,11 +249,11 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/OnSide/edit/' + id;
+    window.location.href = BASE_URL_BACKEND + '/Complete/edit/' + id;
   }
 
   function view_score(id) {
-    var res = main_post(BASE_URL_BACKEND + '/OnSide/getScore/' + id);
+    var res = main_post(BASE_URL_BACKEND + '/Complete/getScore/' + id);
     // cc(res)
     if (res != null) {
       $('#pre_tourism').html(res.score_prescreen_te);
@@ -276,4 +284,13 @@
     $('.hidebox-login').hide().removeClass('active');
     $('body').removeClass('lockbody');
   });
+
+  function export_data() {
+    var url = BASE_URL_BACKEND + '/Complete/register';
+    $('#search_form').attr('action', url);
+    $('#search_form').attr('target', '_blank');
+    $('#search_form').submit();
+    $('#search_form').attr('target', '');
+    $('#search_form').attr('action', '');
+  }
 </script>

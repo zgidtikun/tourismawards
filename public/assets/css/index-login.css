@@ -121,6 +121,23 @@
     font-size: 20px;
 }
 
+.noti-box-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    z-index: 1;
+    background-color: #fff;
+}
+
+.noti-box-footer > .link {
+    font-size: 14px;
+    font-weight: 600;
+    justify-content: center;
+    color: #000 !important;
+}
+
 .user-box {
     position: absolute;
     top: 30px;

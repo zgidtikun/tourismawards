@@ -103,7 +103,7 @@
                       <td>
                         <div class="form-table-col edit">
                           <a href="#" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
-                          <a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
+                          <a href="#" class="btn-edit" title="ดูข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-eye"></i></a>
                           <!-- <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a> -->
                         </div>
                       </td>
@@ -174,7 +174,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/OnSide';
+    var pgurl = BASE_URL_BACKEND + '/OnSide/estimate';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -241,7 +241,7 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/OnSide/edit/' + id;
+    window.location.href = BASE_URL_BACKEND + '/OnSide/view/' + id;
   }
 
   function view_score(id) {

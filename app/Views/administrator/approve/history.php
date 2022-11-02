@@ -8,12 +8,12 @@
     </div>
 
     <form action="" method="get">
-      <div class="backendcontent-subrow">
-        <div class="backendcontent-subcol searchbox">
-          <input class="form-control" type="text" name="keyword" id="keyword" value="<?= @$_GET['keyword'] ?>" placeholder="ค้นหา">
+      <div class="backendcontent-subrow row">
+        <div class="backendcontent-subcol searchbox col-sm-2">
+          <input type="text" class="form-control" name="keyword" id="keyword" value="<?= @$_GET['keyword'] ?>" placeholder="ค้นหา">
         </div>
 
-        <div class="backendcontent-subcol selectbox">
+        <div class="backendcontent-subcol selectbox col-sm-3">
           <label>ประเภทที่ตัดสิน</label>
           <select id="application_type_id" name="application_type_id">
             <option value="">ทั้งหมด</option>
@@ -29,7 +29,7 @@
           </select>
         </div>
 
-        <div class="backendcontent-subcol selectbox">
+        <div class="backendcontent-subcol selectbox col-sm-3">
           <label>สาขารางวัล</label>
           <select id="application_type_sub_id" name="application_type_sub_id">
             <option value="">ทั้งหมด</option>
@@ -45,14 +45,14 @@
           </select>
         </div>
 
-        <div class="backendcontent-subcol selectbox">
+        <div class="backendcontent-subcol selectbox col-sm-3">
           <label>สถานะ</label>
           <select id="status" name="status">
             <option value="">ทั้งหมด</option>
-            <option value="1">รอตรวจสอบ</option>
-            <option value="2">ขอข้อมูลเพิ่มเติม</option>
-            <option value="3">ผ่าน</option>
-            <option value="4">ไม่ตอบรับ</option>
+            <option value="1" <?= (@$_GET['status'] == 1) ? 'selected' : ''; ?>>รอตรวจสอบ</option>
+            <option value="2" <?= (@$_GET['status'] == 2) ? 'selected' : ''; ?>>ขอข้อมูลเพิ่มเติม</option>
+            <option value="3" <?= (@$_GET['status'] == 3) ? 'selected' : ''; ?>>อนุมัติ</option>
+            <option value="4" <?= (@$_GET['status'] == 4) ? 'selected' : ''; ?>>ไม่อนุมัติ</option>
           </select>
         </div>
 
@@ -90,9 +90,9 @@
                     } else if ($value->status == 2) {
                       $status = '<div class="userstatus chk">ขอข้อมูลเพิ่มเติม</div>';
                     } else if ($value->status == 3) {
-                      $status = '<div class="userstatus judge">ผ่าน</div>';
+                      $status = '<div class="userstatus judge">อนุมัติ</div>';
                     } else if ($value->status == 4) {
-                      $status = '<div class="userstatus officer">ไม่ตอบรับ</div>';
+                      $status = '<div class="userstatus officer">ไม่อนุมัติ</div>';
                     }
                 ?>
                     <tr>

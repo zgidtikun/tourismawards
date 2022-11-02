@@ -8,7 +8,7 @@ use Exception;
 
 class FilesController extends BaseController
 {
-    public function __construct(){}
+    public function __construct(){}  
 
     public function uploadProfile()
     {
@@ -16,7 +16,7 @@ class FilesController extends BaseController
             $id = $this->input->getVar('id');
 
             if($images = $this->input->getFiles()){
-                $path = 'uploads/'.date('Y').'/'.date('d').'/'.date('m');
+                $path = 'uploads/'.date('Y').'/'.date('m').'/'.date('d');
                 foreach($images['image'] as $image){
                     if($image->isValid() && !$image->hasMoved()){
                         $extension = $image->guessExtension();
@@ -48,6 +48,125 @@ class FilesController extends BaseController
         }
 
         return $this->response->setJSON($result);
+    }
+
+    public function uploadEstimate()
+    {
+        try {
+            if($files = $this->input->getFiles()){
+                $obj = new \App\Models\Estimate();
+                $input = (object) $this->input->getVar();
+
+                $path = 'uploads/'.date('Y').'/'.date('m').'/'.date('d').'/';
+                $path .= 'estimate/'.$input->id.'/onsite/'.$input->path.'/';
+
+                $result = ['result' => 'success', 'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 'files' => []];                
+                $files_up = [];
+
+                foreach($files['files'] as $file){
+                    if ($file->isValid() && !$file->hasMoved()) {
+                        
+                        $originalName = $file->getName();
+                        $extension = $file->guessExtension();
+                        $newName = randomFileName($extension);
+                        
+                        $file->move(FCPATH.$path, $newName);
+
+                        $tmp_file = array(
+                            'file_name' => $newName,
+                            'file_original' => $originalName,
+                            'file_position' => $input->position,
+                            'file_path' => $path.'/'.$newName,
+                            'file_size' => $file->getSizeByUnit('mb'),
+                        );
+                        
+                        array_push($files_up,$tmp_file);                            
+
+                    }
+                } 
+
+                $pack = $obj->where('id',$input->id)->select('pack_file')->first();
+
+                if(!empty($pack->pack_file)){
+                    $pack_file = json_decode($pack->pack_file);
+                    $files_up = array_merge($pack_file,$files_up);
+                }
+
+                $obj->update($input->id,['pack_file' => json_encode($files_up)]);
+                $files_up = json_decode(json_encode($files_up),false);
+
+                foreach($files_up as $file){
+                    if($file->file_position == $input->position)
+                        array_push($result['files'],$file);
+                }
+            }
+            else {
+                $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์ในการอัพโหลด'];
+            }
+        } catch(\Exception $e){
+            $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
+        }
+
+        return $this->response->setJSON($result);
+    }
+
+    public function removeEstimate()
+    {
+        try {
+            $obj = new \App\Models\Estimate();
+            $input = (object) $this->input->getVar();
+            $tmp = [];
+
+            $pack = $obj->where('id',$input->id)->select('pack_file')->first();
+            $pack_file = json_decode($pack->pack_file,false);
+
+            if($input->remove == 'fixed'){
+                if(unlink(FCPATH.$input->file_path)){
+                    $file_name = $input->file_name;
+                    $result = ['result' => 'success', 'message' => '', 'files' => []];
+
+                    foreach($pack_file as $file){
+                        if($file->file_name != $file_name){
+                            array_push($tmp,$file);
+
+                            if($file->file_position == $input->position){
+                                array_push($result['files'],$file);
+                            }
+                        }
+                    }
+
+                    $obj->update($input->id,['pack_file' => json_encode($tmp)]);
+                } else {
+                    $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
+                }
+            } else {
+                $position = $this->input->getVar('position');
+
+                foreach($pack_file as $file){
+                    if($file->file_position == $position){
+                        unlink(FCPATH.$file->file_path);
+                    } else {
+                        array_push($tmp,$file);
+                    }
+                }
+
+                $obj->update($input->id,['pack_file' => json_encode($tmp)]);
+                $result = ['result' => 'success', 'message' => ''];
+            }
+
+        } catch(\Exception $e){
+            $result = ['result' => 'error', 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()];
+        }
+
+        return $this->response->setJSON($result);
+    }
+
+    public function dowanloadEstimateFile($id,$position)
+    {        
+        $obj = new \App\Models\Estimate();
+        $data = $obj->where('id',$id)->select('pack_file')->first();
+        $files = json_decode($data->pack_file,false);
+        $this->setZip('estimate',$position,$files);
     }
 
     public function downloadApplicationFile($id,$position)

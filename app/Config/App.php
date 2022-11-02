@@ -472,7 +472,7 @@ class App extends BaseConfig
     public $Pre_expired = '2023-03-05';
     public $JudgingCriteriaPre = 18;
     public $JudgingCriteriaOnst = 57;
-    public $script_v = 11111;
+    public $script_v = 1;
 
     public function __construct()
     {

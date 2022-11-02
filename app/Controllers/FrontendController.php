@@ -90,6 +90,63 @@ class FrontendController extends BaseController
 
     }
 
+    public function AssessmentResults()
+    {
+        $stage = new \App\Models\UsersStage();
+        $prescreen = $stage->where(['user_id' => session()->get('id'), 'stage' => 1])
+            ->select('status')->first();
+        $onsite = $stage->where(['user_id' => session()->get('id'), 'stage' => 2])
+            ->select('status')->first();
+
+        if(
+            empty($prescreen)
+            || !in_array($prescreen->status,[6,7])
+        ){
+            return redirect()->to(base_url('awards/pre-screen'));
+        }        
+
+        $data = (object) [
+            'title' => 'สรุปผลการประเมิน',
+            'view' => 'frontend/entrepreneur/result',
+            'result' => (object) []
+        ];
+
+        if(!empty($onsite) && in_array($onsite->status,[6,7])){    
+            $data->result->sts_title = 'สรุปผลการประเมินรอบลงพื้นที่เรียบร้อยแล้ว';   
+            $data->result->sts_content = 'ระบบได้แจ้งผลการประเมินของท่านเรียบร้อยแล้ว';     
+            $data->result->title = 'ผลการประเมินรอบลงพื้นที่';
+
+            if($onsite->status == 6){
+                $data->result->img = base_url('assets/images/prescreen_pass.png');
+                $data->result->content = 'ขอแสดงความยินดีด้วย แบบประเมินของท่านผ่านการประเมินรอบลงพื้นที่ 
+                    ทางโครงการฯ จะประกาศผลอย่างเป็นทางการอีกครั้ง';
+            } else {
+                $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
+                $data->result->content = 'แบบประเมินขอท่าน ไม่ผ่านการประเมินรอบลงื้นที่ 
+                    หากมีข้อสงสัยเพิ่มเติม สามารถติดต่อเจ้าหน้าที่ ททท. ได้ที่ <a href="tel:021234567">02-123-4567</a>';
+            }
+        } else {         
+            $data->result->sts_title = 'สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว (Pre-screen)';   
+            $data->result->sts_content = '';    
+            $data->result->title = 'สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว (Pre-screen)';
+
+            if($onsite->status == 6){
+                $data->result->img = base_url('assets/images/prescreen_complete.png');
+                $data->result->content = 'ขอแสดงความยินดีด้วย ใบสมัครของท่านผ่านการประเมินขั้นต้น (Pre-Screen) 
+                    ลำดับถัดไปให้เตรียมตัวให้พร้อมสำหรับการประเมินรองลงพื้นที่ 
+                    โดยเจ้าหน้าที่ ททท. จะติดต่อไปอีกครั้งทางอีเมล';
+            } else {
+                $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
+                $data->result->content = 'แบบประเมินขอท่าน ไม่ผ่านการประเมินขั้นต้น (Pre-screen)
+                    หากมีข้อสงสัยเพิ่มเติม สามารถติดต่อเจ้าหน้าที่ ททท. ได้ที่ <a href="tel:021234567">02-123-4567</a>';
+            }
+
+        }
+        
+        return view('frontend/entrepreneur/_template',(array) $data);
+
+    }
+
     public function updateProfile()
     {
         try {

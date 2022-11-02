@@ -106,7 +106,7 @@ const setRequest = () => {
 }
 
 const setFinish = () => {
-    let pscore, tscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
+    let tscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
     tscore = 0 
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;

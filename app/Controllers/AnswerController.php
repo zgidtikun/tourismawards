@@ -151,12 +151,18 @@ class AnswerController extends BaseController
 
         $reject = $this->ans->select('status')
             ->where('reply_by',$id)
-            ->whereIn('status',[3,4])
+            ->where('status',3)
             ->countAllResults();
 
-        if($reject > 0) return 'reject';
+        $estimate = $this->ans->select('status')
+            ->where('reply_by',$id)
+            ->whereIn('status',[4,2])
+            ->countAllResults();
+        
+        if($draft > 0) return 'draft';
+        elseif($reject > 0) return 'reject';
         elseif($finish > 0) return 'finish';
-        else return 'draft'; 
+        else return 'estimate'; 
     }
 
     public function getAnswerByAjax($qid)

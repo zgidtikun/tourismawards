@@ -19,9 +19,9 @@
 
   <div class="regis-form-data-col1">
     <h4>แหล่งท่องเที่ยว/กิจกรรมอยู่ในความดูแล</h4>
-    <p><input type="radio" id="manage_by_1" value="1" <?= ($result->manage_by == 1) ? 'checked' : ''; ?>><label for="manage_by_1">ภาครัฐ</label> </p>
-    <p><input type="radio" id="manage_by_2" value="2" <?= ($result->manage_by == 2) ? 'checked' : ''; ?>><label for="manage_by_2">ชุมชนท่องเที่ยว</label> </p>
-    <p><input type="radio" id="manage_by_3" value="3" <?= ($result->manage_by == 3) ? 'checked' : ''; ?>><label for="manage_by_3">ภาคเอกชน</label> </p>
+    <p><input type="radio" name="manage_by" id="manage_by_1" <?= ($result->manage_by == 1) ? 'checked' : ''; ?>><label for="manage_by_1">ภาครัฐ</label></p>
+    <p><input type="radio" name="manage_by" id="manage_by_2" <?= ($result->manage_by == 2) ? 'checked' : ''; ?>><label for="manage_by_2">ชุมชนท่องเที่ยว</label></p>
+    <p><input type="radio" name="manage_by" id="manage_by_3" <?= ($result->manage_by == 3) ? 'checked' : ''; ?>><label for="manage_by_3">ภาคเอกชน</label></p>
   </div>
 
   <div class="regis-form-data-col2">
@@ -43,6 +43,8 @@
       <?php
           }
         }
+      } else {
+        echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
       }
       ?>
     </div>
@@ -67,6 +69,8 @@
       <?php
           }
         }
+      } else {
+        echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
       }
       ?>
     </div>
@@ -91,6 +95,8 @@
       <?php
           }
         }
+      } else {
+        echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
       }
       ?>
     </div>

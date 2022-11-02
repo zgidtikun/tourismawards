@@ -39,31 +39,6 @@ class MarkTest extends BaseController
         $data['result'] = $taskModel->findAll();
         
         return view('backend/test/excel', $data);
-
-        // $spreadsheet = new Spreadsheet();
-
-        // $sheet = $spreadsheet->getActiveSheet();
-        // $sheet->setCellValue('A1', 'Id');
-        // $sheet->setCellValue('B1', 'Name');
-        // $sheet->setCellValue('C1', 'Surname');
-        // $rows = 2;
-
-        // // px(range('A', 'B', 'C'));
-        // foreach ($colExcel as $col) {
-        //     pp($col);
-        //     $sheet->getColumnDimension($col)->setAutoSize(true);
-        // }
-
-        // foreach ($tasks as $task) {
-        //     $sheet->setCellValue('A' . $rows, $task->id);
-        //     $sheet->setCellValue('B' . $rows, $task->name);
-        //     $sheet->setCellValue('C' . $rows, $task->surname);
-        //     $rows++;
-        // }
-
-        // $writer = new Xlsx($spreadsheet);
-        // $writer->save('world.xlsx');
-        // return $this->response->download('world.xlsx', null)->setFileName('sample.xlsx');
     }
 
     public function question()

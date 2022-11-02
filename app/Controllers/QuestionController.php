@@ -124,9 +124,9 @@ class QuestionController extends BaseController
                 ->where('estimate_by',session()->get('id'))
                 ->select('
                     id, question_id, score_pre, score_onsite, comment_pre, 
-                    comment_onsite, note_pre, note_onsite, status, request_list, 
-                    request_date, request_status, estimate_by, tscore_pre,
-                    tscore_onsite'
+                    comment_onsite, note_pre, note_onsite, status_pre, status_onsite, 
+                    request_list, request_date, request_status, estimate_by, tscore_pre,
+                    tscore_onsite, pack_file'
                 )
                 ->getCompiledSelect();
 
@@ -138,9 +138,9 @@ class QuestionController extends BaseController
                     q.onside_scoring_criteria os_scor, q.onside_score, q.weight,
                     a.id reply_id, a.reply, a.pack_file,
                     b.id est_id, b.score_pre, b.score_onsite, b.comment_pre, 
-                    b.comment_onsite, b.note_pre, b.note_onsite, b.status, b.request_list, 
-                    b.request_date, b.request_status, b.estimate_by, b.tscore_pre,
-                    b.tscore_onsite
+                    b.comment_onsite, b.note_pre, b.note_onsite, b.status_pre, b.status_onsite, 
+                    b.request_list, b.request_date, b.request_status, b.estimate_by, b.tscore_pre,
+                    b.tscore_onsite, b.pack_file est_files
                 ')
                 ->join('('.$sqans.') a','q.id = a.question_id','LEFT')
                 ->join('('.$sqset.') b','q.id = b.question_id','LEFT')
@@ -151,20 +151,33 @@ class QuestionController extends BaseController
             foreach($builder->getResult() as $val){   
                 $val->no = ++$counter;
                 $val->images = $val->paper = []; 
+                $val->estFiles = (object) ['paper' => [], 'images' => [], 'camera' => []];
                 $val->estimate = false;
 
                 if(empty($val->reply_id)) $val->reply_id = '';
                 if(empty($val->reply)) $val->reply = '';
 
                 if(!empty($val->pack_file)){
-                    $files = json_decode($val->pack_file);
+                    $files = json_decode($val->pack_file,false);
                     foreach($files as $file){
                         if($file->file_position == 'paper')
                             array_push($val->paper,$file);
                         else array_push($val->images,$file);
                     }
                 }
+
+                if(!empty($val->est_files)){
+                    $files = json_decode($val->est_files,false);
+                    foreach($files as $file){
+                        if($file->file_position == 'paper')
+                            array_push($val->estFiles->paper,$file);
+                        elseif($file->file_position == 'images')
+                            array_push($val->estFiles->images,$file);
+                        else array_push($val->estFiles->camera,$file);
+                    }
+                }
                 
+                unset($val->est_files);  
                 unset($val->pack_file);                
                 array_push($temp['question'],$val);
             }

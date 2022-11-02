@@ -462,7 +462,7 @@
     <div class="backendform">
 
       <form id="input_form">
-        <input type="hidden" name="insert_id" id="insert_id" value="<?= $committees->id ?>">
+        <input type="hidden" name="insert_id" id="insert_id" value="<?= @$committees->id ?>">
         <input type="hidden" name="users_id" id="users_id" value="<?= $result->created_by ?>">
         <input type="hidden" name="application_form_id" id="application_form_id" value="<?= $result->id ?>">
         <div class="backendform-row">

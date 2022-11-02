@@ -12,7 +12,7 @@
     </div>
     <div class="backendmenu-list">
       <div class="backendmenu-list-row">
-        <a href="admin_dashboard.html"><i class="bi bi-layers-fill"></i> สถิติการใช้งาน</a>
+        <a href="<?= base_url() ?>/administrator"><i class="bi bi-layers-fill"></i> สถิติการใช้งาน</a>
       </div>
       <div class="backendmenu-list-row title">เมนูหลัก</div>
       <div class="backendmenu-list-row">
@@ -49,8 +49,8 @@
                 <label>เพิ่มกรรมการรอบลงพื้นที่ <span class="menu-list-amount"><?= countNotification(3) ?></span></label>
               </a>
             </li>
-            <li><a href="admin_judgeonsite.html" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
-            <li><a href="admin_complete.html" data-type="process"><label>ดำเนินการเสร็จสมบูรณ์</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/OnSide/estimate" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/Complete" data-type="process"><label>ดำเนินการเสร็จสมบูรณ์</label></a></li>
           </ul>
         </div>
       </div>

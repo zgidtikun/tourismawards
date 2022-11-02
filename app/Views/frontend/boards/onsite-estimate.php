@@ -234,7 +234,7 @@
                                                 <div class="bs-row">
                                                     <div class="col-12">                                                                 
                                                         <button class="btn btn-action" id="etm-images-remove"
-                                                        onclick="removeFile('#etm-images',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
+                                                        onclick="removeFile('#etm-images',{cate: pointer.cate,seg: pointer.seg,remove: 'all'})">
                                                             Remove All
                                                         </button>
                                                     </div>
@@ -247,7 +247,7 @@
                                                                         <span id="images-label">Upload Files</span>
                                                                         <input type="file" id="etm-images"
                                                                         accept=".jpg,.jpeg,.png" multiple
-                                                                        onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'images')"/>
+                                                                        onchange="onFileHandle({cate: pointer.cate,seg: pointer.seg},'#'+this.id,'images')"/>
                                                                     </button>   
                                                                 </div>
                                                                 <div class="mt-4 mb-4 hide" id="etm-images-progress">
@@ -282,19 +282,19 @@
                                             <div class="card-body selecter-file">
                                                 <div class="bs-row mb-2">
                                                     <div class="col-12">
-                                                        <button class="btn btn-file" id="file-btn">
-                                                            <span id="file-label">Upload Files</span>
-                                                            <input type="file" id="file"
+                                                        <button class="btn btn-file" id="etm-file-btn">
+                                                            <span id="etm-file-label">Upload Files</span>
+                                                            <input type="file" id="etm-file"
                                                             accept=".pdf" multiple
-                                                            onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'paper')"/>
+                                                            onchange="onFileHandle({cate: pointer.cate,seg: pointer.seg},'#'+this.id,'paper')"/>
                                                         </button>                                                                    
-                                                        <button class="btn btn-action" id="file-remove"
-                                                        onclick="removeFile('#file',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
+                                                        <button class="btn btn-action" id="etm-file-remove"
+                                                        onclick="removeFile('#etm-file',{cate: pointer.cate,seg: pointer.seg,remove: 'all'})">
                                                             Remove All
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div class="bs-row" id="file-list">
+                                                <div class="bs-row" id="etm-file-list">
                                                 </div>
                                                 <div class="bs-row">
                                                     <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
@@ -304,7 +304,7 @@
                                                 <div class="bs-row">
                                                     <div class="d-grid">
                                                         <button class="btn btn-primary" type="button"
-                                                        onclick="downloadFile('#file')">
+                                                        onclick="downloadFile('#etm-file')">
                                                             <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
                                                         </button>
                                                     </div>
@@ -320,45 +320,23 @@
                                             <div class="card-body selecter-file">
                                                 <div class="bs-row">
                                                     <div class="d-grid">
-                                                        <button class="btn btn-file" id="file-btn">
-                                                            <span id="file-label"><i class="bi bi-camera-fill mr-2"></i> ถ่ายรูป</span>
-                                                            <input type="file" id="file"
-                                                            accept=".pdf" multiple
-                                                            onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'paper')"/>
+                                                        <button class="btn btn-file" id="camera-btn">
+                                                            <span id="camera-label"><i class="bi bi-camera-fill mr-2"></i> ถ่ายรูป</span>
+                                                            <input type="file" id="camera"
+                                                            accept=".jpg,.jpeg,.png" multiple
+                                                            onchange="onFileHandle({cate: pointer.cate,seg: pointer.seg},'#'+this.id,'images')"/>
                                                         </button>     
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="image-gallery">
-                                                <div class="list">
-                                                    <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
-                                                </div>
-                                                <div class="list">
-                                                    <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
-                                                </div>
-                                                <div class="list">
-                                                    <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
-                                                </div>
-                                                <div class="list">
-                                                    <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
-                                                </div>
-                                                <div class="list">
-                                                    <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
-                                                </div>
-                                                <div class="list">
-                                                    <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
-                                                </div>
-                                                <div class="list">
-                                                    <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
-                                                </div>
-                                                <div class="list">
-                                                    <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
-                                                </div>
-                                                <div class="list">
-                                                    <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
+                                                <div class="album" id="camera-gallery">
+                                                    <!-- <div class="list">
+                                                        <img src="<?=base_url('assets/images/news01.jpg')?>" onclick="zoomImages(this)">
+                                                    </div> -->
                                                 </div>
                                                 <div class="remove">
-                                                    <button class="btn btn-sm btn-danger">
+                                                    <button class="btn btn-sm btn-danger" id="camera-remove">
                                                         Remove All
                                                     </button>
                                                 </div>

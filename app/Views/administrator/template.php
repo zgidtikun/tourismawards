@@ -52,6 +52,12 @@
 
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
+  <!-- Chart JS -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script> -->
+
+  <!-- Apex Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
   <?php echo view('administrator/main_css') ?>
 </head>
 

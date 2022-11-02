@@ -75,6 +75,17 @@
                 <p>ข้อมูลของท่านอาจยังไม่สมบูรณ์ โปรดดูรายละเอียด เพื่อแก้ไขและส่งใบสมัครอีกครั้ง</p>
             </div>
 
+            <div class="formstatus uncomplete hide" id="formstatus-nopass">
+                <img src="<?=base_url('/assets/images/uncomplete-regis-form.png')?>">
+                <h3>ไม่ผ่านอนุมัติ</h3>
+                <p>ท่าไม่ผ่านเกณฑ์การประกวด</p>
+            </div>
+            
+            <div class="formstatus-comoment hide">
+                <h4>ความคิดเห็นจากผู้ตรวจสอบใบสมัคร</h4>
+                <p id="comoment"></p>
+            </div>
+
             <div class="form-main-title hide">
                 <div class="form-main-title-txt">
                     กรอกแบบฟอร์มใบสมัคร

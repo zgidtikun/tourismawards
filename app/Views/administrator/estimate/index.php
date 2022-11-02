@@ -8,12 +8,12 @@
     </div>
 
     <form action="" method="get">
-      <div class="backendcontent-subrow">
-        <div class="backendcontent-subcol searchbox">
+      <div class="backendcontent-subrow row">
+        <div class="backendcontent-subcol searchbox col-sm-2">
           <input type="text" class="form-control" name="keyword" id="keyword" value="<?= @$_GET['keyword'] ?>" placeholder="ค้นหา">
         </div>
 
-        <div class="backendcontent-subcol selectbox">
+        <div class="backendcontent-subcol selectbox col-sm-3">
           <label>ประเภทที่ตัดสิน</label>
           <select id="application_type_id" name="application_type_id">
             <option value="">ทั้งหมด</option>
@@ -29,7 +29,7 @@
           </select>
         </div>
 
-        <div class="backendcontent-subcol selectbox">
+        <div class="backendcontent-subcol selectbox col-sm-3">
           <label>สาขารางวัล</label>
           <select id="application_type_sub_id" name="application_type_sub_id">
             <option value="">ทั้งหมด</option>
@@ -45,7 +45,7 @@
           </select>
         </div>
 
-        <div class="backendcontent-subcol btn">
+        <div class="backendcontent-subcol btn col-sm-3">
           <button type="submit" class="but-blue" id="btn_search">ค้นหา</button>
         </div>
 
