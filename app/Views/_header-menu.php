@@ -32,65 +32,11 @@
                               </a>
                            </div>
                            <div class="noti-box-txt">
-                              <ul>
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       ข้อมูลใบสมัครของท่านอาจยังไม่สมบูรณ์ โปรดดูรายละเอียด
-                                       เพื่อแก้ไขและส่งใบสมัครอีกครั้ง
-                                    </a>
-                                 </li>
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       ใบสมัครของท่านผ่านการอนุมัติ โปรดกรอกข้อมูลแบบประเมินขั้นต้น
-                                       (Pre-screen)
-                                    </a>
-                                 </li>
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       ข้อมูลแบบประเมินขั้นต้น (Pre-screen) ของท่านไม่ผ่านเกณฑ์
-                                    </a>
-                                 </li>
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       แจ้งผลการประเมินขั้นต้น (Pre-screen) ของท่านเรียบร้อยแล้ว
-                                    </a>
-                                 </li>
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว
-                                    </a>
-                                 </li>
-
-                                 
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว
-                                    </a>
-                                 </li>
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว
-                                    </a>
-                                 </li>
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว
-                                    </a>
-                                 </li>
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว
-                                    </a>
-                                 </li>
-                                 <li>
-                                    <a href="javascript:void(0);">
-                                       แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว
-                                    </a>
-                                 </li>
+                              <ul id="noti-list">
                               </ul>
                            </div>
                            <div class="noti-box-footer">
-                              <a href="javascript:;" class="link">
+                              <a href="<?=base_url('notification')?>" class="link">
                                  ดูการแจ้งเตือนทั้งหมด
                               </a> 
                            </div>
@@ -307,6 +253,7 @@
    jQuery(document).ready(function () {
       $('.btn-noti').click(function () {
          $('.noti-box').slideDown(200).addClass('active lockbody');
+         $('.btn-noti').html('<i class="bi bi-bell-fill"></i>');
       });
       $('.noti-box-close').click(function () {
          $('.noti-box').slideUp(200).removeClass('active lockbody');
@@ -329,4 +276,24 @@
    });
    
    $(".flexnav").flexNav();
+
+   $(document).ready(function(){
+      $.ajax({
+         type: 'post',
+         url: window.location.origin+'/inner-api/noti/get',
+         data: {limit: 5},
+         dataType: 'json',
+         success: function(res){
+            let list = '';
+
+            $.each(res.noti,function(k,v){
+               list += '<li><a href="'+v.link+'">'+v.message+'</a></li>';
+            });
+            
+            $('#noti-list').html(list);
+            $('.noti-box').attr('data-id',res.id);
+            $('.btn-noti').html('<i class="bi bi-bell-fill"></i><span class="noti-alert"></span>');
+         }
+      });
+   });
 </script>

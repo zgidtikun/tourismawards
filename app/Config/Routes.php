@@ -56,6 +56,10 @@ $routes->group('auth', static function ($routes) {
     $routes->post('ajax-reset-password', 'RegisterController::resetPassword');
 });
 
+$routes->group('notification', static function($routes) {
+    $routes->get('/', 'FrontendController::notification',['filter' => 'auth']);
+});
+
 $routes->group('profile', ['filter' => 'auth:frontend'], static function ($routes) {
     $routes->get('/', 'FrontendController::profile');
 });
@@ -77,6 +81,10 @@ $routes->group('boards', static function ($routes) {
 });
 
 $routes->group('inner-api', static function ($routes) {
+    $routes->group('noti', static function ($routes) {
+        $routes->post('get', 'NotiController::getNoti', ['filter' => 'api']);
+    });
+
     $routes->group('profile', static function ($routes){
         $routes->post('update', 'FrontendController::updateProfile', ['filter' => 'auth:frontend']);
         $routes->post('upload/image', 'FilesController::uploadProfile', ['filter' => 'auth:frontend']);

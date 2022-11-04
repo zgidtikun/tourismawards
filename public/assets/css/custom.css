@@ -2094,11 +2094,19 @@ td.status span.estcon, .badge-estcon {
     th.section, td.section,
     th.status, td.status,
     th.date, td.date,
-    th.edit, td.edit {
+    th.edit, td.edit,
+    .boards#tbl-noti > thead th:nth-child(1),
+    .boards#tbl-noti > tbody td:nth-child(1),
+    .boards#tbl-noti > thead th:nth-child(3),
+    .boards#tbl-noti > tbody td:nth-child(3),
+    .boards#tbl-noti > thead th:nth-child(4),
+    .boards#tbl-noti > tbody td:nth-child(4)
+    {
         display: none;
     }
 
-    th.landmark {
+    th.landmark,
+    .boards#tbl-noti > thead th:nth-child(2) {
         border-top-left-radius: 9px;
         border-bottom-left-radius: 9px;
         border-top-right-radius: 9px;
@@ -5707,5 +5715,9 @@ img.profile {
     font-weight: 600;
     justify-content: center;
     color: #000 !important;
+}
+
+.va-center {
+    vertical-align: center !important;
 }
 

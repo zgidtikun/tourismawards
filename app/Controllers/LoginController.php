@@ -89,7 +89,9 @@ class LoginController extends BaseController
         
         if($auth->role_id == 1){
             
-            if($auth->stage == 2){
+            if($auth->stage == 3){
+                $redirect = base_url('awards/result');
+            } elseif($auth->stage == 2){
                 $redirect = base_url('awards/pre-screen');
             } elseif($auth->stage == 1){
                 $redirect = base_url('awards/application');
@@ -165,10 +167,23 @@ class LoginController extends BaseController
 
     public function setSession(){
         if(getenv('CI_ENVIRONMENT') != 'production'){
-            session()->set(array(
-                'isLoggedIn' => true,
-                'role' => 'user'
-            ));
+            // session()->set(array(
+            //     'isLoggedIn' => true,
+            //     'role' => 'user'
+            // ));
+            $result = set_noti(
+                (object) [
+                    'user_id' => 1,
+                    'bank' => 'frontend'
+                ],
+                (object) [
+                    'message' => 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว',
+                    'link' => base_url('awards/result'),
+                    'send_date' => date('Y-m-d H:i:s'),
+                    'send_by' => 'Amin01'
+                    // 'send_by' => session()->get('account')
+                ]
+            );
         }
         else return $this->response->redirect(base_url('403'));
     }

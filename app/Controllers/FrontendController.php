@@ -23,6 +23,16 @@ class FrontendController extends BaseController
         }
     }
 
+    public function notification()
+    {
+        $data = [
+            'title' => 'รายการการแจ้งเตือน',
+            'view' => 'frontend/notification',
+        ];
+        
+        return view('frontend/entrepreneur/_template',$data);
+    }
+
     public function profile()
     {
         $users = new \App\Models\Users();

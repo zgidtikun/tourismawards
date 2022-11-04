@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class Notification extends Model
 {
-    protected $table      = 'estimate_score';
+    protected $table      = 'notification';
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
@@ -14,7 +14,7 @@ class Notification extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['user_id', 'pack_noti'];
+    protected $allowedFields = ['user_id', 'target', 'pack_noti'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';
