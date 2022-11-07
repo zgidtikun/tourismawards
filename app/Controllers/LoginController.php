@@ -171,19 +171,32 @@ class LoginController extends BaseController
             //     'isLoggedIn' => true,
             //     'role' => 'user'
             // ));
-            $result = set_noti(
+            $result = set_multi_noti(
+                get_receive_noti(1),
                 (object) [
-                    'user_id' => 1,
                     'bank' => 'frontend'
                 ],
                 (object) [
                     'message' => 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว',
                     'link' => base_url('awards/result'),
                     'send_date' => date('Y-m-d H:i:s'),
-                    'send_by' => 'Amin01'
-                    // 'send_by' => session()->get('account')
+                    'send_by' => 'กิตติคุณ สุขสำราญ'
                 ]
             );
+            
+            // $result = set_noti(
+            //     (object) [
+            //         'user_id' => 1,
+            //         'bank' => 'frontend'
+            //     ],
+            //     (object) [
+            //         'message' => 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว',
+            //         'link' => base_url('awards/result'),
+            //         'send_date' => date('Y-m-d H:i:s'),
+            //         'send_by' => 'Amin01'
+            //         'send_by' => session()->get('account')
+            //     ]
+            // );
         }
         else return $this->response->redirect(base_url('403'));
     }

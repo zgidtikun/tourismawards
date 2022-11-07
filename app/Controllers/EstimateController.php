@@ -55,6 +55,20 @@ class EstimateController extends BaseController
                 ])
                 ->set(['status' => 3, 'duedate' => $duedate])
                 ->update();
+
+            set_noti(
+                (object) [
+                    'user_id' => $form->created_by,
+                    'bank' => 'frontend'
+                ],
+                (object) [
+                    'message' => 'มีการร้องขอข้อมูลข้อมูลเพิ่มเติมใน แบบประเมินขั้นต้น (Pre-screen) '
+                    .'โปรดดูรายละเอียด เพื่อแก้ไขและส่งใบสมัครอีกครั้ง',
+                    'link' => base_url('awards/pre-screen'),
+                    'send_date' => date('Y-m-d H:i:s'),
+                    'send_by' => 'คณะกรรมการ'
+                ]
+            );
                 
             $result = ['result' => 'success'];
         } catch(\Exception $e){
@@ -249,7 +263,30 @@ class EstimateController extends BaseController
                         'stage' => 2,
                         'status' => 1
                     ]);
+                } 
+                
+                if($input->stage == 1){
+                    if($pass){
+                        $message = 'แจ้งผลการประเมินขั้นต้น (Pre-screen) ของท่านเรียบร้อยแล้ว';
+                    } else {
+                        $message = 'ข้อมูลแบบประเมินขั้นต้น (Pre-screen) ของท่านไม่ผ่านเกณฑ์';
+                    }
+                } else {
+                    $message = 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว';
                 }
+
+                set_noti(
+                    (object) [
+                        'user_id' => $form->created_by,
+                        'bank' => 'frontend'
+                    ],
+                    (object) [
+                        'message' => $message,
+                        'link' => base_url('awards/result'),
+                        'send_date' => date('Y-m-d H:i:s'),
+                        'send_by' => 'คณะกรรมการ'
+                    ]
+                );
 
             }
 

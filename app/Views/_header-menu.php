@@ -138,8 +138,8 @@
                      <li><a href="javascript:void(0)" id="aboutmenu">เกี่ยวกับโครงการ</a>
                         <ul>
                            <li><a href="javascript:void(0);">ข้อมูลโครงการฯ /ความเป็นมา/วัตถุประสงค์</a></li>
-                           <li><a href="javascript:void(0);">กรรมการที่ปรึกษา</a></li>
-                           <li><a href="javascript:void(0);">กรรมการตัดสินแต่ละประเภท</a></li>
+                           <li><a href="<?=base_url('judge')?>">กรรมการที่ปรึกษา</a></li>
+                           <li><a href="<?=base_url('judge')?>">กรรมการตัดสินแต่ละประเภท</a></li>
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="informationmenu">ข้อมูลการประกวดรางวัล</a>
@@ -162,13 +162,11 @@
                      </li>
                      <li><a href="javascript:void(0)" id="awardmenu">ผลงานที่ได้รับรางวัล</a>
                         <ul>
-                           <li><a href="javascript:void(0);">ครั้งที่ 14</a></li>
-                           <li><a href="javascript:void(0);">ครั้งที่ 13</a></li>
-                           <li><a href="javascript:void(0);">ครั้งที่ 12</a></li>
-                           <li><a href="javascript:void(0);">ครั้งที่ 11</a></li>
+                           <li><a href="<?=base_url('awards-winner-14')?>">ครั้งที่ 14</a></li>
+                           <li><a href="<?=base_url('awards-winner-13')?>">ครั้งที่ 13</a></li>
                         </ul>
                      </li>
-                     <li><a href="javascript:void(0)" id="newsmenu">ข่าวประชาสัมพันธ์</a>
+                     <li><a href="<?=base_url('new')?>" id="newsmenu">ข่าวประชาสัมพันธ์</a>
                         <!-- <ul>
                            <li><a href="javascript:void(0);">บทความข่าวสารที่เกี่ยวข้องกับโครงการฯ</a></li>
                            <li><a href="javascript:void(0);">ภาพถ่าย</a></li>
@@ -176,15 +174,7 @@
                            <li><a href="javascript:void(0);">E-Book</a></li>
                         </ul> -->
                      </li>
-                     <li><a href="javascript:void(0)" id="contactmenu">ติดต่อเรา</a>
-                        <!-- <ul>
-                           <dt>ข้อมูลการติดต่อโครงการฯ </dt>
-                           <li><a href="javascript:void(0);">ที่อยู่ – แผนที่ google map</a></li>
-                           <li><a href="javascript:void(0);">เบอร์โทรศัพท์</a></li>
-                           <li><a href="javascript:void(0);">อีเมล</a></li>
-                           <li><a href="javascript:void(0);">Facebook</a></li>
-                           <li><a href="javascript:void(0);">Line</a></li>
-                        </ul> -->
+                     <li><a href="<?=base_url('contact-us')?>" id="contactmenu">ติดต่อเรา</a>
                      </li>
                      <li class="search">
                         <a href="javascript:void(0)">
@@ -219,8 +209,8 @@
                   <li><a href="javascript:void(0);">คู่มือประกวดรางวัล</a></li>
                   <li><a href="javascript:void(0);">คู่มือการสมัคร</a></li>
                   <li><a href="javascript:void(0);">ผลงานที่ได้รับรางวัล</a></li>
-                  <li><a href="javascript:void(0);">ข่าวประชาสัมพันธ์</a></li>
-                  <li><a href="javascript:void(0);">ติดต่อเรา</a></li>
+                  <li><a href="<?=base_url('new')?>">ข่าวประชาสัมพันธ์</a></li>
+                  <li><a href="<?=base_url('contact-us')?>">ติดต่อเรา</a></li>
                   <li><a href="javascript:void(0);">ค้นหา</a></li>
                </ul>
             </div>

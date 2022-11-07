@@ -250,6 +250,18 @@ class AnswerController extends BaseController
                             'status' => 1
                         ]);
                     }
+
+                    set_multi_noti(
+                        get_receive_noti(session()->get('id')),
+                        (object) [
+                            'bank' => 'frontend'
+                        ],
+                        (object) [
+                            'message'=> 'มีการส่งแบบประเมินขั้นตัน (Pre-screen) จากคุณ '.session()->get('user'),
+                            'link' => base_url('boards/estimate/pre-screen/'.get_app_id(session()->get('id'))),
+                            'send_date' => date('Y-m-d H:i:s'),
+                            'send_by' => session()->get('user')
+                        ]);
                 break;
             }
             

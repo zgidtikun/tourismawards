@@ -32,10 +32,10 @@
                 <div class="footermenu_col">
                     <p class="footermenutitle" data-tab="3">ข่าวประชาสัมพันธ์</p>
                     <ul data-tab="3">
-                        <li><a href="javascript:void(0);" title="บทความข่าวสารที่เกี่ยวข้องกับโครงการฯ">บทความข่าวสารที่เกี่ยวข้องกับโครงการฯ</a></li>
-                        <li><a href="javascript:void(0);" title="ภาพถ่าย">ภาพถ่าย</a></li>
+                        <li><a href="<?=base_url('new')?>" title="บทความข่าวสารที่เกี่ยวข้องกับโครงการฯ">บทความข่าวสารที่เกี่ยวข้องกับโครงการฯ</a></li>
+                        <!-- <li><a href="javascript:void(0);" title="ภาพถ่าย">ภาพถ่าย</a></li>
                         <li><a href="javascript:void(0);" title="วิดีโอ">วิดีโอ</a></li>
-                        <li><a href="javascript:void(0);" title="E-Book">E-Book</a></li>
+                        <li><a href="javascript:void(0);" title="E-Book">E-Book</a></li> -->
                     </ul>
                 </div>
 
@@ -51,9 +51,9 @@
                 <div class="list_copyright">
                     Copyright © 2022
                     <ul>
-                        <li><a href="javascript:void(0);" title="Privacy Policy">Privacy Policy</a></li>
+                        <li><a href="<?=base_url('privacy-policy')?>" title="Privacy Policy">Privacy Policy</a></li>
                         <li><a href="javascript:void(0);" title="About Us">About Us</a></li>
-                        <li><a href="javascript:void(0);" title="Contact Us">Contact Us</a></li>
+                        <li><a href=<?=base_url('contact-us')?>" title="Contact Us">Contact Us</a></li>
                     </ul>
                 </div>
             </div>

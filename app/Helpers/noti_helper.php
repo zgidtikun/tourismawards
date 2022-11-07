@@ -12,6 +12,30 @@ function instance_noti()
     return $obj;
 }
 
+function get_app_id($id)
+{
+    $obj = new \App\Models\ApplicationForm();
+    $app = $obj->where('created_by',$id)
+        ->select('id')
+        ->first();
+    return $app->id;
+}
+
+function get_receive_noti($id)
+{
+    $obj = new \App\Models\Committees();
+    $data = $obj->where('users_id',$id)
+        ->select('admin_id_tourism, admin_id_supporting, admin_id_responsibility')
+        ->first();
+
+    $tourism = json_decode($data->admin_id_tourism,true);
+    $support = json_decode($data->admin_id_supporting,true);
+    $respons = json_decode($data->admin_id_responsibility,true);
+    $result = array_unique(array_merge($tourism,$support,$respons));
+    $result = json_decode(json_encode($result),false);
+    return $result;
+}
+
 function set_noti($target,$data)
 {
     try {
@@ -33,7 +57,26 @@ function set_noti($target,$data)
                 $temp = $data;
             }
 
-            $noti->where('id',$us_noti->id)->set(['pack_noti' => json_encode($temp)]);
+            $noti->where('id',$us_noti->id)
+            ->set(['pack_noti' => json_encode($temp)])
+            ->update();
+        }
+
+        return ['result' => true];
+    } catch(Exception $e){
+        return ['result' => false, 'message' => $e->getMessage()];
+    }
+}
+
+function set_multi_noti($receive,$target,$data)
+{
+    try{
+        foreach($receive as $val){
+            set_noti((object)[
+                'user_id' => $val,
+                'bank' => $target->bank
+            ],
+            $data);
         }
 
         return ['result' => true];
@@ -46,7 +89,10 @@ function get_noti($target,$max = 5)
 {
     try {
         $noti = instance_noti();
-        $us_noti = $noti->where(['user_id' => $target->user_id, 'target' => $target->bank])
+        $us_noti = $noti->where([
+                'user_id' => $target->user_id, 
+                'target' => $target->bank
+            ])
             ->select("'0' num,  id, pack_noti")
             ->first();
 
