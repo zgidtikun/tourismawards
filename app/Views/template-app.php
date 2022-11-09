@@ -52,11 +52,14 @@
         });
 
         jQuery(document).each(function () {
-            var headerheight = $('#header-inner').height()+'px';
-            // console.log("headerheight = "+headerheight);
+            var headerheight = $('#header-inner').height()+'px';            
+            <?php if(!empty($_banner) && $_banner) : ?>
             $('#includedbanner').css({ "display": "block", "margin-top": headerheight });
+            <?php endif; ?>
+            <?php if(empty($_banner) || !$_banner) : ?>
+            $('.mainsite').css({ "display": "block", "margin-top": headerheight });
+            <?php endif; ?>
             $('.banner-box').css({ "display": "block", "margin-top": headerheight });
-            $('.winneraward').css({ "display": "block", "margin-top": headerheight });
             $('.formlogin .mainsite').css({ "display": "block", "padding-top": headerheight });
             $('.regisform .mainsite').css({ "display": "block", "padding-top": headerheight });
         });

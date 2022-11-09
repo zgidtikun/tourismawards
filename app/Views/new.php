@@ -18,7 +18,7 @@
                                 <div class="news-img">
                                     <div class="news-imgscale">
                                         <a href="<?=base_url('new/'.$new->id)?>">
-                                            <img src="<?=base_url('assets/images/logo.png')?>">
+                                            <img src="<?=base_url('uploads/news/images/'.$new->image_cover)?>">
                                         </a>
                                     </div>
                                 </div>

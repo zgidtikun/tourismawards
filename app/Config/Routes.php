@@ -40,6 +40,8 @@ $routes->get('/', 'Home::index', ['as' => 'Home']);
 $routes->get('home', 'Home::index');
 $routes->get('contact-us', 'Home::contactus');
 $routes->get('judge', 'Home::judge');
+$routes->get('awards-infomation', 'Home::winnerinfo');
+$routes->get('awards-winner', 'Home::winneraward');
 $routes->get('awards-winner-13', 'Home::winneraward13');
 $routes->get('awards-winner-14', 'Home::winneraward14');
 $routes->get('privacy-policy', 'Home::privacypolicy');

@@ -806,6 +806,20 @@ const referance = [{
         maxSize: 15
     },
     {
+        input: '#step5-otherT3',
+        pointer: ['step5', 'otherT3'],
+        btn: '#step5-otherT3-btn',
+        btnrm: '#step5-otherT3-remove',
+        show: '#step5-otherT3-list',
+        label: '#step5-otherT3-label',
+        api: '/inner-api/app/upload',
+        position: 'otherT3Files',
+        path: 'paper',
+        app: 'awards/application',
+        maxUpload: 5,
+        maxSize: 15
+    },
+    {
         input: '#step5-guideOldCert', pointer: ['step5','guideOldCert'],
         btn: '#step5-guideOldCert-btn', btnrm: '#step5-guideOldCert-remove',
         show: '#step5-guideOldCert-list', label: '#step5-guideOldCert-label',

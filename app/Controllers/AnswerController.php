@@ -39,18 +39,25 @@ class AnswerController extends BaseController
         if(!empty($stage->duedate)) 
             $stage->duedate_str = FormatTree($stage->duedate,'thailand');
 
-        if($stage->status == 2){
-            $duedate->expired_date = $stage->duedate;
-            $duedate->expired_sts = $stage->duedate <= date('Y-m-d') ? 'true' : 'false';
-        }
+        if(!empty($stage)){
+            if($stage->status == 2){
+                $duedate->expired_date = $stage->duedate;
+                $duedate->expired_sts = $stage->duedate <= date('Y-m-d') ? 'true' : 'false';
+            }
 
-        if($duedate->expired_sts == 'true'){            
-            $this->usStg->where([
-                'user_id' => session()->get('id'), 
-                'stage' => 1
-            ])
-            ->set(['status' => 5])
-            ->update();
+            if($duedate->expired_sts == 'true'){            
+                $this->usStg->where([
+                    'user_id' => session()->get('id'), 
+                    'stage' => 1
+                ])
+                ->set(['status' => 5])
+                ->update();
+            }
+        } else {
+            $stage = (object)[
+                'status' => 'null',
+                'duedate' => 'null'
+            ];
         }
 
         $data = [
@@ -162,7 +169,8 @@ class AnswerController extends BaseController
         if($draft > 0) return 'draft';
         elseif($reject > 0) return 'reject';
         elseif($finish > 0) return 'finish';
-        else return 'estimate'; 
+        elseif($estimate > 0) return 'estimate'; 
+        else return 'draft';
     }
 
     public function getAnswerByAjax($qid)
@@ -174,8 +182,7 @@ class AnswerController extends BaseController
     public function getAnswer($qid)
     {
         $result = ['reply' => [], 'images' => [], 'paper' => []];
-        $answer = $this->ans->where('questing_id',$qid)->first();
-        
+        $answer = $this->ans->where('questing_id',$qid)->first();        
 
         if($answer){
             $files = json_decode($answer->pack_file,false);
@@ -216,6 +223,7 @@ class AnswerController extends BaseController
                     $insId = $this->input->getVar('aid');
                     break;
                 case 'finish':
+                    $insId = null;
                     $answers = json_decode(json_encode($this->input->getVar('answer')),false);
 
                     foreach($answers as $ans){
@@ -227,16 +235,16 @@ class AnswerController extends BaseController
                                 'status' => 2,
                             ]);
                         } else {
-                            $this->ans->update($ans->qid, [ 'reply' => $ans->reply ]);
+                            $this->ans->update($ans->aid, [ 'reply' => $ans->reply, 'status' => 2 ]);
                         }
                     }
 
                     $cusstg = $this->usStg->where([
                         'user_id' => session()->get('id'), 
                         'stage' => 1
-                    ])->countAllResult();
+                    ])->first();
                     
-                    if($cusstg > 0){
+                    if(!empty($cusstg)){
                         $this->usStg->where([
                             'user_id' => session()->get('id'), 
                             'stage' => 1

@@ -312,7 +312,14 @@
 
 <script>
     $(document).ready(function(){      
-        psc.init(<?=$duedate->expired_sts?>,{status: <?=$stage->status?>, duedate: '<?=$stage->duedate?>', duedateStr: '<?=$stage->duedate_str?>' });
+        psc.init(
+            <?=$duedate->expired_sts?>,
+            {
+                status: <?=$stage->status?>, 
+                duedate: '<?=$duedate->expired_date?>', 
+                duedateStr: '<?=$duedate->expired_sts?>' 
+            }
+        );
     });    
 
     // $('.bfd-dropfield-inner').click(function() {

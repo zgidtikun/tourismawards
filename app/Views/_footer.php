@@ -14,7 +14,7 @@
                 <div class="footermenu_col">
                     <p class="footermenutitle" data-tab="1">ข้อมูลการประกวดรางวัล</p>
                     <ul data-tab="1">
-                        <li><a href="javascript:void(0);" title="ประเภทรางวัล TTA 14TH">ประเภทรางวัล TTA 14<span class="upper-txt">th</span></a></li>
+                        <li><a href="<?=base_url('awards-winner')?>" title="ประเภทรางวัล TTA 14TH">ประเภทรางวัล TTA 14<span class="upper-txt">th</span></a></li>
                         <li><a href="javascript:void(0);" title="เกณฑ์การให้คะแนนตัดสิน">เกณฑ์การให้คะแนนตัดสิน</a></li>
                         <li><a href="javascript:void(0);" title="สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
                     </ul>

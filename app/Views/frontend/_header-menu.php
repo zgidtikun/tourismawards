@@ -13,7 +13,7 @@
                 <ul>
                     <li><a href="<?=base_url()?>">หน้าแรก</a></li>
                     <li><a href="javascript:void(0);">เกี่ยวกับโครงการ</a></li>
-                    <li><a href="javascript:void(0);">ข้อมูลการประกวดรางวัล</a></li>
+                    <li><a href="<?=base_url('awards-winner')?>">ข้อมูลการประกวดรางวัล</a></li>
                     <li><a href="javascript:void(0);">คู่มือประกวดรางวัล</a></li>
                     <li><a href="javascript:void(0);">คู่มือการสมัคร</a></li>
                     <li><a href="javascript:void(0);">ผลงานที่ได้รับรางวัล</a></li>
@@ -53,7 +53,7 @@
             <ul>
                 <li><a href="<?=base_url()?>">หน้าแรก</a></li>
                 <li><a href="javascript:void(0);">เกี่ยวกับโครงการ</a></li>
-                <li><a href="javascript:void(0);">ข้อมูลการประกวดรางวัล</a></li>
+                <li><a href="<?=base_url('awards-winner')?>;">ข้อมูลการประกวดรางวัล</a></li>
                 <li><a href="javascript:void(0);">คู่มือประกวดรางวัล</a></li>
                 <li><a href="javascript:void(0);">คู่มือการสมัคร</a></li>
                 <li><a href="javascript:void(0);">ผลงานที่ได้รับรางวัล</a></li>

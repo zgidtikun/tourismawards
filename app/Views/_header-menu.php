@@ -144,12 +144,12 @@
                      </li>
                      <li><a href="javascript:void(0)" id="informationmenu">ข้อมูลการประกวดรางวัล</a>
                         <ul>
-                           <li><a href="javascript:void(0);">แหล่ง ท่องท่องเที่ยว 6 สาขา</a></li>
-                           <li><a href="javascript:void(0);">ที่พักนักท่องเที่ยว 4 สาขา</a></li>
-                           <li><a href="javascript:void(0);">การท่องเที่ยวเชิงสุขภาพ 4 สาขา</a></li>
-                           <li><a href="javascript:void(0);">รายการนำเที่ยว</a></li>
-                           <li><a href="javascript:void(0);">เกณฑ์การให้คะแนนตัดสิน</a></li>
-                           <li><a href="javascript:void(0);">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>">แหล่ง ท่องท่องเที่ยว 6 สาขา</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>">ที่พักนักท่องเที่ยว 4 สาขา</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>">การท่องเที่ยวเชิงสุขภาพ 4 สาขา</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>">รายการนำเที่ยว</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>">เกณฑ์การให้คะแนนตัดสิน</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="regismenu">คู่มือการสมัคร</a>
@@ -205,7 +205,7 @@
                <ul>
                   <li><a href="<?=route_to('home')?>">หน้าแรก</a></li>
                   <li><a href="javascript:void(0);">เกี่ยวกับโครงการ</a></li>
-                  <li><a href="javascript:void(0);">ข้อมูลการประกวดรางวัล</a></li>
+                  <li><a href="<?=base_url('awards-winner')?>">ข้อมูลการประกวดรางวัล</a></li>
                   <li><a href="javascript:void(0);">คู่มือประกวดรางวัล</a></li>
                   <li><a href="javascript:void(0);">คู่มือการสมัคร</a></li>
                   <li><a href="javascript:void(0);">ผลงานที่ได้รับรางวัล</a></li>

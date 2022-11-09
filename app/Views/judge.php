@@ -13,96 +13,17 @@
                 <div class="judge-title">กรรมการที่ปรึกษา</div>
                 <div class="judge-list">
                     <ul>
+                    <?php foreach($judge as $val){ ?>
                         <li>
                             <div class="judge-img">
                                 <div class="judge-img-scale">
-                                    Judge#1
+                                    <img src="<?=base_url($val->profile)?>">
                                 </div>
                             </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
+                            <div class="judge-name"><?=$val->fullname?></div>
                             <div class="judge-appointment">กรรมการที่ปรึกษา</div>
                         </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#2
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#3
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#4
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col12">
-                <div class="judge-title">กรรมการที่ปรึกษา</div>
-                <div class="judge-list">
-                    <ul>
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#1
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#2
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#3
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#4
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
+                    <?php } ?>
                     </ul>
                 </div>
             </div>
@@ -113,46 +34,19 @@
                 <div class="judge-title">กรรมการประเภทแหล่งท่องเที่ยว</div>
                 <div class="judge-list">
                     <ul>
+                    <?php foreach($judge as $val){ ?>
+                        <?php if(in_array(1,$val->award_type)): ?>
                         <li>
                             <div class="judge-img">
                                 <div class="judge-img-scale">
-                                    Judge#1
+                                    <img src="<?=base_url($val->profile)?>">
                                 </div>
                             </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
+                            <div class="judge-name"><?=$val->fullname?></div>
                             <div class="judge-appointment">กรรมการที่ปรึกษา</div>
                         </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#2
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#3
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#4
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
+                        <?php endif; ?>
+                    <?php } ?>
                     </ul>
                 </div>
             </div>
@@ -163,46 +57,42 @@
                 <div class="judge-title">กรรมการประเภทการท่องเที่ยวเชิงสุขภาพ</div>
                 <div class="judge-list">
                     <ul>
+                    <?php foreach($judge as $val){ ?>
+                        <?php if(in_array(2,$val->award_type)): ?>
                         <li>
                             <div class="judge-img">
                                 <div class="judge-img-scale">
-                                    Judge#1
+                                    <img src="<?=base_url($val->profile)?>">
                                 </div>
                             </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
+                            <div class="judge-name"><?=$val->fullname?></div>
                             <div class="judge-appointment">กรรมการที่ปรึกษา</div>
                         </li>
+                        <?php endif; ?>
+                    <?php } ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
+        <div class="row">
+            <div class="col12">
+                <div class="judge-title">กรรมการประเภทที่พักนักท่องเที่ยว</div>
+                <div class="judge-list">
+                    <ul>
+                    <?php foreach($judge as $val){ ?>
+                        <?php if(in_array(3,$val->award_type)): ?>
                         <li>
                             <div class="judge-img">
                                 <div class="judge-img-scale">
-                                    Judge#2
+                                    <img src="<?=base_url($val->profile)?>">
                                 </div>
                             </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
+                            <div class="judge-name"><?=$val->fullname?></div>
                             <div class="judge-appointment">กรรมการที่ปรึกษา</div>
                         </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#3
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#4
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
+                        <?php endif; ?>
+                    <?php } ?>
                     </ul>
                 </div>
             </div>
@@ -213,46 +103,19 @@
                 <div class="judge-title">กรรมการประเภทรายการนำเที่ยว</div>
                 <div class="judge-list">
                     <ul>
+                    <?php foreach($judge as $val){ ?>
+                        <?php if(in_array(4,$val->award_type)): ?>
                         <li>
                             <div class="judge-img">
                                 <div class="judge-img-scale">
-                                    Judge#1
+                                    <img src="<?=base_url($val->profile)?>">
                                 </div>
                             </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
+                            <div class="judge-name"><?=$val->fullname?></div>
                             <div class="judge-appointment">กรรมการที่ปรึกษา</div>
                         </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#2
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#3
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
-                        <li>
-                            <div class="judge-img">
-                                <div class="judge-img-scale">
-                                    Judge#4
-                                </div>
-                            </div>
-                            <div class="judge-name">นางสาวใจเย็น เย็นใจ</div>
-                            <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                        </li>
-
+                        <?php endif; ?>
+                    <?php } ?>
                     </ul>
                 </div>
             </div>

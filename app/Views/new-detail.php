@@ -12,7 +12,7 @@
             <div class="col12">
                 <div class="news-content">
                     <div class="news-content-img">
-                        <img src="<?=base_url('assets/images/award_catagories.png')?>">
+                        <img src="<?=base_url('uploads/news/images/'.$new->image_cover)?>">
                     </div>
                     <div class="news-subject">
                         <div class="news-name">

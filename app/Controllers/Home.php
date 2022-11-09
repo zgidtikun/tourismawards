@@ -7,10 +7,41 @@ class Home extends BaseController
 {
     public function index()
     {
+        $obj_user = new \App\Models\Users();
+        $obj_news = new \App\Models\News();
+        
+        $judge = $obj_user->where([
+            'role_id' => 3,
+            'status' => 1,
+            'status_delete' => 1
+        ])
+        ->select(
+            'CONCAT(name,\' \',surname) fullname, profile, position'
+        , false)
+        ->limit(5)
+        ->findAll();        
+
+        foreach($judge as $val){
+            if(empty($val->pofile))
+                $val->profile = 'assets/images/unknown_user.jpg';
+        }
+
+        $news  = $obj_news->where('publish_end >=',"'".date('Y-m-d H:i:s')."'")
+            ->select('id, title, description, image_cover, created_by, publish_start')
+            ->orderBy('id','desc')
+            ->limit(4)
+            ->findAll();
+            
+        foreach($news as $new){
+            $new->publish_start = docDate($new->publish_start,3,'thailand');
+        }
+
         $data = [
-            'title' => 'Amazing Thailand Safety and Health Administration (SHA)',
+            'title' => 'Thailand Tourism Awards',
             '_recapcha' => false,
             '_banner' => true,
+            'judge' => json_decode(json_encode($judge),true),
+            'news' => json_decode(json_encode($news),true),
             'view' => 'index'
         ];
         return view('template-app',$data);
@@ -72,10 +103,30 @@ class Home extends BaseController
 
     public function judge()
     {
+        $obj = new \App\Models\Users();
+        $judge = $obj->where([
+                'role_id' => 3,
+                'status' => 1,
+                'status_delete' => 1
+            ])
+            ->select(
+                'CONCAT(name,\' \',surname) fullname, profile, 
+                award_type, position'
+            , false)
+            ->findAll();
+
+        foreach($judge as $val){
+            $val->award_type = json_decode($val->award_type,false);
+
+            if(empty($val->pofile))
+                $val->profile = 'assets/images/unknown_user.jpg';
+        }
+        
         $data = [
             'title' => 'คณะกรรมการ',
             '_recapcha' => false,
             '_banner' => false,
+            'judge' => $judge,
             'view' => 'judge'
         ];
 
@@ -93,6 +144,30 @@ class Home extends BaseController
 
         return view('template-app',$data);
 
+    }
+
+    public function winnerinfo()
+    {
+        $data = [
+            'title' => 'ข้อมูลการประกวดรางวัล',
+            '_recapcha' => false,
+            '_banner' => false,
+            'view' => 'awards-info'
+        ];
+
+        return view('template-app',$data);
+    }
+
+    public function winneraward()
+    {
+        $data = [
+            'title' => 'WINNER 2023',
+            '_recapcha' => false,
+            '_banner' => false,
+            'view' => 'awards-winner'
+        ];
+
+        return view('template-app',$data);
     }
 
     public function winneraward13()

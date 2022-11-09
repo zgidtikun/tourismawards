@@ -51,7 +51,7 @@ function set_noti($target,$data)
             ]);
         } else {
             if(!empty($us_noti->pack_noti)){
-                $us_noti->pack_noti = json_decode($us_noti->pack_noti);
+                $us_noti->pack_noti = json_decode($us_noti->pack_noti,true);
                 $temp = array_unshift($temp,$data);
             } else {
                 $temp = $data;

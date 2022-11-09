@@ -27,7 +27,7 @@ const psc = {
             psc.status = response.status;        
             psc.questions = response.data;
             psc.stage = stage;
-            console.log(response)
+            
             if(!psc.expired){
                 switch(psc.status){
                     case 'draft':   
@@ -110,24 +110,22 @@ const psc = {
                         answer: []
                     }
                 };
-
+                
                 $.each(this.questions, function(keyc,valc){
                     $.each(valc.question, function(keyq, valq){
-                        if(valq.change){
-                            setting.data.answer.push({
-                                qid: valq.id,
-                                action: !empty(valq.reply_id) ? 'update' : 'create',
-                                aid: !empty(valq.reply_id) ? valq.reply_id : '',
-                                reply: valq.reply
-                            });
-                        }
+                        setting.data.answer.push({
+                            qid: valq.id,
+                            action: !empty(valq.reply_id) ? 'update' : 'create',
+                            aid: !empty(valq.reply_id) ? valq.reply_id : '',
+                            reply: valq.reply
+                        });
                     });
                 });
                 break;
             case 'reject':
                 break;
         }
-
+        
         return  setting;
     },
     reply: function(cate,seg){
@@ -154,15 +152,18 @@ const psc = {
                 icon: 'info',
                 title: 'ยืนยันการส่งแบบประเมิน',
                 text: 'โปรดตรวจสอบข้อมูลของท่านให้เรียบร้อย<br>ก่อนกดปุ่มส่งแบบประเมิน',
-                button: { confirm: 'ส่งแบบประเมิน', cancel: 'ยกเลิก' },
+                button: { 
+                    confirm: 'ส่งแบบประเมิน', 
+                    cancel: 'ยกเลิก' 
+                },
                 mode: 'confirm-main'
             };
 
             alert.confirm(setAlert).then(function(alt){
                 if(alt.status){
                     loading('show');
-                    let setting = this.setApi('finish');
-
+                    let setting = psc.setApi('finish');
+                    
                     api(setting).then(function(response){
                         loading('hide');
                         let finish = response;

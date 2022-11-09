@@ -64,7 +64,7 @@ const MapField = {
                 api: 'buss_buildExt', id: '#step5-t2-buildExt-', require: false 
             },
             { 
-                nput: '#step5-t3-bussLicense', variant: 'bussLicenseT3', type: 3, div: '#step5-type3', 
+                input: '#step5-t3-bussLicense', variant: 'bussLicenseT3', type: 3, div: '#step5-type3', 
                 api: 'buss_license', require: true 
             },
             { 
@@ -163,6 +163,7 @@ const register = {
                     if(empty(register.formData.step1.appTypeSub)){
                         register.formData.step1.appTypeSub = typeSubId;
                     }
+
                     register.change = false;
                     register.setStep(1);
                     loading('hide');
@@ -275,7 +276,7 @@ const register = {
                                         
                                         if($.inArray(attrType,['radio','checkbox']) === -1){
                                             $(vulm.input).val(vula);
-                                        } else {
+                                        } else {                                            
                                             $(vulm.id+vula).prop('checked',true);   
                                         }
                                     }
@@ -712,7 +713,10 @@ $('[name=step5-t1-manageBy]').on('click', function(){
 $('#step5-t2-bussLicense').on('keyup', function(){ register.formData.step5.bussLicense = $(this).val(); register.change = true;});
 $('[name=step5-t2-bussCkRoom]').on('click', function(){ register.formData.step5.bussCkRoom = $(this).val(); register.change = true;});
 $('#step5-t3-bussLicense').on('keyup', function(){ register.formData.step5.bussLicenseT3 = $(this).val(); register.change = true;});
-$('[name=step5-t3-bussCites]').on('click', function(){ register.formData.step5.bussCites = $(this).val(); register.change = true;});
+$('[name=step5-t3-bussCites]').on('click', function(){ 
+    register.formData.step5.bussCites = $(this).val(); 
+    register.change = true;
+});
 $('[name=step5-t3-nominee]').on('click', function(){ register.formData.step5.nominee = $(this).val(); register.change = true;});
 $('[name=step5-t3-outlander]').on('click', function(){ register.formData.step5.outlander = $(this).val(); register.change = true;});
 

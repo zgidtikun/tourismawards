@@ -1054,7 +1054,7 @@
                                             <div class="bs-row">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
-                                                    onclick="downloadFile('#step5-titleDeed')">
+                                                    onclick="downloadFile('#step5-otherT3')">
                                                         <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
                                                     </button>
                                                 </div>

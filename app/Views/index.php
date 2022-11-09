@@ -1,3 +1,20 @@
+<style>
+    .img-overlay {
+        position: absolute;
+        bottom: 0;
+        background: rgb(0, 0, 0);
+        background: rgba(0, 0, 0, 0.5);
+        color: #f1f1f1;
+        width: 100%;
+        transition: .5s ease;
+        opacity:0;
+        color: white;
+        font-size: 18px;
+        padding: 10px;
+        text-align: center;
+        opacity: 1;
+    }
+</style>
 <div class="container titlebox">
     <div class="container_box">
         <div class="row">
@@ -254,17 +271,21 @@
                     <h2>คณะกรรมการการตัดสิน</h2>
                     <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
                         nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                    <a href="javascript:void(0);" class="link_yellow">คณะกรรมการทั้งหมด คลิก!</a>
+                    <a href="<?=base_url('judge')?>" class="link_yellow">คณะกรรมการทั้งหมด คลิก!</a>
                 </div>
             </div>
         </div>
-
+        <?php if(!empty($judge)){ ?>
         <div class="col5 hilight">
             <div class="judge_box">
                 <div class="judge_box_col reveal">
                     <div class="judge_img">
                         <div class="judge_img_scale">
-                            <img src="<?= base_url('assets/images/judge_01.jpg') ?>" alt="..." loading="lazy">
+                            <img src="<?=base_url($judge[0]['profile'])?>" alt="..." loading="lazy">
+                            <div class="img-overlay">
+                                <?=$judge[0]['fullname']?><br>
+                                <?=$judge[0]['position']?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -273,39 +294,25 @@
 
         <div class="col7">
             <div class="judge_box">
+                <?php 
+                    unset($judge[0]);
+                    foreach($judge as $val){
+                ?>
                 <div class="judge_box_col reveal">
                     <div class="judge_img">
                         <div class="judge_img_scale">
-                            <img src="<?= base_url('assets/images/judge_02.jpg') ?>" alt="..." loading="lazy">
+                            <img src="<?=base_url($val['profile'])?>" alt="..." loading="lazy">
+                            <div class="img-overlay">
+                                <?=$val['fullname']?><br>
+                                <?=$val['position']?>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="judge_box_col reveal">
-                    <div class="judge_img">
-                        <div class="judge_img_scale">
-                            <img src="<?= base_url('assets/images/judge_03.jpg') ?>" alt="..." loading="lazy">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="judge_box_col reveal">
-                    <div class="judge_img">
-                        <div class="judge_img_scale">
-                            <img src="<?= base_url('assets/images/judge_04.jpg') ?>" alt="..." loading="lazy">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="judge_box_col reveal">
-                    <div class="judge_img">
-                        <div class="judge_img_scale">
-                            <img src="<?= base_url('assets/images/judge_05.jpg') ?>" alt="..." loading="lazy">
-                        </div>
-                    </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
+        <?php } ?>
     </div>
 </div>
 
@@ -474,103 +481,72 @@
                     </div>
                 </div>
             </div>
-
+            <?php if(!empty($news)){ ?>
             <div class="col5 reveal">
                 <div class="news_box hilight">
                     <div class="news_img">
                         <div class="news_box_img">
                             <div class="news_box_img_scale">
-                                <img src="<?= base_url('assets/images/news01.jpg') ?>" alt="..." loading="lazy">
+                                <img src="<?=base_url('uploads/news/images/'.$news[0]['image_cover'])?>" alt="..." loading="lazy">
                             </div>
                         </div>
                     </div>
 
                     <div class="news_content">
                         <div class="news_box_title">
-                            Airport Hotels The Right Way To Start A Short Break Holiday
+                            <?=$news[0]['title']?>
                         </div>
                         <div class="news_box_date">
-                            <span class="date">July 20, 2022</span> <span class="by">TTA</span>
+                            <span class="date"><?=$news[0]['publish_start']?></span> <span class="by"><?=$news[0]['created_by']?></span>
                         </div>
                         <div class="news_box_content">
-                            Every year middle class American families put off traveling because they’re too busy or too tired or
-                            they just don’t have enough money
+                            <?=substr($news[0]['description'],0,150)?>...
+                            <a href="<?=base_url('new/'.$news[0]['id'])?>">
+                                <span style="color: #dba643; font-size: 16px;">ดูรายละเอียด</span>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="col7 reveal">
+
+                <?php  
+                    unset($news[0]);
+                    foreach($news as $new){
+                ?>
+
                 <div class="news_box">
                     <div class="news_img">
                         <div class="news_box_img">
                             <div class="news_box_img_scale">
-                                <img src="<?= base_url('assets/images/news02.jpg') ?>" alt="..." loading="lazy">
+                                <img src="<?=base_url('uploads/news/images/'.$new['image_cover'])?>" 
+                                alt="..." loading="lazy">
                             </div>
                         </div>
                     </div>
 
                     <div class="news_content">
                         <div class="news_box_title">
-                            Airport Hotels The Right Way To Start A Short Break Holiday
+                            <?=$new['title']?>
                         </div>
                         <div class="news_box_date">
-                            <span class="date">July 20, 2022</span> <span class="by">TTA</span>
+                            <span class="date"><?=$new['publish_start']?></span> <span class="by"><?=$new['created_by']?></span>
                         </div>
                         <div class="news_box_content">
-                            Every year middle class American families put off traveling because they’re too busy or too tired or
-                            they just don’t have enough money
+                            <?=substr($new['description'],0,150)?>...
+                            <a href="<?=base_url('new/'.$new['id'])?>">
+                                <span style="color: #dba643; font-size: 16px;">ดูรายละเอียด</span>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="news_box">
-                    <div class="news_img">
-                        <div class="news_box_img">
-                            <div class="news_box_img_scale">
-                                <img src="<?= base_url('assets/images/news03.jpg') ?>" alt="..." loading="lazy">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="news_content">
-                        <div class="news_box_title">
-                            Airport Hotels The Right Way To Start A Short Break Holiday
-                        </div>
-                        <div class="news_box_date">
-                            <span class="date">July 20, 2022</span> <span class="by">TTA</span>
-                        </div>
-                        <div class="news_box_content">
-                            Every year middle class American families put off traveling because they’re too busy or too tired or
-                            they just don’t have enough money
-                        </div>
-                    </div>
-                </div>
-
-                <div class="news_box">
-                    <div class="news_img">
-                        <div class="news_box_img">
-                            <div class="news_box_img_scale">
-                                <img src="<?= base_url('assets/images/news04.jpg') ?>" alt="..." loading="lazy">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="news_content">
-                        <div class="news_box_title">
-                            Airport Hotels The Right Way To Start A Short Break Holiday
-                        </div>
-                        <div class="news_box_date">
-                            <span class="date">July 20, 2022</span> <span class="by">TTA</span>
-                        </div>
-                        <div class="news_box_content">
-                            Every year middle class American families put off traveling because they’re too busy or too tired or
-                            they just don’t have enough money
-                        </div>
-                    </div>
-                </div>
+                <?php } ?>                        
 
             </div>
+
+            <?php } ?>
 
         </div>
 
