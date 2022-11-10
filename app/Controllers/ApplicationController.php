@@ -297,7 +297,9 @@ class ApplicationController extends BaseController
 
     public function getRequireQuestion($uid)
     {
-        $require = $this->appForm->select('application_type_id type_id,application_type_sub_id sub_type_id')
+        $require = $this->appForm->select(
+                'application_type_id type_id, application_type_sub_id sub_type_id'
+            )
             ->where('created_by',$uid)
             ->first();
         return $require;

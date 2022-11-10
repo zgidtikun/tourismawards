@@ -163,7 +163,7 @@
                             <div class="alert alert-danger" role="alert">
                                 <span style="font-size: 18px;" class="fw-semibold">
                                     <i class="bi bi-exclamation-diamond-fill mr-2"></i>
-                                    ไม่มีการประเมินในรอบ ลงพื้นที่
+                                    ไม่มีการประเมินในรอบขั้นต้น Pre-screen
                                 </span>
                             </div>
                         </div>
@@ -235,7 +235,7 @@
                     </div>
                 </div>
 
-                <div class="regis-form-data is-estimate">
+                <div class="regis-form-data">
                     <div class="regis-form-data-row">
                         <div class="regis-form-data-col2 clear">
                             <button class="btn btn-danger" onclick="resetEstimate(pointer.cate,pointer.seg)"
@@ -276,7 +276,7 @@ aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header border-0 mb-0">
-                <div class="bs-row choicebox">
+                <div class="bs-row choicebox w-100" style="max-width: none;">
                     <div class="col-sm-12 col-md-4 text-sm-center mb-sm-3">
                         <span style="font-size: 20px;" class="text-base-main fw-semibold">
                             <i class="bi bi-bookmark-fill"></i>
@@ -317,7 +317,8 @@ aria-hidden="true">
                 </script>
             </div>
             <div class="modal-footer border-0" style="display: block;">
-                <button class="btn btn-sm btn-confirm-submit float-start" disabled>
+                <button class="btn btn-sm btn-confirm-submit float-start" disabled
+                onclick="setRequest()">
                     ส่งคำขอข้อมูลทั้งหมด
                 </button>
                 <button type="button" style="width: 80px !important;" 
@@ -337,10 +338,14 @@ aria-hidden="true">
 <script src="<?= base_url('assets/js/frontend/psce.js') ?>?v=<?= $app->script_v ?>" async></script>
 <script defer>
     $(document).ready(function() {
-        setPage(
-            <?=$app_id?>,
-            { stage: <?=$stage->stage?>, status: <?=$stage->status?> },
-            [<?=implode(",",$assign)?>]
-        );
+        try {
+            setPage(
+                <?=$app_id?>,
+                { stage: <?=$stage->stage?>, status: <?=$stage->status?> },
+                [<?=implode(",",$assign)?>]
+            );
+        } catch(error) {
+            window.location.reload();
+        }
     });
 </script>

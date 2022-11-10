@@ -6,6 +6,7 @@ const btnBack   = $('#btn-back');
 const btnNext   = $('#btn-next');
 const btnReset  = $('#btn-reset');
 const btnRequest= $('#btn-request');
+const btnSMemo  = $('.btn-memosave');
 const qTitle    = $('#qTitle');
 const qSum      = $('#qSum');
 const qNum      = $('#qNum');
@@ -89,6 +90,9 @@ const setRequest = () => {
     api(st).then((rs) => {
         let title, msg;
 
+        $('#modal-add-paper').modal('hide');
+        sp.status = 3;
+
         if(rs.result == 'success'){
             title = 'ส่งคำขอข้อมูลเพิ่มเติมแล้ว';
             msg = 'กรุณารอผู้ประกอบการตอบกลับ (ภายใน 5 วัน)<br>ท่านจึงจะสามารถกลับมาประเมินต่อได้';
@@ -106,8 +110,8 @@ const setRequest = () => {
 }
 
 const setFinish = () => {
-    let tscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
-    tscore = 0 
+    let tscore, mscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
+    tscore = mscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
 
@@ -247,12 +251,12 @@ const setQuestion = (cate,seg) => {
     if(point.cate == -1){ point.cate = cate; }
     if(point.seg == -1){ point.seg = seg; }
     
-    const category = dataset[cate];
-    const question = category.question[seg];
-
-    if(category.question[point.seg].estimate){
+    if(dataset[point.cate].question[point.seg].estimate){
         draft(point.cate,point.seg);
     }
+    
+    const category = dataset[cate];
+    const question = category.question[seg];
 
     $('.hide-choice').hide();
     $('body').removeClass('lockbody');
@@ -261,12 +265,12 @@ const setQuestion = (cate,seg) => {
     $('#sl-'+seg).addClass('active');
 
     if(
-        !empty(category.question[point.seg].request_status)
-        && $.inArray(Number(category.question[point.seg].request_status),[0,1,2]) === -1
+        empty(question.request_status)
+        || $.inArray(Number(question.request_status),[0,1,2]) === -1
     ){
         if(
-            !empty(category.question[point.seg].score_pre) 
-            || category.question[point.seg].score_pre == 0
+            !empty(question.score_pre) 
+            || question.score_pre == 0
         ){
             $('#sl-'+point.seg).addClass('complete');
         } else {
@@ -278,7 +282,7 @@ const setQuestion = (cate,seg) => {
     }
 
     setPointer(cate,seg);
-
+    console.log(question)
     qTitle.attr('data-id',question.reply_id);
     qTitle.html(category.group.name);
     qSum.html(category.question.length);
@@ -287,14 +291,39 @@ const setQuestion = (cate,seg) => {
     mTNum.html(question.no);
     mNum.html(question.no);
     hSubject.html(question.no+'. '+question.question);
+    esCmm.val(question.comment_pre);
+    esNote.val(question.note_pre);
+
+    let back = seg != 0 ? seg-1 : seg,
+        next = seg != category.question.length-1 ? seg+1 : seg;
+
+    btnBack.attr('onclick','setQuestion('+cate+','+back+')');
+    btnNext.attr('onclick','setQuestion('+cate+','+next+')');
+    btnSMemo.attr('onclick','draft('+cate+','+seg+')');
+
+    if(seg == 0){
+        btnBack.hide();
+        btnNext.show();
+    } else if(seg >= category.question.length-1){
+        btnBack.show();
+        btnNext.hide();
+    } else {
+        btnBack.show();
+        btnNext.show();
+    }
 
     if(Number(question.pre_status) == 1){
         $('.none-estimate').hide();
         $('.is-estimate').show();
+        btnSave.attr('onclick','draft('+cate+','+seg+')');
+        btnRequest.attr('onclick','draft('+cate+','+seg+')');
+        btnSave.show();
+        btnReset.show();
     } else {
         $('.none-estimate').show();
         $('.is-estimate').hide();
-        
+        btnSave.hide();    
+        btnReset.hide();    
         return;
     }
     
@@ -323,11 +352,14 @@ const setQuestion = (cate,seg) => {
     const sco = question.pre_scor.split(',');
     
     $.each(eva,(k,v) => {
-        let tmp = v.split('.');
+        let val, tmp = v.split('.');
+        
+        if(tmp.length > 1) { val = tmp[0].trim()+'. '+tmp[1].trim(); }
+        else { val = '1. '+tmp[0].trim(); }
 
         ev += (
             '<span class="txt-yellow title-comment">'
-                + tmp[0].trim()+'. '+tmp[1].trim()
+                + val
             + '</span><br>'
         );
     });
@@ -342,8 +374,10 @@ const setQuestion = (cate,seg) => {
             dis = 'disabled';
         }
 
-        if(Number(question.score_pre) == Number(tmp[0].trim())){
-            ck = 'checked';
+        if(!empty(question.score_pre)){
+            if(Number(question.score_pre) == Number(tmp[0].trim())){
+                ck = 'checked';
+            }
         }
 
         sc += (
@@ -358,25 +392,6 @@ const setQuestion = (cate,seg) => {
 
     qEva.html(ev);
     qSco.html(sc);
-
-    let back = seg != 0 ? seg-1 : seg,
-        next = seg != category.question.length-1 ? seg+1 : seg;
-
-    btnBack.attr('onclick','setQuestion('+cate+','+back+')');
-    btnNext.attr('onclick','setQuestion('+cate+','+next+')');
-    btnSave.attr('onclick','draft('+cate+','+seg+')');
-    btnRequest.attr('onclick','draft('+cate+','+seg+')');
-
-    if(seg == 0){
-        btnBack.hide();
-        btnNext.show();
-    } else if(seg >= category.question.length-1){
-        btnBack.show();
-        btnNext.hide();
-    } else {
-        btnBack.show();
-        btnNext.show();
-    }
 }
 
 const setDropdown = (qt,cate,seg) => {

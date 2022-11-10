@@ -2,11 +2,7 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
-use App\Models\UsersStage;
 use App\Models\AssessmentGroup;
-use App\Models\ApplicationForm;
-use App\Models\Question;
-use App\Models\Answer;
 use Exception;
 
 class QuestionController extends BaseController
@@ -36,7 +32,7 @@ class QuestionController extends BaseController
                 ->select(
                     'af.id, af.attraction_name_th att_name, at.name type, ats.name section,
                     us.stage, us.status, 
-                    IFNULL(inse.updated_at,\'-\') updated_at,
+                    IFNULL(inse.updated_at,\'\') updated_at,
                     IFNULL(es.score_prescreen_tt,0) score_pre,
                     IFNULL(es.score_onsite_tt,0) score_onsite'
                 )
@@ -90,19 +86,21 @@ class QuestionController extends BaseController
         $tycoon = $this->db->table('application_form af')
             ->join('application_type at','af.application_type_id = at.id')
             ->join('application_type_sub ats','af.application_type_sub_id = ats.id')
-            ->where('af.created_by',$id)
+            ->where('af.id',$id)
             ->select(
                 'af.code, at.name t_name, ats.name ts_name,
+                af.application_type_id type_id, af.application_type_sub_id sub_type_id,
                 af.knitter_name, af.attraction_name_th attn_th, af.attraction_name_en attn_en,
-                af.knitter_email, af.knitter_tel, af.updated_at'
+                af.knitter_email, af.knitter_tel, af.updated_at, af.created_by'
             )
             ->get();
 
-        foreach($tycoon->getResult() as $val)
+        foreach($tycoon->getResult() as $val){
             $result['tycoon']  = $val;
-        
-        $instApp = new \App\Controllers\ApplicationController();
-        $app = $instApp->getRequireQuestion($id);
+            $userId = $val->created_by;
+            $type_id = $val->type_id;
+            $sub_type_id = $val->sub_type_id;
+        }
             
         $assg = new AssessmentGroup();
         $group = $assg->findAll();
@@ -113,11 +111,11 @@ class QuestionController extends BaseController
 
             $where = [
                 'q.assessment_group_id' => $asse->id,
-                'q.application_type_id' => $app->type_id,
-                'q.application_type_sub_id' => $app->sub_type_id
+                'q.application_type_id' => $type_id,
+                'q.application_type_sub_id' => $sub_type_id
             ];
 
-            $sqans = $this->db->table('answer')->where('id',$id)
+            $sqans = $this->db->table('answer')->where('reply_by',$userId)
                 ->getCompiledSelect();
 
             $sqset = $this->db->table('estimate')

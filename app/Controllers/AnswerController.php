@@ -28,7 +28,7 @@ class AnswerController extends BaseController
         $app = new \Config\App();
         $duedate = (object) [
             'expired_date' => $app->Pre_expired,
-            'expired_str' => 'ภายในวันที่ '.FormatTree($app->Pre_expired,'thailand'),
+            'expired_str' => FormatTree($app->Pre_expired,'thailand'),
             'expired_sts' => $app->Pre_expired <= date('Y-m-d') ? 'true' : 'false',
         ];
 
@@ -40,8 +40,9 @@ class AnswerController extends BaseController
             $stage->duedate_str = FormatTree($stage->duedate,'thailand');
 
         if(!empty($stage)){
-            if($stage->status == 2){
+            if($stage->status == 3){
                 $duedate->expired_date = $stage->duedate;
+                $duedate->expired_str = FormatTree($stage->duedate,'thailand');
                 $duedate->expired_sts = $stage->duedate <= date('Y-m-d') ? 'true' : 'false';
             }
 

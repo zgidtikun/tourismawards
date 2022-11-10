@@ -5,6 +5,7 @@ const btnSave   = $('#btn-save');
 const btnBack   = $('#btn-back');
 const btnNext   = $('#btn-next');
 const btnReset  = $('#btn-reset');
+const btnSMemo  = $('.btn-memosave');
 const qTitle    = $('#qTitle');
 const qSum      = $('#qSum');
 const qNum      = $('#qNum');
@@ -123,8 +124,8 @@ const draft = (cate,seg) => {
 }
 
 const setFinish = () => {
-    let tscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
-    tscore = 0 
+    let tscore, mscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
+    tscore = mscore = 0 
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
 
@@ -226,7 +227,7 @@ const setQuestion = (cate,seg) => {
     const category = dataset[cate];
     const question = category.question[seg];
     console.log(question)
-    if(category.question[point.seg].estimate){
+    if(dataset[point.cate].question[point.seg].estimate){
         draft(point.cate,point.seg);
     }
 
@@ -237,8 +238,8 @@ const setQuestion = (cate,seg) => {
     $('#sl-'+seg).addClass('active');
     
     if(
-        !empty(category.question[point.seg].score_onsite) 
-        || category.question[point.seg].score_onsite == 0
+        !empty(question.score_onsite) 
+        || question.score_onsite == 0
     ){
         $('#sl-'+point.seg).addClass('complete');
     } else {
@@ -255,15 +256,22 @@ const setQuestion = (cate,seg) => {
     mTNum.html(question.no);
     mNum.html(question.no);
     hSubject.html(question.no+'. '+question.question);
+    esCmm.val(question.comment_onsite);
+    esNote.val(question.note_onsite);
 
     if(Number(question.onside_status) == 1){
         $('.none-estimate').hide();
         $('.is-estimate').show();
     } else {
         $('.none-estimate').show();
-        $('.is-estimate').hide();
-        
+        $('.is-estimate').hide();        
         return;
+    }    
+
+    if(Number(question.pre_status) == 0){
+        $('#qResult, #qReply, #qImages, #qFiles').hide();
+    } else {
+        $('#qResult, #qReply, #qImages, #qFiles').show();
     }
     
     qSubject.html(question.no+'. '+question.question);
@@ -317,8 +325,10 @@ const setQuestion = (cate,seg) => {
             dis = 'disabled';
         }
 
-        if(Number(question.score_onsite) == Number(tmp[0].trim())){
-            ck = 'checked';
+        if(!empty(question.score_onsite)){
+            if(Number(question.score_onsite) == Number(tmp[0].trim())){
+                ck = 'checked';
+            }
         }
 
         sc += (
@@ -340,6 +350,7 @@ const setQuestion = (cate,seg) => {
     btnBack.attr('onclick','setQuestion('+cate+','+back+')');
     btnNext.attr('onclick','setQuestion('+cate+','+next+')');
     btnSave.attr('onclick','draft('+cate+','+seg+')');
+    btnSMemo.attr('onclick','draft('+cate+','+seg+')');
 
     if(seg == 0){
         btnBack.hide();
@@ -362,7 +373,7 @@ const setDropdown = (qt,cate,seg) => {
             id = 'id="sl-'+k+'"',
             cp, cl;        
             
-        if(Number(v.onside_status) == 1){            
+        if(Number(v.onside_status) == 1){
             cp = !empty(v.score_onsite) && seg != k ? 'complete' : '';
         } else {
             cp = 'hold';

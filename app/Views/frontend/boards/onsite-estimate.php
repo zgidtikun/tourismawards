@@ -168,12 +168,12 @@
 
                         <div class="regis-form-data-col1 is-estimate">
                             <h4 id="qSubject"></h4>
-                            คำตอบ
+                            <span id="qResult">คำตอบ</span>
                             <textarea class="form-control" id="qReply" rows="12" readonly>
                             </textarea>
                         </div>
 
-                        <div class="regis-form-data-col2 attachfile is-estimate">
+                        <div class="regis-form-data-col2 attachfile hide is-estimate" id="qImages">
                             <div class="attachinp">
                                 <h4>รูปภาพ</h4>
                                 <div class="ablumbox" id="qAblum">
@@ -181,7 +181,7 @@
                             </div>
                         </div>
 
-                        <div class="regis-form-data-col2 attachfile is-estimate">
+                        <div class="regis-form-data-col2 attachfile hide is-estimate" id="qFiles">
                             <div class="attachinp">
                                 <h4>แนบไฟล์</h4>
                                 <a href="javascript:downloadFile();" class="btn-download">ดาวน์โหลดไฟล์แนบ</a>
@@ -393,10 +393,14 @@
 <script src="<?= base_url('assets/js/frontend/ose.js') ?>?v=<?= $app->script_v ?>" async></script>
 <script defer>
     $(document).ready(function() {
-        setPage(
-            <?=$app_id?>,
-            { stage: <?=$stage->stage?>, status: <?=$stage->status?> },
-            [<?=implode(",",$assign)?>]
-        );
+        try {
+            setPage(
+                <?=$app_id?>,
+                { stage: <?=$stage->stage?>, status: <?=$stage->status?> },
+                [<?=implode(",",$assign)?>]
+            );
+        } catch(error){
+            window.location.reload();
+        }
     });
 </script>

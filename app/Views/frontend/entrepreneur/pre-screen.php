@@ -317,7 +317,7 @@
             {
                 status: <?=$stage->status?>, 
                 duedate: '<?=$duedate->expired_date?>', 
-                duedateStr: '<?=$duedate->expired_sts?>' 
+                duedateStr: '<?=$duedate->expired_str?>' 
             }
         );
     });    

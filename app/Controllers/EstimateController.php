@@ -136,6 +136,7 @@ class EstimateController extends BaseController
                 case 'create':
 
                     $data['estimate_by'] = session()->get('id');  
+                    $data['estimate_name'] = session()->get('user');  
                     $data['status_pre'] = 1;
                     $data['status_onsite'] = 1;                          
 
