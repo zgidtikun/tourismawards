@@ -205,7 +205,7 @@ const removeFile = (input, setting) => {
             pointer = psc.getPointer();
             setting.id = psc.questions[pointer.cate].question[pointer.seg].id;
             api_setting.url = '/inner-api/answer/remove/file';
-        } else if (ref.app == 'estimate/onstie') {
+        } else if (ref.app == 'estimate/onsite') {
             pointer = getPointer();
             setting.id = dataset[pointer.cate].question[pointer.seg].est_id;
             api_setting.url = '/inner-api/estimate/onsite/files/remove';
@@ -213,7 +213,7 @@ const removeFile = (input, setting) => {
 
         setting.position = ref.position;
         api_setting.data = setting;
-
+        
         api(api_setting).then(function(response) {
             let res = response;
 

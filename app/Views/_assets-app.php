@@ -6,12 +6,10 @@
 <script src="<?=base_url('assets/js/main.js')?>" type="text/javascript"  charset="utf-8"></script>
 <script src="<?=base_url('assets/js/jquery.flexnav.min.js')?>" type="text/javascript"></script>
 <script src="<?=base_url('assets/js/jquery.cookie.js')?>" type="text/javascript"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- stylesheet -->
-<link rel="preconnect" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"> 
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" as="style"> 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"  rel="stylesheet">
-
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/boilerplate.css')?>" media="all">
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/css.css')?>" media="all">
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/fonts.css')?>" media="all">

@@ -114,27 +114,27 @@
                 <div class="contact-form">
                     <div class="contact-form-row">
                         <div class="contact-form-col2 inputfield">
-                            <label data-tab="1">ชื่อ-นามสกุล<span class="required">*</span></label>
-                            <input data-tab="1">
+                            <label data-tab="1" id="lName">ชื่อ-นามสกุล<span class="required">*</span></label>
+                            <input type="text" id="sName" data-tab="1">
                             <a href="javascript:void(0)" class="btn-inpreset" data-tab="1"><i class="bi bi-x"></i></a>
                         </div>
                         <div class="contact-form-col2 inputfield">
-                            <label data-tab="2">อีเมล<span class="required">*</span></label>
-                            <input data-tab="2">
+                            <label data-tab="2" id="lEmail">อีเมล<span class="required">*</span></label>
+                            <input type="email" id="sEmail" data-tab="2">
                             <a href="javascript:void(0)" class="btn-inpreset" data-tab="2"><i class="bi bi-x"></i></a>
                         </div>
                         <div class="contact-form-col1 inputfield">
-                            <label data-tab="3">เรื่อง<span class="required">*</span></label>
-                            <input data-tab="3">
+                            <label data-tab="3" id="lSubject">เรื่อง<span class="required">*</span></label>
+                            <input type="text" id="sSubject" data-tab="3">
                             <a href="javascript:void(0)" class="btn-inpreset" data-tab="3"><i class="bi bi-x"></i></a>
                         </div>
                         <div class="contact-form-col1 inputfield">
-                            <label data-tab="4">ข้อความ<span class="required">*</span></label>
-                            <textarea rows="5" data-tab="4"></textarea>
+                            <label data-tab="4" id="lMessage">ข้อความ<span class="required">*</span></label>
+                            <textarea id="sMessage" rows="5" data-tab="4"></textarea>
                             <a href="javascript:void(0)" class="btn-inpreset" data-tab="4"><i class="bi bi-x"></i></a>
                         </div>
                         <div class="contact-form-col1 btn-form-row">
-                            <button type="submit" class="btn-save">ส่งข้อความ</button>
+                            <button type="submit" class="btn-save" onclick="send()">ส่งข้อความ</button>
                         </div>
                     </div>
 
@@ -192,9 +192,144 @@
     </div>
 
 </div>
+<style>
+    .btn {
+        --bs-btn-padding-x: 0.75rem;
+        --bs-btn-padding-y: 0.375rem;
+        --bs-btn-font-family: ;
+        --bs-btn-font-size: 18px;
+        --bs-btn-font-weight: 400;
+        --bs-btn-line-height: 1.5;
+        --bs-btn-color: #212529;
+        --bs-btn-bg: transparent;
+        --bs-btn-border-width: 1px;
+        --bs-btn-border-color: transparent;
+        --bs-btn-border-radius: 0.625rem;
+        --bs-btn-hover-border-color: transparent;
+        --bs-btn-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+        --bs-btn-disabled-opacity: 0.65;
+        --bs-btn-focus-box-shadow: 0 0 0 0.25rem rgba(var(--bs-btn-focus-shadow-rgb), .5);
+        display: inline-block;
+        padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
+        font-family: var(--bs-btn-font-family);
+        font-size: var(--bs-btn-font-size);
+        font-weight: var(--bs-btn-font-weight);
+        line-height: var(--bs-btn-line-height);
+        color: var(--bs-btn-color);
+        text-align: center;
+        text-decoration: none;
+        vertical-align: middle;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
+        border-radius: var(--bs-btn-border-radius);
+        background-color: var(--bs-btn-bg);
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }    
 
+    .btn-primary {
+        --bs-btn-color: #fff;
+        --bs-btn-bg: #0d6efd;
+        --bs-btn-border-color: #0d6efd;
+        --bs-btn-hover-color: #fff;
+        --bs-btn-hover-bg: #0b5ed7;
+        --bs-btn-hover-border-color: #0a58ca;
+        --bs-btn-focus-shadow-rgb: 49, 132, 253;
+        --bs-btn-active-color: #fff;
+        --bs-btn-active-bg: #0a58ca;
+        --bs-btn-active-border-color: #0a53be;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #fff;
+        --bs-btn-disabled-bg: #0d6efd;
+        --bs-btn-disabled-border-color: #0d6efd;
+        --bs-btn-border-radius: 0.375rem;
+    }
+</style>
+
+<script src="<?=base_url('assets/js/frontend/other.js')?>"></script>
 <script>
     $(document).ready(() => {
         $('.mainsite').addClass('contact');
     });
+
+    const send = () => {        
+        <?php if (!empty($_recapcha) && $_recapcha) : ?>
+        recapchaToken().then(function(data) {
+            $('#recapcha_token').val(data.rccToken);
+        <?php endif; ?>
+
+        const mf = [
+            { label: '#lName', input: '#sName' },
+            { label: '#lEmail', input: '#sEmail' },
+            { label: '#lSubject', input: '#sSubject' },
+            { label: '#lMessage', input: '#sMessage' }
+        ];
+
+        let ms, vd = true;
+
+        $.each(mf,(k,v) => {
+            if(empty($(v.input).val())){
+                ms = 'กรุณากรอก '+$(v.label).html();
+                vd = false;
+                return;
+            }
+        });
+
+        if(!vd){
+            Swal.fire({
+                icon: 'error',
+                html: ms,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'ตกลง',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+            return;
+        }
+
+        const st = {
+            method: 'post',
+            url: '/contact-us/send',
+            data: {
+                name: $('#sName').val(),
+                email: $('#sEmail').val(),
+                subject: $('#sSubject').val(),
+                message: $('#sMessage').val()
+            }
+        }
+
+        api(st).then((rs) => {
+            let tt = msg = '';
+
+            if(rs.result == 'success'){
+                tt = 'ได้ทำการส่งอีเมลเรียบร้อยแล้ว';
+                $('#sName, #sEmail, #sSubject, #sMessage').val('');
+            } else {
+                tt = 'ไม่สามารถส่งอีเมลได้';
+                if(!empty(rs.message)){
+                    msg = rs.message;
+                }
+            }   
+
+            Swal.fire({
+                icon: rs.result,
+                title: tt,
+                html: msg,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'ตกลง',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        });
+        
+        <?php if (!empty($_recapcha) && $_recapcha) : ?>
+        });
+        <?php endif; ?>
+    }
 </script>

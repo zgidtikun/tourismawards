@@ -93,7 +93,7 @@
                                        $url = 'awards/application';
                                        $content = 'ข้อมูลการประกวด';
                                     } else {
-                                       $url = 'bords/management';
+                                       $url = 'boards';
                                        $content = 'ระบบการจัดการ';
                                     }
                                  ?>

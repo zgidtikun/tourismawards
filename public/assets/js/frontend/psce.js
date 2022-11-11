@@ -265,12 +265,12 @@ const setQuestion = (cate,seg) => {
     $('#sl-'+seg).addClass('active');
 
     if(
-        empty(question.request_status)
-        || $.inArray(Number(question.request_status),[0,1,2]) === -1
+        empty(dataset[point.cate].question[point.seg].request_status)
+        || $.inArray(Number(dataset[point.cate].question[point.seg].request_status),[0,1,2]) === -1
     ){
         if(
-            !empty(question.score_pre) 
-            || question.score_pre == 0
+            !empty(dataset[point.cate].question[point.seg].score_pre) 
+            || Number(dataset[point.cate].question[point.seg].score_pre) == 0
         ){
             $('#sl-'+point.seg).addClass('complete');
         } else {
@@ -435,7 +435,7 @@ const checkComplete = () => {
             
         $.each(dataset[index].question,(qk,qv) => {
             if(Number(qv.pre_status ) == 1){
-                if(empty(qv.score_pre) && qv.score_pre != 0){
+                if(empty(qv.score_pre)){
                     check = false;
                 }
             }

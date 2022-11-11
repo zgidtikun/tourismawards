@@ -39,6 +39,7 @@ $routes->setAutoRoute(false);
 $routes->get('/', 'Home::index', ['as' => 'Home']);
 $routes->get('home', 'Home::index');
 $routes->get('contact-us', 'Home::contactus');
+$routes->post('contact-us/send', 'Home::sendEmailContact');
 $routes->get('judge', 'Home::judge');
 $routes->get('awards-infomation', 'Home::winnerinfo');
 $routes->get('awards-winner', 'Home::winneraward');
@@ -137,7 +138,7 @@ $routes->group('inner-api', static function ($routes) {
 
             $routes->group('files', static function ($routes) {
                 $routes->post('upload', 'FilesController::uploadEstimate', ['filter' => 'api:frontend']);
-                $routes->get('remove', 'FilesController::removeEstimate', ['filter' => 'api:frontend']);
+                $routes->post('remove', 'FilesController::removeEstimate', ['filter' => 'api:frontend']);
                 $routes->get('download/(:any)/(:any)', 'FilesController::dowanloadEstimateFile/$1/$2', ['filter' => 'api:frontend']);
             });
         });

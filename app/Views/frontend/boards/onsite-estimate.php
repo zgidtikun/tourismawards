@@ -7,10 +7,12 @@
                     ประเมินรอบลงพื้นที่
                 </div>
                 <div class="form-main-btn">
-                    <button style="width: 100px;" class="btn btn-action fw-semibold" onclick="window.open('<?= base_url('boards') ?>','_self')">
+                    <button style="width: 100px;" class="btn btn-action fw-semibold" 
+                    onclick="window.open('<?= base_url('boards') ?>','_self')">
                         ย้อนกลับ
                     </button>
-                    <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold" onclick="">
+                    <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold" 
+                    onclick="setFinish()">
                         ส่งผลประเมินเข้าระบบ
                     </button>
                 </div>
@@ -161,7 +163,7 @@
                             <div class="alert alert-danger" role="alert">
                                 <span style="font-size: 18px;" class="fw-semibold">
                                     <i class="bi bi-exclamation-diamond-fill mr-2"></i>
-                                    ไม่มีการประเมินในรอบ Pre-screen
+                                    ไม่มีการประเมินในรอบ ลงพื้นที่
                                 </span>
                             </div>
                         </div>

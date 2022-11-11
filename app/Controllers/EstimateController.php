@@ -159,7 +159,10 @@ class EstimateController extends BaseController
                 ->select('created_by')
                 ->first();
             
-            $this->stage->where(['user_id' => $form->created_by, 'stage' => 1 ])
+            $this->stage->where([
+                    'user_id' => $form->created_by, 
+                    'stage' => $target == 'pre' ? 1 : 2 
+                ])
                 ->set(['status' => 2])
                 ->update();
         } catch(Exception $e) {
@@ -241,11 +244,20 @@ class EstimateController extends BaseController
                     $inst_avg['score_onsite_tt'] = $avg_tt;
                 }
 
-                $this->estScr->insert($inst_avg);
+                if($input->stage == 1){
+                    $this->estScr->insert($inst_avg);
+                } else {
+                    $this->estScr->where('application_id',$input->appId)
+                        ->set($inst_avg)
+                        ->update();
+                }
 
                 $pass = $input->score_tt > $sys->JudgingCriteriaPre ? true : false;
 
-                $this->stage->where(['user_id' => $form->created_by, 'stage' => $input->stage])
+                $this->stage->where([
+                        'user_id' => $form->created_by, 
+                        'stage' => $input->stage
+                    ])
                     ->set(['status' => $pass ? 6 : 7])
                     ->update();
                 
@@ -258,7 +270,7 @@ class EstimateController extends BaseController
                     ->set(['stage' => 3])
                     ->update();
 
-                if($pass){
+                if($pass && $input->stage == 1){
                     $this->stage->insert([
                         'user_id' => $form->created_by,
                         'stage' => 2,

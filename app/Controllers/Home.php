@@ -101,6 +101,31 @@ class Home extends BaseController
         return view('template-app',$data);
     }
 
+    public function sendEmailContact()
+    {
+        $input = (object) $this->input->getVar();
+        $_subject = $input->subject;
+        $_from = $input->email;
+        $_to = 'zgidtikun@gmail.com';
+        $_message = '<p>'.$input->message.'</p>';
+        $_message .= '<p>ขอแสดงความนับถือ<br>'.$input->name.'</p>';
+
+        try {
+        
+            $this->email->setTo($_to);
+            $this->email->setFrom($_from);
+            $this->email->setSubject($_subject);
+            $this->email->setMessage($_message);
+            $_status = $this->email->send();
+            
+            $result = [ 'result' => $_status ? 'success' : 'error' ];
+        } catch(\Exception $e) {
+            $result = ['result' => 'error', 'message' => $e->getMessage()];
+        }
+        
+        return $this->response->setJSON($result);
+    }
+
     public function judge()
     {
         $obj = new \App\Models\Users();

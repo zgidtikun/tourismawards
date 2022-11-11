@@ -93,7 +93,7 @@ const draft = (cate,seg) => {
         url: '/inner-api/estimate/onsite/draft',
         data: {
             target: 'onsite',
-            action: 'update',
+            action: empty(question.est_id) ? 'create' : 'update',
             application_id: appid,
             question_id: question.id,
             est_id: question.est_id,
@@ -226,7 +226,7 @@ const setQuestion = (cate,seg) => {
     
     const category = dataset[cate];
     const question = category.question[seg];
-    console.log(question)
+    
     if(dataset[point.cate].question[point.seg].estimate){
         draft(point.cate,point.seg);
     }
@@ -237,12 +237,10 @@ const setQuestion = (cate,seg) => {
     $('.sl').removeClass('active');
     $('#sl-'+seg).addClass('active');
     
-    if(
-        !empty(question.score_onsite) 
-        || question.score_onsite == 0
-    ){
+    if(!empty(dataset[point.cate].question[point.seg].score_onsite)){
         $('#sl-'+point.seg).addClass('complete');
-    } else {
+    } 
+    else {
         $('#sl-'+point.seg).removeClass('complete');
     }
 
@@ -389,16 +387,15 @@ const setDropdown = (qt,cate,seg) => {
 }
 
 const checkComplete = () => {
-    const cp = assign.length;
-    let ccp = 0;
+    let ccp = true;
 
     $.each(assign,(ak,av) => {
         let check = true,
             index = av-1;
             
         $.each(dataset[index].question,(qk,qv) => {
-            if(Number(qv.onside_status ) == 1){
-                if(empty(qv.score_onsite) && qv.score_onsite != 0){
+            if(Number(qv.onside_status) == 1){
+                if(empty(qv.score_onsite)){
                     check = false;
                 }
             }
@@ -406,13 +403,13 @@ const checkComplete = () => {
 
         if(check){
             $('tap-'+ck).addClass('complete');
-            ccp++;
         } else {
             $('tap-'+ck).removeClass('complete');
+            ccp = false;
         }
     });
-
-    if(ccp < cp){
+    
+    if(!ccp){
         $('.btn-confirm-submit').prop('disabled',true);
     } else {
         $('.btn-confirm-submit').prop('disabled',false);
