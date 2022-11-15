@@ -310,7 +310,13 @@ const showFiles = {
             if (
                 (ref.app == 'awards/application' && $.inArray(Number(register.status), [1, 4]) !== -1) ||
                 (ref.app == 'awards/pre-screen' && psc.status == 'draft') || 
-                (ref.app == 'estimate/onsite' && $.inArray(Number(getStageStatus()),[6,7]) === -1)
+                (
+                    ref.app == 'estimate/onsite' 
+                    && (
+                        $.inArray(Number(getStageStatus()),[6,7]) === -1
+                        && getIsFinish() != 'finish' 
+                    )
+                )
             ) {
                 $(ref.show).html(html);
             } else if (ref.app == 'awards/pre-screen' && psc.status == 'reject') {
@@ -378,7 +384,13 @@ const showFiles = {
             if (
                 (ref.app == 'awards/application' && $.inArray(Number(register.status), [1, 4]) !== -1) ||
                 (ref.app == 'awards/pre-screen' && psc.status == 'draft') ||
-                (ref.app == 'estimate/onsite' && $.inArray(Number(getStageStatus()),[6,7]) === -1)
+                (
+                    ref.app == 'estimate/onsite' 
+                    && (
+                        $.inArray(Number(getStageStatus()),[6,7]) === -1
+                        && getIsFinish() != 'finish' 
+                    )
+                )
             ) {
                 if(ref.app == 'estimate/onsite' && ref.position == 'camera'){
                     html = '<div class="list">'
