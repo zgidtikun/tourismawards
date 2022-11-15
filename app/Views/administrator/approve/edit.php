@@ -544,8 +544,10 @@
       judge_comment: judge_comment,
     }
     var res = main_post(BASE_URL_BACKEND + '/Approve/saveStatus', data);
-    cc(res)
-    res_swal(res, 1);
+    // cc(res)
+    res_swal(res, 0, function () {
+      window.history.back();
+    });
   });
 
   $('[name="application_type"]').change(function(e) {

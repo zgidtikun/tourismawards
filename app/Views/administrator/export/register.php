@@ -18,14 +18,15 @@ $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 
 //set Amount Column
-$colExcel = colExcel(15);
+$colExcel = colExcel(14);
 // pp($colExcel);
 $end = end($colExcel);
 // px($end);
 
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
-// $sheet->getStyle('M')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('M:N')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -35,13 +36,13 @@ $sheet->setTitle($FILE_NAME);
 $sheet->setCellValue('A1', $FILE_NAME)->mergeCells('A1:' . $end . '1');
 $sheet->setCellValue('A2', "")->mergeCells('A2:' . $end . '2');
 
-//set Format
-// $sheet->getStyle('X')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
+//set Format FORMAT_NUMBER_00
+$sheet->getStyle('H')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+$sheet->getStyle('K')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
 
 $rowHead = [
   // '#',
   'ลำดับที่',
-  'รหัส',
   'รหัส',
   'ประเภทรางวัลฯ',
   'สาขา',
@@ -68,25 +69,46 @@ foreach ($colExcel as $k => $v) {
 if (!empty($result)) {
 
   // Row Start
-  $i = 5;
+  $i = 4;
   foreach ($result as $key => $value) {
 
+    if ($value->status == 1) {
+      $status = 'รอตรวจสอบ';
+    } else if ($value->status == 2) {
+      $status = 'ขอข้อมูลเพิ่มเติม';
+    } else if ($value->status == 3) {
+      $status = 'อนุมัติ';
+    } else if ($value->status == 4) {
+      $status = 'ไม่อนุมัติ';
+    }
+    $address = [
+        // 'address'           => '',
+        'address_number'    => $value->address_no,
+        // 'address_soi'       => '',
+        'address_road'      => $value->address_road,
+        // 'address_moo'       => '',
+        'subdistrict'       => $value->address_sub_district,
+        'district'          => $value->address_district,
+        'province'          => $value->address_province,
+        'postcode'          => $value->address_zipcode,
+    ];
+
     $data = [
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
+      $key + 1,
+      $value->code,
+      // $value->attraction_name_th,
+      applicationType($value->application_type_id),
+      applicationTypeSub($value->application_type_sub_id),
+      mainAddress($address),
+      $value->address_province,
+      $value->user_email,
+      $value->user_mobile,
+      $value->knitter_name,
+      $value->knitter_position,
+      $value->knitter_tel,
+      $value->knitter_email,
+      $status,
+      '',
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

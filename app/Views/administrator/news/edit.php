@@ -10,7 +10,8 @@
 
       <div class="backendform-row">
         <div class="backendform-col">
-          <label>หมวดหมู่ <span class="required">*</span></label>
+          <label class="d-inline">หมวดหมู่ <span class="required">*</span></label>
+          <button type="button" class="btn btn-dark btn-sm mb-2" onclick="add_category(this)"><i class="bi bi-plus"></i> เพิ่มหมวดหมู่</button>
           <select name="category_id" id="category_id" class="form-control">
             <?php
             if (!empty($category)) :
@@ -99,8 +100,6 @@
         </div>
       </div>
 
-
-
       <div class="form-main-btn">
         <a href="javascript:void(0)" class="btn-cancle" onclick="window.location.href = BASE_URL_BACKEND + '/News'">ยกเลิก</a>
         <a href="javascript:void(0)" class="btn-save" id="btn_save">บันทึก</a>
@@ -110,6 +109,35 @@
   </form>
 </div>
 
+<!-- Modal -->
+<div class="modal fade bd-example-modal-xl" id="exampleModal" data-target=".bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ตัวอย่างเนื้อหา</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="input_form_category">
+          <div class="row">
+            <div class="col-sm-3 text-end">
+              <label for="">ชื่อ Category</label>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <input type="text" class="form-control" name="name" id="name" placeholder="" required>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i> ยกเลิก</button>
+        <button type="button" class="btn btn-primary" id="btn_save_category"><i class="fas fa-save"></i> บันทึก</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script>
@@ -177,7 +205,6 @@
     });
   }
 
-
   $('#btn_save').click(function(e) {
     var insert_id = $('#insert_id').val();
     if (insert_id == "" || insert_id == 0) {
@@ -213,4 +240,27 @@
       image_cover_show.src = URL.createObjectURL(file)
     }
   }
+
+  function add_category(elm) {
+
+    $('#input_form_category')[0].reset();
+    $('#exampleModalLabel').html($(elm).html())
+    $('#exampleModal').modal('show');
+  }
+
+  $('#btn_save_category').click(function(e) {
+    if (main_validated('input_form_category')) {
+      var res = main_save(BASE_URL_BACKEND + '/News/saveCategory', '#input_form_category');
+      var option = "";
+      if (res.data !== null) {
+        $.each(res.data, function(index, value) {
+          option += '<option valur="' + value.id + '">' + value.name + '</option>';
+        });
+        $('#category_id').html(option);
+      }
+      res_swal(res, 0, function(e) {
+        $('#exampleModal').modal('hide');
+      });
+    }
+  });
 </script>

@@ -1,5 +1,5 @@
 <div class="backendheader-user">
-  <div class="backend-noti">
+  <!-- <div class="backend-noti">
     <a href="javascript:void(0)" class="btn-noti"><i class="bi bi-bell-fill"></i> <span class="noti-alert"></span></a>
 
     <div class="noti-box" style="display: none;">
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="backend-userlogin">
     <a href="javascript:void(0)" class="btn-user">Hi, <?= session()->user ?> <span class="user-icon"><?= strtoupper(substr(session()->user,0,1)); ?></span></a>
 

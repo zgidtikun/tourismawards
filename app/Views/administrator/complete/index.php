@@ -5,7 +5,7 @@
         <h3>รายการใบสมัครที่รอเพิ่มกรรมการรอบลงพื้นที่</h3>
       </div>
       <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
-      <a href="#" onclick="export_data()" class="btn-export"><i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i> Export</a>
+      <!-- <a href="#" onclick="export_data()" class="btn-export"><i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i> Export</a> -->
     </div>
 
     <form action="" method="get" id="search_form">
@@ -285,12 +285,12 @@
     $('body').removeClass('lockbody');
   });
 
-  function export_data() {
-    var url = BASE_URL_BACKEND + '/Complete/register';
-    $('#search_form').attr('action', url);
-    $('#search_form').attr('target', '_blank');
-    $('#search_form').submit();
-    $('#search_form').attr('target', '');
-    $('#search_form').attr('action', '');
-  }
+  // function export_data() {
+  //   var url = BASE_URL_BACKEND + '/Complete/register';
+  //   $('#search_form').attr('action', url);
+  //   $('#search_form').attr('target', '_blank');
+  //   $('#search_form').submit();
+  //   $('#search_form').attr('target', '');
+  //   $('#search_form').attr('action', '');
+  // }
 </script>

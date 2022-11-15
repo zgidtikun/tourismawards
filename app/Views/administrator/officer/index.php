@@ -52,15 +52,15 @@
             ?>
                 <tr>
                   <td class=""><?= $i++ ?></td>
-                  <td class="text-start">
+                  <td class="">
                     <?php
                     if (!empty($value->profile) && $value->profile != "") {
-                      $path = base_url() . '/' . $value->profile;
+                      $path = base_url() . "/" . $value->profile;
                     } else {
-                      $path = base_url('/backend/assets/images/add_img.png');
+                      $path = base_url() . '/assets/images/unknown_user.jpg';
                     }
                     ?>
-                    <img src="<?= $path ?>" style="width: 50px;height: 50px;"> <?= $value->name ?>
+                    <img src="<?= $path ?>" style="height: 50px; width: 50px"> <?= $value->name ?>
                   </td>
                   <td class=""><?= $value->mobile ?></td>
                   <td class="text-start"><?= $value->email ?></td>
