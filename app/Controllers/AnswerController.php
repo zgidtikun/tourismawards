@@ -94,9 +94,12 @@ class AnswerController extends BaseController
 
             $where = [
                 'q.assessment_group_id' => $asse->id,
-                'q.application_type_id' => $app->type_id,
-                'q.application_type_sub_id' => $app->sub_type_id
+                'q.application_type_id' => $app->type_id
             ];
+
+            if($app->type_id != 4){
+                $where['q.application_type_sub_id'] = $app->sub_type_id;
+            }
 
             if(session()->get('role') == 1)
                 $where['q.pre_status'] = 1;

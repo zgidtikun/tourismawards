@@ -16,4 +16,29 @@ class Dashboard extends BaseController
 
         return view('administrator/template', $data);
     }
+
+    public function getData()
+    {
+        
+        $type_sub   = $this->db->table("application_type_sub")->get()->getResultObject();
+        $attraction   = $this->db->table("application_form")->get()->getResultObject();
+        $data['type_sub'] = [];
+        $data['attraction'] = [];
+        if (!empty($type_sub)) {
+            foreach ($type_sub as $key => $value) {
+                $data['type_sub'][$value->application_type_id][] = $value->name;
+                $data['attraction'][$value->application_type_id][$value->id] = [];
+            }
+        }
+
+        if (!empty($attraction)) {
+            foreach ($attraction as $key => $value) {
+                $data['attraction'][$value->application_type_id][$value->application_type_sub_id][] = $value->attraction_name_th;
+            }
+        }
+        // px($data);
+
+
+        echo json_encode($data);
+    }
 }

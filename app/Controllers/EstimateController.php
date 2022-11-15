@@ -56,6 +56,13 @@ class EstimateController extends BaseController
                 ->set(['status' => 3, 'duedate' => $duedate])
                 ->update();
 
+            $this->estInd->where([
+                    'application_id' => $appid,
+                    'estimate_by' => session()->get('id')
+                ])
+                ->set(['score_pre' => NULL])
+                ->update();
+
             set_noti(
                 (object) [
                     'user_id' => $form->created_by,
@@ -195,10 +202,18 @@ class EstimateController extends BaseController
                 ->set(['status' => 3, 'request_status' => 3])
                 ->update();
 
-            $inst_estind = [
-                'application_id' => $input->appId,
-                'estimate_by' => session()->get('id')
-            ];
+            $existEstInd = $this->estInd->where([
+                    'application_id' => $input->appId,
+                    'estimate_by' => session()->get('id')
+                ])
+                ->countAllResults();
+
+            if($existEstInd <= 0){
+                $inst_estind = [
+                    'application_id' => $input->appId,
+                    'estimate_by' => session()->get('id')
+                ];
+            }
 
             if($input->stage == 1){
                 $inst_estind['score_pte'] = $input->score_te;
@@ -213,16 +228,27 @@ class EstimateController extends BaseController
                 $inst_estind['score_onsite'] = $input->score_tt;
             }
 
-            $this->estInd->insert($inst_estind);
-
+            if($existEstInd <= 0){
+                $this->estInd->insert($inst_estind);
+            } else {
+                $this->estInd->where([
+                    'application_id' => $input->appId,
+                    'estimate_by' => session()->get('id')
+                ])
+                ->set($inst_estind)
+                ->update();
+            }
 
             $count_adm = $commit->where('application_form_id',$input->appId)
                 ->select('admin_count')->first();
 
-            $count_est = $this->estInd->where('application_id',$input->score_tt)
-                ->countAll();
+            $count_est = $this->estInd->where('application_id',$input->appId)
+                ->countAllResults();
 
             if($count_adm->admin_count >= $count_est){
+
+                $existEstScr = $this->estScr->where('application_id',$input->appId)
+                    ->countAllResults();
             
                 $avg_te = $input->score_te / $count_est;
                 $avg_sb = $input->score_sb / $count_est;
@@ -244,7 +270,7 @@ class EstimateController extends BaseController
                     $inst_avg['score_onsite_tt'] = $avg_tt;
                 }
 
-                if($input->stage == 1){
+                if($existEstScr <= 0){
                     $this->estScr->insert($inst_avg);
                 } else {
                     $this->estScr->where('application_id',$input->appId)

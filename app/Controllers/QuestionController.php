@@ -20,7 +20,7 @@ class QuestionController extends BaseController
                 ->select('application_id app_id, MAX(updated_at) updated_at',false)
                 ->groupBy('application_id')
                 ->getCompiledSelect();
-            
+                
             $subComm = $this->db->table('committees')
                 ->select('application_form_id afid')
                 ->like('admin_id_tourism','"'.session()->get('id').'"')
@@ -30,16 +30,16 @@ class QuestionController extends BaseController
                 
             $builder = $this->db->table('application_form af')
                 ->select(
-                    'af.id, af.attraction_name_th att_name, at.name type, ats.name section,
-                    us.stage, us.status, 
+                    'af.id, af.attraction_name_th att_name, at.name type, 
+                    ats.name section, us.stage, us.status, 
                     IFNULL(inse.updated_at,\'\') updated_at,
                     IFNULL(es.score_prescreen_tt,0) score_pre,
                     IFNULL(es.score_onsite_tt,0) score_onsite'
                 )
                 ->join('application_type at','af.application_type_id = at.id')
-                ->join('application_type_sub ats','af.application_type_sub_id = ats.id')
+                ->join('application_type_sub ats','af.application_type_sub_id = ats.id','LEFT')
                 ->join('users_stage us','af.created_by = us.user_id')
-                ->join('('.$subComm.') insc','insc.afid = at.id')
+                ->join('('.$subComm.') insc','insc.afid = af.id')
                 ->join('estimate_score es','af.id = es.id','LEFT')
                 ->join('('.$subEstimate.') inse','af.id = inse.app_id','LEFT');
 
@@ -85,7 +85,7 @@ class QuestionController extends BaseController
 
         $tycoon = $this->db->table('application_form af')
             ->join('application_type at','af.application_type_id = at.id')
-            ->join('application_type_sub ats','af.application_type_sub_id = ats.id')
+            ->join('application_type_sub ats','af.application_type_sub_id = ats.id','LEFT')
             ->where('af.id',$id)
             ->select(
                 'af.code, at.name t_name, ats.name ts_name,
@@ -111,9 +111,12 @@ class QuestionController extends BaseController
 
             $where = [
                 'q.assessment_group_id' => $asse->id,
-                'q.application_type_id' => $type_id,
-                'q.application_type_sub_id' => $sub_type_id
+                'q.application_type_id' => $type_id
             ];
+
+            if($type_id != 4){
+                $where['q.application_type_sub_id'] = $sub_type_id;
+            }
 
             $sqans = $this->db->table('answer')->where('reply_by',$userId)
                 ->getCompiledSelect();

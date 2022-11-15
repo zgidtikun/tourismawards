@@ -158,7 +158,7 @@ class Estimate extends BaseController
             $like['status'] = $_GET['status'];
         }
 
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->where('US.stage', 1)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id', 'left')->where('C.application_form_id is NOT NULL', NULL, FALSE)->where('US.stage', 1)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
         // pp_sql();
         // exit;
 

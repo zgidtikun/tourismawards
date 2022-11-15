@@ -88,13 +88,13 @@ function applicationTypeSub($id)
 function countNotification($type)
 {
     $db = \Config\Database::connect();
-    if ($type == 1) {
+    if ($type == 1) { // ตรวจสอบใบสมัคร
         $application_form = $db->table('application_form')->where('status <= 2')->get()->getResultObject();
         return count($application_form);
-    } else if ($type == 2) {
+    } else if ($type == 2) { // แบบประเมินขั้นต้น (Prescreen)
         $application_form = $db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id', 'left')->where('C.application_form_id', NULL)->where('US.stage', 1)->where('AP.status', 3)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
         return count($application_form);
-    } else if ($type == 3) {
+    } else if ($type == 3) { // เพิ่มกรรมการรอบลงพื้นที่
         $application_form = $db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id', 'left')->where('C.application_form_id', NULL)->where('US.stage', 2)->where('AP.status', 3)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
         return count($application_form);
     }
@@ -263,4 +263,163 @@ function loopExcel($textCol, $numCol)
         }
     }
     return $arrayCol;
+}
+
+function subAddress($address)
+{
+    $result = [
+        'address'       => '',
+        'subdistrict'   => '',
+        'district'      => '',
+        'province'      => '',
+        'postcode'      => '',
+    ];
+
+    $address = str_replace("\n", '', $address);
+    $address = str_replace("\r", '', $address);
+
+    // รหัสไปรษณีย์
+    if (strpos($address, 'รหัสไปรษณีย์') !== false) {
+
+        $explode = explode('รหัสไปรษณีย์', $address);
+        $result['postcode'] = trim($explode[1]);
+        $address = str_replace('รหัสไปรษณีย์' . $explode[1], '', $address);
+    } else {
+
+        $postcode = substr($address, -5);
+        if (is_numeric($postcode)) {
+            $result['postcode'] = $postcode;
+            $address = str_replace($postcode, '', $address);
+        }
+    }
+
+    // จังหวัด
+    if (strpos($address, 'กรุงเทพมหานคร') !== false) {
+
+        $result['province'] = 'กรุงเทพมหานคร';
+        $address = str_replace('กรุงเทพมหานคร', '', $address);
+    } else if (strpos($address, 'กรุงเทพฯ') !== false) {
+
+        $result['province'] = 'กรุงเทพมหานคร';
+        $address = str_replace('กรุงเทพฯ', '', $address);
+    } else if (strpos($address, 'กรุงเทพ') !== false) {
+
+        $result['province'] = 'กรุงเทพมหานคร';
+        $address = str_replace('กรุงเทพ', '', $address);
+    } else if (strpos($address, 'กทม.') !== false) {
+
+        $result['province'] = 'กรุงเทพมหานคร';
+        $address = str_replace('กทม.', '', $address);
+    } else if (strpos($address, 'กทม') !== false) {
+
+        $result['province'] = 'กรุงเทพมหานคร';
+        $address = str_replace('กทม', '', $address);
+    } else if (strpos($address, 'จังหวัด') !== false) {
+
+        $explode = explode('จังหวัด', $address);
+        $result['province'] = trim($explode[1]);
+        $address = str_replace('จังหวัด' . $explode[1], '', $address);
+    } else if (strpos($address, 'จ.') !== false) {
+
+        $explode = explode('จ.', $address);
+        $result['province'] = trim($explode[1]);
+        $address = str_replace('จ.' . $explode[1], '', $address);
+    }
+
+    // อำเภอ
+    if (strpos($address, 'เขต') !== false) {
+
+        $explode = explode('เขต', $address);
+        $result['district'] = trim($explode[1]);
+        $address = str_replace('เขต' . $explode[1], '', $address);
+    } else if (strpos($address, 'ข.') !== false) {
+
+        $explode = explode('ข.', $address);
+        $result['district'] = trim($explode[1]);
+        $address = str_replace('ข.' . $explode[1], '', $address);
+    } else if (strpos($address, 'อำเภอ') !== false) {
+
+        $explode = explode('อำเภอ', $address);
+        $result['district'] = trim($explode[1]);
+        $address = str_replace('อำเภอ' . $explode[1], '', $address);
+    } else if (strpos($address, 'อ.') !== false) {
+
+        $explode = explode('อ.', $address);
+        $result['district'] = trim($explode[1]);
+        $address = str_replace('อ.' . $explode[1], '', $address);
+    }
+
+    // ตำบล
+    if (strpos($address, 'แขวง') !== false) {
+
+        $explode = explode('แขวง', $address);
+        $result['subdistrict'] = trim($explode[1]);
+        $address = str_replace('แขวง' . $explode[1], '', $address);
+    } else if (strpos($address, 'ตำบล') !== false) {
+
+        $explode = explode('ตำบล', $address);
+        $result['subdistrict'] = trim($explode[1]);
+        $address = str_replace('ตำบล' . $explode[1], '', $address);
+    } else if (strpos($address, 'ต.') !== false) {
+
+        $explode = explode('ต.', $address);
+        $result['subdistrict'] = trim($explode[1]);
+        $address = str_replace('ต.' . $explode[1], '', $address);
+    }
+
+    $result['address'] = trim($address);
+
+    return $result;
+}
+
+function mainAddress($addressUse)
+{
+    $addressDefault = [
+        'address'           => '',
+        'address_number'    => '',
+        'address_soi'       => '',
+        'address_road'      => '',
+        'address_moo'       => '',
+        'subdistrict'       => '',
+        'district'          => '',
+        'province'          => '',
+        'postcode'          => '',
+    ];
+
+    $address = array_merge($addressDefault, $addressUse);
+    if (!empty($address['address'])) {
+        $addr[] = trim($address['address']);
+    }
+
+    if (!empty($address['address_number'])) {
+        $addr[] = 'เลขที่ ' . trim(str_replace('เลขที่', ' ', $address['address_number']));
+    }
+
+    if (!empty($address['address_soi'])) {
+        $addr[] = 'ซอย ' . trim(str_replace('ซอย', ' ', $address['address_soi']));
+    }
+
+    if (!empty($address['address_road'])) {
+        $addr[] = 'ถนน ' . trim(str_replace('ถนน', ' ', $address['address_road']));
+    }
+
+    if (!empty($address['address_moo'])) {
+        $addr[] = 'หมู่ ' . trim(str_replace('หมู่', ' ', $address['address_moo']));
+    }
+
+    if ($address['province'] == 'กรุงเทพมหานคร' || strpos($address['province'], 'กรุงเทพ') || strpos(($address['province']), 'กทม')) {
+        $addr[] = 'แขวง' . trim(str_replace('แขวง', ' ', $address['subdistrict']));
+        $addr[] = 'เขต' . trim(str_replace('เขต', ' ', $address['district']));
+        $addr[] = 'กรุงเทพมหานคร';
+    } else {
+        $addr[] = 'ตำบล' . trim(str_replace('ตำบล', ' ', $address['subdistrict']));
+        $addr[] = 'อำเภอ' . trim(str_replace('อำเภอ', ' ', $address['district']));
+        $addr[] = 'จังหวัด' . trim(str_replace('จังหวัด', ' ', $address['province']));
+    }
+
+    if (!empty($address['postcode'])) {
+        $addr[] = 'รหัสไปรษณีย์ ' . trim(str_replace('รหัสไปรษณีย์', ' ', $address['postcode']));
+    }
+
+    return implode(' ', $addr);
 }

@@ -144,12 +144,12 @@
                      </li>
                      <li><a href="javascript:void(0)" id="informationmenu">ข้อมูลการประกวดรางวัล</a>
                         <ul>
-                           <li><a href="<?=base_url('awards-infomation')?>">แหล่ง ท่องท่องเที่ยว 6 สาขา</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>">ที่พักนักท่องเที่ยว 4 สาขา</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>">การท่องเที่ยวเชิงสุขภาพ 4 สาขา</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>">รายการนำเที่ยว</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>">เกณฑ์การให้คะแนนตัดสิน</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>?p=Attraction">แหล่ง ท่องท่องเที่ยว 6 สาขา</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>?p=Accommodation">ที่พักนักท่องเที่ยว 4 สาขา</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>?p=HealthAndWellness">การท่องเที่ยวเชิงสุขภาพ 4 สาขา</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>?p=TourProgram">รายการนำเที่ยว</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>?p=Judge">เกณฑ์การให้คะแนนตัดสิน</a></li>
+                           <li><a href="<?=base_url('awards-infomation')?>?p=Benefits">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="regismenu">คู่มือการสมัคร</a>
@@ -274,15 +274,20 @@
          data: {limit: 5},
          dataType: 'json',
          success: function(res){
-            let list = '';
+            let icon, list = '';
 
             $.each(res.noti,function(k,v){
                list += '<li><a href="'+v.link+'">'+v.message+'</a></li>';
             });
+
+            icon = '<i class="bi bi-bell-fill"></i>';
+            if(res.noti.length > 0){
+               icon += '<span class="noti-alert"></span>';
+            }
             
             $('#noti-list').html(list);
             $('.noti-box').attr('data-id',res.id);
-            $('.btn-noti').html('<i class="bi bi-bell-fill"></i><span class="noti-alert"></span>');
+            $('.btn-noti').html(icon);
          }
       });
    });

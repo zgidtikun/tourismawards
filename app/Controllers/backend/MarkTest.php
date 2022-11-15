@@ -44,13 +44,13 @@ class MarkTest extends BaseController
     public function question()
     {
         $where = [];
-        $where['pre_score'] = 0;
+        $where['weight'] = 0;
         // $where['onside_score'] = 0;
-        $where = "assessment_group_id = 3 AND application_type_id = 1 AND application_type_sub_id = 5";
+        // $where = "assessment_group_id = 3 AND application_type_id = 1 AND application_type_sub_id = 5";
         $data['fields'] = $this->db->getFieldNames('question');
         $data['result'] = $this->db->table('question')->orderBy('id', 'desc')->where($where)->get()->getResultObject();
         // pp(count($data['result']));
-        pp_sql();
+        // pp_sql();
         // pp($data['fields']);
 
         // Template

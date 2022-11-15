@@ -66,8 +66,8 @@ $routes->group('auth', static function ($routes) {
     $routes->post('ajax-reset-password', 'RegisterController::resetPassword');
 });
 
-$routes->group('notification', static function($routes) {
-    $routes->get('/', 'FrontendController::notification',['filter' => 'auth']);
+$routes->group('notification', static function ($routes) {
+    $routes->get('/', 'FrontendController::notification', ['filter' => 'auth']);
 });
 
 $routes->group('profile', ['filter' => 'auth:frontend'], static function ($routes) {
@@ -95,7 +95,7 @@ $routes->group('inner-api', static function ($routes) {
         $routes->post('get', 'NotiController::getNoti', ['filter' => 'api']);
     });
 
-    $routes->group('profile', static function ($routes){
+    $routes->group('profile', static function ($routes) {
         $routes->post('update', 'FrontendController::updateProfile', ['filter' => 'auth:frontend']);
         $routes->post('upload/image', 'FilesController::uploadProfile', ['filter' => 'auth:frontend']);
     });
@@ -106,17 +106,17 @@ $routes->group('inner-api', static function ($routes) {
         $routes->post('finish', 'ApplicationController::finishApp', ['filter' => 'api:frontend']);
         $routes->get('type-all', 'ApplicationController::getAppTypeAndSubAllByAjax', ['filter' => 'api:frontend']);
         $routes->post('remove/file', 'ApplicationController::removeFiles', ['filter' => 'api:frontend']);
-        $routes->post('upload', 'ApplicationController::uploadFiles', ['filter' => 'api:frontend']); 
-        $routes->get('download/file/(:num)/(:any)', 'FilesController::downloadApplicationFile/$1/$2', ['filter' => 'auth:frontend']);       
+        $routes->post('upload', 'ApplicationController::uploadFiles', ['filter' => 'api:frontend']);
+        $routes->get('download/file/(:num)/(:any)', 'FilesController::downloadApplicationFile/$1/$2', ['filter' => 'auth:frontend']);
     });
-    
+
     $routes->get('question/get', 'AnswerController::getQuestionByAjax', ['filter' => 'api:frontend']);
     $routes->group('answer', static function ($routes) {
         $routes->get('get/(:any)', 'AnswerController::getAnswerByAjax/$1', ['filter' => 'api:frontend']);
         $routes->post('save', 'AnswerController::saveReply', ['filter' => 'api:frontend']);
         $routes->post('upload', 'AnswerController::uploadFiles', ['filter' => 'api:frontend']);
         $routes->post('remove/file', 'AnswerController::removeFiles', ['filter' => 'api:frontend']);
-        $routes->get('download/file/(:num)/(:any)', 'FilesController::downloadAnswerFile/$1/$2', ['filter' => 'auth:frontend']); 
+        $routes->get('download/file/(:num)/(:any)', 'FilesController::downloadAnswerFile/$1/$2', ['filter' => 'auth:frontend']);
     });
 
     $routes->group('boards', static function ($routes) {
@@ -143,7 +143,6 @@ $routes->group('inner-api', static function ($routes) {
             });
         });
     });
-
 });
 
 $routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], static function ($routes) {
@@ -152,6 +151,11 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], stat
 
     $routes->get('', 'Dashboard::index', ['filter' => 'auth:backend']);
     $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth:backend']);
+    // Dashboard (แอดมินและเจ้าหน้าที่เข้าถึงได้)
+    $routes->group('Dashboard', static function ($routes) {
+        $routes->get('', 'Dashboard::index', ['filter' => 'auth:backend']);
+        $routes->post('getData', 'Dashboard::getData', ['filter' => 'api:backend']);
+    });
 
     // Users (เฉพาะแอดมินที่เข้าได้)
     $routes->group('Users', static function ($routes) {
@@ -205,6 +209,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], stat
         $routes->post('delete', 'News::delete', ['filter' => 'api:backend']);
         $routes->post('uploadImage', 'News::uploadImage', ['filter' => 'api:backend']);
         $routes->post('removeImage', 'News::removeImage', ['filter' => 'api:backend']);
+        $routes->post('saveCategory', 'News::saveCategory', ['filter' => 'api:backend']);
     });
 
     // Approve (แอดมินและเจ้าหน้าที่เข้าถึงได้)
@@ -240,7 +245,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], stat
         $routes->get('edit/(:any)', 'OnSide::edit/$1', ['filter' => 'auth:backend']);
         $routes->post('saveInsert', 'OnSide::saveInsert', ['filter' => 'api:backend']);
         $routes->post('saveUpdate', 'OnSide::saveUpdate', ['filter' => 'api:backend']);
-        
+
         $routes->post('getScore/(:any)', 'OnSide::getScore/$1', ['filter' => 'api:backend']);
         $routes->get('estimate', 'OnSide::estimate', ['filter' => 'auth:backend']);
         $routes->get('view/(:any)', 'OnSide::view/$1', ['filter' => 'auth:backend']);
@@ -249,12 +254,13 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], stat
     // Complete (แอดมินและเจ้าหน้าที่เข้าถึงได้)
     $routes->group('Complete', static function ($routes) {
         $routes->get('', 'Complete::index', ['filter' => 'auth:4']);
-        $routes->get('register', 'Complete::register', ['filter' => 'api:backend']);
     });
 
     // Report (แอดมินและเจ้าหน้าที่เข้าถึงได้)
     $routes->group('Report', static function ($routes) {
         $routes->get('', 'Report::index', ['filter' => 'auth:4']);
+        $routes->get('register', 'Report::register', ['filter' => 'api:backend']);
+        $routes->get('export/(:any)', 'Report::export/$1', ['filter' => 'auth:backend']);
     });
 
     // MarkTest is Controller for Test Only
@@ -265,8 +271,19 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], stat
     $routes->post('MarkTest/delete', 'MarkTest::delete');
     $routes->post('MarkTest/saveInsert', 'MarkTest::saveInsert');
     $routes->post('MarkTest/saveUpdate', 'MarkTest::saveUpdate');
-
 });
+
+
+// $routes->group('backend', static function ($routes) {
+//     // MarkTest is Controller for Test Only
+//     $routes->get('MarkTest', 'MarkTest::index');
+//     $routes->get('Question', 'MarkTest::question');
+//     $routes->get('MarkTest/excel', 'MarkTest::excel');
+//     $routes->post('MarkTest/getData', 'MarkTest::getData');
+//     $routes->post('MarkTest/delete', 'MarkTest::delete');
+//     $routes->post('MarkTest/saveInsert', 'MarkTest::saveInsert');
+//     $routes->post('MarkTest/saveUpdate', 'MarkTest::saveUpdate');
+// });
 
 $routes->environment('development', static function ($routes) {
     $routes->get('set-session', 'LoginController::setSession');

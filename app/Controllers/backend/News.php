@@ -200,4 +200,16 @@ class News extends BaseController
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการลบข้อมูลไม่สำเร็จ']);
         }
     }
+
+    public function saveCategory()
+    {
+        $post = $this->input->getVar();
+        $result = $this->db->table('news_category')->insert($post);
+        if ($result) {
+            $result = $this->db->table('news_category')->get()->getResultObject();
+            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ', 'data' => $result]);
+        } else {
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ', 'data' => null]);
+        }
+    }
 }

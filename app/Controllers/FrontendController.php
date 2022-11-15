@@ -48,7 +48,7 @@ class FrontendController extends BaseController
         if($user->role_id == 1){
             $builder = $this->db->table('application_form a')
                 ->join('application_type t','a.application_type_id = t.id')
-                ->join('application_type_sub ts','a.application_type_sub_id = ts.id')
+                ->join('application_type_sub ts','a.application_type_sub_id = ts.id','LEFT')
                 ->select('a.status, a.attraction_name_th attr, t.name t_name, ts.name ts_name')
                 ->where('created_by',session()->get('id'))
                 ->get();
@@ -255,13 +255,15 @@ class FrontendController extends BaseController
     {
         $stage = $this->getStage($id,1);
         $assign = $this->getGroupEstimate('asm',session()->get('id'));
+        $isFinish = $this->checkEstimateFinish($id,1,session()->get('id'));
         
         $data = [
             'title' => 'ประเมินรอบ Pre-screen',
             'view' => 'frontend/boards/pre-screen-estimate',
             'app_id' => $id,
             'stage' => $stage,
-            'assign' => $assign
+            'assign' => $assign,
+            'isFinish' => $isFinish
         ];
         
         return view('frontend/entrepreneur/_template',$data);
@@ -271,6 +273,8 @@ class FrontendController extends BaseController
     {
         $stage = $this->getStage($id,2);
         $assign = $this->getGroupEstimate('asm',session()->get('id'));
+        $isFinish = $this->checkEstimateFinish($id,2,session()->get('id'));
+
         $obj = new EstimateScore();
         $score = $obj->where('application_id',$id)
             ->select('score_prescreen_tt')
@@ -282,10 +286,31 @@ class FrontendController extends BaseController
             'app_id' => $id,
             'stage' => $stage,
             'assign' => $assign,
-            'score' => $score->score_prescreen_tt
+            'score' => $score->score_prescreen_tt,
+            'isFinish' => $isFinish
         ];
         
         return view('frontend/entrepreneur/_template',$data);
+    }
+
+    private function checkEstimateFinish($id,$stage,$userId)
+    {
+        $obj = new \App\Models\EstimateIndividual();
+        $ind = $obj->select('score_pre, score_onsite')
+            ->where([
+                'application_id' => $id,
+                'estimate_by' => $userId
+            ])
+            ->first();
+
+        if(
+            (!empty($ind->score_pre) && $stage == 1)
+            || (!empty($ind->score_onsite) && $stage == 2)
+        ){
+            return 'finish';
+        } else {
+            return 'unfinish';
+        }
     }
 
     private function getGroupEstimate($group,$id)

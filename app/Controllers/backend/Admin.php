@@ -20,7 +20,7 @@ class Admin extends BaseController
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
 
         // Template
-        $data['title']  = 'ผู้ดูแลระะบบ';
+        $data['title']  = 'ผู้ดูแลระบบ';
         $data['view']   = 'administrator/admin/index';
         $data['ci']     = $this;
 
