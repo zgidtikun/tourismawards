@@ -1,6 +1,6 @@
 <div class="banner-box">
 
-    <div class="txt-banner">
+    <div class="txt-banner" id="pointer-0">
         <h2>ข้อมูลการประกวดรางวัล</h2>
     </div>
 
@@ -8,7 +8,7 @@
 
 <div class="container tourismaward">
     <div class="container_box">
-        <div class="row">
+        <div class="row" id="pointer-1">
             <div class="col12">
                 <div class="main-title">
                     <div class="catagory-txt">
@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="pointer-2">
             <div class="col12">
                 <div class="main-title">
                     <div class="catagory-txt">
@@ -131,7 +131,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="pointer-3">
             <div class="col12">
                 <div class="main-title">
                     <div class="catagory-txt">
@@ -153,7 +153,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="pointer-4">
             <div class="col12">
                 <div class="main-title">
                     <div class="catagory-txt">
@@ -176,7 +176,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="pointer-5">
             <div class="col12">
                 <div class="main-title">
                     <div class="catagory-txt">
@@ -200,3 +200,38 @@
 
     </div>
 </div>
+<script>
+    $(document).ready(()=>{
+        try {
+            const sPageURL = window.location.search.substring(1);
+            const sURLVariables = sPageURL.split('&');
+            let pv;
+
+            $.each(sURLVariables,(key, value)=>{
+                const sParameterName = value.split('=');
+                if(sParameterName[0] == 'p'){
+                    pv = sParameterName[1];
+                    return;
+                }
+            });
+            
+            switch(pv.toLowerCase()){
+                case 'attraction':
+                case 'accommodation':
+                case 'healthandwellness':
+                case 'tourprogram':
+                    $('#pointer-1')[0].scrollIntoView();
+                    break;
+                case 'judge':
+                    $('#pointer-3')[0].scrollIntoView();
+                    break;
+                case 'benefits':
+                    $('#pointer-4')[0].scrollIntoView();
+                    break;
+                default: 
+                    $('#pointer-0')[0].scrollIntoView();
+                    break;
+            }
+        } catch(error){}
+    });
+</script>

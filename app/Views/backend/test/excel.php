@@ -31,7 +31,7 @@ $sheet->setCellValue('A2', $TITLE)->mergeCells('A2:C2');
 $sheet->setCellValue('A3', "")->mergeCells('A3:C3');
 
 //set Format
-// $sheet->getStyle('X')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
+$sheet->getStyle('A:N')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
 
 //set Amount Column
 $colExcel = colExcel(3);

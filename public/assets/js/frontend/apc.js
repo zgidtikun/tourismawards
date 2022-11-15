@@ -235,7 +235,8 @@ const register = {
                         case 4: 
                             $('#comoment').html(app.judge_comment);
                             $('#formstep-sts').addClass('notpass');
-                            $('#formstep-sts').html('ไม่ผ่านการอนุมัติ');
+                            let sts_html = $('#formstep-sts').html();
+                            $('#formstep-sts').html('ตอบกลับ'+sts_html);
                             $('.form-main-title, .formstatus-comoment').removeClass('hide');
                             $('#formstatus-uncomplete').removeClass('hide');
                             $('.attach-file').remove();
@@ -244,7 +245,7 @@ const register = {
                             $('#formstep-sts').addClass('notpass');
                             $('#formstep-sts').html('ไม่ผ่านการอนุมัติ');
                             $('.form-main-title').removeClass('hide');
-                            $('#formstatus-uncomplete').removeClass('hide');
+                            $('#formstatus-nopass').removeClass('hide');
                             $('.regis-form-data input, textarea').prop('disabled',true);
                             $('.attach-file').remove();
                         break;

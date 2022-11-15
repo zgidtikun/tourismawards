@@ -28,7 +28,7 @@
             <thead>
               <tr>
                 <th class="text-center" width="1%">#</th>
-                <th class="text-center" width="10%">ชื่อผู้ดูแลระะบบ</th>
+                <th class="text-center" width="10%">ชื่อผู้ดูแลระบบ</th>
                 <!-- <th class="text-center" width="10%">ประเภทสมาชิก</th> -->
                 <th class="text-center" width="10%">เบอร์มือถือ</th>
                 <th class="text-center" width="10%">E-mail</th>

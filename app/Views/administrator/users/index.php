@@ -57,9 +57,9 @@
             ?>
                 <tr>
                   <td class=""><?= $i++ ?></td>
-                  <td class="text-start">
+                  <td class="">
                     <?php
-                    if ($value->profile != "") {
+                    if (!empty($value->profile) && $value->profile != "") {
                       $path = base_url() . "/" . $value->profile;
                     } else {
                       $path = base_url() . '/assets/images/unknown_user.jpg';

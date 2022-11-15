@@ -39,9 +39,12 @@ const setPointer = (cate,seg) => {
     pointer = { cate: cate, seg: seg };
 }
 
-
 const getStageStatus = () => {
     return sp.status;
+}
+
+const getIsFinish = () => {
+    return sp.isFinish;
 }
 
 const init = () =>{
@@ -282,7 +285,7 @@ const setQuestion = (cate,seg) => {
     }
 
     setPointer(cate,seg);
-    console.log(question)
+    
     qTitle.attr('data-id',question.reply_id);
     qTitle.html(category.group.name);
     qSum.html(category.question.length);
@@ -459,7 +462,11 @@ const checkComplete = () => {
 }
 
 const disabledForm = () => {
-    if($.inArray(Number(getStageStatus()),[3,6,7]) !== -1){
+    
+    if(
+        $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
+        || getIsFinish() == 'finish'
+    ){
         $('.btn-confirm-submit').prop('disabled',true);
         esCmm.prop('readonly','readyonly');
         qRequest.prop('readonly','readyonly');
@@ -536,7 +543,7 @@ qRequest.keyup(() => {
     } else {
         dataset[point.cate].question[point.seg].request_list = null;
         dataset[point.cate].question[point.seg].request_status = null;
-        dataset[point.cate].question[point.seg].request_date = null
+        dataset[point.cate].question[point.seg].request_date = null;
     }
     
     dataset[point.cate].question[point.seg].estimate = true;

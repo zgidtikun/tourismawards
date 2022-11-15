@@ -1,8 +1,7 @@
-<!-- ห้ามแก้ไข!! ไฟล์นี้มีการเรียกใช้ทั้งระบบเพื่อลดการเขียนโค๊ดซ้ำๆทั้งที่ทำงานแบบเดิม -->
 <script>
   const ENVIRONMENT = '<?php echo $_ENV['CI_ENVIRONMENT'] ?>';
   const BASE_URL = '<?php echo base_url() ?>';
-  const BASE_URL_BACKEND = '<?php echo base_url('backend') ?>';
+  const BASE_URL_BACKEND = '<?php echo base_url('administrator') ?>';
   $(function() {
     <?php if (session('success')) { ?>
       toastr.success("<?php echo session('success'); ?>");

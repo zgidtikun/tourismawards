@@ -21,7 +21,7 @@
                             <div class="formstep-title">2. กรอกแบบประเมินขั้นต้น (Pre-Screen)</div>
                         </a>
                         <div class="formstep-status" id="formstep-sts" data-tab="2">
-                            <?= $duedate->expired_str ?>
+                            <?= 'ภายในวันที่ '.$duedate->expired_str ?>
                         </div>
                         <div class="formstep-icon"><span><i class="bi bi-pencil-fill"></i></span></div>
                     </div>

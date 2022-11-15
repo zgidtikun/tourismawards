@@ -359,6 +359,7 @@ a:visited {
     border-radius: 5px;
     width: 100%;
     max-width: 150px;
+    position: relative;
 }
 
 .btn-blue:link {
@@ -1958,7 +1959,40 @@ tfoot {
     flex-direction: column;
 }
 
-.select2-container {}
+ul.list-report {
+    list-style: none;
+    padding: 0;
+    margin: 0 -10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list-report li {
+    width: 25%;
+    display: flex;
+    padding: 10px;
+}
+
+.list-report li a.btn-export,
+.list-report li a.btn-export:visited {
+    width: 100%;
+    max-width: 100%;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 15px 20px;
+    padding-left: 60px;
+    align-items: baseline;
+}
+
+.list-report li a i {
+    position: absolute;
+    left: 20px;
+    top: 11px;
+}
+
+.list-report li a i:before {
+    font-size: 24px;
+}
 
 @media screen and (max-width: 1366px) {
     .regis-form-step {
@@ -2146,6 +2180,9 @@ tfoot {
         padding-left: 0;
         padding-right: 0
     }
+    .list-report li {
+        width: 33.33%;
+    }
 }
 
 @media screen and (max-width:768px) {
@@ -2198,6 +2235,9 @@ tfoot {
     }
     [class^="dashboardcontent-col"] {
         width: 100%;
+    }
+    .list-report li {
+        width: 50%;
     }
 }
 
@@ -2535,6 +2575,16 @@ tfoot {
         flex-direction: row;
         align-items: baseline;
         justify-content: space-between;
+    }
+    ul.list-report {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .list-report li {
+        width: 100%;
     }
 }
 

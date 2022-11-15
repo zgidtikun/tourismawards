@@ -4979,7 +4979,7 @@ textarea.form-control-lg {
     --bs-btn-disabled-border-color: #0C2C55;
 }
 
-.btn-action {
+.btn-action, .btn-score, .btn-back {
     --bs-btn-color: #429DF0;
     --bs-btn-bg: #E5F3FF;
     --bs-btn-border-color: #E5F3FF;
@@ -5278,7 +5278,6 @@ img.profile {
     display: flex;
     justify-content: flex-end;
 }
-
 
 [class^='regis-form-data-col'].clear {
     display: flex;
@@ -5719,4 +5718,12 @@ img.profile {
 
 .va-center {
     vertical-align: center !important;
+}
+
+.swal2-container {
+    z-index: 10009 !important;
+}
+
+.swal2-popup {
+    width: auto !important;
 }

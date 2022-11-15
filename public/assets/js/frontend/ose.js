@@ -42,6 +42,10 @@ const getStageStatus = () => {
     return sp.status;
 }
 
+const getIsFinish = () => {
+    return sp.isFinish;
+}
+
 const init = () =>{
     loading('show');
 
@@ -50,13 +54,16 @@ const init = () =>{
         tycoon = rs.tycoon;     
         dataset = rs.data;
 
-        if($.inArray(Number(getStageStatus()),[1,2,3,4,5]) !== -1){
+        if(
+            $.inArray(Number(getStageStatus()),[1,2,3,4,5]) !== -1
+            && getIsFinish() != 'finish'
+        ){
             $('.attach-file').remove();             
         } else { 
             $('.regis-form-data textarea, #note').prop('readonly','readonly');
             $('.btn-main, .btn-action, .selecter-file, .bfd-dropfield').remove();
             $('.image-gallery .remove, .btn-memosave').remove();
-            $('#btn-reset, #btn-save').remove();
+            $('#btn-reset, #btn-save, .btn-confirm-submit').remove();
         }
         
         let tmp = tycoon.t_name.split('(');
@@ -124,8 +131,10 @@ const draft = (cate,seg) => {
 }
 
 const setFinish = () => {
-    let tscore, mscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
-    tscore = mscore = 0 
+    let tscore, mscore, tescore, ttescore, sbscoe, 
+        tsbscoe, rsscore, trsscore, cscore;
+
+    tscore = mscore = cscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
 
@@ -133,7 +142,7 @@ const setFinish = () => {
         let index = av-1;
 
         $.each(dataset[index].question,(qk,qv) => {
-            if(!empty(qv.score_onsite)){
+            if(!empty(qv.score_onsite) && Number(qv.weight) > 0){
                 let score = Number(qv.score_onsite);
                 const total = score / Number(qv.weight);
 
@@ -153,6 +162,9 @@ const setFinish = () => {
                 tscore += total;
                 mscore += Number(qv.onside_score);
             }
+            else if(!empty(qv.score_onsite) && Number(qv.weight) <= 0){
+                cscore += Number(qv.score_onsite);
+            }
         });
     });
 
@@ -168,7 +180,12 @@ const setFinish = () => {
             + '<br>'
             + 'คะแนนที่ประเมินคือ <span class="txt-yellow">'
             + sscore
-            + '</span> คะแนน',
+            + '</span> คะแนน'
+            // + '<br>'
+            // + 'คะแนนการจัดการคาร์บอนต่ำคือ <span class="txt-yellow">'
+            // + cscore
+            // + '</span> คะแนน'
+            ,
         text: 'กรุณาตรวจสอบความถูกต้องก่อนส่งผลประเมินเข้าระบบ',
         button: {
             confirm: 'ส่งผลประเมินเข้าระบบ',
@@ -202,7 +219,8 @@ const setFinish = () => {
                     alert.show(rs.result,'ไม่สามารถส่งผลประเมินเข้าระบบได้',rs.message);
                 }
                 else {
-                    alert.show(rs.result, 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '').then(() => {
+                    alert.show(rs.result, 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '')
+                    .then(() => {
                         window.location.reload();
                     });
                 }
@@ -245,7 +263,7 @@ const setQuestion = (cate,seg) => {
     }
 
     setPointer(cate,seg);
-
+    
     qTitle.attr('data-id',question.reply_id);
     qTitle.html(category.group.name);
     qSum.html(category.question.length);
@@ -319,10 +337,13 @@ const setQuestion = (cate,seg) => {
         let tmp = v.split('='),
             dis = ck = '';
             
-        if($.inArray(Number(getStageStatus()),[3,6,7]) !== -1){
+        if(
+            $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
+            || getIsFinish() == 'finish'
+        ){
             dis = 'disabled';
         }
-
+        
         if(!empty(question.score_onsite)){
             if(Number(question.score_onsite) == Number(tmp[0].trim())){
                 ck = 'checked';
@@ -419,7 +440,10 @@ const checkComplete = () => {
 }
 
 const disabledForm = () => {
-    if($.inArray(Number(getStageStatus()),[3,6,7]) !== -1){
+    if(
+        $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
+        || getIsFinish() == 'finish'
+    ){
         $('.btn-confirm-submit').prop('disabled',true);
         $('.btn-main, .btn-action, .selecter-file, .bfd-dropfield').remove();
         esCmm.prop('readonly','readyonly');
@@ -448,7 +472,14 @@ const calScore = (ele) => {
     const question = dataset[point.cate].question[point.seg];
     const maxscore = question.onside_score;
     const weight = question.weight;
-    const selfscore = parseFloat(ele.value) * parseFloat(weight);
+    let selfscore;
+
+    if(Number(weight) > 0){
+        selfscore = parseFloat(ele.value) * parseFloat(weight);
+    } else {
+        selfscore = ele.value;
+    }
+
     const totalscore = selfscore / maxscore;
     
     dataset[point.cate].question[point.seg].score_onsite = ele.value;

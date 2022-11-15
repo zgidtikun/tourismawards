@@ -7,7 +7,7 @@
                     ประเมินรอบขั้นต้น (Pre-screen)
                 </div>
                 <div class="form-main-btn">
-                    <button style="width: 100px;" class="btn btn-action fw-semibold"
+                    <button style="width: 100px;" class="btn btn-back fw-semibold"
                     onclick="window.open('<?=base_url('boards')?>','_self')">
                         ย้อนกลับ
                     </button>
@@ -39,42 +39,42 @@
                             รหัสใบสมัคร : <span class="fw-normal" id="tyCode"></span>
                             </span>
                         </div>
-                        <div class="col-sm-12 col-md-4 mb-2"">
+                        <div class="col-sm-12 col-md-4 mb-2">
                             <span class="fw-semibold text-base-main">
                             ประเภท : <span class="fw-normal" id="tyType"></span>
                             </span>
                         </div>
-                        <div class="col-sm-12 col-md-4 mb-2"">
+                        <div class="col-sm-12 col-md-4 mb-2">
                             <span class="fw-semibold text-base-main">
                             ชื่อ-นามสกุล : <span class="fw-normal" id="tyName"></span>
                             </span>
                         </div>
-                        <div class="col-sm-12 col-md-4 mb-2"">
+                        <div class="col-sm-12 col-md-4 mb-2">
                             <span class="fw-semibold text-base-main">
                             ชื่อสถานประกอบการ : <span class="fw-normal" id="tyAttnTh"></span>
                             </span>
                         </div>
-                        <div class="col-sm-12 col-md-4 mb-2"">
+                        <div class="col-sm-12 col-md-4 mb-2">
                             <span class="fw-semibold text-base-main">
                             สาขา : <span class="fw-normal" id="tyTSbu"></span>
                             </span>
                         </div>
-                        <div class="col-sm-12 col-md-4 mb-2"">
+                        <div class="col-sm-12 col-md-4 mb-2">
                             <span class="fw-semibold text-base-main">
                             อีเมล : <span class="fw-normal" id="tyEmail"></span>
                             </span>
                         </div>
-                        <div class="col-sm-12 col-md-4 mb-2"">
+                        <div class="col-sm-12 col-md-4 mb-2">
                             <span class="fw-semibold text-base-main">
                             Establishment : <span class="fw-normal" id="tyAttnEn"></span>
                             </span>
                         </div>
-                        <div class="col-sm-12 col-md-4 mb-2"">
+                        <div class="col-sm-12 col-md-4 mb-2">
                             <span class="fw-semibold text-base-main">
                             วันที่ส่งใบสมัคร : <span class="fw-normal" id="tyUdat"></span>
                             </span>
                         </div>
-                        <div class="col-sm-12 col-md-4 mb-2"">
+                        <div class="col-sm-12 col-md-4 mb-2">
                             <span class="fw-semibold text-base-main">
                             เบอร์ติดต่อ : <span class="fw-normal" id="tyTel"></span>
                             </span>
@@ -338,14 +338,18 @@ aria-hidden="true">
 <script src="<?= base_url('assets/js/frontend/psce.js') ?>?v=<?= $app->script_v ?>" async></script>
 <script defer>
     $(document).ready(function() {
-        try {
+        // try {
             setPage(
                 <?=$app_id?>,
-                { stage: <?=$stage->stage?>, status: <?=$stage->status?> },
+                { 
+                    stage: <?=$stage->stage?>, 
+                    status: <?=$stage->status?>,
+                    isFinish: '<?=$isFinish?>',
+                },
                 [<?=implode(",",$assign)?>]
             );
-        } catch(error) {
-            window.location.reload();
-        }
+        // } catch(error) {
+        //     window.location.reload();
+        // }
     });
 </script>

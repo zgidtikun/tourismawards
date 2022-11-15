@@ -33,20 +33,33 @@
           <ul>
             <li>
               <a href="<?= base_url() ?>/administrator/Approve" data-type="process">
-                <label>ตรวจสอบใบสมัคร <span class="menu-list-amount"><?= countNotification(1) ?></span></label>
+                <label>
+                  ตรวจสอบใบสมัคร
+                  <?php if (countNotification(1) != 0) : ?>
+                    <span class="menu-list-amount"><?= countNotification(1) ?></span>
+                  <?php endif; ?>
+                </label>
               </a>
             </li>
             <li><a href="<?= base_url() ?>/administrator/Approve/history" data-type="process"><label>ประวัติการตรวจสอบใบสมัคร</label></a></li>
             <li><a href="<?= base_url() ?>/administrator/PreScreen" data-type="process"><label>ใบสมัครที่ผ่านการอนุมัติ</label></a></li>
             <li>
               <a href="<?= base_url() ?>/administrator/Estimate" data-type="process">
-                <label>แบบประเมินขั้นต้น (Prescreen) <span class="menu-list-amount"><?= countNotification(2) ?></span></label>
+                <label>แบบประเมินขั้นต้น (Prescreen)
+                  <?php if (countNotification(2) != 0) : ?>
+                    <span class="menu-list-amount"><?= countNotification(2) ?></span>
+                  <?php endif; ?>
+                </label>
               </a>
             </li>
             <li><a href="<?= base_url() ?>/administrator/Estimate/prescreen" data-type="process"><label>การประเมินขั้นต้น</label></a></li>
             <li>
               <a href="<?= base_url() ?>/administrator/OnSide" data-type="process">
-                <label>เพิ่มกรรมการรอบลงพื้นที่ <span class="menu-list-amount"><?= countNotification(3) ?></span></label>
+                <label>เพิ่มกรรมการรอบลงพื้นที่
+                  <?php if (countNotification(3) != 0) : ?>
+                    <span class="menu-list-amount"><?= countNotification(3) ?></span>
+                  <?php endif; ?>
+                </label>
               </a>
             </li>
             <li><a href="<?= base_url() ?>/administrator/OnSide/estimate" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
@@ -63,13 +76,7 @@
         </div>
       </div>
       <div class="backendmenu-list-row">
-        <a href="javascript:void(0)" class="btn-menulist" data-tab="4" data-type="report"><i class="bi bi-file-text"></i> รายงาน</a>
-        <div class="hide-menu-list" data-tab="4" data-type="report">
-          <ul>
-            <li><a href="admin_prescreenreport.html" data-type="report"><label>รายงานรอบ Pre-screen</label></a></li>
-            <li><a href="admin_localreport.html" data-type="report"><label>รายงานรอบลงพื้นที่</label></a></li>
-          </ul>
-        </div>
+        <a href="<?= base_url() ?>/administrator/Report" data-tab="4" data-type="report"><i class="bi bi-file-text"></i> รายงาน</a>
       </div>
     </div>
   </div>
