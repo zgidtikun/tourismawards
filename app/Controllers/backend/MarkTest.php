@@ -14,7 +14,7 @@ class MarkTest extends BaseController
     {
         // pp(session()->get());
         // pp(checkPermission([4]));
-        // px(password_hash('0000', PASSWORD_DEFAULT));
+        px(password_hash('0000', PASSWORD_DEFAULT));
         $model = new Admin();
 
         $page    = (int) ($this->request->getGet('page') ?? 1);

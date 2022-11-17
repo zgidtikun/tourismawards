@@ -39,9 +39,7 @@ class Estimate extends BaseController
             $like['status'] = $_GET['status'];
         }
 
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id', 'left')->where('C.application_form_id', NULL)->where('US.stage', 1)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
-        // pp_sql();
-        // exit;
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id, C.assessment_round')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id AND C.assessment_round = 2', 'left')->where('C.application_form_id', NULL)->where('US.stage', 1)->where('AP.status', 3)->where('US.status', 1)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
 
         $data['application_type'] = $this->ApplicationType->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
@@ -67,8 +65,8 @@ class Estimate extends BaseController
         $data['status_1'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"1"', 'both')->get()->getResultObject();
         $data['status_2'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"2"', 'both')->get()->getResultObject();
         $data['status_3'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"3"', 'both')->get()->getResultObject();
-        
-        $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->get()->getRowObject();
+
+        $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 1)->get()->getRowObject();
 
         // Template
         $data['title']  = "ประเมินขั้นต้น (Pre-screen)";
@@ -158,7 +156,7 @@ class Estimate extends BaseController
             $like['status'] = $_GET['status'];
         }
 
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id', 'left')->where('C.application_form_id is NOT NULL', NULL, FALSE)->where('US.stage', 1)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id, C.assessment_round')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id AND C.assessment_round = 2', 'left')->where('C.application_form_id is NOT NULL', NULL, FALSE)->where('US.stage', 1)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
         // pp_sql();
         // exit;
 
@@ -186,8 +184,8 @@ class Estimate extends BaseController
         $data['status_1'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"1"', 'both')->get()->getResultObject();
         $data['status_2'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"2"', 'both')->get()->getResultObject();
         $data['status_3'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"3"', 'both')->get()->getResultObject();
-        
-        $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->get()->getRowObject();
+
+        $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 1)->get()->getRowObject();
 
         // Template
         $data['title']  = 'ตรวจสอบใบสมัคร';

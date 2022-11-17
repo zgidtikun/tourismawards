@@ -124,10 +124,7 @@ class Admin extends BaseController
         } else {
             $post['profile'] = $post['profile_old'];
         }
-
-        if (!empty($post['password'])) {
-            $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        
         $data = [
             // 'id'                    => $post[""],
             'prefix'                => $post["prefix"],
@@ -150,6 +147,7 @@ class Admin extends BaseController
         if (!empty($post['password'])) {
             $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
         }
+        // px($data);
         $result = $this->db->table('admin')->where('id', $post['insert_id'])->update($data);
         if ($result) {
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);

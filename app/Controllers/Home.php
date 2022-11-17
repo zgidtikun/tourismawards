@@ -89,6 +89,18 @@ class Home extends BaseController
         return view('template-app',$data);
     }
 
+    public function aboutus()
+    {
+        $data = [
+            'title' => 'เกี่ยวกับโครงการ',
+            '_recapcha' => false,
+            '_banner' => false,
+            'view' => 'about-us'
+        ];
+
+        return view('template-app',$data);
+    }
+
     public function contactus()
     {
         $data = [
@@ -208,12 +220,32 @@ class Home extends BaseController
 
     }
 
-    public function winneraward14()
+    public function winneraward14($param)
     {
+        switch($param){
+            case 'attraction': $tid = 1; break;
+            case 'accommodation': $tid = 2; break;
+            case 'health-and-wellness-tourism': $tid = 3; break;
+            case 'tourism-program': $tid = 4; break;
+        }
+
+        $type = new \App\Models\ApplicationType();
+        $type_s = new \App\Models\ApplicationTypeSub();
+
+        $main = $type->where('id',$tid)
+            ->select('id, name')
+            ->first();
+        
+        $sub = $type_s->where('application_type_id',$tid)
+            ->select('id, name')
+            ->findAll();
+
         $data = [
             'title' => 'ผลงานที่ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ปี 2566',
             '_recapcha' => false,
             '_banner' => false,
+            'main' => $main,
+            'sub' => $sub,
             'view' => 'awards-winner-14'
         ];
 

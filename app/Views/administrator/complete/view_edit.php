@@ -451,108 +451,10 @@
   </div>
 </div>
 
-<div class="backendcontent forminput">
-  <div class="backendcontent-row">
-    <div class="backendcontent-title">
-      <div class="backendcontent-title-txt">
-        <h3>รายชื่อคณะกรรมการสำหรับประเมินใบสมัคร: รอบประเมินขั้นต้น (Pre-screen)</h3>
-      </div>
-    </div>
-
-    <div class="backendform">
-
-      <form id="input_form">
-        <input type="hidden" name="insert_id" id="insert_id" value="<?= @$committees->id ?>">
-        <input type="hidden" name="users_id" id="users_id" value="<?= $result->created_by ?>">
-        <input type="hidden" name="application_form_id" id="application_form_id" value="<?= $result->id ?>">
-        <div class="backendform-row">
-          <div class="backendform-col3">
-            <label data-tab="1">1. Tourism Excellence (Product/Service) <span class="required">*</span></label>
-            <div class="editjudge-out">
-              <select class="js-example-basic-multiple" id="status_1" name="tourism[]" multiple>
-                <?php
-                if (!empty($status_1)) {
-                  foreach ($status_1 as $key => $value) {
-                    $selected = "";
-                    if (!empty($committees->admin_id_tourism)) {
-                      $admin_id = json_decode($committees->admin_id_tourism);
-                      if (in_array($value->id, $admin_id)) {
-                        $selected = "selected";
-                      }
-                    }
-                ?>
-                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
-                <?php
-                  }
-                }
-                ?>
-              </select>
-            </div>
-          </div>
-
-          <div class="backendform-col3">
-            <label data-tab="2">2. Supporting Business & Marketing Factors <span class="required">*</span></label>
-            <div class="editjudge-out">
-              <select class="js-example-basic-multiple" id="status_2" name="supporting[]" multiple>
-                <?php
-                if (!empty($status_2)) {
-                  foreach ($status_2 as $key => $value) {
-                    $selected = "";
-                    if (!empty($committees->admin_id_supporting)) {
-                      $admin_id = json_decode($committees->admin_id_supporting);
-                      if (in_array($value->id, $admin_id)) {
-                        $selected = "selected";
-                      }
-                    }
-                ?>
-                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
-                <?php
-                  }
-                }
-                ?>
-              </select>
-            </div>
-          </div>
-
-          <div class="backendform-col3">
-            <label data-tab="3">3. Responsibility and Safety & Health Administration <span class="required">*</span></label>
-            <div class="editjudge-out">
-              <select class="js-example-basic-multiple" id="status_3" name="responsibility[]" multiple>
-                <?php
-                if (!empty($status_3)) {
-                  foreach ($status_3 as $key => $value) {
-                    $selected = "";
-                    if (!empty($committees->admin_id_responsibility)) {
-                      $admin_id = json_decode($committees->admin_id_responsibility);
-                      if (in_array($value->id, $admin_id)) {
-                        $selected = "selected";
-                      }
-                    }
-                ?>
-                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
-                <?php
-                  }
-                }
-                ?>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-main-btn">
-          <a href="javascript: history.back(1)" class="btn-cancle">ยกเลิก</a>
-          <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
-        </div>
-      </form>
-
-    </div>
-  </div>
-</div>
-
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/Estimate';
+    var pgurl = BASE_URL_BACKEND + '/Complete';
     active_page(pgurl);
 
     $('#field').keyup();
@@ -576,54 +478,12 @@
     });
 
 
+    $(".js-example-basic-multiple").prop("disabled", true);
     $('.js-example-basic-multiple').select2({
       maximumSelectionLength: 2
     });
+
   });
-
-  $('#btn_save').click(function(e) {
-    if (validated()) {
-      var insert_id = $('#insert_id').val();
-      if (insert_id == 0 || insert_id == "") {
-        var res = main_save(BASE_URL_BACKEND + '/Onsite/saveInsert', '#input_form');
-        res_swal(res, 1);
-      } else {
-        var res = main_save(BASE_URL_BACKEND + '/Onsite/saveUpdate', '#input_form');
-        res_swal(res, 1);
-      }
-    }
-  });
-
-  function validated() {
-    var status_1 = $('#status_1 option:selected').map(function(i, e) {
-      return $(e).val();
-    }).get();
-
-    var status_2 = $('#status_2 option:selected').map(function(i, e) {
-      return $(e).val();
-    }).get();
-
-    var status_3 = $('#status_3 option:selected').map(function(i, e) {
-      return $(e).val();
-    }).get();
-
-    if (status_1.length < 2) {
-      toastr.error('กรุณาระบุกรรมการสำหรับ Tourism Excellence อย่างน้อย 2 คน');
-      return false;
-    }
-
-    if (status_2.length < 2) {
-      toastr.error('กรุณาระบุกรรมการสำหรับ Supporting Business อย่างน้อย 2 คน');
-      return false;
-    }
-
-    if (status_3.length < 2) {
-      toastr.error('กรุณาระบุกรรมการสำหรับ Responsibility อย่างน้อย 2 คน');
-      return false;
-    }
-
-    return true;
-  }
 
   $('[name="application_type"]').change(function(e) {
     var res = main_post(BASE_URL_BACKEND + '/Approve/getAplicationTypeSub/' + $(this).val());

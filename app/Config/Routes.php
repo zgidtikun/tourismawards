@@ -38,13 +38,15 @@ $routes->setAutoRoute(false);
 
 $routes->get('/', 'Home::index', ['as' => 'Home']);
 $routes->get('home', 'Home::index');
+$routes->get('about-us', 'Home::aboutus');
 $routes->get('contact-us', 'Home::contactus');
 $routes->post('contact-us/send', 'Home::sendEmailContact');
 $routes->get('judge', 'Home::judge');
 $routes->get('awards-infomation', 'Home::winnerinfo');
 $routes->get('awards-winner', 'Home::winneraward');
 $routes->get('awards-winner-13', 'Home::winneraward13');
-$routes->get('awards-winner-14', 'Home::winneraward14');
+$routes->get('awards-winner/(:any)', 'Home::winneraward14/$1');
+$routes->get('awards-winner-14/(:any)', 'Home::winneraward14/$1');
 $routes->get('privacy-policy', 'Home::privacypolicy');
 $routes->get('new', 'Home::new');
 $routes->get('new/(:num)', 'Home::new_detail/$1');
@@ -233,34 +235,36 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], stat
         $routes->get('', 'Estimate::index', ['filter' => 'auth:backend']);
         $routes->get('edit/(:any)', 'Estimate::edit/$1', ['filter' => 'auth:backend']);
         $routes->post('saveInsert', 'Estimate::saveInsert', ['filter' => 'api:backend']);
-        $routes->post('saveUpdate', 'OnSide::saveUpdate', ['filter' => 'api:backend']);
+        $routes->post('saveUpdate', 'Estimate::saveUpdate', ['filter' => 'api:backend']);
 
         $routes->get('prescreen', 'Estimate::prescreen', ['filter' => 'auth:backend']);
         $routes->get('view/(:any)', 'Estimate::viewEdit/$1', ['filter' => 'auth:backend']);
     });
 
-    // OnSide (แอดมินและเจ้าหน้าที่เข้าถึงได้)
-    $routes->group('OnSide', static function ($routes) {
-        $routes->get('', 'OnSide::index', ['filter' => 'auth:backend']);
-        $routes->get('edit/(:any)', 'OnSide::edit/$1', ['filter' => 'auth:backend']);
-        $routes->post('saveInsert', 'OnSide::saveInsert', ['filter' => 'api:backend']);
-        $routes->post('saveUpdate', 'OnSide::saveUpdate', ['filter' => 'api:backend']);
+    // Onsite (แอดมินและเจ้าหน้าที่เข้าถึงได้)
+    $routes->group('Onsite', static function ($routes) {
+        $routes->get('', 'Onsite::index', ['filter' => 'auth:backend']);
+        $routes->get('edit/(:any)', 'Onsite::edit/$1', ['filter' => 'auth:backend']);
+        $routes->post('saveInsert', 'Onsite::saveInsert', ['filter' => 'api:backend']);
+        $routes->post('saveUpdate', 'Onsite::saveUpdate', ['filter' => 'api:backend']);
 
-        $routes->post('getScore/(:any)', 'OnSide::getScore/$1', ['filter' => 'api:backend']);
-        $routes->get('estimate', 'OnSide::estimate', ['filter' => 'auth:backend']);
-        $routes->get('view/(:any)', 'OnSide::view/$1', ['filter' => 'auth:backend']);
+        $routes->post('getScore/(:any)', 'Onsite::getScore/$1', ['filter' => 'api:backend']);
+        $routes->get('estimate', 'Onsite::estimate', ['filter' => 'auth:backend']);
+        $routes->get('view/(:any)', 'Onsite::view/$1', ['filter' => 'auth:backend']);
     });
 
     // Complete (แอดมินและเจ้าหน้าที่เข้าถึงได้)
     $routes->group('Complete', static function ($routes) {
-        $routes->get('', 'Complete::index', ['filter' => 'auth:4']);
+        $routes->get('', 'Complete::index', ['filter' => 'auth:backend']);
+        $routes->post('getScore/(:any)', 'Onsite::getScore/$1', ['filter' => 'api:backend']);
+        $routes->get('view/(:any)', 'Complete::viewEdit/$1', ['filter' => 'auth:backend']);
     });
 
-    // Report (แอดมินและเจ้าหน้าที่เข้าถึงได้)
+    // Report (เฉพาะแอดมินที่เข้าได้)
     $routes->group('Report', static function ($routes) {
         $routes->get('', 'Report::index', ['filter' => 'auth:4']);
-        $routes->get('register', 'Report::register', ['filter' => 'api:backend']);
-        $routes->get('export/(:any)', 'Report::export/$1', ['filter' => 'auth:backend']);
+        $routes->get('register', 'Report::register', ['filter' => 'api:4']);
+        $routes->get('export/(:any)', 'Report::export/$1', ['filter' => 'auth:4']);
     });
 
     // MarkTest is Controller for Test Only

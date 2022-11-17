@@ -7,12 +7,12 @@
                <ul>
                   <?php if (!session()->get('isLoggedIn')) : ?>
                      <li class="nonlogin">
-                        <a href="<?= route_to('register') ?>" title="ลงทะเบียน">
+                        <a href="<?= base_url('register') ?>" title="ลงทะเบียน">
                            <i class="bi bi-person-circle"></i>&nbsp;&nbsp;ลงทะเบียน
                         </a>
                      </li>
                      <li class="nonlogin">
-                        <a href="<?= route_to('login') ?>" title="เข้าสู่ระบบ">
+                        <a href="<?= base_url('login') ?>" title="เข้าสู่ระบบ">
                            <i class="bi bi-box-arrow-in-right"></i>&nbsp;&nbsp;เข้าสู่ระบบ
                         </a>
                      </li>
@@ -79,7 +79,7 @@
                                           <?php endif; ?>
                                        </p>
                                        <p class="usermail"><?= session()->get('account') ?></p>
-                                       <a href="<?= route_to('auth/logout') ?>" class="userlogout">ออกจากระบบ</a>
+                                       <a href="<?= base_url('auth/logout') ?>" class="userlogout">ออกจากระบบ</a>
                                     </div>
                                  </div>
                                  <div class="user-profile">
@@ -102,7 +102,7 @@
                                           &nbsp;&nbsp;<?= $content ?>
                                        </a>
                                     <?php else : ?>
-                                       <a href="backend/dashboard">
+                                       <a href="administrator/dashboard">
                                           <i class="bi bi-file-bar-graph-fill"></i>
                                           &nbsp;&nbsp;Dashboard
                                        </a>
@@ -123,7 +123,7 @@
          </div>
          <div class="header-box-row menulist">
             <div class="header-box-col logo">
-               <a href="<?= route_to('home') ?>">
+               <a href="<?= base_url('home') ?>">
                   <picture>
                      <source srcset="<?= base_url('assets/images/logo.svg') ?>">
                      <source srcset="<?= base_url('assets/images/logo.png') ?>">
@@ -134,10 +134,10 @@
             <div class="header-box-col menu">
                <nav>
                   <ul class="flexnav">
-                     <li><a id="menu-home" href="<?= route_to('home') ?>">หน้าแรก</a></li>
+                     <li><a id="menu-home" href="<?= base_url('home') ?>">หน้าแรก</a></li>
                      <li><a href="javascript:void(0)" id="aboutmenu">เกี่ยวกับโครงการ</a>
                         <ul>
-                           <li><a href="javascript:void(0);">ข้อมูลโครงการฯ /ความเป็นมา/วัตถุประสงค์</a></li>
+                           <li><a href="<?= base_url('about-us') ?>">ข้อมูลโครงการฯ /ความเป็นมา/วัตถุประสงค์</a></li>
                            <li><a href="<?= base_url('judge') ?>">กรรมการที่ปรึกษา</a></li>
                            <li><a href="<?= base_url('judge') ?>">กรรมการตัดสินแต่ละประเภท</a></li>
                         </ul>
@@ -156,23 +156,18 @@
                         <ul>
                            <li><a href="javascript:void(0);">คู่มือการลงทะเบียนประกวดรางวัล</a></li>
                            <li><a href="javascript:void(0);">กำหนดการรับสมัคร</a></li>
-                           <li><a href="javascript:void(0);">สมัครเข้าร่วมประกวดรางวัล</a></li>
+                           <li><a href="<?= base_url('register') ?>">สมัครเข้าร่วมประกวดรางวัล</a></li>
                            <li><a href="javascript:void(0);">เกณฑ์การให้คะแนนตัดสิน</a></li>
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="awardmenu">ผลงานที่ได้รับรางวัล</a>
                         <ul>
-                           <li><a href="<?= base_url('awards-winner-14') ?>">ครั้งที่ 14</a></li>
+                           <li><a href="<?= base_url('awards-winner') ?>">ครั้งที่ 14</a></li>
                            <li><a href="<?= base_url('awards-winner-13') ?>">ครั้งที่ 13</a></li>
                         </ul>
                      </li>
-                     <li><a href="<?= base_url('new') ?>" id="newsmenu">ข่าวประชาสัมพันธ์</a>
-                        <!-- <ul>
-                           <li><a href="javascript:void(0);">บทความข่าวสารที่เกี่ยวข้องกับโครงการฯ</a></li>
-                           <li><a href="javascript:void(0);">ภาพถ่าย</a></li>
-                           <li><a href="javascript:void(0);">วิดีโอ</a></li>
-                           <li><a href="javascript:void(0);">E-Book</a></li>
-                        </ul> -->
+                     <li>
+                        <a href="<?= base_url('new') ?>" id="newsmenu">ข่าวประชาสัมพันธ์</a>
                      </li>
                      <li><a href="<?= base_url('contact-us') ?>" id="contactmenu">ติดต่อเรา</a>
                      </li>
@@ -203,12 +198,12 @@
                   </picture>
                </div>
                <ul>
-                  <li><a href="<?= route_to('home') ?>">หน้าแรก</a></li>
-                  <li><a href="javascript:void(0);">เกี่ยวกับโครงการ</a></li>
+                  <li><a href="<?= base_url('home') ?>">หน้าแรก</a></li>
+                  <li><a href="<?= base_url('about-us') ?>">เกี่ยวกับโครงการ</a></li>
                   <li><a href="<?= base_url('awards-winner') ?>">ข้อมูลการประกวดรางวัล</a></li>
                   <li><a href="javascript:void(0);">คู่มือประกวดรางวัล</a></li>
                   <li><a href="javascript:void(0);">คู่มือการสมัคร</a></li>
-                  <li><a href="javascript:void(0);">ผลงานที่ได้รับรางวัล</a></li>
+                  <li><a href="<?= base_url('awards-winner') ?>">ผลงานที่ได้รับรางวัล</a></li>
                   <li><a href="<?= base_url('new') ?>">ข่าวประชาสัมพันธ์</a></li>
                   <li><a href="<?= base_url('contact-us') ?>">ติดต่อเรา</a></li>
                   <li><a href="javascript:void(0);">ค้นหา</a></li>
@@ -267,30 +262,32 @@
 
    $(".flexnav").flexNav();
 
-   $(document).ready(function() {
-      $.ajax({
-         type: 'post',
-         url: window.location.origin + '/inner-api/noti/get',
-         data: {
-            limit: 5
-         },
-         dataType: 'json',
-         success: function(res) {
-            let icon, list = '';
+   <?php if (session()->get('isLoggedIn')) : ?>
+      $(document).ready(function() {
+         $.ajax({
+            type: 'post',
+            url: window.location.origin + '/inner-api/noti/get',
+            data: {
+               limit: 5
+            },
+            dataType: 'json',
+            success: function(res) {
+               let icon, list = '';
 
-            $.each(res.noti, function(k, v) {
-               list += '<li><a href="' + v.link + '">' + v.message + '</a></li>';
-            });
+               $.each(res.noti, function(k, v) {
+                  list += '<li><a href="' + v.link + '">' + v.message + '</a></li>';
+               });
 
-            icon = '<i class="bi bi-bell-fill"></i>';
-            if (res.noti.length > 0) {
-               icon += '<span class="noti-alert"></span>';
+               icon = '<i class="bi bi-bell-fill"></i>';
+               if (res.noti.length > 0) {
+                  icon += '<span class="noti-alert"></span>';
+               }
+
+               $('#noti-list').html(list);
+               $('.noti-box').attr('data-id', res.id);
+               $('.btn-noti').html(icon);
             }
-
-            $('#noti-list').html(list);
-            $('.noti-box').attr('data-id', res.id);
-            $('.btn-noti').html(icon);
-         }
+         });
       });
-   });
+   <?php endif; ?>
 </script>

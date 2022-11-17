@@ -135,10 +135,7 @@ class Officer extends BaseController
         } else {
             $post['profile'] = $post['profile_old'];
         }
-
-        if (!empty($post['password'])) {
-            $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        
         if (empty($post["award_type"])) {
             $post["award_type"] = [];
         }
@@ -296,10 +293,6 @@ class Officer extends BaseController
             }
         } else {
             $post['profile'] = $post['profile_old'];
-        }
-
-        if (!empty($post['password'])) {
-            $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
         }
         if (empty($post["assessment_group"])) {
             $post["assessment_group"] = [];
