@@ -7,7 +7,6 @@
         color: #f1f1f1;
         width: 100%;
         transition: .5s ease;
-        opacity:0;
         color: white;
         font-size: 18px;
         padding: 10px;
