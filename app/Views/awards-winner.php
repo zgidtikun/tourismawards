@@ -1,3 +1,18 @@
+<style>
+    .award-section-col {
+        cursor: pointer;
+    }
+
+    .award-section-txt {
+        font-size: 20px !important;
+        font-weight: 600;
+        background: rgb(0, 0, 0);
+        background: rgba(0, 0, 0, 0.5);
+        transition: .5s ease;
+        width: auto;
+        border-top-right-radius: 10px;
+    }
+</style>
 <div class="container">
     <div class="container_box">
 
@@ -15,9 +30,11 @@
                     ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
 
                 <div class="award-section">
-                    <div class="award-section-col">
+                    <div class="award-section-col" onclick="toAwardsWinner('attraction')">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
+                                <img src="<?= base_url('assets/images/award_01.jpg') ?>" 
+                                style="max-width: none !important;">
                                 <div class="award-section-txt">
                                     Attraction
                                 </div>
@@ -25,9 +42,11 @@
                         </div>
                     </div>
 
-                    <div class="award-section-col">
+                    <div class="award-section-col" onclick="toAwardsWinner('accommodation')">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
+                                <img src="<?= base_url('assets/images/award_02.jpg') ?>" 
+                                style="max-width: none !important;">
                                 <div class="award-section-txt">
                                     Accommodation
                                 </div>
@@ -35,9 +54,11 @@
                         </div>
                     </div>
 
-                    <div class="award-section-col">
+                    <div class="award-section-col" onclick="toAwardsWinner('health-and-wellness-tourism')">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
+                                <img src="<?= base_url('assets/images/award_03.jpg') ?>" 
+                                style="max-width: none !important;">
                                 <div class="award-section-txt">
                                     Health and Wellness Tourism
                                 </div>
@@ -45,9 +66,11 @@
                         </div>
                     </div>
 
-                    <div class="award-section-col">
+                    <div class="award-section-col" onclick="toAwardsWinner('tourism-program')">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
+                                <img src="<?= base_url('assets/images/award_04.jpg') ?>" 
+                                style="max-width: none !important;">
                                 <div class="award-section-txt">
                                     Tourism Program
                                 </div>
@@ -66,4 +89,9 @@
     $(document).ready(() => {
         $('.mainsite').addClass('winneraward');
     });
+
+    const toAwardsWinner = (param) => {
+        const url = window.location.origin+'/awards-winner/'+param;
+        window.open(url,'_blank');
+    }
 </script>

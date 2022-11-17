@@ -98,7 +98,7 @@
                       <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
                       <td class="text-center"><?= $status ?></td>
                       <td class="text-center">
-                        <?php echo docDate($value->duedate, 3) ?>
+                        <?php echo docDate($value->duedate, 3); ?>
                       </td>
                       <td>
                         <div class="form-table-col edit">

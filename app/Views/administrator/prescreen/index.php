@@ -94,7 +94,7 @@
                       <td class="text-center"><?= docDate($value->created_at, 3) ?></td>
                       <td>
                         <div class="form-table-col edit">
-                          <a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a>
+                          <a href="#" class="btn-edit" title="ดูข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a>
                           <!-- <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a> -->
                         </div>
                       </td>

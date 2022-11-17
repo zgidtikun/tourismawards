@@ -15,18 +15,21 @@
         <a href="<?= base_url() ?>/administrator"><i class="bi bi-layers-fill"></i> สถิติการใช้งาน</a>
       </div>
       <div class="backendmenu-list-row title">เมนูหลัก</div>
-      <div class="backendmenu-list-row">
-        <a href="javascript:void(0)" class="btn-menulist" data-tab="1" data-type="user"><i class="bi bi-grid-fill"></i>สมาชิก</a>
-        <div class="hide-menu-list" data-tab="1" data-type="user">
-          <ul>
-            <li><a href="<?= base_url() ?>/administrator/Users/all" data-type="user"><label>สมาชิกทั้งหมด</label></a></li>
-            <li><a href="<?= base_url() ?>/administrator/Users" data-type="user"><label>ผู้ประกอบการ</label></a></li>
-            <li><a href="<?= base_url() ?>/administrator/Officer" data-type="user"><label>กรรมการ</label></a></li>
-            <li><a href="<?= base_url() ?>/administrator/TAT" data-type="user"><label>เจ้าหน้าที่ ททท.</label></a></li>
-            <li><a href="<?= base_url() ?>/administrator/Admin" data-type="user"><label>ผู้ดูแลระบบ</label></a></li>
-          </ul>
+      
+      <?php if (isAdmin()) : ?>
+        <div class="backendmenu-list-row">
+          <a href="javascript:void(0)" class="btn-menulist" data-tab="1" data-type="user"><i class="bi bi-grid-fill"></i>สมาชิก</a>
+          <div class="hide-menu-list" data-tab="1" data-type="user">
+            <ul>
+              <li><a href="<?= base_url() ?>/administrator/Users/all" data-type="user"><label>สมาชิกทั้งหมด</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/Users" data-type="user"><label>ผู้ประกอบการ</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/Officer" data-type="user"><label>กรรมการ</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/TAT" data-type="user"><label>เจ้าหน้าที่ ททท.</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/Admin" data-type="user"><label>ผู้ดูแลระบบ</label></a></li>
+            </ul>
+          </div>
         </div>
-      </div>
+      <?php endif; ?>
       <div class="backendmenu-list-row">
         <a href="javascript:void(0)" class="btn-menulist" data-tab="2" data-type="process"><i class="bi bi-toggles"></i> ขั้นตอนการดำเนินการ</a>
         <div class="hide-menu-list" data-tab="2" data-type="process">
@@ -54,7 +57,7 @@
             </li>
             <li><a href="<?= base_url() ?>/administrator/Estimate/prescreen" data-type="process"><label>การประเมินขั้นต้น</label></a></li>
             <li>
-              <a href="<?= base_url() ?>/administrator/OnSide" data-type="process">
+              <a href="<?= base_url() ?>/administrator/Onsite" data-type="process">
                 <label>เพิ่มกรรมการรอบลงพื้นที่
                   <?php if (countNotification(3) != 0) : ?>
                     <span class="menu-list-amount"><?= countNotification(3) ?></span>
@@ -62,7 +65,7 @@
                 </label>
               </a>
             </li>
-            <li><a href="<?= base_url() ?>/administrator/OnSide/estimate" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/Onsite/estimate" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
             <li><a href="<?= base_url() ?>/administrator/Complete" data-type="process"><label>ดำเนินการเสร็จสมบูรณ์</label></a></li>
           </ul>
         </div>
@@ -75,9 +78,11 @@
           </ul>
         </div>
       </div>
-      <div class="backendmenu-list-row">
-        <a href="<?= base_url() ?>/administrator/Report" data-tab="4" data-type="report"><i class="bi bi-file-text"></i> รายงาน</a>
-      </div>
+      <?php if (isAdmin()) : ?>
+        <div class="backendmenu-list-row">
+          <a href="<?= base_url() ?>/administrator/Report" data-tab="4" data-type="report"><i class="bi bi-file-text"></i> รายงาน</a>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </div>

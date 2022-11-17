@@ -455,7 +455,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายชื่อคณะกรรมการสำหรับประเมินใบสมัคร: รอบลงพื้นที่</h3>
+        <h3>รายชื่อคณะกรรมการสำหรับประเมินใบสมัคร: รอบประเมินขั้นต้น (Pre-screen)</h3>
       </div>
     </div>
 
@@ -539,16 +539,10 @@
           </div>
         </div>
 
-        <div class="text-end">
-          <?php if (!empty($result->approve_time)) : ?>
-            ผู้อนุมัติ: <?= $result->approve_name ?> อัพเดทวันที่ <?= docDate($result->approve_time, 3) ?> <?= date('H:i', strtotime($result->approve_time)) ?> น.
-          <?php endif; ?>
-        </div>
-
-        <!-- <div class="form-main-btn">
+        <div class="form-main-btn">
           <a href="javascript: history.back(1)" class="btn-cancle">ยกเลิก</a>
           <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
-        </div> -->
+        </div>
       </form>
 
     </div>
@@ -558,7 +552,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/OnSide/estimate';
+    var pgurl = BASE_URL_BACKEND + '/Onsite';
     active_page(pgurl);
 
     $('#field').keyup();
@@ -591,10 +585,10 @@
     if (validated()) {
       var insert_id = $('#insert_id').val();
       if (insert_id == 0 || insert_id == "") {
-        var res = main_save(BASE_URL_BACKEND + '/OnSide/saveInsert', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/Onsite/saveInsert', '#input_form');
         res_swal(res, 1);
       } else {
-        var res = main_save(BASE_URL_BACKEND + '/OnSide/saveUpdate', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/Onsite/saveUpdate', '#input_form');
         res_swal(res, 1);
       }
     }

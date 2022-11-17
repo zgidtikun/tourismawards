@@ -140,23 +140,23 @@
         </div>
 
         <div class="data-score-row">
-          <div class="data-score-col no">1. Tourism Excellence (Product / Service)</div>
+          <div class="data-score-col no">1. <?= $assessment_group[0]->name ?></div>
           <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_tourism">-</span></div>
-          <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onside_tourism">-</span></div>
+          <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_tourism">-</span></div>
           <div class="data-score-col totalscore"><label>รวม : </label><span id="total_tourism">-</div>
         </div>
 
         <div class="data-score-row">
-          <div class="data-score-col no">2. Supporting Business & Marketing Factors</div>
+          <div class="data-score-col no">2. <?= $assessment_group[1]->name ?></div>
           <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_supporting">-</span></div>
-          <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onside_supporting">-</span></div>
+          <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_supporting">-</span></div>
           <div class="data-score-col totalscore"><label>รวม : </label><span id="total_supporting">-</div>
         </div>
 
         <div class="data-score-row">
-          <div class="data-score-col no">3. Reponsibility and Safety & Health Administration</div>
+          <div class="data-score-col no">3. <?= $assessment_group[2]->name ?></div>
           <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_reponsibility">-</span></div>
-          <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onside_reponsibility">-</span></div>
+          <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_reponsibility">-</span></div>
           <div class="data-score-col totalscore"><label>รวม : </label><span id="total_reponsibility">-</div>
         </div>
       </div>
@@ -174,7 +174,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/OnSide/estimate';
+    var pgurl = BASE_URL_BACKEND + '/Onsite/estimate';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -232,7 +232,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/OnSide/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/Onsite/delete', {
         id: id,
         image_cover: $('#image_cover_old').val(),
       });
@@ -241,24 +241,24 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/OnSide/view/' + id;
+    window.location.href = BASE_URL_BACKEND + '/Onsite/view/' + id;
   }
 
   function view_score(id) {
-    var res = main_post(BASE_URL_BACKEND + '/OnSide/getScore/' + id);
+    var res = main_post(BASE_URL_BACKEND + '/Onsite/getScore/' + id);
     // cc(res)
     if (res != null) {
       $('#pre_tourism').html(res.score_prescreen_te);
       $('#pre_supporting').html(res.score_prescreen_sb);
       $('#pre_reponsibility').html(res.score_prescreen_rs);
 
-      $('#onside_tourism').html(res.score_onside_te);
-      $('#onside_supporting').html(res.score_onside_sb);
-      $('#onside_reponsibility').html(res.score_onside_rs);
+      // $('#onsite_tourism').html(res.score_onsite_te);
+      // $('#onsite_supporting').html(res.score_onsite_sb);
+      // $('#onsite_reponsibility').html(res.score_onsite_rs);
 
-      var total_tourism = Number(DF2C(res.score_prescreen_te)) + Number(DF2C(res.score_onside_te));
-      var total_supporting = Number(DF2C(res.score_prescreen_sb)) + Number(DF2C(res.score_onside_sb));
-      var total_reponsibility = Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onside_rs));
+      var total_tourism = Number(DF2C(res.score_prescreen_te)) + Number(DF2C(res.score_onsite_te));
+      var total_supporting = Number(DF2C(res.score_prescreen_sb)) + Number(DF2C(res.score_onsite_sb));
+      var total_reponsibility = Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs));
 
       $('#total_tourism').html(F2C(total_tourism));
       $('#total_supporting').html(F2C(total_supporting));
