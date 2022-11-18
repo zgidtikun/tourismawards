@@ -13,7 +13,8 @@
         border-top-right-radius: 10px;
     }
 </style>
-<div class="container">
+<div class="container"
+style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?>');">
     <div class="container_box">
 
         <div class="row">
@@ -25,9 +26,11 @@
                     </div>
                 </div>
 
-                <p class="txt-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                <p class="txt-center">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                     eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse
-                    ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                    ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. 
+                </p>
 
                 <div class="award-section">
                     <div class="award-section-col" onclick="toAwardsWinner('attraction')">

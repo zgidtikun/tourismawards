@@ -47,6 +47,7 @@ $routes->get('awards-winner', 'Home::winneraward');
 $routes->get('awards-winner-13', 'Home::winneraward13');
 $routes->get('awards-winner/(:any)', 'Home::winneraward14/$1');
 $routes->get('awards-winner-14/(:any)', 'Home::winneraward14/$1');
+$routes->get('application-guide', 'Home::appguide');
 $routes->get('privacy-policy', 'Home::privacypolicy');
 $routes->get('new', 'Home::new');
 $routes->get('new/(:num)', 'Home::new_detail/$1');

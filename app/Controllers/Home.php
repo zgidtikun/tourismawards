@@ -183,6 +183,18 @@ class Home extends BaseController
 
     }
 
+    public function appguide()
+    {
+        $data = [
+            'title' => 'คู่มือการสมัคร',
+            '_recapcha' => false,
+            '_banner' => false,
+            'view' => 'application-guide'
+        ];
+
+        return view('template-app',$data);        
+    }
+
     public function winnerinfo()
     {
         $data = [

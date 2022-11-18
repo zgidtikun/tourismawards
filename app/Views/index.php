@@ -61,11 +61,11 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="1">ประเภทแหล่งท่องเที่ยว</div>
-                <div class="branch_txt" data-tab="1">
-                    Lorem ipsum dolor sit amet, consecter adipiscing elit, sed diam nonuet, consecmmy.m dolor sit amet,
-                    consectetuer adipiscing.
-                </div>
-                <a href="javascript:void(0);" class="btn-yellow">ENTER AWARD</a>
+                <!-- <div class="branch_txt" data-tab="1">
+                </div> -->
+                <a href="<?=base_url('awards-winner/attraction')?>" class="btn-yellow">
+                    ENTER AWARD
+                </a>
             </div>
         </div>
 
@@ -79,11 +79,11 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="2">ประเภทที่พักนักท่องเที่ยว</div>
-                <div class="branch_txt" data-tab="2">
-                    Lorem ipsum dolor sit amet, consecter adipiscing elit, sed diam nonuet, consecmmy.m dolor sit amet,
-                    consectetuer adipiscing.
-                </div>
-                <a href="javascript:void(0);" class="btn-yellow">ENTER AWARD</a>
+                <!-- <div class="branch_txt" data-tab="2">
+                </div> -->
+                <a href="<?=base_url('awards-winner/accommodation')?>" class="btn-yellow">
+                    ENTER AWARD
+                </a>
             </div>
         </div>
 
@@ -97,11 +97,11 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="3">ประเภทการท่องเที่ยวเชิงสุขภาพ</div>
-                <div class="branch_txt" data-tab="3">
-                    Lorem ipsum dolor sit amet, consecter adipiscing elit, sed diam nonuet, consecmmy.m dolor sit amet,
-                    consectetuer adipiscing.
-                </div>
-                <a href="javascript:void(0);" class="btn-yellow">ENTER AWARD</a>
+                <!-- <div class="branch_txt" data-tab="3">
+                </div> -->
+                <a href="<?=base_url('awards-winner/health-and-wellness-tourism')?>" class="btn-yellow">
+                    ENTER AWARD
+                </a>
             </div>
         </div>
         <div class="col3 reveal">
@@ -114,11 +114,11 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="4">ประเภทรายการนำเที่ยว</div>
-                <div class="branch_txt" data-tab="4">
-                    Lorem ipsum dolor sit amet, consecter adipiscing elit, sed diam nonuet, consecmmy.m dolor sit amet,
-                    consectetuer adipiscing.
-                </div>
-                <a href="javascript:void(0);" class="btn-yellow">ENTER AWARD</a>
+                <!-- <div class="branch_txt" data-tab="4"> 
+                </div> -->
+                <a href="<?=base_url('awards-winner/tourism-program')?>" class="btn-yellow">
+                    ENTER AWARD
+                </a>
             </div>
         </div>
     </div>
@@ -156,10 +156,10 @@
                     </div>
                 </div>
                 <div class="claim_content">
-                    <div class="claim_title" data-tab="1">Neque porro quisquam</div>
+                    <div class="claim_title" data-tab="1">ส่งเสริมการขาย</div>
                     <div class="claim_txt" data-tab="1">
-                        Lorem ipsum dolor sit amet, consecter adipiscing elit, sed diam nonuet, consecmmy.m dolor sit amet,
-                        consectetuer adipiscing.
+                        ส่งเสริมการขายผ่านทางช่องทาง Online และ Offline ที่ ททท. 
+                        จัดขึ้นอยู่กับความเหมาะสมของแต่ละกลุ่มตลาดและเทรนด์การท่องเที่ยวในปีที่จัดงาน
                     </div>
                 </div>
             </div>
@@ -178,10 +178,10 @@
                     </div>
                 </div>
                 <div class="claim_content">
-                    <div class="claim_title" data-tab="2">Neque porro quisquam</div>
+                    <div class="claim_title" data-tab="2">ประชาสัมพันธ์</div>
                     <div class="claim_txt" data-tab="2">
-                        Lorem ipsum dolor sit amet, consecter adipiscing elit, sed diam nonuet, consecmmy.m dolor sit amet,
-                        consectetuer adipiscing.
+                        ประชาสัมพันธ์ผู้ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทยให้เป็นที่รู้จัก โดยผ่านสื่อต่าง ๆ 
+                        ในเครือข่ายและช่องทาง ของ ททท. รวมทั้ง ททท. สำนักงานในประเทศและต่างประเทศ
                     </div>
                 </div>
             </div>
@@ -200,10 +200,10 @@
                     </div>
                 </div>
                 <div class="claim_content">
-                    <div class="claim_title" data-tab="3">Neque porro quisquam</div>
+                    <div class="claim_title" data-tab="3">สิทธิพิเศษในการแจ้งข้อมูลข่าวสาร</div>
                     <div class="claim_txt" data-tab="3">
-                        Lorem ipsum dolor sit amet, consecter adipiscing elit, sed diam nonuet, consecmmy.m dolor sit amet,
-                        consectetuer adipiscing.
+                        ได้รับสิทธิพิเศษในการแจ้งข้อมูลข่าวสารการเปิดรับสมัครหรือเข้าร่วมงานส่งเสริมการขายต่าง ๆ 
+                        ของ ททท
                     </div>
                 </div>
             </div>
@@ -222,10 +222,10 @@
                     </div>
                 </div>
                 <div class="claim_content">
-                    <div class="claim_title" data-tab="4">Neque porro quisquam</div>
+                    <div class="claim_title" data-tab="4">สิทธิ์การเข้าร่วมอบรม</div>
                     <div class="claim_txt" data-tab="4">
-                        Lorem ipsum dolor sit amet, consecter adipiscing elit, sed diam nonuet, consecmmy.m dolor sit amet,
-                        consectetuer adipiscing.
+                        ได้รับสิทธิ์การเข้าร่วมการอบรมหรือกิจกรรมพัฒนาศักยภาพด้านการตลาดการท่องเที่ยว 
+                        ที่จัดโดย ททท
                     </div>
                 </div>
             </div>
@@ -236,7 +236,7 @@
 <div class="ruleawards">
     <div class="row">
         <div class="col6 btn-ruleyellow reveal">
-            <a href="javascript:void(0);" title="คุณสมบัติและวิธีการเข้าร่วมประกวด">คุณสมบัติและวิธีการเข้าร่วมประกวด 
+            <a href="<?= base_url('awards-infomation') ?>?p=property" title="คุณสมบัติและวิธีการเข้าร่วมประกวด">คุณสมบัติและวิธีการเข้าร่วมประกวด 
                 <picture>
                     <source srcset="<?= base_url('assets/images/arrow_next.svg') ?>">
                     <img src="<?= base_url('assets/images/arrow_next.png') ?>" width="24" height="24" alt="...">
@@ -244,7 +244,7 @@
             </a>
         </div>
         <div class="col6 btn-ruledblue reveal">
-            <a href="javascript:void(0);" title="เกณฑ์การให้คะแนนและตัดสิน">เกณฑ์การให้คะแนนและตัดสิน 
+            <a href="<?= base_url('awards-infomation') ?>?p=Judge" title="เกณฑ์การให้คะแนนและตัดสิน">เกณฑ์การให้คะแนนและตัดสิน 
                 <picture>
                     <source srcset="<?= base_url('assets/images/arrow_next.svg') ?>">
                     <img src="<?= base_url('assets/images/arrow_next.png') ?>" width="24" height="24" alt="...">
@@ -268,8 +268,8 @@
                 </div>
                 <div class="main-title-txt">
                     <h2>คณะกรรมการการตัดสิน</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
-                        nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                    <!-- <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
+                        nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p> -->
                     <a href="<?=base_url('judge')?>" class="link_yellow">คณะกรรมการทั้งหมด คลิก!</a>
                 </div>
             </div>
@@ -510,7 +510,7 @@
 
             <div class="col7 reveal">
 
-                <?php  
+                <?php
                     unset($news[0]);
                     foreach($news as $new){
                 ?>

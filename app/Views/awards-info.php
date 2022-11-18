@@ -51,6 +51,22 @@
         --bs-btn-disabled-bg: #0C2C55;
         --bs-btn-disabled-border-color: #0C2C55;
     }
+
+    .award-list ul.judge {
+        justify-content: center !important;
+    }
+
+    .award-list li.judge {
+        width: 33.33% ;
+    }
+
+    @media screen and (max-width: 767px) and (orientation: portrait){
+        .award-list li.judge {
+            padding: 20px 0;
+            margin: 0;
+            width: 100%;
+        }
+    }
 </style>
 <div class="banner-box">
 
@@ -180,7 +196,8 @@
                 </div>
 
                 <div class="award-list txt-center">
-                    <button type="button" class="btn btn-main">
+                    <button type="button" class="btn btn-main" 
+                    onclick="download_file(1)">
                         <i class="bi bi-cloud-download"></i> Download
                     </button>
                 </div>
@@ -203,10 +220,47 @@
                     </div>
                 </div>
 
-                <div class="award-list txt-center">
-                    <button type="button" class="btn btn-main">
+                <div class="award-list">
+                    <ul class="judge">
+                        <li class="judge">
+                            <div class="award-list-name">
+                                ด้าน Tourism Excellence
+                                <br>(Product/ Service) 
+                            </div>
+                            <div class="award-list-section">
+                                <ol>
+                                    <li>ความยอดเยี่ยมในสินค้า Product Excellence</li>
+                                    <li>ความยอดเยี่ยมด้านการให้บริการแก่นักท่องเที่ยว Service Excellence</li>
+                                </ol>
+                            </div>
+                        </li>
+
+                        <li class="judge">
+                            <div class="award-list-name">
+                                ด้าน Supporting Business & Marketing Factors
+                            </div>
+                            <div class="award-list-section">
+                                <ol>
+                                </ol>
+                            </div>
+                        </li>
+
+                        <li class="judge">
+                            <div class="award-list-name">
+                                ด้าน Sustainability 
+                            </div>
+                            <div class="award-list-section">
+                                <ol>
+                                    <li>Responsible Tourism</li>
+                                    <li>Low Carbon Management</li>
+                                </ol>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- <button type="button" class="btn btn-main" 
+                    onclick="download_file(2)">
                         <i class="bi bi-cloud-download"></i> Download
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -228,10 +282,26 @@
                     </div>
                 </div>
 
-                <div class="award-list txt-center">
-                    <button type="button" class="btn btn-main">
-                        <i class="bi bi-cloud-download"></i> Download
-                    </button>
+                <div class="award-list">
+                    <div class="award-list-section">
+                        <ol>
+                            <li>
+                                ส่งเสริมการขายผ่านทางช่องทาง Online และ Offline ที่ ททท. จัด 
+                                ขึ้นอยู่กับความเหมาะสมของแต่ละกลุ่มตลาดและเทรนด์การท่องเที่ยวในปีที่จัดงาน
+                            </li>
+                            <li>
+                                ประชาสัมพันธ์ผู้ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทยให้เป็นที่รู้จัก โดยผ่านสื่อต่าง ๆ 
+                                ในเครือข่ายและช่องทาง ของ ททท. รวมทั้ง ททท. สำนักงานในประเทศและต่างประเทศ 
+                                อาทิ สื่อโทรทัศน์ สื่อวิทยุ สื่อสิ่งพิมพ์ สื่อออนไลน์ เป็นต้น
+                            </li>
+                            <li>
+                                ได้รับสิทธิพิเศษในการแจ้งข้อมูลข่าวสารการเปิดรับสมัครหรือเข้าร่วมงานส่งเสริมการขายต่าง ๆ ของ ททท
+                            </li>
+                            <li>
+                                ได้รับสิทธิ์การเข้าร่วมการอบรมหรือกิจกรรมพัฒนาศักยภาพด้านการตลาดการท่องเที่ยว ที่จัดโดย ททท
+                            </li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
@@ -284,6 +354,9 @@
                 case 'tourprogram':
                     $('#pointer-1')[0].scrollIntoView();
                     break;
+                case 'property':
+                    $('#pointer-2')[0].scrollIntoView();
+                    break;
                 case 'judge':
                     $('#pointer-3')[0].scrollIntoView();
                     break;
@@ -296,4 +369,15 @@
             }
         } catch(error){}
     });
+
+    const download_file = (type) => {
+        let url = window.location.origin + '/download/';
+
+        switch(type){
+            case 1: url += 'qualifications-of-applicants.rar'; break;
+            case 2: url += 'judging-criteria.rar'; break;
+        }
+
+        window.open(url,'_blank');
+    }
 </script>

@@ -154,10 +154,9 @@
                      </li>
                      <li><a href="javascript:void(0)" id="regismenu">คู่มือการสมัคร</a>
                         <ul>
-                           <li><a href="javascript:void(0);">คู่มือการลงทะเบียนประกวดรางวัล</a></li>
-                           <li><a href="javascript:void(0);">กำหนดการรับสมัคร</a></li>
-                           <li><a href="<?= base_url('register') ?>">สมัครเข้าร่วมประกวดรางวัล</a></li>
-                           <li><a href="javascript:void(0);">เกณฑ์การให้คะแนนตัดสิน</a></li>
+                           <li><a href="<?= base_url('application-guide') ?>?p=manual">คู่มือการลงทะเบียนประกวดรางวัล</a></li>
+                           <li><a href="<?= base_url('application-guide') ?>?p=duedate">กำหนดการรับสมัคร</a></li>
+                           <li><a href="<?= base_url('application-guide') ?>?p=register">สมัครเข้าร่วมประกวดรางวัล</a></li>
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="awardmenu">ผลงานที่ได้รับรางวัล</a>
@@ -201,8 +200,8 @@
                   <li><a href="<?= base_url('home') ?>">หน้าแรก</a></li>
                   <li><a href="<?= base_url('about-us') ?>">เกี่ยวกับโครงการ</a></li>
                   <li><a href="<?= base_url('awards-winner') ?>">ข้อมูลการประกวดรางวัล</a></li>
-                  <li><a href="javascript:void(0);">คู่มือประกวดรางวัล</a></li>
-                  <li><a href="javascript:void(0);">คู่มือการสมัคร</a></li>
+                  <li><a href="<?= base_url('application-guide') ?>">คู่มือประกวดรางวัล</a></li>
+                  <li><a href="<?= base_url('application-guide') ?>">คู่มือการสมัคร</a></li>
                   <li><a href="<?= base_url('awards-winner') ?>">ผลงานที่ได้รับรางวัล</a></li>
                   <li><a href="<?= base_url('new') ?>">ข่าวประชาสัมพันธ์</a></li>
                   <li><a href="<?= base_url('contact-us') ?>">ติดต่อเรา</a></li>

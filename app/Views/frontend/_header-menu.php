@@ -14,8 +14,8 @@
                     <li><a href="<?=base_url()?>">หน้าแรก</a></li>
                     <li><a href="<?= base_url('about-us') ?>">เกี่ยวกับโครงการ</a></li>
                     <li><a href="<?=base_url('awards-winner')?>">ข้อมูลการประกวดรางวัล</a></li>
-                    <li><a href="javascript:void(0);">คู่มือประกวดรางวัล</a></li>
-                    <li><a href="javascript:void(0);">คู่มือการสมัคร</a></li>
+                    <li><a href="<?= base_url('application-guide') ?>">คู่มือประกวดรางวัล</a></li>
+                    <li><a href="<?= base_url('application-guide') ?>">คู่มือการสมัคร</a></li>
                     <li><a href="<?= base_url('awards-winner-14') ?>">ผลงานที่ได้รับรางวัล</a></li>
                     <li><a href="<?=base_url('new')?>">ข่าวประชาสัมพันธ์</a>
                     <li><a href="<?=base_url('contact-us')?>">ติดต่อเรา</a></li>
@@ -54,8 +54,8 @@
                 <li><a href="<?=base_url()?>">หน้าแรก</a></li>
                 <li><a href="<?= base_url('about-us') ?>">เกี่ยวกับโครงการ</a></li>
                 <li><a href="<?=base_url('awards-winner')?>;">ข้อมูลการประกวดรางวัล</a></li>
-                <li><a href="javascript:void(0);">คู่มือประกวดรางวัล</a></li>
-                <li><a href="javascript:void(0);">คู่มือการสมัคร</a></li>
+                <li><a href="<?= base_url('application-guide') ?>">คู่มือประกวดรางวัล</a></li>
+                <li><a href="<?= base_url('application-guide') ?>">คู่มือการสมัคร</a></li>
                 <li><a href="<?= base_url('awards-winner') ?>">ผลงานที่ได้รับรางวัล</a></li>
                 <li><a href="<?=base_url('new')?>">ข่าวประชาสัมพันธ์</a></li>
                 <li><a href="<?=base_url('contact-us')?>">ติดต่อเรา</a></li>
