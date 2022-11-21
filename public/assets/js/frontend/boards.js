@@ -324,8 +324,9 @@ const boards = {
     score(f, id){
         if(f == 'md'){
             $('#modal-detail').modal('hide');
+            id = $('#modal-detail').attr('data-id');
         }
-
+        
         const ref = this.dt.find(el => el.id == id);
         const spre = ref.score_pre;
         const sons = ref.score_onsite;

@@ -318,7 +318,7 @@
 <div class="container winnneraward reveal">
     <img src="<?= base_url('assets/images/winner.jpg') ?>" alt="..." loading="lazy">
 </div>
-
+<!-- 
 <div class="container commentaward">
     <div class="row">
         <div class="col12 reveal">
@@ -460,7 +460,7 @@
         </div>
     </div>
 
-</div>
+</div> -->
 
 <div class="container newsaward">
     <div class="container_box">
@@ -499,7 +499,7 @@
                             <span class="date"><?=$news[0]['publish_start']?></span> <span class="by"><?=$news[0]['created_by']?></span>
                         </div>
                         <div class="news_box_content">
-                            <?=substr($news[0]['description'],0,150)?>...
+                            <!-- <?=substr($news[0]['description'],0,150)?>... -->
                             <a href="<?=base_url('new/'.$news[0]['id'])?>">
                                 <span style="color: #dba643; font-size: 16px;">ดูรายละเอียด</span>
                             </a>

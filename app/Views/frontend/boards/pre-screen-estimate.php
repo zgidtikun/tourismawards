@@ -338,7 +338,7 @@ aria-hidden="true">
 <script src="<?= base_url('assets/js/frontend/psce.js') ?>?v=<?= $app->script_v ?>" async></script>
 <script defer>
     $(document).ready(function() {
-        // try {
+        try {
             setPage(
                 <?=$app_id?>,
                 { 
@@ -348,8 +348,8 @@ aria-hidden="true">
                 },
                 [<?=implode(",",$assign)?>]
             );
-        // } catch(error) {
-        //     window.location.reload();
-        // }
+        } catch(error) {
+            window.location.reload();
+        }
     });
 </script>

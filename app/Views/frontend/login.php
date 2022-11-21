@@ -31,6 +31,12 @@
     </div>
 </div>
 <script>
+    $('#username, #password').keypress((e) => {
+        if(e.keyCode == 13){
+            signin.authen();
+        }
+    });
+
     const signin = {
         token: '',
         authen: function() {

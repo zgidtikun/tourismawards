@@ -1,7 +1,7 @@
 <div class="banner-box">
 
     <div class="txt-banner">
-        <h2>ข่าวประชาสัมพันธ์</h2>
+        <h2><?=$new->title?></h2>
     </div>
 
 </div>
