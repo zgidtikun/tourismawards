@@ -325,9 +325,9 @@
             <div class="main-title">
                 <div class="catagory-txt">
                     <picture>
-                        <source srcset="<?= base_url('assets/images/traveller.svg') ?>">
-                        <source srcset="<?= base_url('assets/images/traveller.png') ?>">
-                        <img src="<?= base_url('assets/images/traveller.png') ?>" 
+                        <source srcset="<?php //base_url('assets/images/traveller.svg') ?>">
+                        <source srcset="<?php //base_url('assets/images/traveller.png') ?>">
+                        <img src="<?php //base_url('assets/images/traveller.png') ?>" 
                         width="145" height="36" alt="..." loading="lazy">
                     </picture>
                 </div>
@@ -352,7 +352,7 @@
                             <div class="comment_img">
                                 <div class="trvel_img">
                                     <div class="trvel_img_scale">
-                                        <img src="<?= base_url('assets/images/traveller_01.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
+                                        <img src="<?php //base_url('assets/images/traveller_01.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
                                     </div>
                                 </div>
                             </div>
@@ -371,7 +371,7 @@
                             <div class="comment_img">
                                 <div class="trvel_img">
                                     <div class="trvel_img_scale">
-                                        <img src="<?= base_url('assets/images/traveller_02.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
+                                        <img src="<?php //base_url('assets/images/traveller_02.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
                                     </div>
                                 </div>
                             </div>
@@ -390,7 +390,7 @@
                             <div class="comment_img">
                                 <div class="trvel_img">
                                     <div class="trvel_img_scale">
-                                        <img src="<?= base_url('assets/images/traveller_03.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
+                                        <img src="<?php //base_url('assets/images/traveller_03.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
                                     </div>
                                 </div>
                             </div>
@@ -409,7 +409,7 @@
                             <div class="comment_img">
                                 <div class="trvel_img">
                                     <div class="trvel_img_scale">
-                                        <img src="<?= base_url('assets/images/traveller_01.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
+                                        <img src="<?php //base_url('assets/images/traveller_01.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
                                     </div>
                                 </div>
                             </div>
@@ -428,7 +428,7 @@
                             <div class="comment_img">
                                 <div class="trvel_img">
                                     <div class="trvel_img_scale">
-                                        <img src="<?= base_url('assets/images/traveller_02.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
+                                        <img src="<?php //base_url('assets/images/traveller_02.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
                                     </div>
                                 </div>
                             </div>
@@ -447,7 +447,7 @@
                             <div class="comment_img">
                                 <div class="trvel_img">
                                     <div class="trvel_img_scale">
-                                        <img src="<?= base_url('assets/images/traveller_03.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
+                                        <img src="<?php //base_url('assets/images/traveller_03.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
                                     </div>
                                 </div>
                             </div>
@@ -499,7 +499,7 @@
                             <span class="date"><?=$news[0]['publish_start']?></span> <span class="by"><?=$news[0]['created_by']?></span>
                         </div>
                         <div class="news_box_content">
-                            <!-- <?=substr($news[0]['description'],0,150)?>... -->
+                            <!-- <?php //substr($news[0]['description'],0,150) ?>... -->
                             <a href="<?=base_url('new/'.$news[0]['id'])?>">
                                 <span style="color: #dba643; font-size: 16px;">ดูรายละเอียด</span>
                             </a>
