@@ -189,6 +189,34 @@ class QuestionController extends BaseController
 
         return $this->response->setJSON($result);
     }
+
+    public function calQuestionScore()
+    {
+        $obj_q = new \App\Models\Question();
+        $obj_qs = new \App\Models\QuestionScore();
+        $result = [];
+
+        $scores = $obj_q->select(
+                'application_type_id type_id, application_type_sub_id sub_id,
+                SUM(pre_score) ttps, SUM(onside_score) ttos'
+            ,false)
+            ->groupBy('type_id, sub_id')
+            ->findAll();
+
+        foreach($scores as $sc){
+            $temp = (object) $sc;
+            $temp->tt = $sc->ttps + $sc->ttos;
+            $temp = [
+                'type_id' => $sc->type_id,
+                'type_sub_id' => $sc->sub_id,
+                'ttsc_prescreen' => $sc->ttps,
+                'ttsc_onsite' => $sc->ttos,
+                'total_net' => $sc->ttps + $sc->ttos
+            ];
+            
+            $obj_qs->insert($temp);;
+        }
+    }
 }
 
 ?>

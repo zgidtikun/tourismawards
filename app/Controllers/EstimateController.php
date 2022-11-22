@@ -339,4 +339,59 @@ class EstimateController extends BaseController
 
         return $this->response->setJSON($result);
     }
+
+    public function setAwardResut()
+    {
+        $app = new \Config\App();
+        $award = new \App\Models\AwardResult();
+
+        $subQuery = $this->db->table('users_stage us')
+            ->select(
+                'af.id, af.created_by,          
+                af.application_type_id type_id, af.application_type_sub_id sub_id'
+            )
+            ->join('application_form af','us.user_id = af.created_by')
+            ->where([
+                'us.stage' => 2,
+                'us.status' => 6
+            ])
+            ->getCompiledSelect();
+
+        $score = $this->db->table('estimate_score es')
+                ->join('('.$subQuery.') ap', 'es.application_id = ap.id')
+                ->join('question_score qs', 'ap.type_id = qs.type_id AND ap.sub_id = qs.type_sub_id')
+                ->select(
+                    'es.application_id app_id, ap.created_by,
+                    ap.type_id, ap.sub_id, qs.total_net,
+                    (es.score_prescreen_tt + es.score_onsite_tt) score_tt'                    
+                )
+                ->get();
+                
+        $scores = [];
+        foreach($score->getResult() as $v){
+            $persent = $v->score_tt * 100 / $v->total_net;
+            $judge = $app->JudgingCriteriaScore;
+
+            if( $persent >= $judge->ttga->low )
+                $award_s = 1;
+            elseif( $persent >= $judge->tta->low && $persent <= $judge->tta->max )
+                $award_s = 2;
+            elseif( $persent >= $judge->kha->low && $persent <= $judge->kha->max )
+                $award_s = 3;
+            else $award_s = 0;
+            
+
+            $temp = [
+                'application_id' => $v->app_id,
+                'user_id' => $v->created_by,
+                'app_type_id' => $v->type_id,
+                'app_type_sub_id' => $v->sub_id,
+                'award_persent' => $persent,
+                'award_type' => $award_s,
+                'award_status' => 0,
+            ];
+            
+            $award->insert($temp);
+        }
+    }
 }

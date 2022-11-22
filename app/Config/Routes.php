@@ -94,6 +94,11 @@ $routes->group('boards', static function ($routes) {
 });
 
 $routes->group('inner-api', static function ($routes) {
+    $routes->group('awards', static function ($routes) {
+        $routes->get('cal-question-score', 'QuestionController::calQuestionScore',  ['filter' => 'api:2,3,4']);
+        $routes->get('cal-result', 'EstimateController::setAwardResut', ['filter' => 'api:2,3,4']);
+    });
+
     $routes->group('noti', static function ($routes) {
         $routes->post('get', 'NotiController::getNoti', ['filter' => 'api']);
     });

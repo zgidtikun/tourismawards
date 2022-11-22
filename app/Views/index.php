@@ -316,6 +316,10 @@
 </div>
 
 <style>
+    .award-section {
+        margin: 0 !important;
+    }
+
     .winner-title {
         font-size: 5vw;
     }

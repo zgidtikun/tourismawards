@@ -23,13 +23,13 @@
                         <li><a href="<?= base_url('awards-winner') ?>" title="ประเภทรางวัล TTA 14TH">ประเภทรางวัล TTA 14<span class="upper-txt">th</span></a></li>
                         <li><a href="<?= base_url('awards-infomation') ?>?p=Judge" title="เกณฑ์การให้คะแนนตัดสิน">เกณฑ์การให้คะแนนตัดสิน</a></li>
                         <li><a href="<?= base_url('awards-infomation') ?>?p=Benefits" title="สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
+                        <li><a href="<?= base_url('awards-infomation') ?>?p=Judge" title="หลักเกณฑ์การสมัครเข้าร่วมประกวดรางวัล">หลักเกณฑ์การสมัครเข้าร่วมประกวดรางวัล</a></li>
                     </ul>
                 </div>
 
                 <div class="footermenu_col">
                     <p class="footermenutitle" data-tab="2">คู่มือการสมัคร</p>
                     <ul data-tab="2">
-                        <li><a href="<?= base_url('awards-infomation') ?>?p=Judge" title="หลักเกณฑ์การสมัครเข้าร่วมประกวดรางวัล">หลักเกณฑ์การสมัครเข้าร่วมประกวดรางวัล</a></li>
                         <li><a href="<?= base_url('application-guide') ?>?p=manual" title="คู่มือการลงทะเบียนประกวดรางวัล">คู่มือการลงทะเบียนประกวดรางวัล</a></li>
                         <li><a href="<?= base_url('application-guide') ?>?p=duedate" title="กำหนดการรับสมัคร">กำหนดการรับสมัคร</a></li>
                     </ul>

@@ -472,10 +472,26 @@ class App extends BaseConfig
     public $Pre_expired = '2023-03-05';
     public $JudgingCriteriaPre = 18;
     public $JudgingCriteriaOnst = 57;
+    public $JudgingCriteriaScore;
     public $script_v = 1;
 
     public function __construct()
     {
+        $this->JudgingCriteriaScore = (object) [
+            'ttga' => (object) [
+                'low' => 85.00,
+                'max' => 100.00
+            ],
+            'tta' => (object) [
+                'low' => 75.00,
+                'max' => 84.99
+            ],
+            'kha' => (object) [
+                'low' => 65.00,
+                'max' => 74.99
+            ]
+        ];
+
         if(getenv('CI_ENVIRONMENT') == 'production')
             $this->baseURL = 'http://tourismawards.tourismthailand.org';
         elseif(getenv('CI_ENVIRONMENT') == 'testing')
