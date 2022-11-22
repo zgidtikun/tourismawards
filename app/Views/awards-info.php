@@ -198,7 +198,7 @@
                 <div class="award-list txt-center">
                     <button type="button" class="btn btn-main" 
                     onclick="download_file(1)">
-                        <i class="bi bi-cloud-download"></i> Download
+                        <i class="bi bi-cloud-download"></i> Download File
                     </button>
                 </div>
             </div>
@@ -324,7 +324,7 @@
 
                 <div class="award-list txt-center">
                     <button type="button" class="btn btn-main">
-                        <i class="bi bi-cloud-download"></i> Download
+                        <i class="bi bi-cloud-download"></i> Download File
                     </button>
                 </div>
             </div>

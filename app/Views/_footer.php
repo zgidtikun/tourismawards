@@ -59,7 +59,7 @@
                     <ul>
                         <li><a href="<?= base_url('privacy-policy') ?>" title="Privacy Policy">Privacy Policy</a></li>
                         <li><a href="<?= base_url('about-us') ?>" title="About Us">About Us</a></li>
-                        <li><a href=<?= base_url('contact-us') ?>" title="Contact Us">Contact Us</a></li>
+                        <li><a href="<?= base_url('contact-us') ?>" title="Contact Us">Contact Us</a></li>
                     </ul>
                 </div>
             </div>

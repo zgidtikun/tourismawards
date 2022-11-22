@@ -13,6 +13,7 @@
         border-top-right-radius: 10px;
     }
 </style>
+
 <div class="container"
 style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?>');">
     <div class="container_box">
