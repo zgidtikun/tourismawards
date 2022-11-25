@@ -62,7 +62,7 @@
                     <div class="form-table-col edit">
                       <a href="#" class="btn-edit" title="ดูรายละเอียด" onclick="view_item(this)"><i class="bi bi-eye text-success"></i></a>
                       <a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a>
+                      <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a>
                     </div>
 
                     <!-- <i class="fa fa-eye text-success mr-2" data-toggle="tooltip" title="ดูรายละเอียด" onclick="view_item(this)"></i>

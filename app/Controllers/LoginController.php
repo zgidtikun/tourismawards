@@ -169,6 +169,28 @@ class LoginController extends BaseController
 
     public function setSession(){
         if(getenv('CI_ENVIRONMENT') != 'production'){
+            helper('verify');
+            $code = '1-'.genVerifyCode();
+            $enc = vEncryption($code);
+            $dec = vDecryption($enc);
+            echo $code.'<br>'.$enc.'<br>'.$dec;
+            // session()->set(array(
+            //     'isLoggedIn' => true,
+            //     'role' => 'user'
+            // ));
+            // $result = set_multi_noti(
+            //     get_receive_admin(),
+            //     (object) [
+            //         'bank' => 'backend'
+            //     ],
+            //     (object) [
+            //         'message' => 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว',
+            //         'link' => base_url('awards/result'),
+            //         'send_date' => date('Y-m-d H:i:s'),
+            //         'send_by' => 'ททท'
+            //     ]
+            // );
+            
             // session()->set(array(
             //     'isLoggedIn' => true,
             //     'role' => 'user'
@@ -186,19 +208,19 @@ class LoginController extends BaseController
             //     ]
             // );
             
-            $result = set_noti(
-                (object) [
-                    'user_id' => 1,
-                    'bank' => 'frontend'
-                ],
-                (object) [
-                    'message' => 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว',
-                    'link' => base_url('awards/result'),
-                    'send_date' => date('Y-m-d H:i:s'),
-                    'send_by' => 'Amin01'
-                    // 'send_by' => session()->get('account')
-                ]
-            );
+            // $result = set_noti(
+            //     (object) [
+            //         'user_id' => 1,
+            //         'bank' => 'frontend'
+            //     ],
+            //     (object) [
+            //         'message' => 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว',
+            //         'link' => base_url('awards/result'),
+            //         'send_date' => date('Y-m-d H:i:s'),
+            //         'send_by' => 'Amin01'
+            //         // 'send_by' => session()->get('account')
+            //     ]
+            // );
         }
         else return $this->response->redirect(base_url('403'));
     }

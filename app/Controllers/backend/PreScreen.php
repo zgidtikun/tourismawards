@@ -43,6 +43,11 @@ class PreScreen extends BaseController
             $like['status'] = $_GET['status'];
         }
 
+        if (!empty(session()->award_type) && session()->award_type != "" && !isAdmin()) {
+            $where['application_type_id'] = session()->award_type;
+            $sub_id = session()->award_type;
+        }
+
         $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->where('US.stage', 1)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
         // pp_sql();
         // px($data['result']);

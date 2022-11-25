@@ -17,15 +17,29 @@ $spreadsheet = new Spreadsheet();
 
 $sheet = $spreadsheet->getActiveSheet();
 
+$rowHead = [
+  // '#',
+  'ลำดับที่',
+  'รหัส',
+  'ชื่อผลงาน',
+  'ประเภทรางวัลฯ',
+  'สาขา',
+  'จังหวัด',
+  'ชื่อผู้ประเมิน',
+  'เกณฑ์การประเมิน',
+  'ข้อเสนอแนะ (Pre-Screen)',
+  'ข้อเสนอแนะ (ลงพื้นที่)',
+];
+
 //set Amount Column
-$colExcel = colExcel(8);
+$colExcel = colExcel(count($rowHead));
 // pp($colExcel);
 $end = end($colExcel);
 // px($end);
 
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
-// $sheet->getStyle('M')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -37,18 +51,6 @@ $sheet->setCellValue('A2', "")->mergeCells('A2:' . $end . '2');
 
 //set Format
 // $sheet->getStyle('X')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
-
-$rowHead = [
-  // '#',
-  'ลำดับที่',
-  'รหัส',
-  'ประเภทรางวัลฯ',
-  'สาขา',
-  'จังหวัด',
-  'ชื่อผู้ประเมิน',
-  'เกณฑ์การประเมิน',
-  'ข้อเสนอแนะ',
-];
 
 foreach ($colExcel as $k => $v) {
   //set Cell Head
@@ -64,15 +66,25 @@ if (!empty($result)) {
   $i = 4;
   foreach ($result as $key => $value) {
 
+    if ($value->assessment_group_id == 1) {
+      $assessment = 'Tourism Excellence (Product/Service)';
+    } else if ($value->assessment_group_id == 2) {
+      $assessment = 'Supporting Business & Marketing Factors';
+    } else if ($value->assessment_group_id == 3) {
+      $assessment = 'Responsibility and Safety & Health Administration';
+    }
+
     $data = [
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
+      ($key + 1),
+      $value->code,
+      $value->attraction_name_th,
+      $value->application_type_name,
+      $value->application_type_sub_name,
+      $value->address_province,
+      $value->estimate_name,
+      $assessment,
+      $value->comment_pre,
+      $value->comment_onsite,
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

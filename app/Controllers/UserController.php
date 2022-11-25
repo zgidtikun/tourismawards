@@ -59,7 +59,8 @@ class UserController extends BaseController
         $inst = $this->getSelectSameRole($data['role_id'],'instance');
         try { 
             $status = $inst->insert($data); 
-            $result = (object) array('result' => $status);
+            $userId = $inst->getInsertID();
+            $result = (object) array('result' => $status, 'id' => $userId);
         } 
         catch(\Exception $e) {
             $result = (object) array('result' => false, 'error' => 'Database : '.$e->getMessage());

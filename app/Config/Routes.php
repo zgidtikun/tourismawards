@@ -52,6 +52,9 @@ $routes->get('privacy-policy', 'Home::privacypolicy');
 $routes->get('new', 'Home::new');
 $routes->get('new/(:num)', 'Home::new_detail/$1');
 $routes->get('forget-password', 'RegisterController::forgetpass');
+$routes->get('verify-user', 'Home::verifyuser');
+$routes->get('new-password', 'Home::newpassword');
+$routes->get('new-password/(:num)', 'Home::newpassword/$1');
 
 $routes->get('login', 'LoginController::index');
 $routes->get('login/(:any)', 'LoginController::index/$1');
@@ -153,7 +156,7 @@ $routes->group('inner-api', static function ($routes) {
     });
 });
 
-$routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], static function ($routes) {
+$routes->group('administrator', ['namespace' => 'App\Controllers\backend'], static function ($routes) {
 
     $routes->get('login', 'Login::index');
 
@@ -275,6 +278,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\Backend'], stat
 
     // MarkTest is Controller for Test Only
     $routes->get('MarkTest', 'MarkTest::index');
+    $routes->get('MarkTest/Mail', 'MarkTest::Mail');
     $routes->get('Question', 'MarkTest::question');
     $routes->get('MarkTest/excel', 'MarkTest::excel');
     $routes->post('MarkTest/getData', 'MarkTest::getData');

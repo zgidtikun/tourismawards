@@ -47,6 +47,39 @@ class Home extends BaseController
         return view('template-app',$data);
     }
 
+    public function verifyuser()
+    {
+        helper('verify');
+        $verified = checkVerifyUser($_GET['c']);
+
+        return view('template-frontend',array(
+            'title' => 'Verify User',
+            '_recapcha' => false,
+            '_verified' => $verified->result,
+            '_password' => $verified->pass,
+            'view' => 'frontend/verify-user'
+        ));
+    }
+
+    public function newpassword($id = null)
+    {
+        if(!empty($id)){
+            $obj = new \App\Models\Users();
+            $user = $obj->where('id',$id)->select('email')->first();
+            $email= $user->email;
+        } else {
+            $email = '';
+        }
+
+        return view('template-frontend',array(
+            'title' => 'ตั้งค่ารหัสผ่านใหม่',
+            'id' => $id,
+            'email' => $email,
+            '_recapcha' => false,
+            'view' => 'frontend/new-password'
+        ));
+    }
+
     public function new()
     {
         $obj = new \App\Models\News();
@@ -117,18 +150,25 @@ class Home extends BaseController
     {
         $input = (object) $this->input->getVar();
         $_subject = $input->subject;
-        $_from = $input->email;
-        $_to = 'zgidtikun@gmail.com';
+        $_from = 'promotion@chaiyohosting.com';
+        $_to = $input->email;
         $_message = '<p>'.$input->message.'</p>';
         $_message .= '<p>ขอแสดงความนับถือ<br>'.$input->name.'</p>';
 
-        try {
+        $_view = view('template-frontend-email',[
+            '_header' => '',
+            '_content' => $_message
+        ]);
         
-            $this->email->setTo($_to);
-            $this->email->setFrom($_from);
-            $this->email->setSubject($_subject);
-            $this->email->setMessage($_message);
-            $_status = $this->email->send();
+        $_template = $_view;
+
+        try {
+            $email = \Config\Services::email();
+            $email->setTo($_to);
+            $email->setFrom($_from);
+            $email->setSubject($_subject);
+            $email->setMessage($_template);
+            $_status = $email->send();
             
             $result = [ 'result' => $_status ? 'success' : 'error' ];
         } catch(\Exception $e) {

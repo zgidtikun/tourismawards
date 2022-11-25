@@ -12,6 +12,8 @@ class MarkTest extends BaseController
 {
     public function index()
     {
+        exit;
+        px($_ENV);
         // pp(session()->get());
         // pp(checkPermission([4]));
         px(password_hash('0000', PASSWORD_DEFAULT));
@@ -37,7 +39,7 @@ class MarkTest extends BaseController
     {
         $taskModel = new Admin();
         $data['result'] = $taskModel->findAll();
-        
+
         return view('backend/test/excel', $data);
     }
 
@@ -57,7 +59,7 @@ class MarkTest extends BaseController
         $data['title']  = 'Question';
         $data['view']   = 'backend/test/question';
         $data['ci']     = $this;
-        
+
         return view('backend/template', $data);
     }
 
@@ -106,5 +108,43 @@ class MarkTest extends BaseController
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
         }
+    }
+
+    public function Mail()
+    {
+
+        $config['protocol'] = 'sendmail';
+        $config['mailPath'] = '/usr/sbin/sendmail';
+        $config['charset']  = 'iso-8859-1';
+        $config['wordWrap'] = true;
+
+        $this->email->initialize($config);
+
+        $email_data = [];
+
+        $subject = 'Test การส่งเมล';
+        $body = view('template_email', $email_data);
+        $this->email->setFrom($_ENV['email.SMTPUser'], 'ส่งจาก');
+        $this->email->setTo('kritsana@chaiyohosting.com');
+
+        $this->email->setSubject($subject);
+        $this->email->setMessage($body);
+
+        pp($_ENV);
+        pp(121212);
+        pp($this->email->send());
+        // try {
+        //     pp($this->email->send());
+        // } catch (\Throwable $th) {
+        //     pp($th->getMessage());
+        //     // $filename = APPPATH . 'logs/sendmail-log/sendmail-log' . date('Ymd') . '.txt';
+        //     // $fp = fopen($filename, 'a+');
+        //     // fwrite($fp, "Time :: " . date("Y-m-d H:i:s") . " \n");
+        //     // fwrite($fp, date("Y-m-d H:i:s") . ' : Exception : PaymentChannel/place_money_transfer_order() - ' . $th->getMessage());
+        //     // fwrite($fp, "\n\n\n");
+        //     // fclose($fp);
+        // }
+
+        // return view('template_email');
     }
 }

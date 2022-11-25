@@ -12,10 +12,7 @@
                         <div class="alert alert-success" id="success">
                             <b>
                                 <i class="bi bi-check-circle-fill"></i> 
-                                สมัครสมาชิกเรียบร้อยแล้ว กรุณารอการตรวจสอบจากผู้ดำเนินงาน <br><br>
-                                <a class="alert-link alert-link-fixed-end" href="<?=route_to('login')?>" title="กลับหน้าแรก">
-                                    <i class="bi bi-cursor-fill"></i> ล็อคอินเข้าสู่ระบบ
-                                </a>
+                                สมัครสมาชิกเรียบร้อยแล้ว กรุณารอการตรวจสอบอีเมลของท่านเพื่อทำการยืนยันตัวตนเข้าสู่ระบบ
                             </b>
                         </div>
                             <?php else: ?>

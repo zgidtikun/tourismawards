@@ -17,6 +17,10 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
+
+  body.swal2-height-auto {
+    height: 100vh !important;
+  }
 </style>
 <div class="login-bg h-100">
   <div class="container h-100">
@@ -60,6 +64,10 @@
     </div>
   </div>
 </div>
+
+<!-- SweetAlert2 -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <?php if (!empty($_recapcha) && $_recapcha) : ?>
   <?= view('_recapcha') ?>
 <?php endif; ?>
@@ -93,6 +101,11 @@
                     text: response.message,
                   });
                 } else {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops Login Fail...!',
+                    text: response.message,
+                  });
                   $('#' + response.type).addClass('is-invalid');
                   $('#invalid-' + response.type).html(response.message);
                 }

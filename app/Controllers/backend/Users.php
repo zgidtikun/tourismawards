@@ -14,7 +14,7 @@ class Users extends BaseController
             // $where['surname'] = $_GET['keyword'];
             // $where['email'] = $_GET['keyword'];
         }
-        $data['result']  = $this->db->table('users')->where('role_id', 1)->where('status_delete', 1)->like($where, 'match', 'both')->orderBy('id', 'desc')->get()->getResultObject();
+        $data['result']  = $this->db->table('users')->where('role_id', 1)->where('status_delete', 1)->like($where, 'match', 'both')->orderBy('status', 'desc')->get()->getResultObject();
 
         // $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name, R.user_groups AS role_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('award_type AT', 'AT.id = U.award_type', 'left')->join('assessment_group AG', 'AG.id = U.assessment_group', 'left')->where('U.member_type = 1 AND status_delete = 1')->join('role R', 'R.id = U.role_id', 'left')->orderBy('U.id', 'desc')->get()->getResultObject();
 
@@ -58,16 +58,16 @@ class Users extends BaseController
         $where = [];
         if (!empty($_GET['keyword'])) {
             $where['name'] = $_GET['keyword'];
-            $where['surname'] = $_GET['keyword'];
-            $where['email'] = $_GET['keyword'];
+            // $where['surname'] = $_GET['keyword'];
+            // $where['email'] = $_GET['keyword'];
         }
         if (!empty($_GET['role']) && $_GET['role'] != 'all') {
             $where['role_id'] = $_GET['role'];
         }
         $data['role']   = $this->db->table("role")->get()->getResultObject();
 
-        $data['users']  = $this->db->table('users')->orWhere($where)->where('status', 1)->get()->getResultObject();
-        $data['admin']  = $this->db->table('admin')->orWhere($where)->where('status', 1)->get()->getResultObject();
+        $data['users']  = $this->db->table('users')->like($where, 'match', 'both')->where('status', 1)->get()->getResultObject();
+        $data['admin']  = $this->db->table('admin')->like($where, 'match', 'both')->where('status', 1)->get()->getResultObject();
         // pp_sql();
         // $data['member_type'] = $this->db->table('member_type')->get()->getResultObject();
         // px($data['role']);
@@ -183,6 +183,20 @@ class Users extends BaseController
             $data = [];
             $data['users'] = $this->db->table('users')->where('id', $id)->get()->getRowObject();
             $this->sendMail($data);
+            
+            $notification = set_noti(
+                (object)[
+                    'user_id' => $id,
+                    'bank' => 'frontend'
+                ],
+                (object)[
+                    'message' => 'ระบบได้ทำการยืนยันการสมัครสมาชิกเรียบร้อยแล้ว',
+                    'link' => base_url('awards/application'),
+                    'send_date' => date('Y-m-d H:i:s'),
+                    'send_by' => session()->account,
+                ]
+            );
+
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'ทำการยืนยันการสมัครสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการยืนยันการสมัครไม่สำเร็จ']);

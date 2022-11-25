@@ -475,7 +475,7 @@
         <input type="hidden" name="insert_id" id="insert_id" value="<?= $id ?>">
         <div class="backendform-col1 judgeradio">
           <div class="judgeradio-col">
-            <input type="radio" id="status_2" name="status" value="2" <?= ($result->status == 2) ? 'checked' : ''; ?>>
+            <input type="radio" id="status_2" name="status" value="4" <?= ($result->status == 4) ? 'checked' : ''; ?>>
             <label for="status_2">ขอข้อมูลเพิ่มเติม</label>
           </div>
           <div class="judgeradio-col">
@@ -483,7 +483,7 @@
             <label for="status_3">อนุมัติ</label>
           </div>
           <div class="judgeradio-col">
-            <input type="radio" id="status_4" name="status" value="4" <?= ($result->status == 4) ? 'checked' : ''; ?>>
+            <input type="radio" id="status_4" name="status" value="0" <?= ($result->status == 0) ? 'checked' : ''; ?>>
             <label for="status_4">ไม่อนุมัติ</label>
           </div>
         </div>

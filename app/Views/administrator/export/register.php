@@ -17,8 +17,27 @@ $spreadsheet = new Spreadsheet();
 
 $sheet = $spreadsheet->getActiveSheet();
 
+$rowHead = [
+  // '#',
+  'ลำดับที่',
+  'รหัส',
+  'ชื่อผลงาน',
+  'ประเภทรางวัลฯ',
+  'สาขา',
+  'ที่อยู่',
+  'จังหวัด',
+  'อีเมล์ผู้ประกอบการ',
+  'เบอร์โทร',
+  'ชื่อผู้ประสาน',
+  'ตำแหน่ง',
+  'เบอร์โทรผู้ประสาน',
+  'อีเมล์ผู้ประสาน',
+  'สถานะ',
+  'ผลการตัดสินรางวัลฯ',
+];
+
 //set Amount Column
-$colExcel = colExcel(14);
+$colExcel = colExcel(count($rowHead));
 // pp($colExcel);
 $end = end($colExcel);
 // px($end);
@@ -39,24 +58,6 @@ $sheet->setCellValue('A2', "")->mergeCells('A2:' . $end . '2');
 //set Format FORMAT_NUMBER_00
 $sheet->getStyle('H')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
 $sheet->getStyle('K')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
-
-$rowHead = [
-  // '#',
-  'ลำดับที่',
-  'รหัส',
-  'ประเภทรางวัลฯ',
-  'สาขา',
-  'ที่อยู่',
-  'จังหวัด',
-  'อีเมล์ผู้ประกอบการ',
-  'เบอร์โทร',
-  'ชื่อผู้ประสาน',
-  'ตำแหน่ง',
-  'เบอร์โทรผู้ประสาน',
-  'อีเมล์ผู้ประสาน',
-  'สถานะ',
-  'ผลการตัดสินรางวัลฯ',
-];
 
 foreach ($colExcel as $k => $v) {
   //set Cell Head
@@ -96,7 +97,7 @@ if (!empty($result)) {
     $data = [
       $key + 1,
       $value->code,
-      // $value->attraction_name_th,
+      $value->attraction_name_th,
       applicationType($value->application_type_id),
       applicationTypeSub($value->application_type_sub_id),
       mainAddress($address),

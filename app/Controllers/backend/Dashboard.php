@@ -24,6 +24,7 @@ class Dashboard extends BaseController
         $attraction   = $this->db->table("application_form")->get()->getResultObject();
         $data['type_sub'] = [];
         $data['attraction'] = [];
+
         if (!empty($type_sub)) {
             foreach ($type_sub as $key => $value) {
                 $data['type_sub'][$value->application_type_id][] = $value->name;
@@ -36,9 +37,7 @@ class Dashboard extends BaseController
                 $data['attraction'][$value->application_type_id][$value->application_type_sub_id][] = $value->attraction_name_th;
             }
         }
-        // px($data);
-
-
+        
         echo json_encode($data);
     }
 }

@@ -21,6 +21,21 @@ function get_app_id($id)
     return $app->id;
 }
 
+function get_receive_admin()
+{
+    $obj = new \App\Models\Admin();
+    $users = $obj->where('status',1)
+        ->select('id')
+        ->findAll();
+
+    $result = [];
+    foreach($users as $user){
+        array_push($result,$user->id);
+    }
+
+    return  $result;
+}
+
 function get_receive_noti($id)
 {
     $obj = new \App\Models\Committees();
@@ -47,13 +62,14 @@ function set_noti($target,$data)
             $noti->insert([
                 'user_id' => $target->user_id,
                 'target' => $target->bank,
-                'pack_noti' => json_encode([$data])
+                'pack_noti' => json_encode([ 0 => $data])
             ]);
         } else {
             if(!empty($us_noti->pack_noti)){
-                $temp = json_decode(json_encode($data),true) + json_decode($us_noti->pack_noti,true);
+                $temp = json_decode($us_noti->pack_noti,true);
+                array_push($temp,json_decode(json_encode($data),true));
             } else {
-                $temp = $data;
+                $temp = [ 0 => $data];
             }
 
             $noti->where('id',$us_noti->id)
@@ -99,7 +115,7 @@ function get_noti($target,$max = 5)
         $counter = 0;
         
         if(!empty($us_noti->pack_noti)){            
-            $list = json_decode($us_noti->pack_noti,true);
+            $list = array_reverse(json_decode($us_noti->pack_noti,true));
             
             if($max != 'all') {                
                 while($counter < $max &&  $counter < count($list)){

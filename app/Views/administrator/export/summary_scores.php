@@ -17,15 +17,29 @@ $spreadsheet = new Spreadsheet();
 
 $sheet = $spreadsheet->getActiveSheet();
 
+$rowHead = [
+  // '#',
+  'ลำดับที่',
+  'รหัส',
+  'ชื่อผลงาน',
+  'ประเภทรางวัลฯ',
+  'สาขา',
+  'จังหวัด',
+  'คะแนนรอบ Pre-Screen',
+  'คะแนนรอบลงพื้นที่',
+  'คะแนนที่ได้โดยเฉลี่ย',
+];
+
 //set Amount Column
-$colExcel = colExcel(8);
+$colExcel = colExcel(count($rowHead));
 // pp($colExcel);
 $end = end($colExcel);
 // px($end);
 
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
-// $sheet->getStyle('M')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('G:I')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -37,18 +51,6 @@ $sheet->setCellValue('A2', "")->mergeCells('A2:' . $end . '2');
 
 //set Format
 // $sheet->getStyle('X')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
-
-$rowHead = [
-  // '#',
-  'ลำดับที่',
-  'รหัส',
-  'ประเภทรางวัลฯ',
-  'สาขา',
-  'จังหวัด',
-  'คะแนนรอบ Pre-Screen',
-  'คะแนนรอบลงพื้นที่',
-  'คะแนนที่ได้โดยเฉลี่ย',
-];
 
 foreach ($colExcel as $k => $v) {
   //set Cell Head
@@ -65,14 +67,15 @@ if (!empty($result)) {
   foreach ($result as $key => $value) {
 
     $data = [
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
-      $value->id,
+      ($key + 1),
+      $value->code,
+      $value->attraction_name_th,
+      $value->application_type_name,
+      $value->application_type_sub_name,
+      $value->address_province,
+      $value->score_prescreen_tt,
+      $value->score_onsite_tt,
+      $value->score_prescreen_tt + $value->score_onsite_tt,
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

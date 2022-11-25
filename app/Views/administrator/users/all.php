@@ -76,7 +76,7 @@
             ?>
                 <tr>
                   <td class=""><?= $i++ ?></td>
-                  <td class="">
+                  <td class="text-center">
                     <?php
                     if (!empty($value->profile) && $value->profile != "") {
                       $path = base_url() . "/" . $value->profile;
@@ -123,7 +123,7 @@
             ?>
                 <tr>
                   <td class=""><?= $i++ ?></td>
-                  <td class="text-start"><img src="<?= base_url() ?>/<?= $value->profile ?>" style="height: 50px; width: 50px"> <?= $value->name ?></td>
+                  <td class="text-center"><img src="<?= base_url() ?>/<?= $value->profile ?>" style="height: 50px; width: 50px"> <?= $value->name ?></td>
                   <td class=""><?= $value->mobile ?></td>
                   <td class="text-start"><?= $value->email ?></td>
                   <td class=""><?= $label ?></td>

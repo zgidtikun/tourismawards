@@ -263,7 +263,9 @@ const psc = {
             let req = '';
 
             $.each(question.request,function(rk,rv){
-                req += '<li>'+rv.request_list+'</li>';
+                if(!empty(rv.request_list)){
+                    req += '<li>'+rv.request_list+'</li>';
+                }
             });
 
             $('#request-list').html(req);

@@ -306,7 +306,7 @@
             </div>
         </div>
 
-        <div class="row" id="pointer-5">
+        <div class="row" id="pointer-4">
             <div class="col12">
                 <div class="main-title">
                     <div class="catagory-txt">

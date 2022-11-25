@@ -16,7 +16,8 @@ class Users extends Model
 
     protected $allowedFields = ['prefix', 'name', 'surname', 'member_type', 'award_type',
         'assessment_group', 'mobile', 'email', 'username', 'password', 'role_id', 'status',
-        'position', 'stage', 'status_delete', 'profile'];
+        'position', 'stage', 'verify_code', 'verify_status', 'verify_date',
+        'status', 'status_delete', 'profile'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

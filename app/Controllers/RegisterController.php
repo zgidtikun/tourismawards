@@ -7,10 +7,15 @@ class RegisterController extends BaseController
 {
     private $user;
     private $recapcha = false; 
+    private $encrypter;
 
     public function __construct()
     {   
         $this->user = new UserController(); 
+        $this->encrypter = (object) [
+            'key' => md5('ThailandTourismAwards2023'),
+            'driver' => 'OpenSSL'
+        ];
     }
 
     public function forgetpass()
@@ -39,6 +44,9 @@ class RegisterController extends BaseController
             if($checkReCapcha->result){
                 $valid = $this->validation->run((array)$data,'signup');
                 if($valid){  
+                    helper('verify');
+                    $verify_code = genVerifyCode();
+
                     $instData = array(
                         'prefix' => $data->prefix,
                         'name' => $data->name,
@@ -49,6 +57,8 @@ class RegisterController extends BaseController
                         'username' => $data->email,
                         'password' => password_hash($data->password,PASSWORD_DEFAULT),
                         'role_id' => $data->role,
+                        'verify_code' => $verify_code,
+                        'verify_status' => 0,
                         'status' => 0
                     );
 
@@ -58,6 +68,25 @@ class RegisterController extends BaseController
                         $status = false;
                         array_push($error,$result->error);
                     } else {
+                        $userId = $result->id;
+                        $verify_token = vEncryption($userId.'-'.$verify_code);
+                        $email = \Config\Services::email();
+                        $email->setTo($data->email);
+                        $email->setFrom('promotion@chaiyohosting.com');
+                        $email->setSubject('ยืนยันตัวตนการเข้าร่วมประกวด');
+
+                        $_view = view('template-frontend-email',[
+                            '_header' => '',
+                            '_content' => 'คุณ '.$data->name.' '.$data->surname.' ได้ลงทะเบียนเข้าาประกวดรางวัล'
+                                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2556 (Thailand Tourism Awards 2023) 
+                                ดัวยอีเมล '.$data->email.' โปรดยืนยันตัวตนด้วยการกดที่ปุ่ม Verify',
+                            '_method' => 'register',
+                            '_link' => base_url('verify-user?c='.$verify_token)
+                        ]);
+
+                        $_template = $_view;
+                        $email->setMessage($_template);
+                        $email->send();
                         $status = true;
                     }
                 } else {
@@ -148,28 +177,29 @@ class RegisterController extends BaseController
     {
         $_subject = 'Thailand Tourism Awards - Reset Password';
         $_recipient = $data->name.' '.$data->surname;
-
+        $_from = 'promotion@chaiyohosting.com';
+        $_to = $data->email;
+        
+        $_header = 'เรื่อง รหัสผ่านใหม่ Thailand Tourism Awards';
         $_message = '<p>';
         $_message .= 'เรียน คุณ'.$_recipient.'</br>';
-        $_message .= 'เรื่อง รหัสผ่านใหม่ Thailand Tourism Awards';
         $_message .= '</p>';
         $_message .= '<p>New password : '.$data->password.'<br></p>';
         $_message .= '<p>ขอแสดงความนับถือ<br>Thailand Tourism Awards</p>';
 
-        if(getenv('CI_ENVIRONMENT') != 'production'){
-            $_from = 'promotion@chaiyohosting.com';
-            $_to = 'gidtikun@chaiyohosting.com';
-        } else {
-            $_from = '';
-            $_to = '';
-        }
+        $_view = view('template-frontend-email',[
+            '_header' => $_header,
+            '_content' => $_message
+        ]);
+
+        $_template = $_view;
 
         try {
         
             $this->email->setTo($_to);
             $this->email->setFrom($_from);
             $this->email->setSubject($_subject);
-            $this->email->setMessage($_message);
+            $this->email->setMessage($_template);
             $_status = $this->email->send();
             
             return array('result' => $_status ? 'success' : 'error');
