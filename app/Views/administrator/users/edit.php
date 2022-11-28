@@ -88,14 +88,14 @@
           </div>
         </div>
 
-        <div class="backendform-row">
+        <!-- <div class="backendform-row">
           <div class="backendform-col subject">
             รหัสผ่าน <span class="required">*</span>
           </div>
           <div class="backendform-col inpfield">
             <input type="password" name="password" id="password" class="form-control" value="" placeholder="">
           </div>
-        </div>
+        </div> -->
 
         <div class="backendform-row">
           <div class="backendform-col subject">

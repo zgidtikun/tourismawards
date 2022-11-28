@@ -9,7 +9,7 @@ class Email extends BaseConfig
     /**
      * @var string
      */
-    public $fromEmail = 'promotion@chaiyohosting.com';
+    public $fromEmail = 'noreply@tennis.in.th';
 
     /**
      * @var string
@@ -48,29 +48,28 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPHost = 'mail.chaiyohosting.com';
+    public $SMTPHost = 'mail.tennis.in.th';
 
     /**
      * SMTP Username
      *
      * @var string
      */
-    public $SMTPUser = 'promotion@chaiyohosting.com';
+    public $SMTPUser = 'noreply@tennis.in.th';
 
     /**
      * SMTP Password
      *
      * @var string
      */
-    public $SMTPPass = '0wsptFCx';
+    public $SMTPPass = '0vHghYGKa';
 
     /**
      * SMTP Port
      *
      * @var int
      */
-    // public $SMTPPort = 25;
-    public $SMTPPort = 587;
+    public $SMTPPort = 25;
 
     /**
      * SMTP Timeout (in seconds)

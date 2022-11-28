@@ -87,9 +87,9 @@ class Users extends BaseController
         $imagefile = $this->input->getFiles('image_cover');
         $img = $imagefile['image_cover'];
 
-        if (!empty($post['password'])) {
-            $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        // if (!empty($post['password'])) {
+        //     $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
+        // }
         $data = [
             // 'id'            => $post['id'],
             'prefix'        => $post['prefix'],
@@ -99,10 +99,11 @@ class Users extends BaseController
             'mobile'        => $post['mobile'],
             'email'         => $post['email'],
             'username'      => $post['email'],
-            'password'      => $post['password'],
-            // 'captcha'       => $post[''],
+            // 'password'      => $post['password'],
+            'verify_code'   => vEncryption('user-'.genVerifyCode()),
             'stage'         => 1,
             'role_id'       => 1,
+            'surname'       => $post['surname'],
             'created_at'    => date('Y-m-d H:i:s'),
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
@@ -120,6 +121,7 @@ class Users extends BaseController
                     $this->db->table('users')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
                 }
             }
+            $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -164,9 +166,9 @@ class Users extends BaseController
             'updated_at'    => date('Y-m-d H:i:s'),
         ];
 
-        if (!empty($post['password'])) {
-            $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        // if (!empty($post['password'])) {
+        //     $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
+        // }
         $result = $this->db->table('users')->where('id', $post['insert_id'])->update($data);
         if ($result) {
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
@@ -217,15 +219,15 @@ class Users extends BaseController
         }
     }
 
-    public function sendMail($data)
-    {
-        // pp($data);
-    }
-
     public function checkData()
     {
         $email = $this->input->getVar('email');
         $result = $this->db->table('users')->where('email', $email)->get()->getRowObject();
         echo json_encode($result);
+    }
+
+    public function sendMail($data)
+    {
+        // pp($data);
     }
 }

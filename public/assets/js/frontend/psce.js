@@ -407,9 +407,9 @@ const setDropdown = (qt,cate,seg) => {
             cp, cl;        
             
         if(Number(v.pre_status) == 1){            
-            if($.inArray(
+            if(
                 !empty(v.request_status)
-                && Number(v.request_status),[0,1,2]) === -1
+                && $.inArray(Number(v.request_status),[0,1,2]) === -1
             ){
                 cp = !empty(v.score_pre) && seg != k ? 'complete' : '';
             } else {
@@ -477,9 +477,14 @@ const disabledForm = () => {
 }
 
 const downloadFile = () => {
-    let url = getBaseUrl()+'/inner-api/answer/download/file';
-    url += '/'+qTitle.attr('data-id')+'/paper';
-    window.open(url,'_blank');
+    const point = getPointer();
+    if(dataset[point.cate].question[point.seg].paper.length > 0) {
+        let url = getBaseUrl()+'/inner-api/answer/download/file';
+        url += '/'+qTitle.attr('data-id')+'/paper';
+        window.open(url,'_blank');
+    } else {
+        alert.show('warning','ไม่มีไฟล์ในรายการนี้','');
+    }
 }
 
 const resetEstimate = (cate,seg) => {

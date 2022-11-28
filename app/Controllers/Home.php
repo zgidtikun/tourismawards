@@ -73,7 +73,7 @@ class Home extends BaseController
 
         return view('template-frontend',array(
             'title' => 'ตั้งค่ารหัสผ่านใหม่',
-            'id' => $id,
+            'id' => !empty($id) ? $id : '',
             'email' => $email,
             '_recapcha' => false,
             'view' => 'frontend/new-password'
@@ -148,33 +148,8 @@ class Home extends BaseController
 
     public function sendEmailContact()
     {
-        $input = (object) $this->input->getVar();
-        $_subject = $input->subject;
-        $_from = 'promotion@chaiyohosting.com';
-        $_to = $input->email;
-        $_message = '<p>'.$input->message.'</p>';
-        $_message .= '<p>ขอแสดงความนับถือ<br>'.$input->name.'</p>';
-
-        $_view = view('template-frontend-email',[
-            '_header' => '',
-            '_content' => $_message
-        ]);
-        
-        $_template = $_view;
-
-        try {
-            $email = \Config\Services::email();
-            $email->setTo($_to);
-            $email->setFrom($_from);
-            $email->setSubject($_subject);
-            $email->setMessage($_template);
-            $_status = $email->send();
-            
-            $result = [ 'result' => $_status ? 'success' : 'error' ];
-        } catch(\Exception $e) {
-            $result = ['result' => 'error', 'message' => $e->getMessage()];
-        }
-        
+        helper('semail');
+        $result = send_email($this->input->getVar(),'contact');        
         return $this->response->setJSON($result);
     }
 

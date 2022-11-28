@@ -35,6 +35,9 @@
             <div class="card-body pt-0">
               <form action="#">
                 <div class="form-group mb-4">
+                  <h4 id="title_name">เข้าสู่ระบบ</h4>
+                </div>
+                <div class="form-group mb-4">
                   <input type="text" id="username" class="form-control border-dark" placeholder="ชื่อผู้ใช้" value="<?php if (isset($_COOKIE["username"])) {
                                                                                                                       echo $_COOKIE["username"];
                                                                                                                     } ?>">
@@ -72,6 +75,18 @@
   <?= view('_recapcha') ?>
 <?php endif; ?>
 <script>
+  $(function() {
+    <?php if (session('success')) { ?>
+      toastr.success("<?php echo session('success'); ?>");
+    <?php } else if (session('error')) {  ?>
+      toastr.error("<?php echo session('error'); ?>");
+    <?php } else if (session('warning')) {  ?>
+      toastr.warning("<?php echo session('warning'); ?>");
+    <?php } else if (session('info')) {  ?>
+      toastr.info("<?php echo session('info'); ?>");
+    <?php } ?>
+  });
+
   const signin = {
     authen: function() {
       if (this.validation()) {

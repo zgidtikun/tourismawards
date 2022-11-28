@@ -74,10 +74,10 @@
                   <td class="">
                     <div class="form-table-col edit">
                       <?php if ($value->status != 1) { ?>
-                        <a href="#" class="btn-edit" title="ยืนยันการสมัคร" onclick="active_user('<?= $value->id ?>')"><i class="bi bi-check text-success"></i></a>
+                        <a href="#" class="btn-edit" data-toggle="tooltip" data-bs-placement="top" title="ยืนยันการสมัคร" onclick="active_user('<?= $value->id ?>')"><i class="bi bi-check-square text-success"></i></a>
                       <?php } ?>
-                      <a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a>
+                      <a href="#" class="btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
+                      <a href="#" class="btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a>
                     </div>
                   </td>
                 </tr>

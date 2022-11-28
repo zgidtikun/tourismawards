@@ -76,6 +76,9 @@ class EstimateController extends BaseController
                     'send_by' => 'คณะกรรมการ'
                 ]
             );
+
+            helper('semail');
+            send_email((object)['id' => $form->created_by],'estimate-request');
                 
             $result = ['result' => 'success'];
         } catch(\Exception $e){
@@ -326,6 +329,12 @@ class EstimateController extends BaseController
                         'send_by' => 'คณะกรรมการ'
                     ]
                 );
+
+                helper('semail');
+                send_email((object)[
+                    'id' => $form->created_by,
+                    'stage' => $input->stage
+                ],'estimate-complete');
 
             }
 

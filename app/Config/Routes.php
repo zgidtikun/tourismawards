@@ -70,6 +70,7 @@ $routes->group('auth', static function ($routes) {
     });
     $routes->get('logout', 'LoginController::logout');
     $routes->post('ajax-reset-password', 'RegisterController::resetPassword');
+    $routes->post('new-password', 'RegisterController::setNewPassword');
 });
 
 $routes->group('notification', static function ($routes) {
@@ -285,8 +286,14 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     $routes->post('MarkTest/delete', 'MarkTest::delete');
     $routes->post('MarkTest/saveInsert', 'MarkTest::saveInsert');
     $routes->post('MarkTest/saveUpdate', 'MarkTest::saveUpdate');
+
+    // ยืนยันตัวตน Backend
+    $routes->post('VerifyPassword/savePassword', 'VerifyPassword::savePassword');
 });
 
+
+// ยืนยันตัวตน Backend
+$routes->get('verify-password', 'backend\VerifyPassword::index');
 
 // $routes->group('backend', static function ($routes) {
 //     // MarkTest is Controller for Test Only

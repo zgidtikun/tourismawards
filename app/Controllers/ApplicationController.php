@@ -166,9 +166,30 @@ class ApplicationController extends BaseController
                 $updd[$map] = !empty($input[$map]) ? $input[$map] : NULL;
             }
 
-            $update = $this->appForm->update($app_id,$updd);
+            $this->appForm->update($app_id,$updd);
             $user = new \App\Models\Users();
-            $user->update(session()->get('id'),['stage' => 2]);            
+            $user->update(session()->get('id'),['stage' => 2]);   
+
+            set_multi_noti(
+                get_receive_admin(),
+                (object) [
+                    'bank' => 'backend'
+                ],
+                (object) [
+                    'message' => 'แจ้งผลการส่งใบสัครเข้าระบบจากผู้ประกอบการจาก '
+                        .session()->get('account'),
+                    'link' => base_url('awards/result'),
+                    'send_date' => date('Y-m-d H:i:s'),
+                    'send_by' => 'ททท'
+                ]
+            );
+            
+            helper('semail');
+            send_email((object)[
+                'email' => session()->get('account'),
+                'tycon' => session()->get('user')
+            ],'app');
+
             $result = ['result' => 'success', 'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว'];
 
         } catch(\Exception $e){
@@ -298,7 +319,7 @@ class ApplicationController extends BaseController
     public function getRequireQuestion($uid)
     {
         $require = $this->appForm->select(
-                'application_type_id type_id, application_type_sub_id sub_type_id'
+                'id app_id,application_type_id type_id, application_type_sub_id sub_type_id'
             )
             ->where('created_by',$uid)
             ->first();

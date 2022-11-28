@@ -196,7 +196,7 @@ const removeFile = (input, setting) => {
     $(ref.btnrm).prop('disabled', true);
     $(ref.btnrm).html(setSpinner('Removing...'));
 
-    if ($.inArray(ref.app, ['awards/application', 'awards/pre-screen', 'estimate/onstie'])) {
+    if ($.inArray(ref.app, ['awards/application', 'awards/pre-screen', 'estimate/onstie']) !== -1) {
         api_setting.method = 'post';
 
         if (ref.app == 'awards/application') {
@@ -268,23 +268,42 @@ const removeFile = (input, setting) => {
 
 const downloadFile = (input) => {
     let id, url, pointer,
+        emptyFile = false;
         ref = referance.find(el => el.input == input);
 
     if (ref.app == 'awards/application') {
-        id = register.id;
-        url = getBaseUrl() + '/inner-api/app/download/file';
+        if(register.count[ref.pointer[1]] > 0){
+            id = register.id;
+            url = getBaseUrl() + '/inner-api/app/download/file';
+        } else {
+            emptyFile = true;
+        }
     } else if (ref.app == 'awards/pre-screen') {
         pointer = psc.getPointer();
-        id = psc.questions[pointer.cate].question[pointer.seg].reply_id;
-        url = getBaseUrl() + '/inner-api/answer/download/file';
+
+        if(psc.questions[pointer.cate].question[pointer.seg].paper.length > 0){
+            id = psc.questions[pointer.cate].question[pointer.seg].reply_id;
+            url = getBaseUrl() + '/inner-api/answer/download/file';
+        } else {
+            emptyFile = true;
+        } 
     } else if (ref.app == 'estimate/onsite') {
         pointer = getPointer();
-        id = dataset[pointer.cate].question[pointer.seg].est_id;
-        url = getBaseUrl() + '/inner-api/estimate/onsite/files/download';
+        
+        if(dataset[pointer.cate].question[pointer.seg].estFiles[ref.position].length > 0){
+            id = dataset[pointer.cate].question[pointer.seg].est_id;
+            url = getBaseUrl() + '/inner-api/estimate/onsite/files/download';
+        } else {
+            emptyFile = true;
+        } 
     }
 
-    url += '/' + id + '/' + ref.position;
-    window.open(url, '_blank');
+    if(!emptyFile){
+        url += '/' + id + '/' + ref.position;
+        window.open(url, '_blank');
+    } else {
+        alert.show('warning','ไม่มีไฟล์ในรายการนี้','');
+    }
 }
 
 const showFiles = {

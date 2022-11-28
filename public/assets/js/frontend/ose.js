@@ -451,6 +451,17 @@ const disabledForm = () => {
     }
 }
 
+const downloadFileAnswer = () => {
+    const point = getPointer();
+    if(dataset[point.cate].question[point.seg].paper.length > 0) {
+        let url = getBaseUrl()+'/inner-api/answer/download/file';
+        url += '/'+qTitle.attr('data-id')+'/paper';
+        window.open(url,'_blank');
+    } else {
+        alert.show('warning','ไม่มีไฟล์ในรายการนี้','');
+    }
+}
+
 const zoomImages = (el) => {
     $("#img-modal").attr('src', el.src);
     $("#images-modal").show();

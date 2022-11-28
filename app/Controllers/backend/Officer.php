@@ -69,9 +69,9 @@ class Officer extends BaseController
         $imagefile = $this->input->getFiles('profile');
         $img = $imagefile['profile'];
 
-        if (!empty($post['password'])) {
-            $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        // if (!empty($post['password'])) {
+        //     $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
+        // }
         if (empty($post["award_type"])) {
             $post["award_type"] = [];
         }
@@ -90,7 +90,8 @@ class Officer extends BaseController
             'email'                 => $post["email"],
             'position'              => $post["position"],
             'username'              => $post["email"],
-            'password'              => $post["password"],
+            // 'password'              => $post["password"],
+            'verify_code'           => vEncryption('admin-'.genVerifyCode()),
             'role_id'               => 3,
             'status'                => 1,
             'created_at'            => date('Y-m-d H:i:s'),
@@ -110,6 +111,7 @@ class Officer extends BaseController
                     $this->db->table('users')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
                 }
             }
+            $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -161,9 +163,9 @@ class Officer extends BaseController
             'updated_at'            => date('Y-m-d H:i:s'),
         ];
 
-        if (!empty($post['password'])) {
-            $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        // if (!empty($post['password'])) {
+        //     $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
+        // }
         $result = $this->db->table('users')->where('id', $post['insert_id'])->update($data);
         if ($result) {
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
@@ -231,9 +233,9 @@ class Officer extends BaseController
         $imagefile = $this->input->getFiles('profile');
         $img = $imagefile['profile'];
 
-        if (!empty($post['password'])) {
-            $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        // if (!empty($post['password'])) {
+        //     $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
+        // }
         if (empty($post["assessment_group"])) {
             $post["assessment_group"] = [];
         }
@@ -249,7 +251,8 @@ class Officer extends BaseController
             'email'                 => $post["email"],
             'position'              => $post["position"],
             'username'              => $post["email"],
-            'password'              => $post["password"],
+            // 'password'              => $post["password"],
+            'verify_code'           => vEncryption('admin-'.genVerifyCode()),
             'role_id'               => 2,
             'status'                => 1,
             'created_at'            => date('Y-m-d H:i:s'),
@@ -269,6 +272,7 @@ class Officer extends BaseController
                     $this->db->table('admin')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
                 }
             }
+            $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -317,9 +321,9 @@ class Officer extends BaseController
             'updated_at'            => date('Y-m-d H:i:s'),
         ];
 
-        if (!empty($post['password'])) {
-            $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        // if (!empty($post['password'])) {
+        //     $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
+        // }
         $result = $this->db->table('admin')->where('id', $post['insert_id'])->update($data);
         if ($result) {
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
@@ -348,5 +352,10 @@ class Officer extends BaseController
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการลบข้อมูลไม่สำเร็จ']);
         }
+    }
+
+    public function sendMail($data)
+    {
+        // pp($data);
     }
 }

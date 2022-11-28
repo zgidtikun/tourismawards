@@ -12,6 +12,7 @@ const MapData = {
 }
 
 const psc = {
+    appId: null,
     status: null,
     expired: false,
     stage: null,
@@ -24,7 +25,8 @@ const psc = {
         loading('show');
         api({method: 'get', url: '/inner-api/question/get'}).then(function(response){
             psc.expired = expired === 'true' ? true : false;               
-            psc.status = response.status;        
+            psc.status = response.status;    
+            psc.appId = response.app_id;    
             psc.questions = response.data;
             psc.stage = stage;
             
@@ -107,6 +109,7 @@ const psc = {
                     url: '/inner-api/answer/save',
                     data: {
                         action: 'finish',
+                        appId: psc.appId,
                         answer: []
                     }
                 };

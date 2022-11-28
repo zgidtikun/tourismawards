@@ -9,8 +9,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="shortcut icon" href="<?= base_url() ?>/assets/images/favicon.png">
 
-
-
   <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- DataTable -->

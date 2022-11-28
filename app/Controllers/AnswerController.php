@@ -85,6 +85,7 @@ class AnswerController extends BaseController
         $group = $this->assg->findAll();
         $result = [
             'status' => $this->getPrescreenStatus(session()->get('id')),
+            'app_id' => $app->app_id,
             'data' => []
         ];
         
@@ -263,8 +264,10 @@ class AnswerController extends BaseController
                         ]);
                     }
 
+                    $receive = get_receive_noti(session()->get('id'));
+
                     set_multi_noti(
-                        get_receive_noti(session()->get('id')),
+                        $receive,
                         (object) [
                             'bank' => 'frontend'
                         ],
@@ -274,6 +277,14 @@ class AnswerController extends BaseController
                             'send_date' => date('Y-m-d H:i:s'),
                             'send_by' => session()->get('user')
                         ]);
+
+                    helper('semail');
+                    send_email([
+                        'user' => json_decode(json_encode($receive),true),
+                        'app_id' => $this->input->getVar('appId'),
+                        'email' => session()->get('account'),
+                        'tycon' => session()->get('user')
+                    ],'answer-complete');
                 break;
             }
             

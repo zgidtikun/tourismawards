@@ -11,21 +11,18 @@
   <link rel="icon" type="image/png" sizes="16x16" href="<?php echo base_url('assets/images/favicon.png') ?>">
   <link rel="stylesheet" href="<?php echo base_url('backend/assets/css/style.css') ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400&display=swap">
+
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Toastr -->
+  <script src="<?php echo base_url() ?>/assets/plugins/toastr/toastr.min.js"></script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200;300&display=swap');
-
-    html {
-      font-family: "TATSana-Chon", "Tahoma", "Helvetica";
-      --bs-font-sans-serif: "TATSana-Chon", "Tahoma", "Helvetica" !important;
-      --bs-font-monospace: "TATSana-Chon", "Tahoma", "Helvetica" !important;
-      --bs-body-font-family: var(--bs-font-sans-serif);
-      font-size: 18px;
-      font-style: normal;
-      font-weight: normal;
-      -webkit-font-smoothing: antialiased;
-      transition: all 0.2s;
-      line-height: 1.5em;
+    body {
+      font-family: 'Kanit', sans-serif !important;
     }
   </style>
 </head>
@@ -45,7 +42,6 @@
 
   <?php echo view($view) ?>
 
-  <script src="<?php echo base_url('assets/js/common.min.js') ?>"></script>
 </body>
 
 </html>

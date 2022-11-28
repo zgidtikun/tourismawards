@@ -186,7 +186,7 @@
                         <div class="regis-form-data-col2 attachfile hide is-estimate" id="qFiles">
                             <div class="attachinp">
                                 <h4>แนบไฟล์</h4>
-                                <a href="javascript:downloadFile();" class="btn-download">ดาวน์โหลดไฟล์แนบ</a>
+                                <a href="javascript:downloadFileAnswer();" class="btn-download">ดาวน์โหลดไฟล์แนบ</a>
                             </div>
                         </div>
                     </div>

@@ -64,9 +64,9 @@ class Admin extends BaseController
         $imagefile = $this->input->getFiles('profile');
         $img = $imagefile['profile'];
 
-        if (!empty($post['password'])) {
-            $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        // if (!empty($post['password'])) {
+        //     $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
+        // }
         $data = [
             // 'id'                    => $post[""],
             'prefix'                => $post["prefix"],
@@ -79,7 +79,8 @@ class Admin extends BaseController
             'email'                 => $post["email"],
             'position'              => $post["position"],
             'username'              => $post["email"],
-            'password'              => $post["password"],
+            // 'password'              => $post["password"],
+            'verify_code'           => vEncryption('admin-'.genVerifyCode()),
             'role_id'               => 4,
             'status'                => 1,
             'created_at'            => date('Y-m-d H:i:s'),
@@ -99,6 +100,7 @@ class Admin extends BaseController
                     $this->db->table('admin')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
                 }
             }
+            $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -144,9 +146,9 @@ class Admin extends BaseController
             'updated_at'            => date('Y-m-d H:i:s'),
         ];
 
-        if (!empty($post['password'])) {
-            $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        }
+        // if (!empty($post['password'])) {
+        //     $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
+        // }
         // px($data);
         $result = $this->db->table('admin')->where('id', $post['insert_id'])->update($data);
         if ($result) {
@@ -172,5 +174,10 @@ class Admin extends BaseController
         $email = $this->input->getVar('email');
         $result = $this->db->table('admin')->where('email', $email)->get()->getRowObject();
         echo json_encode($result);
+    }
+
+    public function sendMail($data)
+    {
+        // pp($data);
     }
 }

@@ -1,4 +1,4 @@
-<div class="container login" style="height: 100%;">
+<div class="container login" style="height: 100%;" data-id="<?=$id?>">
     <div class="row">
         <div class="col6 loginbox">
             <div class="formbox">
@@ -46,32 +46,37 @@
                 <?php endif; ?>
                 $.ajax({
                     method: 'post',
-                    url: '<?= base_url('auth/check/frontend') ?>',
+                    url: '<?= base_url('auth/new-password') ?>',
                     data: {
-                        username: $('#username').val(),
+                        id: $('.login').attr('data-id'),
+                        email: $('#username').val(),
                         password: $('#password').val(),
-                        memorize: false,
                         recapcha_token: signin.token
                     },
                     dataType: 'json',
                     async: false,
                     success: function(response) {
                         if (response.result == 'success') {
+                            $('#password').val('');
+                            $('#con-password').val('');
+
                             let message;
+                            
+                            <?php if(!session()->get('isLoggedIn')) : ?>
+                            message = 'ด้วยปุ่ม "ตกลง" เพื่อยังหน้าเข้าสู่ระบบ';
+                            <?php else : ?>
+                            message = 'ด้วยปุ่ม "ตกลง" เพื่อยังหน้าข้อมูลส่วนตัว';
+                            <?php endif; ?>
 
-                            if(response.role == 1){
-                                message = 'คุณสามารถบันทึกข้อมูลได้ตลอดเวลา<br>';
-                                message += 'ด้วยปุ่ม "บันทึก" และกดปุ่ม "ส่งใบสมัคร" เมื่อพร้อม';    
-                            } else {
-                                message = 'คุณสามารถกลับมาประเมินต่อ หรือแก้ไขการประเมินได้<br>';
-                                message += 'ก่อนส่งผลการประเมินเข้าระบบ';
-                            }
-
-                            alert.show('info','คำแนะนำการใช้งาน', message).then(function(data){
-                                window.location.href = response.redirect;
+                            alert.show('success','Reset Password Complete.', message).then(function(data){
+                                <?php if(!session()->get('isLoggedIn')) : ?>
+                                window.location.href = '<?=base_url('login')?>';
+                                <?php else : ?>
+                                window.location.href = '<?=base_url('profile')?>';
+                                <?php endif; ?>
                             });
                         } else {
-                            alert.show('error','Oops Login Fail...!', response.message);                               
+                            alert.show('error','Oops Reset Password Fail...!', response.message);                               
                         }
                     }
                 });
@@ -82,12 +87,22 @@
         },
         validation: function() {
             if ($('#username').val() == '') {
-                alert.show('error','Oops Login Fail...!', 'Plase enter a usernamne.');
+                alert.show('error','Oops Reset Password Fail...!', 'กรุณากรอกอีเมล');
                 return false;
             }
 
             if ($('#password').val() == '') {
-                alert.show('error','Oops Login Fail...!', 'Plase enter a password.');
+                alert.show('error','Oops Reset Password Fail...!', 'กรุณากรอกรหัสผ่านใหม่');
+                return false;
+            }
+
+            if ($('#con-password').val() == '') {
+                alert.show('error','Oops Reset Password Fail...!', 'กรุณากรอกยืนยันรหัสผ่านใหม่');
+                return false;
+            }
+
+            if ($('#password').val() != $('#con-password').val()) {
+                alert.show('error','Oops Reset Password Fail...!', 'รหัสผ่านใหม่และยืนยันรหัสผ่านใหม่ไม่เหมือนกัน');
                 return false;
             }
 

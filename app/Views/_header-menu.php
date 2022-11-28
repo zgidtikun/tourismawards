@@ -101,6 +101,11 @@
                                           <i class="bi bi-award-fill"></i>
                                           &nbsp;&nbsp;<?= $content ?>
                                        </a>
+                                       
+                                       <a href="<?= base_url('new-password/'.session()->get('id')) ?>">
+                                          <i class="bi bi-key-fill"></i>
+                                          &nbsp;&nbsp;เปลี่ยนรหัสผ่านใหม่
+                                       </a>
                                     <?php else : ?>
                                        <a href="administrator/dashboard">
                                           <i class="bi bi-file-bar-graph-fill"></i>

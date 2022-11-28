@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
+use Exception;
 
 class RegisterController extends BaseController
 {
@@ -68,25 +69,10 @@ class RegisterController extends BaseController
                         $status = false;
                         array_push($error,$result->error);
                     } else {
-                        $userId = $result->id;
-                        $verify_token = vEncryption($userId.'-'.$verify_code);
-                        $email = \Config\Services::email();
-                        $email->setTo($data->email);
-                        $email->setFrom('promotion@chaiyohosting.com');
-                        $email->setSubject('ยืนยันตัวตนการเข้าร่วมประกวด');
-
-                        $_view = view('template-frontend-email',[
-                            '_header' => '',
-                            '_content' => 'คุณ '.$data->name.' '.$data->surname.' ได้ลงทะเบียนเข้าาประกวดรางวัล'
-                                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2556 (Thailand Tourism Awards 2023) 
-                                ดัวยอีเมล '.$data->email.' โปรดยืนยันตัวตนด้วยการกดที่ปุ่ม Verify',
-                            '_method' => 'register',
-                            '_link' => base_url('verify-user?c='.$verify_token)
-                        ]);
-
-                        $_template = $_view;
-                        $email->setMessage($_template);
-                        $email->send();
+                        $data->user_id = $result->id;
+                        $data->verify_token = vEncryption($data->user_id .'-'.$verify_code);
+                        helper('semail');
+                        send_email($data,'register');
                         $status = true;
                     }
                 } else {
@@ -141,7 +127,7 @@ class RegisterController extends BaseController
             $updData = array(
                 'role' => $user->account->role_id,
                 'id' => $user->account->id,
-                'password' => $newPassword 
+                'password' => $newPassword,
             );
 
             $update = $this->user->updateUser($updData);
@@ -175,36 +161,42 @@ class RegisterController extends BaseController
 
     public function resetPasswordMail($data)
     {
-        $_subject = 'Thailand Tourism Awards - Reset Password';
-        $_recipient = $data->name.' '.$data->surname;
-        $_from = 'promotion@chaiyohosting.com';
-        $_to = $data->email;
+        helper('semail');
+        $result = send_email((object)$data,'reset-pass');
+        return $result;
+    }
+
+    public function setNewPassword()
+    {
+        $checkReCapcha = $this->checkCaptcha($this->input->getVar('recapcha_token'));
+
+        if(!$checkReCapcha->result){
+            $result = array(
+                'result' => 'error',
+                'message' => $checkReCapcha->message
+            );
+            return $this->response->setJSON($result);
+        } 
         
-        $_header = 'เรื่อง รหัสผ่านใหม่ Thailand Tourism Awards';
-        $_message = '<p>';
-        $_message .= 'เรียน คุณ'.$_recipient.'</br>';
-        $_message .= '</p>';
-        $_message .= '<p>New password : '.$data->password.'<br></p>';
-        $_message .= '<p>ขอแสดงความนับถือ<br>Thailand Tourism Awards</p>';
-
-        $_view = view('template-frontend-email',[
-            '_header' => $_header,
-            '_content' => $_message
-        ]);
-
-        $_template = $_view;
-
         try {
-        
-            $this->email->setTo($_to);
-            $this->email->setFrom($_from);
-            $this->email->setSubject($_subject);
-            $this->email->setMessage($_template);
-            $_status = $this->email->send();
-            
-            return array('result' => $_status ? 'success' : 'error');
-        } catch(\Exception $e) {
-            return array('result' => 'error', 'message' => $e->getMessage());
+            if(!empty($this->input->getVar('id'))){
+                $where = ['id' => $this->input->getVar('id')];
+            } else {
+                $where = ['email' => $this->input->getVar('email')];
+            }
+
+            $obj_user = new \App\Models\Users();
+            $update = $obj_user->where($where)
+                ->set(['password' => password_hash($this->input->getVar('password'),PASSWORD_DEFAULT)])
+                ->update();
+
+            if($update){
+                return $this->response->setJSON(['result' => 'success']);
+            } else {
+                return $this->response->setJSON(['resullt' => 'error', 'อีเมลของคุณไม่ถูกต้อง']);
+            }
+        } catch(Exception $e){
+            return $this->response->setJSON(['result' => 'error', 'message' => $e->getMessage()]);
         }
     }
 

@@ -39,7 +39,13 @@
     <?php if (!empty($_recapcha) && $_recapcha) : ?>
         <?= view('_recapcha') ?>
     <?php endif; ?>
-    <script>
+    <script>  
+        $(document).ready(function(){
+            <?php if(session()->get('isLoggedIn')) : ?>
+                $('.login_list li.userlogin').css('display','block');
+            <?php endif; ?> 
+        });
+        
         jQuery(document).each(function () {
                 var headerheight = $('.header-box ').height()+"px";
                 $('#includedbanner').css({ "display": "block", "margin-top": headerheight });
