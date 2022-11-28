@@ -49,18 +49,15 @@ function send_email($dataset, $by)
                 ]);
 
                 $_template = $_view;                
-                $email->setMessage($_template);
-
-                $_status = true;
+                $email->setMessage($_template);                
+                $_list = array();
 
                 foreach($list_admin as $admin){
-                    $email->setTo($admin->email);
-                    if(!$email->send()){
-                        $_status = false;
-                        break;
-                    }
+                    array_push($_list,$admin->email);
                 }
 
+                $email->setTo($_list);
+                $_status = $email->send();
                 $result = [ 'result' => $_status ? 'success' : 'error' ];
             break;
             case 'contact':
@@ -131,17 +128,14 @@ function send_email($dataset, $by)
                 $email->setFrom($email_sys);
                 $email->setSubject($_header);
                 $email->setMessage($_template);
-
-                $_status = true;
+                $_list = array();
 
                 foreach($users as $user){
-                    $email->setTo($user->email);
-                    if(!$email->send()){
-                        $_status = false;
-                        break;
-                    }
+                    array_push($_list,$user->email);
                 }
-                
+
+                $email->setTo($_list);
+                $_status = $email->send();
                 $result = [ 'result' => $_status ? 'success' : 'error' ];
             break;
             case 'estimate-request':

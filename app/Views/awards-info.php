@@ -323,7 +323,8 @@
                 </div>
 
                 <div class="award-list txt-center">
-                    <button type="button" class="btn btn-main">
+                    <button type="button" class="btn btn-main"
+                    onclick="window.open('<?=base_url('download/tycoon_manual.pdf')?>','_blank')">
                         <i class="bi bi-cloud-download"></i> Download File
                     </button>
                 </div>
