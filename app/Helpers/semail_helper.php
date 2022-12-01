@@ -160,9 +160,9 @@ class semail {
                     $_message = view('template-frontend-email',[
                         '_header' => 'ยืนยันตัวตนการเข้าร่วมประกวด',
                         '_content' => 'คุณ '.$dataset->name.' '.$dataset->surname.' ได้ลงทะเบียนเข้าาประกวดรางวัล'
-                            . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2556 (Thailand Tourism Awards 2023) '
+                            . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2565 (Thailand Tourism Awards 2023) '
                             . 'ดัวยอีเมล '.$dataset->email.' โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ '
-                            . '<b><a href="'.base_url('verify-user?c='.$dataset->verify_token).'">'
+                            . '<b><a href="'.base_url('verify-user?c='.$dataset->verify_token).'" target="_blank">'
                             . 'Verify</a></b>'
                     ]);
                     
@@ -194,6 +194,7 @@ class semail {
                     foreach($list_admin as $admin){
                         array_push($_to,$admin->email);
                     }
+                break;
                 case 'contact':
                     $input = (object) $dataset;
     
@@ -215,8 +216,12 @@ class semail {
                     $_recipient = $dataset->name.' '.$dataset->surname;          
                     $_message = view('template-frontend-email',[
                         '_header' => 'รหัสผ่านใหม่ Thailand Tourism Awards',
-                        '_content' => '<p>เรียน คุณ'.$_recipient.'</p>'
-                            .   '<p>New password : '.$dataset->password.'</p>'
+                        '_content' => '<p>เรียน คุณ'.$_recipient.'</p><br>'
+                            . '<p>รหัสผ่านใหม่ของท่านคือ'
+                            . '<p>New password : '.$dataset->password.'</p>'
+                            . '<br>'
+                            . 'ท่านสามารถตั่งค่ารหัสผ่าใหม่ได้ที่ <a href="'.base_url('new-password')
+                            . '" target="_blank">ตั้งรหัสใหม่</a>'
                     ]);
     
                     $_subject = 'Thailand Tourism Awards - Reset Password';
@@ -259,7 +264,7 @@ class semail {
                         '_header' => $_header,
                         '_content' => '<p>เรียน คุณ'.$user->fullname.'<p>'
                             . '<p>คณะกรรมการได้มีการร้องขอข้อมูลเพิ่มเติมในแบบฟอร์มการระเมินขั้นต้น'
-                            . ' ผู้ประกอบการกรุณา <b><a href="'.base_url('login').'">เข้าสู่ระบบ</a></b> '
+                            . ' ผู้ประกอบการกรุณา <b><a href="'.base_url('login').'" target="_blank">เข้าสู่ระบบ</a></b> '
                             . 'เพื่อส่งข้อมูลเพิ่มเติมและส่งแบบฟอร์มการประเมินอีกครั้ง'
                     ]);
     
@@ -282,7 +287,7 @@ class semail {
                         '_header' => $_header,
                         '_content' => '<p>เรียน คุณ'.$user->fullname.'<p>'
                             . '<p>'.$_header.' ของท่านได้ออกมาแล้ว '
-                            . ' ผู้ประกอบการกรุณา <b><a href="'.base_url('login').'">เข้าสู่ระบบ</a></b> '
+                            . ' ผู้ประกอบการกรุณา <b><a href="'.base_url('login').'" target="_blank">เข้าสู่ระบบ</a></b> '
                             . 'เพื่อทำการตรวจผลการประเมินของท่าน'
                     ]);
     
@@ -305,13 +310,13 @@ class semail {
                 'subject' => $_subject,
                 'message' => $_message,
             ];
-                   
+            
             $_status = $this->SendMail($_set);
             $result = [ 'result' => $_status ? 'success' : 'error' ];
-    
+            
             return $result;
         } catch(Exception $e){
-            return [ 'result' => false,  'message' => $e->getMessage() ];
+            return [ 'result' => false,  'message' => $e ];
         }
     }
 }

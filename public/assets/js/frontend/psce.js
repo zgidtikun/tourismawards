@@ -272,12 +272,11 @@ const setQuestion = (cate,seg) => {
         || $.inArray(Number(dataset[point.cate].question[point.seg].request_status),[0,1,2]) === -1
     ){
         if(
-            !empty(dataset[point.cate].question[point.seg].score_pre) 
-            || Number(dataset[point.cate].question[point.seg].score_pre) == 0
+            empty(dataset[point.cate].question[point.seg].score_pre) 
         ){
-            $('#sl-'+point.seg).addClass('complete');
-        } else {
             $('#sl-'+point.seg).removeClass('complete');
+        } else {
+            $('#sl-'+point.seg).addClass('complete');
         }
     } else {
         $('#sl-'+point.seg).removeClass('complete');

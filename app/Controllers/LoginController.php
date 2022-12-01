@@ -169,7 +169,7 @@ class LoginController extends BaseController
 
     public function setSession(){
         if(getenv('CI_ENVIRONMENT') != 'production'){
-            helper(['noti','verify','semail']);
+            helper(['semail']);
             switch($_GET['ac']){
                 case 'app':
                     $result = send_email_frontend((object)[
@@ -178,13 +178,16 @@ class LoginController extends BaseController
                     ],'app');
                 break;
                 case 'reset-pass':
+                    helper(['verify']);
                     $result = send_email_frontend((object)[
                         'name' => 'กิตติคุณ',
                         'surname' => 'สุขสำราญ',
+                        'email' => 's.gidtikun@gmail.com',
                         'password' => genVerifyCode(),
                     ],'reset-pass');
                 break;
                 case 'answer-complete':
+                    helper(['noti']);
                     $result = send_email_frontend((object)[
                         'tycon' => 'กิตติคุณ สุขสำราญ',
                         'email' => 's.gidtikun@gmail.com',

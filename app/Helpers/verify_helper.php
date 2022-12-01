@@ -9,14 +9,14 @@ function genVerifyCode()
 function vEncryption($code)
 {
     $obj = new Encrypter();
-    $cipher = $obj->encryption($code);
+    $cipher = urlencode($obj->encryption($code));
     return $cipher;
 }
 
 function vDecryption($code)
 {
     $obj = new Encrypter();
-    $cipher = $obj->decryption($code);
+    $cipher = $obj->decryption(urldecode($code));
     return $cipher;
 }
 
