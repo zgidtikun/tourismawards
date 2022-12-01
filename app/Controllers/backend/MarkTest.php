@@ -8,6 +8,11 @@ use App\Models\Admin;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 class MarkTest extends BaseController
 {
 
@@ -18,12 +23,12 @@ class MarkTest extends BaseController
 
     public function index()
     {
-        $data = 'user-'.genVerifyCode();
-        pp(vEncryption('user-'.genVerifyCode()));
+        $data = 'user-' . genVerifyCode();
+        pp(vEncryption('user-' . genVerifyCode()));
         pp(vDecryption(vEncryption($data)));
         $array = explode('&', $data);
         pp($array);
-        
+
         exit;
         px($_ENV);
         // pp(session()->get());
@@ -58,7 +63,7 @@ class MarkTest extends BaseController
     public function question()
     {
         $where = [];
-        $where['weight'] = 0;
+        // $where['weight'] = 0;
         // $where['onside_score'] = 0;
         // $where = "assessment_group_id = 3 AND application_type_id = 1 AND application_type_sub_id = 5";
         $data['fields'] = $this->db->getFieldNames('question');
@@ -124,27 +129,164 @@ class MarkTest extends BaseController
 
     public function Mail()
     {
+        // $mail_config['mailpath']     = "/usr/bin/sendmail"; // or "/usr/sbin/sendmail"
+        // $mail_config['protocol']     = "smtp"; //use 'mail' instead of 'sendmail or smtp'
+        // $mail_config['smtp_host']    = "mail.tennis.in.th";
+        // $mail_config['smtp_user']    = "noreply@tennis.in.th";
+        // $mail_config['smtp_pass']    = "0vHghYGKa";
+        // $mail_config['smtp_port']    = 587;
+        // $mail_config['smtp_timeout'] = "";
+        // $mail_config['mailtype']     = "html";
+        // $mail_config['charset']      = "utf-8";
+        // $mail_config['newline']      = "\r\n";
+        // $mail_config['wordwrap']     = TRUE;
+        // $mail_config['validate']     = FALSE;
+
+
+        // $this->email->initialize($mail_config);
+
         $email_data = [];
 
         $subject = 'Test การส่งเมล';
-        $body = view('template_email', $email_data);
+        // $body = view('template_email', $email_data);
+        $body = '123454564asdadddas';
         $this->email->setFrom($_ENV['email.SMTPUser'], 'ส่งจาก');
-        $this->email->setTo('diaryads9@gmail.com');
-        // $this->email->setTo('kritsana@chaiyohosting.com');
+        // $this->email->setFrom($mail_config['smtp_user'], 'ส่งจาก');
+        $this->email->setTo('diaryads0@gmail.com');
+        // $this->email->setBCC('kritsana@chaiyohosting.com,napapat@chaiyohosting.com');
 
         $this->email->setSubject($subject);
         $this->email->setMessage($body);
 
         pp($_ENV);
+        pp($this->email);
         try {
-            pp(1221);
+            // pp(1221);
             pp($this->email->send());
-            pp(222);
+            echo $this->email->printDebugger(['header']);
+            // pp(222);
         } catch (\Throwable $th) {
-            pp($th);
+            // pp($th);
             pp($th->getMessage());
         }
 
         // return view('template_email');
+    }
+
+    public function Mailer()
+    {
+        $email_data = [];
+        $email = 'diaryads0@gmail.com';     //'diaryads0@gmail.com', ['diaryads0@gmail.com', 'diaryads0@gmail.com']
+        $from = ['email'=>'noreply@chaiyohosting.com', 'name'=>'Tourism Awards 2023'];   //email, name
+        $cc = ['diaryads0@gmail.com'];
+        $bcc = ['kritsana@chaiyohosting.com'];
+        
+        $subject = 'ไปไหนมา';
+        $message = view('template_email', $email_data);
+        
+        $requestEmail = [
+            'to' => $email,
+            'subject' => $subject,
+            'message' => $message,
+            'from' => $from,
+            'cc' => $cc,
+            'bcc' => $bcc
+        ];
+                
+        try {
+            
+            $response = $this->SendMail($requestEmail);
+            echo $response['message'];
+            
+        } catch (Exception $e) {
+            print_r($e);
+            echo "Something went wrong. Please try again.";
+        }
+    }
+    
+    private function SendMail($requestEmail=[]){
+        
+        if(!$requestEmail || count($requestEmail)<=0){
+            return ['status'=> false, 'message'=>'Invalid email data.'];
+        }
+        if(!array_key_exists('to', $requestEmail) || !array_key_exists('subject', $requestEmail) || !array_key_exists('message', $requestEmail)){
+            return ['status'=> false, 'message'=>'Invalid email data, required [to|subject|message] value.'];
+        }
+        if((is_string($requestEmail['to']) && @trim($requestEmail['to'])=='') || (is_array($requestEmail['to']) && @count($requestEmail['to'])==0) || @$requestEmail['subject']=='' || @$requestEmail['message']==''){
+            return ['status'=> false, 'message'=>'Invalid email data.'];
+        }
+        
+        try {
+            $mail = new PHPMailer(true);
+            
+            $mail->SMTPDebug = 2;
+            $mail->isSMTP();
+            $mail->CharSet = $_ENV['email.charset'];
+            $mail->Host = $_ENV['email.SMTPHost']; //smtp.google.com
+            $mail->SMTPAuth = true;
+            $mail->Username = $_ENV['email.SMTPUser'];
+            $mail->Password = $_ENV['email.SMTPPass'];
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = $_ENV['email.SMTPPort'];
+            $mail->Subject = $requestEmail['subject'];
+            $mail->Body = $requestEmail['message'];
+            
+            if(is_array($requestEmail['to'])){
+                foreach($requestEmail['to'] as $address){
+                    if(trim($address)!=''){
+                        $mail->addAddress(trim($address));
+                    }
+                }                
+            }else{
+                $mail->addAddress(trim($requestEmail['to']));
+            }
+            
+            
+            if(array_key_exists('from', $requestEmail)){
+                if(array_key_exists('email', $requestEmail['from']) && @trim($requestEmail['from']['email'])!=''){
+                    $fromEmail = $requestEmail['from']['email'];
+                    
+                    if(array_key_exists('name', $requestEmail['from']) && @trim($requestEmail['from']['name'])!=''){
+                        $fromName = $requestEmail['from']['name'];
+                    }else{
+                        $fromName = $fromEmail;
+                    }
+                    
+                    $mail->setFrom($fromEmail, $fromName);
+                }
+//            }else{
+//                $mail->setFrom($_ENV['email.SMTPUser'], $_ENV['email.SMTPUser']);
+            }
+            
+            if(array_key_exists('cc', $requestEmail)){
+                if(is_array($requestEmail['cc'])){
+                    foreach($requestEmail['cc'] as $cc){
+                        if(trim($cc)!=''){
+                            $mail->addCC(trim($cc));
+                        }
+                    }  
+                }                                  
+            }
+            if(array_key_exists('bcc', $requestEmail)){
+                if(is_array($requestEmail['bcc'])){
+                    foreach($requestEmail['bcc'] as $bcc){
+                        if(trim($bcc)!=''){
+                            $mail->addBCC(trim($bcc));
+                        }
+                    }  
+                }                                  
+            }
+                        
+            $mail->isHTML(true);
+
+            if (!$mail->send()) {
+                return ['status'=> false, 'message'=>'Something went wrong. Please try again.'];
+            } else {
+                return ['status'=> true, 'message'=>'Email sent successfully.'];
+            }
+        } catch (Exception $e) {
+            print_r($e);
+            return ['status'=> false, 'message'=>'Something went wrong. Please try again.'];
+        }
     }
 }

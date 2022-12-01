@@ -149,7 +149,7 @@ class Home extends BaseController
     public function sendEmailContact()
     {
         helper('semail');
-        $result = send_email($this->input->getVar(),'contact');        
+        $result = send_email_frontend($this->input->getVar(),'contact');        
         return $this->response->setJSON($result);
     }
 
@@ -297,5 +297,17 @@ class Home extends BaseController
     public function error_404()
     {
         return view('errors/html/error_404_c');
+    }
+
+    public function testTemplateEmailFrontend()
+    {
+        return view('template-frontend-email', [
+                '_header' => 'ยืนยันตัวตนการเข้าร่วมประกวด',
+                '_content' => 'คุณ xxxxxxxxxx xxxxxxxxxxxx ได้ลงทะเบียนเข้าาประกวดรางวัล'
+                    . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2556 (Thailand Tourism Awards 2023) '
+                    . 'ดัวยอีเมล xxxxxxxxxxx โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ '
+                    . '<b><a href="#">'
+                    . 'Verify</a></b>'
+            ]);
     }
 }

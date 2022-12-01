@@ -9,7 +9,7 @@ class Email extends BaseConfig
     /**
      * @var string
      */
-    public $fromEmail = 'noreply@tennis.in.th';
+    public $fromEmail = '';
 
     /**
      * @var string
@@ -34,7 +34,7 @@ class Email extends BaseConfig
      * @var string
      */
     // public $protocol = 'mail';
-    public $protocol = 'smtp';
+    public $protocol = 'mail';
 
     /**
      * The server path to Sendmail.
@@ -48,21 +48,21 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPHost = 'mail.tennis.in.th';
+    public $SMTPHost = '';
 
     /**
      * SMTP Username
      *
      * @var string
      */
-    public $SMTPUser = 'noreply@tennis.in.th';
+    public $SMTPUser = '';
 
     /**
      * SMTP Password
      *
      * @var string
      */
-    public $SMTPPass = '0vHghYGKa';
+    public $SMTPPass = '';
 
     /**
      * SMTP Port

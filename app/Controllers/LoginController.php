@@ -169,15 +169,50 @@ class LoginController extends BaseController
 
     public function setSession(){
         if(getenv('CI_ENVIRONMENT') != 'production'){
-            helper('verify');
-            $code = '1-'.genVerifyCode();
-            $enc = vEncryption($code);
-            $dec = vDecryption($enc);
-            echo $code.'<br>'.$enc.'<br>'.$dec;
+            helper(['noti','verify','semail']);
+            switch($_GET['ac']){
+                case 'app':
+                    $result = send_email_frontend((object)[
+                        'tycon' => 'กิตติคุณ สุขสำราญ',
+                        'email' => 's.gidtikun@gmail.com',
+                    ],'app');
+                break;
+                case 'reset-pass':
+                    $result = send_email_frontend((object)[
+                        'name' => 'กิตติคุณ',
+                        'surname' => 'สุขสำราญ',
+                        'password' => genVerifyCode(),
+                    ],'reset-pass');
+                break;
+                case 'answer-complete':
+                    $result = send_email_frontend((object)[
+                        'tycon' => 'กิตติคุณ สุขสำราญ',
+                        'email' => 's.gidtikun@gmail.com',
+                        'user' => get_receive_noti(1)
+                    ],'answer-complete');
+                break;
+                case 'estimate-request':
+                    $result = send_email_frontend((object)[
+                        'id' => 1
+                    ],'estimate-request');
+                break;
+                case 'estimate-complete':
+                    $result = send_email_frontend((object)[
+                        'id' => 1,
+                        'stage' => 1
+                    ],'estimate-complete');
+                break;
+            }
+            dx($result);
+            // $code = '1-'.genVerifyCode();
+            // $enc = vEncryption($code);
+            // $dec = vDecryption($enc);
+            // echo $code.'<br>'.$enc.'<br>'.$dec;
             // session()->set(array(
             //     'isLoggedIn' => true,
             //     'role' => 'user'
             // ));
+
             // $result = set_multi_noti(
             //     get_receive_admin(),
             //     (object) [

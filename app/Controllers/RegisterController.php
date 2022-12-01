@@ -72,7 +72,7 @@ class RegisterController extends BaseController
                         $data->user_id = $result->id;
                         $data->verify_token = vEncryption($data->user_id .'-'.$verify_code);
                         helper('semail');
-                        send_email($data,'register');
+                        send_email_frontend($data,'register');
                         $status = true;
                     }
                 } else {
@@ -162,7 +162,7 @@ class RegisterController extends BaseController
     public function resetPasswordMail($data)
     {
         helper('semail');
-        $result = send_email((object)$data,'reset-pass');
+        $result = send_email_frontend((object)$data,'reset-pass');
         return $result;
     }
 

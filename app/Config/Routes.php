@@ -35,7 +35,8 @@ $routes->setAutoRoute(false);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-
+$routes->get('sendmail', 'SendMail::index');
+$routes->get('sendmail', 'SendMail::index');
 $routes->get('/', 'Home::index', ['as' => 'Home']);
 $routes->get('home', 'Home::index');
 $routes->get('about-us', 'Home::aboutus');
@@ -280,6 +281,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     // MarkTest is Controller for Test Only
     $routes->get('MarkTest', 'MarkTest::index');
     $routes->get('MarkTest/Mail', 'MarkTest::Mail');
+    $routes->get('MarkTest/Mailer', 'MarkTest::Mailer');
     $routes->get('Question', 'MarkTest::question');
     $routes->get('MarkTest/excel', 'MarkTest::excel');
     $routes->post('MarkTest/getData', 'MarkTest::getData');
@@ -309,6 +311,7 @@ $routes->get('verify-password', 'backend\VerifyPassword::index');
 $routes->environment('development', static function ($routes) {
     $routes->get('set-session', 'LoginController::setSession');
     $routes->get('show-session', 'LoginController::showSession');
+    $routes->get('frontend-email', 'Home::testTemplateEmailFrontend');
 });
 
 $routes->get('403', 'Home::error_403');

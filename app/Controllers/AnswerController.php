@@ -279,7 +279,7 @@ class AnswerController extends BaseController
                         ]);
 
                     helper('semail');
-                    send_email([
+                    send_email_frontend((object)[
                         'user' => json_decode(json_encode($receive),true),
                         'app_id' => $this->input->getVar('appId'),
                         'email' => session()->get('account'),
