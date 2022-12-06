@@ -45,17 +45,19 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     public $signup = [
         'name' => [
-            'rules' => 'required|special_str',
+            'rules' => 'required',
+            // 'rules' => 'required|special_str',
             'errors' => [
                 'required' => 'กรุณาระบุชื่อ',
-                'special_str' => 'ชื่อห้ามมีอักขระพิเศษ'
+                // 'special_str' => 'ชื่อห้ามมีอักขระพิเศษ'
             ]
         ],
         'surname' => [
-            'rules' => 'required|special_str',
+            'rules' => 'required',
+            // 'rules' => 'required|special_str',
             'errors' => [
                 'required' => 'กรุณาระบุนามสกุล',
-                'special_str' => 'ชื่อห้ามมีอักขระพิเศษ'
+                // 'special_str' => 'นามสกุลห้ามมีอักขระพิเศษ'
             ]
         ],
         'telephone' => [

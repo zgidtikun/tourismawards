@@ -264,10 +264,8 @@ class AnswerController extends BaseController
                         ]);
                     }
 
-                    $receive = get_receive_noti(session()->get('id'));
-
                     set_multi_noti(
-                        $receive,
+                        get_receive_noti(session()->get('id')),
                         (object) [
                             'bank' => 'frontend'
                         ],
@@ -280,7 +278,6 @@ class AnswerController extends BaseController
 
                     helper('semail');
                     send_email_frontend((object)[
-                        'user' => json_decode(json_encode($receive),true),
                         'app_id' => $this->input->getVar('appId'),
                         'email' => session()->get('account'),
                         'tycon' => session()->get('user')

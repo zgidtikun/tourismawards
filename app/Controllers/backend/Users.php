@@ -6,6 +6,11 @@ use App\Controllers\BaseController;
 
 class Users extends BaseController
 {
+    public function __construct()
+    {
+        helper(['semail', 'verify']);
+    }
+
     public function index()
     {
         $where = [];
@@ -84,12 +89,11 @@ class Users extends BaseController
     public function saveInsert()
     {
         $post = $this->input->getVar();
-        $imagefile = $this->input->getFiles('image_cover');
-        $img = $imagefile['image_cover'];
 
         // if (!empty($post['password'])) {
         //     $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
         // }
+        $verify_code = genVerifyCode();
         $data = [
             // 'id'            => $post['id'],
             'prefix'        => $post['prefix'],
@@ -100,7 +104,7 @@ class Users extends BaseController
             'email'         => $post['email'],
             'username'      => $post['email'],
             // 'password'      => $post['password'],
-            'verify_code'   => vEncryption('user-'.genVerifyCode()),
+            'verify_code'   => $verify_code,
             'stage'         => 1,
             'role_id'       => 1,
             'surname'       => $post['surname'],
@@ -110,17 +114,23 @@ class Users extends BaseController
         $result = $this->db->table('users')->insert($data);
         $insert_id = $this->db->insertID();
         if ($result) {
-            if ($img->isValid() && !$img->hasMoved()) {
-                $path = FCPATH . 'uploads/profile/images/';
-                $originalName = $img->getName();
-                $extension = $img->guessExtension();
-                $newName = genFileName($extension);
-                $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
-                if (in_array($extension, $accept)) {
-                    $img->move($path, $newName);
-                    $this->db->table('users')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
+            if ($this->input->getFiles('profile')) {
+                $imagefile = $this->input->getFiles('profile');
+                $img = $imagefile['profile'];
+                if ($img->isValid() && !$img->hasMoved()) {
+                    $path = FCPATH . 'uploads/profile/images/';
+                    $originalName = $img->getName();
+                    $extension = $img->guessExtension();
+                    $newName = genFileName($extension);
+                    $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
+                    if (in_array($extension, $accept)) {
+                        $img->move($path, $newName);
+                        $this->db->table('users')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
+                    }
                 }
             }
+            $data = [];
+            $data['users'] = $this->db->table('users')->where('id', $insert_id)->get()->getRowObject();
             $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
@@ -131,21 +141,23 @@ class Users extends BaseController
     public function saveUpdate()
     {
         $post = $this->input->getVar();
-        $imagefile = $this->input->getFiles('profile');
-        $img = $imagefile['profile'];
 
-        if ($img->isValid() && !$img->hasMoved()) {
-            $path = FCPATH . 'uploads/profile/images/';
-            $extension = $img->guessExtension();
-            $newName = genFileName($extension);
-            $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
-            if (in_array($extension, $accept)) {
-                $img->move($path, $newName);
-                $post['profile'] = 'uploads/profile/images/' . $newName;
-                @unlink($path . $post['profile_old']);
+        $post['profile'] = $post['profile_old'];
+        if ($this->input->getFiles('profile')) {
+            $imagefile = $this->input->getFiles('profile');
+            $img = $imagefile['profile'];
+
+            if ($img->isValid() && !$img->hasMoved()) {
+                $path = FCPATH . 'uploads/profile/images/';
+                $extension = $img->guessExtension();
+                $newName = genFileName($extension);
+                $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
+                if (in_array($extension, $accept)) {
+                    $img->move($path, $newName);
+                    $post['profile'] = 'uploads/profile/images/' . $newName;
+                    @unlink($path . $post['profile_old']);
+                }
             }
-        } else {
-            $post['profile'] = $post['profile_old'];
         }
 
         $data = [
@@ -180,12 +192,19 @@ class Users extends BaseController
     public function active()
     {
         $id = $this->input->getVar('id');
-        $result = $this->db->table('users')->where('id', $id)->set(['status' => 1, 'status_delete' => 1, 'stage' => '1'])->update();
+        $user = [
+            'status' => 1,
+            'status_delete' => 1,
+            'stage' => 1,
+            'verify_status' => 1,
+            'verify_date' => date('Y-m-d H:i:s')
+        ];
+        $result = $this->db->table('users')->where('id', $id)->update($user);
         if ($result) {
             $data = [];
             $data['users'] = $this->db->table('users')->where('id', $id)->get()->getRowObject();
             $this->sendMail($data);
-            
+
             $notification = set_noti(
                 (object)[
                     'user_id' => $id,
@@ -212,7 +231,6 @@ class Users extends BaseController
         if ($result) {
             $data = [];
             $data['users'] = $this->db->table('users')->where('id', $id)->get()->getRowObject();
-            $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'ทำการลบข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการลบข้อมูลไม่สำเร็จ']);
@@ -229,5 +247,28 @@ class Users extends BaseController
     public function sendMail($data)
     {
         // pp($data);
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('verify-password?t=' . vEncryption('users-' . $data['users']->verify_code)) . '"  target="_blank">Verify</a></b>';
+        if ($data['users']->password != "") {
+            $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
+        }
+        // px($data['users']);
+        $email_data = [
+            '_header' => 'สถานะการอนุมัติการเข้าร่วมประกวด',
+            '_content' => 'คุณ ' . $data['users']->name . ' ' . $data['users']->surname . ' ได้รับการอนุมัติลงทะเบียนเข้าประกวดรางวัล'
+                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
+                . 'ดัวยอีเมล ' . $data['users']->email
+                . $text
+        ];
+        // px($email_data);
+        $requestEmail = [
+            'to' => $data['users']->email,
+            'subject' => 'สถานะสมาชิก',
+            'message' => view('administrator/template_email', $email_data),
+            // 'from' => $from,
+            // 'cc' => [],
+            // 'bcc' => []
+        ];
+
+        send_email($requestEmail);
     }
 }

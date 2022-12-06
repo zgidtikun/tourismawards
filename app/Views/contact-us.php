@@ -255,9 +255,10 @@
     });
 
     const send = () => {        
+        let recapcha_token = '';
         <?php if (!empty($_recapcha) && $_recapcha) : ?>
         recapchaToken().then(function(data) {
-            $('#recapcha_token').val(data.rccToken);
+           recapcha_token = data.rccToken;
         <?php endif; ?>
 
         const mf = [
@@ -298,7 +299,8 @@
                 name: $('#sName').val(),
                 email: $('#sEmail').val(),
                 subject: $('#sSubject').val(),
-                message: $('#sMessage').val()
+                message: $('#sMessage').val(),
+                recapcha_token: recapcha_token
             }
         }
 

@@ -188,6 +188,7 @@ class FrontendController extends BaseController
     {
         $stage = new \App\Models\UsersStage();
         $committees = new \App\Models\Committees();
+        $count_1 = $count_2 =  $count_3 = $count_4 = 0;
         $users = [];
 
         $comm = $committees->like('admin_id_tourism','"'.session()->get('id').'"')
@@ -196,30 +197,32 @@ class FrontendController extends BaseController
             ->select('users_id')
             ->distinct()
             ->findAll();
-            
-        foreach($comm as $user){
-            array_push($users,$user->users_id);
+        
+        if(!empty($comm)){
+            foreach($comm as $user){
+                array_push($users,$user->users_id);
+            }
+
+            $count_1 = $stage->where('stage',1)
+                ->whereIn('user_id',$users)
+                ->whereIn('status',[1,2,3,4,5])
+                ->countAllResults();
+
+            $count_2 = $stage->where('stage',1)
+                ->whereIn('user_id',$users)
+                ->whereIn('status',[6,7])
+                ->countAllResults();
+
+            $count_3 = $stage->where('stage',2)
+                ->whereIn('user_id',$users)
+                ->whereIn('status',[1,2,3,4,5])
+                ->countAllResults();
+
+            $count_4 = $stage->where('stage',2)
+                ->whereIn('user_id',$users)
+                ->whereIn('status',[6,7])
+                ->countAllResults();
         }
-
-        $count_1 = $stage->where('stage',1)
-            ->whereIn('user_id',$users)
-            ->whereIn('status',[1,2,3,4,5])
-            ->countAllResults();
-
-        $count_2 = $stage->where('stage',1)
-            ->whereIn('user_id',$users)
-            ->whereIn('status',[6,7])
-            ->countAllResults();
-
-        $count_3 = $stage->where('stage',2)
-            ->whereIn('user_id',$users)
-            ->whereIn('status',[1,2,3,4,5])
-            ->countAllResults();
-
-        $count_4 = $stage->where('stage',2)
-            ->whereIn('user_id',$users)
-            ->whereIn('status',[6,7])
-            ->countAllResults();
         
         $result = [
             'pre_wait' => $count_1,

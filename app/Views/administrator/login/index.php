@@ -88,10 +88,12 @@
   });
 
   const signin = {
+    token: '',
     authen: function() {
       if (this.validation()) {
         <?php if (!empty($_recapcha) && $_recapcha) : ?>
           recapchaToken().then(function(data) {
+            signin.token = data.rccToken;
           <?php endif; ?>
           $.ajax({
             method: 'post',
@@ -100,7 +102,7 @@
               username: $('#username').val(),
               password: $('#password').val(),
               memorize: $('#remember').is(':checked'),
-              recapcha_token: '<?php if (!empty($_recapcha) && $_recapcha) { ?>data.rccToken<?php } ?>'
+              recapcha_token: signin.token
             },
             dataType: 'json',
             async: false,

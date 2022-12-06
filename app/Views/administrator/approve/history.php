@@ -85,6 +85,7 @@
                 <?php
                 if (!empty($result)) :
                   foreach ($result as $key => $value) :
+                    // $status = "";
                     if ($value->status == 2) {
                       $status = '<div class="userstatus trader">รอตรวจสอบ</div>';
                     } else if ($value->status == 4) {
@@ -92,7 +93,9 @@
                     } else if ($value->status == 3) {
                       $status = '<div class="userstatus judge">อนุมัติ</div>';
                     } else if ($value->status == 0) {
-                      $status = '<div class="userstatus officer">ไม่อนุมัติ</div>';
+                      $status = '<div class="userstatus officer">ไม่ผ่านการอนุมัติ</div>';
+                    } else if ($value->status == 1) {
+                      $status = '<div class="userstatus officer">ไม่ผ่านการอนุมัติ</div>';
                     }
                 ?>
                     <tr>

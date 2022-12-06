@@ -67,6 +67,7 @@ class Admin extends BaseController
         // if (!empty($post['password'])) {
         //     $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
         // }
+        $verify_code = genVerifyCode();
         $data = [
             // 'id'                    => $post[""],
             'prefix'                => $post["prefix"],
@@ -80,7 +81,7 @@ class Admin extends BaseController
             'position'              => $post["position"],
             'username'              => $post["email"],
             // 'password'              => $post["password"],
-            'verify_code'           => vEncryption('admin-'.genVerifyCode()),
+            'verify_code'           => $verify_code,
             'role_id'               => 4,
             'status'                => 1,
             'created_at'            => date('Y-m-d H:i:s'),
@@ -100,6 +101,8 @@ class Admin extends BaseController
                     $this->db->table('admin')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
                 }
             }
+            $data = [];
+            $data['admin'] = $this->db->table('admin')->where('id', $insert_id)->get()->getRowObject();
             $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
@@ -178,6 +181,26 @@ class Admin extends BaseController
 
     public function sendMail($data)
     {
-        // pp($data);
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code)) . '"  target="_blank">Verify</a></b>';
+        if ($data['admin']->password != "") {
+            $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
+        }
+        $email_data = [
+            '_header' => 'สถานะการสมัคร',
+            '_content' => 'คุณ ' . $data['admin']->name . ' ' . $data['admin']->surname . ' ได้รับการเพิ่มให้เป็นผู้ดูแลระบบ (Admin)'
+                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
+                . 'ดัวยอีเมล ' . $data['admin']->email
+                . $text
+        ];
+        $requestEmail = [
+            'to' => $data['admin']->email,
+            'subject' => 'สถานะการสมัคร',
+            'message' => view('administrator/template_email', $email_data),
+            // 'from' => $from,
+            // 'cc' => [],
+            // 'bcc' => []
+        ];
+
+        send_email($requestEmail);
     }
 }

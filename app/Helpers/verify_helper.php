@@ -9,23 +9,23 @@ function genVerifyCode()
 function vEncryption($code)
 {
     $obj = new Encrypter();
-    $cipher = urlencode($obj->encryption($code));
+    $cipher = $obj->encryption($code);
     return $cipher;
 }
 
 function vDecryption($code)
 {
     $obj = new Encrypter();
-    $cipher = $obj->decryption(urldecode($code));
+    $cipher = $obj->decryption($code);
     return $cipher;
 }
 
 function checkVerifyUser($code)
 {    
     $obj_user = new \App\Models\Users();
-    $code = vDecryption($code);
+    $code = vDecryption($code);    
     $carray = explode('-',$code);
-
+    
     $id = $carray[0];
     $vcode = $carray[1];
 
@@ -40,19 +40,23 @@ function checkVerifyUser($code)
         $obj_user->where('id',$id)
             ->set([
                 'status' => 1,
+                'stage' => 1,
                 'verify_status' => 1,
                 'verify_date' => date('Y-m-d H:i:s')
             ])
             ->update();
         
-        $existPass = !empty($cresult->password) ? true : false;
+        $userId = $id;
+        $existPass = empty($cresult->password) ? true : false;
         $verified = true;
     } else {
+        $userId = '';
         $existPass = false;
         $verified = false;
     }
 
     return (object) [
+        'id' => $id,
         'result' => $verified,
         'pass' => $existPass
     ];

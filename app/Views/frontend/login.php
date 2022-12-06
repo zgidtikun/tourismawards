@@ -17,8 +17,6 @@
                                 <a href="<?= base_url('register') ?>" class="link_yellow">ลงทะเบียน</a>
                                 <br>
                                 <a href="<?= base_url('forget-password') ?>" class="link_yellow">ลืมรหัสผ่าน</a>
-                                <br>
-                                <a href="<?= base_url('new-password') ?>" class="link_yellow">ตั้งรหัสผ่านใหม่</a>
                             </div>
                             <div class="inp_form_col1 submit">
                                 <button type="button" onclick="signin.authen()">เข้าสู่ระบบ</button>

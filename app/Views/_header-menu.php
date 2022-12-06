@@ -92,22 +92,27 @@
                                        if (session()->get('role') == 1) {
                                           $url = 'awards/application';
                                           $content = 'ข้อมูลการประกวด';
+                                          $manual = base_url('download/tycoon_manual.pdf');
                                        } else {
                                           $url = 'boards';
                                           $content = 'ระบบการจัดการ';
+                                          $manual = base_url('download/judge_manual.pdf');
                                        }
                                        ?>
-                                       <a href="<?= base_url($url) ?>">
+                                       <a href="<?= base_url($url) ?>" class="mb-1">
                                           <i class="bi bi-award-fill"></i>
                                           &nbsp;&nbsp;<?= $content ?>
-                                       </a>
-                                       
-                                       <a href="<?= base_url('new-password/'.session()->get('id')) ?>">
+                                       </a>                                       
+                                       <a href="<?= base_url('new-password/'.session()->get('id')) ?>" class="mb-1">
                                           <i class="bi bi-key-fill"></i>
                                           &nbsp;&nbsp;เปลี่ยนรหัสผ่านใหม่
+                                       </a>                                  
+                                       <a href="<?= $manual ?>" target="_blank" class="mb-1" class="mb-1">
+                                          <i class="bi bi-cloud-arrow-down-fill"></i>
+                                          &nbsp;&nbsp;ดาวน์โหลดคู่มือการใช้งาน
                                        </a>
                                     <?php else : ?>
-                                       <a href="administrator/dashboard">
+                                       <a href="administrator/dashboard" class="mb-1">
                                           <i class="bi bi-file-bar-graph-fill"></i>
                                           &nbsp;&nbsp;Dashboard
                                        </a>

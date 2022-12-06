@@ -3,23 +3,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 function send_email($dataset)
 {
-    // $email_data = [];
-    // $email = 'diaryads0@gmail.com'; 
-    // $from = ['email'=>'noreply@chaiyohosting.com', 'name'=>'Tourism Awards 2023'];   //email, name
-    // $cc = ['diaryads0@gmail.com'];
-    // $bcc = ['kritsana@chaiyohosting.com'];
-    
-    // $subject = 'ไปไหนมา';
-    // $message = view('template_email', $email_data);
-    
-    // $requestEmail = [
-    //     'to' => $email,
-    //     'subject' => $subject,
-    //     'message' => $message,
-    //     'from' => $from,
-    //     'cc' => $cc,
-    //     'bcc' => $bcc
-    // ];
     $email = new semail();
     $result = $email->SendMail($dataset);
     return $result;
@@ -172,6 +155,20 @@ class semail {
                     $_cc = [];
                     $_bcc = [];
                 break;
+                case 'app-wait':
+                    $_message = view('template-frontend-email',[
+                        '_header' => 'เรียน คุณ'.$dataset->tycon,
+                        '_content' => '<p>ทางผู้ดำเนินงานประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2565 (Thailand Tourism Awards 2023) '
+                            . 'ได้รับแบบฟอร์มการสมัครแล้ว ทางคณะทำงานกำลังทำการพิจารณาท่านโดยเร็วที่สุด</p>'
+                            . '<br><p>เมื่อทำการพิจารณาเสร็จแลัวจะส่งผ่านทางอีเมลนี้ กรุณารอการตอบกลับนี้ด้วย</p>'
+                    ]);
+                    
+                    $_subject = 'แจ้งการรับแบบฟอร์มการสมัครเข้ารับการพิจารณา';
+                    $_to = $dataset->email;
+                    $_from = $email_sys;
+                    $_cc = [];
+                    $_bcc = [];                    
+                break;
                 case 'app': 
                     $_header = 'แจ้งการส่งใบสัครเข้าระบบจากผู้ประกอบ';
                     $_message = view('template-frontend-email',[
@@ -186,13 +183,20 @@ class semail {
                     $_from = $email_sys;
                     $_cc = [];
                     $_bcc = [];
-    
-                    $obj_admin = new \App\Models\Admin();
-                    $list_admin = $obj_admin->where('status',1)
-                        ->select('email')->findAll();;
-    
-                    foreach($list_admin as $admin){
-                        array_push($_to,$admin->email);
+                    
+                    $list_admin = $this->getAdmin();
+                    $list_ttt = $this->getTTT($dataset->type,'');
+                    
+                    if(!empty($list_admin)){
+                        foreach($list_admin as $admin){
+                            array_push($_to,$admin->email);
+                        }
+                    }
+
+                    if(!empty($list_ttt)){
+                        foreach($list_ttt as $ttt){
+                            array_push($_to,$ttt->email);
+                        }
                     }
                 break;
                 case 'contact':
@@ -217,11 +221,11 @@ class semail {
                     $_message = view('template-frontend-email',[
                         '_header' => 'รหัสผ่านใหม่ Thailand Tourism Awards',
                         '_content' => '<p>เรียน คุณ'.$_recipient.'</p><br>'
-                            . '<p>รหัสผ่านใหม่ของท่านคือ'
+                            . '<p>รหัสผ่านใหม่ของท่านคือ<p/>'
                             . '<p>New password : '.$dataset->password.'</p>'
                             . '<br>'
-                            . 'ท่านสามารถตั่งค่ารหัสผ่าใหม่ได้ที่ <a href="'.base_url('new-password')
-                            . '" target="_blank">ตั้งรหัสใหม่</a>'
+                            . 'ท่านสามารถตั่งค่ารหัสผ่านใหม่ได้เมื่อท่านเข้าสู่ระบบ <a href="'.base_url('login')
+                            . '" target="_blank">เข้าสู่ระบบ</a>'
                     ]);
     
                     $_subject = 'Thailand Tourism Awards - Reset Password';
@@ -244,28 +248,31 @@ class semail {
                     $_from = $email_sys;
                     $_cc = [];
                     $_bcc = [];
-    
-                    $obj_user = new \App\Models\Users();
-                    $users = $obj_user->whereIn('id',$dataset->user)
-                        ->select('email')->findAll();
-    
-                    foreach($users as $user){
-                        array_push($_to,$user->email);
+
+                    $cmt = $this->getCommittees($dataset->app_id);                    
+                    $list_admin = $this->getAdmin();
+                    
+                    if(!empty($cmt)){
+                        foreach($cmt as $user){
+                            array_push($_to,$user->email);
+                        }
+                    }
+                    
+                    if(!empty($list_admin)){
+                        foreach($list_admin as $admin){
+                            array_push($_to,$admin->email);
+                        }
                     }
                 break;
                 case 'estimate-request':
-                    $obj_user = new \App\Models\Users();
-                    $user = $obj_user->where('id',$dataset->id)
-                        ->select('email, CONCAT(name,\' \',surname) fullname',false)
-                        ->first();
-    
+                    $user = $this->getUser($dataset->id);    
                     $_header = 'ขอข้อมูลเเพิ่มเติม';                
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
-                        '_content' => '<p>เรียน คุณ'.$user->fullname.'<p>'
+                        '_content' => '<p>เรียน คุณ'.$user->fullname.'</p>'
                             . '<p>คณะกรรมการได้มีการร้องขอข้อมูลเพิ่มเติมในแบบฟอร์มการระเมินขั้นต้น'
                             . ' ผู้ประกอบการกรุณา <b><a href="'.base_url('login').'" target="_blank">เข้าสู่ระบบ</a></b> '
-                            . 'เพื่อส่งข้อมูลเพิ่มเติมและส่งแบบฟอร์มการประเมินอีกครั้ง'
+                            . 'เพื่อส่งข้อมูลเพิ่มเติมและส่งแบบฟอร์มการประเมินอีกครั้ง</p>'
                     ]);
     
                     $_subject = 'แจ้งการขอข้อมูลเเพิ่มเติมในขั้นตอนการประเมินเบื่องต้น';
@@ -275,20 +282,16 @@ class semail {
                     $_bcc = [];                
                 break;
                 case 'estimate-complete':
-                    $obj_user = new \App\Models\Users();
-                    $user = $obj_user->where('id',$dataset->id)
-                        ->select('email, CONCAT(name,\' \',surname) fullname',false)
-                        ->first();
-                    
+                    $user = $this->getUser($dataset->id);
                     $_stage = $dataset->stage == 1 ? 'ประเมินขั้นต้น' : 'ลงพื้นที่';
                     $_header = 'ผลการประเมินรอบ '.$_stage;
                     
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
-                        '_content' => '<p>เรียน คุณ'.$user->fullname.'<p>'
+                        '_content' => '<p>เรียน คุณ'.$user->fullname.'</p>'
                             . '<p>'.$_header.' ของท่านได้ออกมาแล้ว '
                             . ' ผู้ประกอบการกรุณา <b><a href="'.base_url('login').'" target="_blank">เข้าสู่ระบบ</a></b> '
-                            . 'เพื่อทำการตรวจผลการประเมินของท่าน'
+                            . 'เพื่อทำการตรวจผลการประเมินของท่าน</p>'
                     ]);
     
                     $_subject = 'แจ้ง'.$_header;
@@ -296,6 +299,44 @@ class semail {
                     $_from = $email_sys;
                     $_cc = [];
                     $_bcc = []; 
+                break;
+                case 'estimate-complete-sys':                    
+                    // $user = $this->getUser($dataset->id);
+                    $tycoon = $this->getTycoon($dataset->appId);
+                    
+                    $_stage = $dataset->stage == 1 ? 'ประเมินขั้นต้น' : 'ลงพื้นที่';
+                    $_header = 'การประเมินรอบ '.$_stage.' เสร็จสิ้นแล้ว';
+                    
+                    $_message = view('template-frontend-email',[
+                        '_header' => $_header,
+                        '_content' => '<p>เรียน เจ้าหน้าที่ ททท. และแอ็ดมิน</p>'
+                            . '<p>คณะกรรมการได้ทำการประเมินรอบ '.$_stage.' ของสถานที่ '
+                            . $tycoon->place
+                            . ' ประเภท '.$tycoon->type
+                            . ' สาขา '.$tycoon->sub
+                            .' เสร็จสิ้นแล้ว'
+                    ]);
+    
+                    $_subject = 'แจ้ง'.$_header;
+                    $_to = [];
+                    $_from = $email_sys;
+                    $_cc = [];
+                    $_bcc = []; 
+                                        
+                    $list_admin = $this->getAdmin();
+                    $list_ttt = $this->getTTT('',$dataset->appId);
+                    
+                    if(!empty($cmt)){
+                        foreach($cmt as $user){
+                            array_push($_to,$user->email);
+                        }
+                    }
+
+                    if(!empty($list_ttt)){
+                        foreach($list_ttt as $ttt){
+                            array_push($_to,$ttt->email);
+                        }
+                    }
                 break;
                 default:
                     return [ 'result' => 'error', 'message' => 'No case to send email.' ];
@@ -318,6 +359,98 @@ class semail {
         } catch(Exception $e){
             return [ 'result' => false,  'message' => $e ];
         }
+    }
+
+    private function getUser($id)
+    {        
+        $obj_user = new \App\Models\Users();
+        $user = $obj_user->where('id',$id)
+            ->select('email, CONCAT(name,\' \',surname) fullname',false)
+            ->first();
+        return $user;
+    }
+
+    private function getTycoon($id)
+    {
+        
+        $db = \Config\Database::connect();
+        $result = [];
+
+        $builder = $db->table('application_form af')
+            ->select(
+                'af.code, af.attraction_name_th name_th, 
+                af.attraction_name_en name_en,
+                at.name type_name,
+                ats.name sub_name'
+            )
+            ->join('application_type at','af.application_type_id = at.id')
+            ->join('application_type_sub ats','af.application_type_sub_id = ats.id')
+            ->where('af.id',$id)
+            ->get();
+
+        foreach($builder->getResult() as $val){
+            $result = [
+                'place' => !empty($val->name_th) ? $val->name_th : $val->name_en,
+                'type' => $val->type_name,
+                'sub' => $val->sub_name
+            ];
+        }
+
+        return (object) $result;
+    }
+
+    private function getCommittees($id)
+    {
+        $obj_comm = new \App\Models\Committees();
+        $obj_user = new \App\Models\Users();
+        
+        $data = $obj_comm->where('users_id',$id)
+            ->select('admin_id_tourism, admin_id_supporting, admin_id_responsibility')
+            ->first();
+
+        $tourism = json_decode($data->admin_id_tourism,true);
+        $support = json_decode($data->admin_id_supporting,true);
+        $respons = json_decode($data->admin_id_responsibility,true);
+        $judge = array_unique(array_merge($tourism,$support,$respons));
+
+        $result = $obj_user->whereIn('id',$judge)
+            ->select('email')->findAll();
+
+        return !empty($result) ? $result : [];
+    }
+
+    private function getAdmin()
+    {    
+        $obj_admin = new \App\Models\Admin();
+
+        $result = $obj_admin->where([
+                'status' => 1,
+                'member_type' => 4
+            ])
+            ->select('email')->findAll();
+
+        return !empty($result) ? $result : [];
+    }
+
+    private function getTTT($type,$id){
+        $obj_admin = new \App\Models\Admin();
+
+        if(empty($type)){
+            $obj_app = new \App\Models\ApplicationForm();
+            $builder = $obj_app->where('id',$id)
+                ->select('application_type_id type_id')
+                ->first();
+            $type = $builder->type_id;
+        }
+
+        $result = $obj_admin->where([
+            'status' => 1,
+            'member_type' => 2,
+            'award_type' => $type
+        ])
+        ->select('email')->findAll();
+
+        return !empty($result) ? $result : [];
     }
 }
 

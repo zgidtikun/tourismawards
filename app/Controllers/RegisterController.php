@@ -7,11 +7,12 @@ use Exception;
 class RegisterController extends BaseController
 {
     private $user;
-    private $recapcha = false; 
-    private $encrypter;
+    private $recapcha; 
 
     public function __construct()
     {   
+        $_app = new \Config\App();
+        $this->recapcha = $_app->RECAPCHA_CK;
         $this->user = new UserController(); 
         $this->encrypter = (object) [
             'key' => md5('ThailandTourismAwards2023'),
@@ -24,7 +25,7 @@ class RegisterController extends BaseController
         $data = [
             'title' => 'ลืมรหัสผ่าน',
             'view' => 'frontend/forgetpass',
-            '_recapcha' => false
+            '_recapcha' => $this->recapcha
         ];
         return view('template-frontend',$data);
     }
@@ -91,7 +92,7 @@ class RegisterController extends BaseController
         $data = [
             'title' => 'Register',
             'view' => 'frontend/register',
-            '_recapcha' => false,
+            '_recapcha' => $this->recapcha,
             '_signup' => (object) array(
                 'method' => $method,
                 'status' => $status,
@@ -167,18 +168,17 @@ class RegisterController extends BaseController
     }
 
     public function setNewPassword()
-    {
-        $checkReCapcha = $this->checkCaptcha($this->input->getVar('recapcha_token'));
-
-        if(!$checkReCapcha->result){
-            $result = array(
-                'result' => 'error',
-                'message' => $checkReCapcha->message
-            );
-            return $this->response->setJSON($result);
-        } 
-        
+    {        
         try {
+            $checkReCapcha = $this->checkCaptcha($this->input->getVar('recapcha_token'));
+
+            if(!$checkReCapcha->result){
+                $result = array(
+                    'result' => 'error',
+                    'message' => $checkReCapcha->message
+                );
+                return $this->response->setJSON($result);
+            }
             if(!empty($this->input->getVar('id'))){
                 $where = ['id' => $this->input->getVar('id')];
             } else {

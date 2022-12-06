@@ -17,12 +17,10 @@
                         </div>
                             <?php else: ?>
                         <div class="alert alert-danger alert-dismissible fade show" id="error">
-                            <b><i class="bi bi-exclamation-triangle-fill"></i> เกิดข้อผิดพลาดตามรายการนี้</b>                            
-                            <ul id="error-list">
-                                <?php foreach($_signup->error as $e){ ?>
-                                <li><?=$e?></li>
-                                <?php } ?>
-                            </ul>
+                            <p><b><i class="bi bi-exclamation-triangle-fill"></i> เกิดข้อผิดพลาดตามรายการนี้</b></p>
+                            <?php foreach($_signup->error as $key=>$e){ ?>
+                            <?=($key+1)?>. <?=$e?><br>
+                            <?php } ?>
                             
                             <button type="button" class="btn-close" onclick="hide('error')"></button>
                         </div>
@@ -165,7 +163,7 @@
     </div>
 </div>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function(){   
         $('#policy').html(
             '1. สามารถเลือกส่งผลงานเข้าประกวดได้เพียงประเภทรางวัลเดียวสาขาเดียวเท่านั้นที่ตรงกับแนวทางการดำเนินงานของท่าน มากที่สุด \n'
             + '2. เมื่อเลือกสมัครในประเภทรางวัลใดแล้ว ไม่สามารถเปลี่ยนแปลงประเภทรางวัลได้ \n'
@@ -193,14 +191,7 @@
         else $('#'+id).removeClass('hide'); 
     }
 
-    var register = () => {
-        <?php if (!empty($_recapcha) && $_recapcha) : ?>
-        recapchaToken().then(function(data) {
-            $('#recapcha_token').val(data.rccToken);
-        <?php endif; ?>
-            $('#regis-form').submit();
-        <?php if (!empty($_recapcha) && $_recapcha) : ?>
-        });
-        <?php endif; ?>
+    var register = () => {         
+        $('#regis-form').submit();      
     }
 </script>

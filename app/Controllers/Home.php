@@ -5,6 +5,13 @@ use App\Controllers\BaseController;
 
 class Home extends BaseController
 {
+    private $recapcha;
+    
+    public function __construct()
+    {        
+        $_app = new \Config\App();
+        $this->recapcha = $_app->RECAPCHA_CK;
+    }
     public function index()
     {
         $obj_user = new \App\Models\Users();
@@ -38,7 +45,6 @@ class Home extends BaseController
 
         $data = [
             'title' => 'Thailand Tourism Awards',
-            '_recapcha' => false,
             '_banner' => true,
             'judge' => json_decode(json_encode($judge),true),
             'news' => json_decode(json_encode($news),true),
@@ -51,10 +57,10 @@ class Home extends BaseController
     {
         helper('verify');
         $verified = checkVerifyUser($_GET['c']);
-
+        
         return view('template-frontend',array(
             'title' => 'Verify User',
-            '_recapcha' => false,
+            '_id' => $verified->id,
             '_verified' => $verified->result,
             '_password' => $verified->pass,
             'view' => 'frontend/verify-user'
@@ -73,9 +79,9 @@ class Home extends BaseController
 
         return view('template-frontend',array(
             'title' => 'ตั้งค่ารหัสผ่านใหม่',
+            '_recapcha' => $this->recapcha,
             'id' => !empty($id) ? $id : '',
             'email' => $email,
-            '_recapcha' => false,
             'view' => 'frontend/new-password'
         ));
     }
@@ -94,7 +100,6 @@ class Home extends BaseController
 
         $data = [
             'title' => 'ข่าวประชาสัมพันธ์',
-            '_recapcha' => false,
             '_banner' => false,
             'news' => $news,
             'view' => 'new'
@@ -113,7 +118,6 @@ class Home extends BaseController
 
         $data = [
             'title' => 'ข่าวประชาสัมพันธ์',
-            '_recapcha' => false,
             '_banner' => false,
             'new' => $new,
             'view' => 'new-detail'
@@ -126,7 +130,6 @@ class Home extends BaseController
     {
         $data = [
             'title' => 'เกี่ยวกับโครงการ',
-            '_recapcha' => false,
             '_banner' => false,
             'view' => 'about-us'
         ];
@@ -138,7 +141,7 @@ class Home extends BaseController
     {
         $data = [
             'title' => 'ติดต่อเรา',
-            '_recapcha' => false,
+            '_recapcha' => $this->recapcha,
             '_banner' => false,
             'view' => 'contact-us'
         ];
@@ -148,9 +151,27 @@ class Home extends BaseController
 
     public function sendEmailContact()
     {
+        $checkReCapcha = $this->checkCaptcha($this->input->getVar('recapcha_token'));
+        if(!$checkReCapcha->result){
+            $result = array(
+                'result' => 'error',
+                'message' => $checkReCapcha->message
+            );
+            return $this->response->setJSON($result);
+        } 
+        
         helper('semail');
         $result = send_email_frontend($this->input->getVar(),'contact');        
         return $this->response->setJSON($result);
+    }    
+
+    private function checkCaptcha($token)
+    {
+        if($this->recapcha){
+            $result_recapcha = verify_recapcha_token($token);
+            return $result_recapcha;        
+        }
+        return (object) array('result' => true);
     }
 
     public function judge()
@@ -176,7 +197,6 @@ class Home extends BaseController
         
         $data = [
             'title' => 'คณะกรรมการ',
-            '_recapcha' => false,
             '_banner' => false,
             'judge' => $judge,
             'view' => 'judge'
@@ -189,7 +209,6 @@ class Home extends BaseController
     {
         $data = [
             'title' => 'ข้อกำหนดและเงื่อนไขการใช้งาน',
-            '_recapcha' => false,
             '_banner' => false,
             'view' => 'privacy-policy'
         ];
@@ -202,7 +221,6 @@ class Home extends BaseController
     {
         $data = [
             'title' => 'คู่มือการสมัคร',
-            '_recapcha' => false,
             '_banner' => false,
             'view' => 'application-guide'
         ];
@@ -214,7 +232,6 @@ class Home extends BaseController
     {
         $data = [
             'title' => 'ข้อมูลการประกวดรางวัล',
-            '_recapcha' => false,
             '_banner' => false,
             'view' => 'awards-info'
         ];
@@ -226,7 +243,6 @@ class Home extends BaseController
     {
         $data = [
             'title' => 'WINNER 2023',
-            '_recapcha' => false,
             '_banner' => false,
             'view' => 'awards-winner'
         ];
@@ -238,7 +254,6 @@ class Home extends BaseController
     {
         $data = [
             'title' => 'ผลงานที่ได้รับรางวัล ปี 2565',
-            '_recapcha' => false,
             '_banner' => false,
             'view' => 'awards-winner-13'
         ];
@@ -269,7 +284,6 @@ class Home extends BaseController
 
         $data = [
             'title' => 'ผลงานที่ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ปี 2566',
-            '_recapcha' => false,
             '_banner' => false,
             'main' => $main,
             'sub' => $sub,

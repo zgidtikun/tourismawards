@@ -68,13 +68,44 @@
 <script>
   $(function() {
     $('#btn_save').click(function(e) {
-      if (main_validated('form_input')) {
+      // console.log(main_validated('form_input'));
+      // console.log(validated());
+      if (main_validated('form_input') && validated()) {
         let formData = new FormData($('#form_input')[0]);
         var url = '<?= base_url('administrator/VerifyPassword/savePassword') ?>';
         $('#form_input').attr('action', url);
+        // console.log(url);
         $('#form_input').submit();
       }
     });
+
+    function validated() {
+      if ($('#password').val() == "") {
+        Swal.fire(
+          'ผิดพลาด!',
+          'กรุณาระบุรหัสผ่าน',
+          'error'
+        )
+        return false;
+      }
+      if ($('#confirm_password').val() == "") {
+        Swal.fire(
+          'ผิดพลาด!',
+          'กรุณายืนยันรหัสผ่าน',
+          'error'
+        )
+        return false;
+      }
+      if ($('#password').val() != $('#confirm_password').val()) {
+        Swal.fire(
+          'ผิดพลาด!',
+          'รหัสผ่านไม่ตรงกันกรุณาระบุรหัสผ่านอีกครั้ง',
+          'error'
+        )
+        return false;
+      }
+      return true;
+    }
 
     function main_validated(form_id) {
       let return_ = true;

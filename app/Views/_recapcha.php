@@ -11,12 +11,11 @@
         });      
     }
 </script>
-<!-- Excample call function gen recapcha token
+<!-- Excample call function gen recapcha token -->
 <script>
     $(document).ready(function(){
         recapchaToken().then(function(data){                
-            console.log(data);
+            $('#recapcha_token').val(data.rccToken);
         });
     });
 </script>
--->

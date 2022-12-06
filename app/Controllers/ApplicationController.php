@@ -187,8 +187,14 @@ class ApplicationController extends BaseController
             helper('semail');
             send_email_frontend((object)[
                 'email' => session()->get('account'),
-                'tycon' => session()->get('user')
+                'tycon' => session()->get('user'),
+                'type' => $this->input->getVar('type')
             ],'app');
+
+            send_email_frontend((object)[
+                'email' => session()->get('account'),
+                'tycon' => session()->get('user')
+            ],'app-wait');
 
             $result = ['result' => 'success', 'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว'];
 

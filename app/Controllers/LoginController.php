@@ -7,12 +7,14 @@ use App\Models\Admin;
 
 class LoginController extends BaseController
 {
-    private $recapcha = false;
+    private $recapcha;
     private $instUser;
     private $instAdmin;
 
     public function __construct()
     {        
+        $_app = new \Config\App();
+        $this->recapcha = $_app->RECAPCHA_CK;
         $this->instUser = new Users();
         $this->instAdmin = new Admin();
     }
@@ -36,7 +38,7 @@ class LoginController extends BaseController
         if($bank == 'frontend')
             return view('template-frontend',array(
                 'title' => 'Login',
-                '_recapcha' => false,
+                '_recapcha' => $this->recapcha,
                 'view' => 'frontend/login'
             ));
         else

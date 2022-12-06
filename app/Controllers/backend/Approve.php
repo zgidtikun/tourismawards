@@ -14,6 +14,8 @@ class Approve extends BaseController
 {
     public function __construct()
     {
+        helper(['semail', 'verify']);
+
         $this->Users = new Users;
         $this->UsersStage = new UsersStage;
         $this->ApplicationForm = new ApplicationForm;
@@ -118,9 +120,10 @@ class Approve extends BaseController
             $sub_id = session()->award_type;
         }
 
-        $data['result'] = $this->ApplicationForm->like($like, 'match', 'both')->where($where)->where('status > 2')->orderBy('id', 'desc')->findAll();
+        $data['result'] = $this->ApplicationForm->like($like, 'match', 'both')->where($where)->orderBy('id', 'desc')->findAll();
         // pp_sql();
         // exit;
+        // pp($data['result']);
 
         $data['application_type'] = $this->ApplicationType->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
@@ -152,6 +155,7 @@ class Approve extends BaseController
         $result = $this->db->table('application_form')->where('id', $id)->update($post);
         if ($result) {
             $result = $this->ApplicationForm->find($id);
+            $users = $this->db->table('users')->where('id', $result->created_by)->get()->getRowObject();
             $message = 'แจ้งผลการอนุมัติใบสมัคร';
             if ($post['status'] == 4) {
                 $message = 'ใบสมัครของท่านมีการขอข้อมูลเพิ่มเติม';
@@ -161,7 +165,23 @@ class Approve extends BaseController
                 $message = 'ใบสมัครของท่านไม่ผ่านการอนุมัติ';
             }
 
-            $notification = set_noti(
+            $email_data = [
+                '_header' => $message,
+                '_content' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname . ' <br>' . $message
+            ];
+
+            $requestEmail = [
+                'to' => $users->email,
+                'subject' => $message,
+                'message' => view('administrator/template_email', $email_data),
+                // 'from' => $from,
+                // 'cc' => [],
+                // 'bcc' => []
+            ];
+
+            send_email($requestEmail);
+
+            set_noti(
                 (object)[
                     'user_id' => $result->created_by,
                     'bank' => 'frontend'
@@ -173,7 +193,6 @@ class Approve extends BaseController
                     'send_by' => session()->account,
                 ]
             );
-            // pp($notification);
 
             if ($post['status'] == 3) {
                 $result = $this->db->table('users')->where('id', $result->created_by)->update(['stage' => 2]);

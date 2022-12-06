@@ -25,6 +25,25 @@ class CustomRules
 
     }
 
+    public function name_format($str){
+
+        $checkstep = 0;
+        
+        if(preg_match('/[a-z]+/',$str)) {
+            $checkstep++;
+        }
+            
+        if(preg_match('/[A-Z]+/',$str)) {
+            $checkstep++;
+        }
+
+        if (preg_match('/\p{Thai}/u', $str) === 1) {
+            $checkstep++;
+        }
+
+        return $checkstep < 3 ? false : true;
+    }
+
     public function special_str($str){
         return !preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $str) ? true : false;
     }

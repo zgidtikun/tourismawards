@@ -81,6 +81,10 @@
     height: unset;
   }
 
+  button.swal2-close {
+    min-width: 60px !important;
+  }
+
   /* table.dataTable.display tbody td img {
     position: unset;
   } */

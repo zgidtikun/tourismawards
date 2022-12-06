@@ -14,10 +14,12 @@ class VerifyPassword extends BaseController
 
     public function index()
     {
-        if (!empty($_GET['token'])) {
-            $token = explode('-', vDecryption($_GET['token']));
+        // pp($_GET['t']);
+        // px(vDecryption($_GET['t']));
+        if (!empty($_GET['t'])) {
+            $token = explode('-', vDecryption($_GET['t']));
 
-            if ($token[0] == 'user') {
+            if ($token[0] == 'users') {
                 $data['result'] = $this->db->table('users')->where('verify_code', $token[1])->get()->getRowObject();
             } else if ($token[0] == 'admin') {
                 $data['result'] = $this->db->table('admin')->where('verify_code', $token[1])->get()->getRowObject();
@@ -47,11 +49,12 @@ class VerifyPassword extends BaseController
 
         $data = [
             'password'      => password_hash($post['password'], PASSWORD_DEFAULT),
+            'status'        => 1,
             'verify_status' => 1,
-            'verify_date' => date('Y-m-d H:i:s'),
+            'verify_date'   => date('Y-m-d H:i:s'),
         ];
 
-        if ($post['type'] == 'user') {
+        if ($post['type'] == 'users') {
             $result = $this->db->table('users')->where('username', $post['username'])->where('verify_code', $post['code'])->update($data);
         } else if ($post['type'] == 'admin') {
             $result = $this->db->table('admin')->where('username', $post['username'])->where('verify_code', $post['code'])->update($data);
@@ -60,14 +63,14 @@ class VerifyPassword extends BaseController
         if ($result) {
             $this->session->setFlashdata(['success' => 'ระบบได้ทำการบันทึกรหัสผ่านเรียบร้อย กรุณาเข้าสู่ระบบ']);
 
-            if ($post['type'] == 'user') {
+            if ($post['type'] == 'users') {
                 return redirect()->to(base_url('login'));
             } else if ($post['type'] == 'admin') {
                 return redirect()->to(base_url('administrator'));
             }
         } else {
             $this->session->setFlashdata(['error' => 'ระบบทำการบันทึกไม่สำเร็จกรุณาทำรายการอีกครั้งหรือติดต่อเจ้าหน้าที่']);
-            return redirect()->to(session('_ci_previous_url'));
+            return redirect()->to(base_url());
         }
     }
 }

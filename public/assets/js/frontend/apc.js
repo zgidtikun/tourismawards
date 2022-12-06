@@ -547,6 +547,7 @@ const register = {
                     let formData = new FormData();
                     formData.append('id',register.id);
                     formData.append('step','finish');
+                    formData.append('type',register.formData.step1.appType);                    
 
                     ;[1,2,3,4,5].forEach(index => {
                         let mapFData = register.getMapField('step',index),

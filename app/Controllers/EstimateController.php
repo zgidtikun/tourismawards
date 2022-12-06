@@ -336,6 +336,12 @@ class EstimateController extends BaseController
                     'stage' => $input->stage
                 ],'estimate-complete');
 
+                send_email_frontend((object)[
+                    'id' => $form->created_by,
+                    'appId' => $input->appId,
+                    'stage' => $input->stage
+                ],'estimate-complete-sys');
+
             }
 
             $result = ['result' => 'success'];

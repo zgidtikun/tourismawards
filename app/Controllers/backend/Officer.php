@@ -6,6 +6,11 @@ use App\Controllers\BaseController;
 
 class Officer extends BaseController
 {
+    public function __construct()
+    {
+        helper(['semail', 'verify']);
+    }
+
     public function index()
     {
         $where = [];
@@ -78,6 +83,8 @@ class Officer extends BaseController
         if (empty($post["assessment_group"])) {
             $post["assessment_group"] = [];
         }
+        
+        $verify_code = genVerifyCode();
         $data = [
             // 'id'                    => $post[""],
             'prefix'                => $post["prefix"],
@@ -91,7 +98,7 @@ class Officer extends BaseController
             'position'              => $post["position"],
             'username'              => $post["email"],
             // 'password'              => $post["password"],
-            'verify_code'           => vEncryption('admin-'.genVerifyCode()),
+            'verify_code'           => $verify_code,
             'role_id'               => 3,
             'status'                => 1,
             'created_at'            => date('Y-m-d H:i:s'),
@@ -111,6 +118,8 @@ class Officer extends BaseController
                     $this->db->table('users')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
                 }
             }
+            $data = [];
+            $data['users'] = $this->db->table('users')->where('id', $insert_id)->get()->getRowObject();
             $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
@@ -121,23 +130,25 @@ class Officer extends BaseController
     public function saveUpdate()
     {
         $post = $this->input->getVar();
-        $imagefile = $this->input->getFiles('profile');
-        $img = $imagefile['profile'];
 
-        if ($img->isValid() && !$img->hasMoved()) {
-            $path = FCPATH . 'uploads/profile/images/';
-            $extension = $img->guessExtension();
-            $newName = genFileName($extension);
-            $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
-            if (in_array($extension, $accept)) {
-                $img->move($path, $newName);
-                $post['profile'] = 'uploads/profile/images/' . $newName;
-                @unlink($path . $post['profile_old']);
+        $post['profile'] = $post['profile_old'];
+        if ($this->input->getFiles('profile')) {
+            $imagefile = $this->input->getFiles('profile');
+            $img = $imagefile['profile'];
+
+            if ($img->isValid() && !$img->hasMoved()) {
+                $path = FCPATH . 'uploads/profile/images/';
+                $extension = $img->guessExtension();
+                $newName = genFileName($extension);
+                $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
+                if (in_array($extension, $accept)) {
+                    $img->move($path, $newName);
+                    $post['profile'] = 'uploads/profile/images/' . $newName;
+                    @unlink($path . $post['profile_old']);
+                }
             }
-        } else {
-            $post['profile'] = $post['profile_old'];
         }
-        
+
         if (empty($post["award_type"])) {
             $post["award_type"] = [];
         }
@@ -230,8 +241,6 @@ class Officer extends BaseController
     public function saveInsertTAT()
     {
         $post = $this->input->getVar();
-        $imagefile = $this->input->getFiles('profile');
-        $img = $imagefile['profile'];
 
         // if (!empty($post['password'])) {
         //     $post['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
@@ -239,6 +248,7 @@ class Officer extends BaseController
         if (empty($post["assessment_group"])) {
             $post["assessment_group"] = [];
         }
+        $verify_code = genVerifyCode();
         $data = [
             // 'id'                    => $post[""],
             'prefix'                => $post["prefix"],
@@ -252,7 +262,7 @@ class Officer extends BaseController
             'position'              => $post["position"],
             'username'              => $post["email"],
             // 'password'              => $post["password"],
-            'verify_code'           => vEncryption('admin-'.genVerifyCode()),
+            'verify_code'           => $verify_code,
             'role_id'               => 2,
             'status'                => 1,
             'created_at'            => date('Y-m-d H:i:s'),
@@ -261,17 +271,23 @@ class Officer extends BaseController
         $result = $this->db->table('admin')->insert($data);
         $insert_id = $this->db->insertID();
         if ($result) {
-            if ($img->isValid() && !$img->hasMoved()) {
-                $path = FCPATH . 'uploads/profile/images/';
-                $originalName = $img->getName();
-                $extension = $img->guessExtension();
-                $newName = genFileName($extension);
-                $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
-                if (in_array($extension, $accept)) {
-                    $img->move($path, $newName);
-                    $this->db->table('admin')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
+            if ($this->input->getFiles('profile')) {
+                $imagefile = $this->input->getFiles('profile');
+                $img = $imagefile['profile'];
+                if ($img->isValid() && !$img->hasMoved()) {
+                    $path = FCPATH . 'uploads/profile/images/';
+                    $originalName = $img->getName();
+                    $extension = $img->guessExtension();
+                    $newName = genFileName($extension);
+                    $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
+                    if (in_array($extension, $accept)) {
+                        $img->move($path, $newName);
+                        $this->db->table('admin')->where('id', $insert_id)->update(['profile' => 'uploads/profile/images/' . $newName]);
+                    }
                 }
             }
+            $data = [];
+            $data['users'] = $this->db->table('users')->where('id', $insert_id)->get()->getRowObject();
             $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
@@ -282,26 +298,29 @@ class Officer extends BaseController
     public function saveUpdateTAT()
     {
         $post = $this->input->getVar();
-        $imagefile = $this->input->getFiles('profile');
-        $img = $imagefile['profile'];
 
-        if ($img->isValid() && !$img->hasMoved()) {
-            $path = FCPATH . 'uploads/profile/images/';
-            $extension = $img->guessExtension();
-            $newName = genFileName($extension);
-            $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
-            if (in_array($extension, $accept)) {
-                $img->move($path, $newName);
-                $post['profile'] = 'uploads/profile/images/' . $newName;
-                @unlink(FCPATH . $post['profile_old']);
+        $post['profile'] = $post['profile_old'];
+        if ($this->input->getFiles('profile')) {
+            $imagefile = $this->input->getFiles('profile');
+            $img = $imagefile['profile'];
+
+            if ($img->isValid() && !$img->hasMoved()) {
+                $path = FCPATH . 'uploads/profile/images/';
+                $extension = $img->guessExtension();
+                $newName = genFileName($extension);
+                $accept = ['jpg', 'jpeg', 'gif', 'png', 'webp'];
+                if (in_array($extension, $accept)) {
+                    $img->move($path, $newName);
+                    $post['profile'] = 'uploads/profile/images/' . $newName;
+                    @unlink($path . $post['profile_old']);
+                }
             }
-        } else {
-            $post['profile'] = $post['profile_old'];
         }
+
         if (empty($post["assessment_group"])) {
             $post["assessment_group"] = [];
         }
-        
+
         $data = [
             // 'id'                    => $post[""],
             'prefix'                => $post["prefix"],
@@ -356,6 +375,26 @@ class Officer extends BaseController
 
     public function sendMail($data)
     {
-        // pp($data);
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('verify-password?t=' . vEncryption('users-' . $data['users']->verify_code)) . '"  target="_blank">Verify</a></b>';
+        if ($data['users']->password != "") {
+            $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
+        }
+        $email_data = [
+            '_header' => 'สถานะการสมัคร',
+            '_content' => 'คุณ ' . $data['users']->name . ' ' . $data['users']->surname . ' ได้รับการสมัครเป็นคณะกรรมการการตัดสิน '
+                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
+                . 'ดัวยอีเมล ' . $data['users']->email
+                . $text
+        ];
+        $requestEmail = [
+            'to' => $data['users']->email,
+            'subject' => 'สถานะสมาชิก',
+            'message' => view('administrator/template_email', $email_data),
+            // 'from' => $from,
+            // 'cc' => [],
+            // 'bcc' => []
+        ];
+
+        send_email($requestEmail);
     }
 }

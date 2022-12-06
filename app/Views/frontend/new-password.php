@@ -70,7 +70,7 @@
 
                             alert.show('success','Reset Password Complete.', message).then(function(data){
                                 <?php if(!session()->get('isLoggedIn')) : ?>
-                                window.location.href = '<?=base_url('login')?>';
+                                window.location.href = '<?=base_url('login/'.$id)?>';
                                 <?php else : ?>
                                 window.location.href = '<?=base_url('profile')?>';
                                 <?php endif; ?>
