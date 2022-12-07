@@ -139,27 +139,33 @@ const setFinish = () => {
     ttescore = tsbscoe = trsscore = 0;
 
     $.each(assign,(ak,av) => {
-        let index = av-1;
+        let index = ak+1;
+
+        if(av == 1){ 
+            tescore = Number(dataset[index].group.score_onsite);
+            tscore += Number(dataset[index].group.score_onsite);
+        }
+        else if(av == 2){ 
+            sbscoe = Number(dataset[index].group.score_onsite);
+            tscore += Number(dataset[index].group.score_onsite);
+        }
+        else{
+            rsscore = Number(dataset[index].group.score_onsite);
+            tscore += Number(dataset[index].group.score_onsite);
+        }
 
         $.each(dataset[index].question,(qk,qv) => {
             if(!empty(qv.score_onsite) && Number(qv.weight) > 0){
-                let score = Number(qv.score_onsite);
-                const total = score / Number(qv.weight);
-
                 if(av == 1){ 
-                    tescore += total;
                     ttescore += Number(qv.onside_score);
                 }
                 else if(av == 2){ 
-                    sbscoe += total;
                     tsbscoe += Number(qv.onside_score);
                 }
                 else{
-                    rsscore += total;
                     trsscore += Number(qv.onside_score);
                 }
-
-                tscore += total;
+                
                 mscore += Number(qv.onside_score);
             }
             else if(!empty(qv.score_onsite) && Number(qv.weight) <= 0){

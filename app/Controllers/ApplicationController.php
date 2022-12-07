@@ -186,6 +186,7 @@ class ApplicationController extends BaseController
             
             helper('semail');
             send_email_frontend((object)[
+                'app_id' => $app_id,
                 'email' => session()->get('account'),
                 'tycon' => session()->get('user'),
                 'type' => $this->input->getVar('type')

@@ -173,8 +173,22 @@ class LoginController extends BaseController
         if(getenv('CI_ENVIRONMENT') != 'production'){
             helper(['semail']);
             switch($_GET['ac']){
+                case 'register':
+                    helper('verify');
+                    $id = 29;
+                    $expire = date('YmdHis',strtotime('+3 days'));
+                    $token = 'd9298660f7e8014d3d7717f6';
+                    $verify_token = vEncryption($id .'-'.$expire.'-'.$token);
+                    $result = send_email_frontend((object)[
+                        'name' => 'กิตติคุณ สุขสำราญ',
+                        'surname' => 'กิตติคุณ สุขสำราญ',
+                        'email' => 's.gidtikun@gmail.com',
+                        'verify_token' => $verify_token
+                    ],'register');
+                break;
                 case 'app':
                     $result = send_email_frontend((object)[
+                        'app_id' => 1,
                         'tycon' => 'กิตติคุณ สุขสำราญ',
                         'email' => 's.gidtikun@gmail.com',
                     ],'app');
@@ -185,7 +199,7 @@ class LoginController extends BaseController
                         'name' => 'กิตติคุณ',
                         'surname' => 'สุขสำราญ',
                         'email' => 's.gidtikun@gmail.com',
-                        'password' => genVerifyCode(),
+                        'id' => 29,
                     ],'reset-pass');
                 break;
                 case 'answer-complete':

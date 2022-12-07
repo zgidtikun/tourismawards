@@ -53,8 +53,8 @@ const init = () =>{
     api({ method: 'get', url: '/inner-api/boards/estimate/'+appid })
     .then((rs) => {
         tycoon = rs.tycoon;     
-        dataset = rs.data;
-        
+        dataset = rs.data;        
+
         let tmp = tycoon.t_name.split('(');
         tycoon.t_name = tmp[0].trim();
 
@@ -121,25 +121,31 @@ const setFinish = () => {
     $.each(assign,(ak,av) => {
         let index = av-1;
 
+        if(av == 1){ 
+            tescore = Number(dataset[index].group.score_prescreen);
+            tscore += Number(dataset[index].group.score_prescreen);
+        }
+        else if(av == 2){ 
+            sbscoe = Number(dataset[index].group.score_prescreen);
+            tscore += Number(dataset[index].group.score_prescreen);
+        }
+        else{
+            rsscore = Number(dataset[index].group.score_prescreen);
+            tscore += Number(dataset[index].group.score_prescreen);
+        }
+
         $.each(dataset[index].question,(qk,qv) => {
             if(!empty(qv.score_pre)){
-                let score = Number(qv.score_pre);
-                const total = score / Number(qv.weight);
-
                 if(av == 1){ 
-                    tescore += total;
                     ttescore += Number(qv.pre_score);
                 }
                 else if(av == 2){ 
-                    sbscoe += total;
                     tsbscoe += Number(qv.pre_score);
                 }
                 else{
-                    rsscore += total;
                     trsscore += Number(qv.pre_score);
-                }
+                }                
 
-                tscore += total;
                 mscore += Number(qv.pre_score);
             }
         });

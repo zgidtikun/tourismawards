@@ -25,40 +25,52 @@ function checkVerifyUser($code)
     $obj_user = new \App\Models\Users();
     $code = vDecryption($code);    
     $carray = explode('-',$code);
+    $current_date = date('Ymdhis');
     
     $id = $carray[0];
-    $vcode = $carray[1];
+    $expire_date = $carray[1];
+    $vcode = $carray[2];
 
-    $cresult = $obj_user->where([
-            'id' => $id,
-            'verify_code' => $vcode
-        ])
-        ->select('password')
-        ->first();
+    if($current_date <= $expire_date){
+        $expire = false;
 
-    if(!empty($cresult)){
-        $obj_user->where('id',$id)
-            ->set([
-                'status' => 1,
-                'stage' => 1,
-                'verify_status' => 1,
-                'verify_date' => date('Y-m-d H:i:s')
+        $cresult = $obj_user->where([
+                'id' => $id,
+                'verify_code' => $vcode
             ])
-            ->update();
-        
-        $userId = $id;
-        $existPass = empty($cresult->password) ? true : false;
-        $verified = true;
+            ->select('password')
+            ->first();
+
+        if(!empty($cresult)){
+            $obj_user->where('id',$id)
+                ->set([
+                    'status' => 1,
+                    'stage' => 1,
+                    'verify_status' => 1,
+                    'verify_date' => date('Y-m-d H:i:s')
+                ])
+                ->update();
+            
+            $userId = $id;
+            $existPass = empty($cresult->password) ? true : false;
+            $verified = true;
+        } else {
+            $userId = '';
+            $existPass = false;
+            $verified = false;
+        }
     } else {
+        $expire = true;
         $userId = '';
         $existPass = false;
         $verified = false;
     }
 
     return (object) [
-        'id' => $id,
+        'id' => $userId,
         'result' => $verified,
-        'pass' => $existPass
+        'pass' => $existPass,
+        'expire' => $expire
     ];
 }
 

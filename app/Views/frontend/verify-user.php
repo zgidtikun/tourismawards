@@ -4,7 +4,15 @@
             <div class="formbox">
                 <div class="formbox_row">
                     <div class="inp_form">
-                    <?php if($_verified) : ?>
+                    <?php if($_expire) : ?>
+                        <div class="alert alert-danger alert-dismissible fade show" id="error">
+                            <i class="bi bi-exclamation-triangle-fill"></i> 
+                            ไม่สามารถ Verify ได้เนื่องจากหมดเวลาการยืนยันตัวตนได้ กรุณาติดต่อเจ้าหน้าที่ได้ที่  
+                            <a class="alert-link" href="<?=base_url('contact-us')?>" title="ติดต่อเรา">
+                                ติดต่อเรา
+                            </a>
+                        </div>
+                    <?php elseif($_verified) : ?>
                         <div class="alert alert-success" id="success">
                             <b><i class="bi bi-check-circle-fill"></i> 
                             Verified ผู้ประกอบการเรียบร้อยแล้ว</b>  

@@ -142,11 +142,11 @@ class semail {
                 case 'register':
                     $_message = view('template-frontend-email',[
                         '_header' => 'ยืนยันตัวตนการเข้าร่วมประกวด',
-                        '_content' => 'คุณ '.$dataset->name.' '.$dataset->surname.' ได้ลงทะเบียนเข้าาประกวดรางวัล'
-                            . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2565 (Thailand Tourism Awards 2023) '
-                            . 'ดัวยอีเมล '.$dataset->email.' โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ '
+                        '_content' => '<p>เรียนคุณ '.$dataset->name.' '.$dataset->surname.'</p><br>'
+                            . '<p>กรุณายืนยันตัวตนผ่านทางอีเมล เพื่อทำการเข้าสู่ระบบท่านจำเป็นต้องยืนยันตัวตนภายใน 3 วัน</p>'
+                            . '<p>โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ '
                             . '<b><a href="'.base_url('verify-user?c='.$dataset->verify_token).'" target="_blank">'
-                            . 'Verify</a></b>'
+                            . 'ยืนยันตัวตน</a></b></p>'
                     ]);
                     
                     $_subject = 'ยืนยันตัวตนการเข้าร่วมประกวด';
@@ -155,12 +155,44 @@ class semail {
                     $_cc = [];
                     $_bcc = [];
                 break;
+                case 'reset-pass':
+                    $_recipient = $dataset->name.' '.$dataset->surname;          
+                    $_message = view('template-frontend-email',[
+                        '_header' => 'เรียน คุณ'.$_recipient,
+                        '_content' => '<p>ท่านได้ส่งคำร้องขอในการเปลี่ยนรหัสผ่าน กรุณากดที่ลิ้งเพื่อทำการเปลี่ยนรหัสผ่าน '
+                            . '<b><a href="'.base_url('new-password/'.$dataset->id)
+                            . '" target="_blank">เปลี่ยนรหัสผ่าน</a></b></p>'
+                    ]);
+    
+                    $_subject = 'Thailand Tourism Awards - Forget Password';
+                    $_from = $email_sys;
+                    $_to = $dataset->email;
+                    $_cc = [];
+                    $_bcc = [];
+                break;
+                case 'contact':
+                    $input = (object) $dataset;
+    
+                    $_message = view('template-frontend-email',[
+                        '_header' => '',
+                        '_content' => '<p>'.$input->message.'</p><br>'
+                            . '<p>ผู้ติดต่อ<br>'
+                            . 'คุณ '.$input->name.'<br>'
+                            . 'อีเมล '.$input->email.'</p>'
+                    ]);
+                    
+                    $_subject = 'ติดต่อเรื่อง '.$input->subject;
+                    $_to = $email_ct;
+                    $_from = $email_sys;
+                    $_cc = [];
+                    $_bcc = [];
+                break;
                 case 'app-wait':
                     $_message = view('template-frontend-email',[
                         '_header' => 'เรียน คุณ'.$dataset->tycon,
-                        '_content' => '<p>ทางผู้ดำเนินงานประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2565 (Thailand Tourism Awards 2023) '
-                            . 'ได้รับแบบฟอร์มการสมัครแล้ว ทางคณะทำงานกำลังทำการพิจารณาท่านโดยเร็วที่สุด</p>'
-                            . '<br><p>เมื่อทำการพิจารณาเสร็จแลัวจะส่งผ่านทางอีเมลนี้ กรุณารอการตอบกลับนี้ด้วย</p>'
+                        '_content' => '<p>ท่านส่งใบสมัครเรียบร้อยแล้ว ใบสมัครของท่านอยู่ระหว่างการดำเนินการตรวจสอบ'
+                            .' กรุณารอผลการตรวจสอบภายใน 7 วัน</p>'
+                            . '<p>เมื่อทำการพิจารณาเสร็จแลัวจะส่งผ่านทางอีเมลนี้ กรุณารอการตอบกลับที่กล่องจดหมายหรือจดหมายขยะ</p>'
                     ]);
                     
                     $_subject = 'แจ้งการรับแบบฟอร์มการสมัครเข้ารับการพิจารณา';
@@ -170,12 +202,12 @@ class semail {
                     $_bcc = [];                    
                 break;
                 case 'app': 
-                    $_header = 'แจ้งการส่งใบสัครเข้าระบบจากผู้ประกอบ';
+                    $tycoon = $this->getTycoon($dataset->app_id);
+                    $_header = 'แจ้งการส่งใบสัครเข้าระบบ';
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
-                        '_content' => 'มีการส่งใบสมัครจากคุณ '.$dataset->tycon 
-                            . ' อีเมล '.$dataset->email.' เข้าสู่ระบบ เจ้าหน้าที่เกี่ยข้อง'
-                            . 'กรุณาตรวจสอบและทำการแจ้งผลแก่ผู้ประกอบการ'
+                        '_content' => $tycoon->place 
+                            . ' ได้ทำการส่งใบสมัครเข้าสู่ระบบ กรุณาเข้าสู่ระบบเพื่อทำการตรวจสอบใบสมัคร'
                     ]);
     
                     $_subject = $_header;
@@ -199,48 +231,13 @@ class semail {
                         }
                     }
                 break;
-                case 'contact':
-                    $input = (object) $dataset;
-    
-                    $_message = view('template-frontend-email',[
-                        '_header' => '',
-                        '_content' => '<p>'.$input->message.'</p>'
-                            . '<p>ผู้ติดต่อ<br>'
-                            . 'คุณ '.$input->name.'<br>'
-                            . 'อีเมล '.$input->email.'</p>'
-                    ]);
-                    
-                    $_subject = 'ติดต่อเรื่อง '.$input->subject;
-                    $_to = $email_ct;
-                    $_from = $email_sys;
-                    $_cc = [];
-                    $_bcc = [];
-                break;
-                case 'reset-pass':
-                    $_recipient = $dataset->name.' '.$dataset->surname;          
-                    $_message = view('template-frontend-email',[
-                        '_header' => 'รหัสผ่านใหม่ Thailand Tourism Awards',
-                        '_content' => '<p>เรียน คุณ'.$_recipient.'</p><br>'
-                            . '<p>รหัสผ่านใหม่ของท่านคือ<p/>'
-                            . '<p>New password : '.$dataset->password.'</p>'
-                            . '<br>'
-                            . 'ท่านสามารถตั่งค่ารหัสผ่านใหม่ได้เมื่อท่านเข้าสู่ระบบ <a href="'.base_url('login')
-                            . '" target="_blank">เข้าสู่ระบบ</a>'
-                    ]);
-    
-                    $_subject = 'Thailand Tourism Awards - Reset Password';
-                    $_from = $email_sys;
-                    $_to = $dataset->email;
-                    $_cc = [];
-                    $_bcc = [];
-                break;
-                case 'answer-complete':
+                case 'answer-complete':                    
+                    $tycoon = $this->getTycoon($dataset->app_id);
                     $_header = 'แจ้งเตือนการส่งแบบประเมินขั้นต้น';
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
-                        '_content' => 'มีการส่งแบบประเมินขั้นต้นจากคุณ '.$dataset->tycon
-                            . ' อีเมล '.$dataset->email.' เข้าสู่ระบบ เจ้าหน้าที่เกี่ยข้อง'
-                            . 'กรุณาตรวจสอบและทำการแจ้งผลแก่ผู้ประกอบการ'
+                        '_content' => $tycoon->place 
+                            . ' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณาเข้าสู่ระบบเพื่อทำการมอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)'
                     ]);
     
                     $_subject = $_header;
@@ -265,14 +262,12 @@ class semail {
                     }
                 break;
                 case 'estimate-request':
-                    $user = $this->getUser($dataset->id);    
-                    $_header = 'ขอข้อมูลเเพิ่มเติม';                
+                    $user = $this->getUser($dataset->id);  
+                    $_header = 'ขอข้อมูลเพิ่มเติม';                
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
-                        '_content' => '<p>เรียน คุณ'.$user->fullname.'</p>'
-                            . '<p>คณะกรรมการได้มีการร้องขอข้อมูลเพิ่มเติมในแบบฟอร์มการระเมินขั้นต้น'
-                            . ' ผู้ประกอบการกรุณา <b><a href="'.base_url('login').'" target="_blank">เข้าสู่ระบบ</a></b> '
-                            . 'เพื่อส่งข้อมูลเพิ่มเติมและส่งแบบฟอร์มการประเมินอีกครั้ง</p>'
+                        '_content' => '<p>เรียน คุณ'.$user->fullname.'</p><br>'
+                            . '<p>แบบประเมินของท่านมีการร้องขอข้อมูลเพิ่มเติม กรุณาเข้าสู่ระบบเพื่อตรวจสอบการร้องขอข้อมูล</p>'
                     ]);
     
                     $_subject = 'แจ้งการขอข้อมูลเเพิ่มเติมในขั้นตอนการประเมินเบื่องต้น';
@@ -284,14 +279,22 @@ class semail {
                 case 'estimate-complete':
                     $user = $this->getUser($dataset->id);
                     $_stage = $dataset->stage == 1 ? 'ประเมินขั้นต้น' : 'ลงพื้นที่';
+
                     $_header = 'ผลการประเมินรอบ '.$_stage;
+                    $_content = '<p>เรียน คุณ'.$user->fullname.'</p><br>';
+
+                    if($dataset->stage == 1){
+                        $_content .= '<p>แบบประเมินของท่าน ผ่านการประเมินรอบประเมินขั้นต้น (Pre-Screen)'
+                            . ' กรุณาส่ง VDO และ Power Point xxxxxxx ไปที่อีเมล '.$email_ct
+                            . ' เพื่อใช้ในการประเมินรอบก่อนลงพื้นที่</p>';
+                    } else {
+                        $_content.= '<p>แบบประเมินของท่าน ได้รับการประเมินเรียบร้อยแล้ว'
+                            . ' กรุณาติดตามผลการประเมินทางอีเมล หรือเว็บไซต์</p>';
+                    }
                     
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
-                        '_content' => '<p>เรียน คุณ'.$user->fullname.'</p>'
-                            . '<p>'.$_header.' ของท่านได้ออกมาแล้ว '
-                            . ' ผู้ประกอบการกรุณา <b><a href="'.base_url('login').'" target="_blank">เข้าสู่ระบบ</a></b> '
-                            . 'เพื่อทำการตรวจผลการประเมินของท่าน</p>'
+                        '_content' => $_content
                     ]);
     
                     $_subject = 'แจ้ง'.$_header;
@@ -300,21 +303,24 @@ class semail {
                     $_cc = [];
                     $_bcc = []; 
                 break;
-                case 'estimate-complete-sys':                    
-                    // $user = $this->getUser($dataset->id);
+                case 'estimate-complete-sys':                 
                     $tycoon = $this->getTycoon($dataset->appId);
                     
                     $_stage = $dataset->stage == 1 ? 'ประเมินขั้นต้น' : 'ลงพื้นที่';
                     $_header = 'การประเมินรอบ '.$_stage.' เสร็จสิ้นแล้ว';
+                    $_content = '<p>'.$tycoon->place;
+
+                    if($dataset->stage == 1){
+                        $_content .= ' ได้ผ่านการประเมินรอบขั้นต้น (Pre-Screen)'
+                            . ' กรุณาเข้าสู่ระบบเพื่อทำการมอบหมายกรรมการเพื่อประเมิน รอบลงพื้นที่</p>';
+                    } else {
+                        $_content.= ' ได้รับการประเมินรอบขั้นต้น (Pre-Screen) และรอบลงพื้นที่'
+                            . ' จากกรรรมการเรียบร้อยแล้ว</p>';
+                    }
                     
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
-                        '_content' => '<p>เรียน เจ้าหน้าที่ ททท. และแอ็ดมิน</p>'
-                            . '<p>คณะกรรมการได้ทำการประเมินรอบ '.$_stage.' ของสถานที่ '
-                            . $tycoon->place
-                            . ' ประเภท '.$tycoon->type
-                            . ' สาขา '.$tycoon->sub
-                            .' เสร็จสิ้นแล้ว'
+                        '_content' => $_content
                     ]);
     
                     $_subject = 'แจ้ง'.$_header;

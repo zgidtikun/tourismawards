@@ -63,6 +63,7 @@ class Home extends BaseController
             '_id' => $verified->id,
             '_verified' => $verified->result,
             '_password' => $verified->pass,
+            '_expire' => $verified->expire,
             'view' => 'frontend/verify-user'
         ));
     }

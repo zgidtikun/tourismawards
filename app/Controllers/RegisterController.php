@@ -70,8 +70,9 @@ class RegisterController extends BaseController
                         $status = false;
                         array_push($error,$result->error);
                     } else {
+                        $expire = date('YmdHis',strtotime('+3 days'));
                         $data->user_id = $result->id;
-                        $data->verify_token = vEncryption($data->user_id .'-'.$verify_code);
+                        $data->verify_token = vEncryption($data->user_id .'-'.$expire.'-'.$verify_code);
                         helper('semail');
                         send_email_frontend($data,'register');
                         $status = true;
@@ -123,25 +124,9 @@ class RegisterController extends BaseController
             $result = array('result' => 'error', 'message' => 'ไม่มีอีเมลนี้ในระบบ');
         } else {
             $user = $this->user->getUserByEmail($email,1);
-            $newPassword = $this->randomPassword();
-            
-            $updData = array(
-                'role' => $user->account->role_id,
-                'id' => $user->account->id,
-                'password' => $newPassword,
-            );
-
-            $update = $this->user->updateUser($updData);
-
-            if($update->result){
-                $account = $user->account;
-                $account->password = $newPassword;
-                $sendEmail = $this->resetPasswordMail($account);
-                // return $this->response->setJSON($sendEmail);
-                $result = array('result' => 'success', 'bank' => $user->bank);
-            } else {
-                $result = array('result' => 'error', 'message' => 'ไม่สามารถรีเซ็ตรหัสผ่านได้');
-            }
+            $account = $user->account;
+            $this->resetPasswordMail($account);
+            $result = array('result' => 'success', 'bank' => $user->bank);
         }
         
         return $this->response->setJSON($result);

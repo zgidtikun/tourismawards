@@ -185,7 +185,7 @@
                         <picture>
                             <source srcset="<?=base_url('assets/images/QualificationsofApplicant.svg')?>">
                             <source srcset="<?=base_url('assets/images/QualificationsofApplicant.png')?>">
-                            <img src="<?=base_url('assets/images/QualificationsofApplicant.png')?>" width="277" height="50">
+                            <img src="<?=base_url('assets/images/QualificationsofApplicant.jpg')?>" width="277" height="50">
                         </picture>
                     </div>
 
@@ -211,7 +211,7 @@
                         <picture>
                             <source srcset="<?=base_url('assets/images/JudgingCriteria.svg')?>">
                             <source srcset="<?=base_url('assets/images/JudgingCriteria.png')?>">
-                            <img src="<?=base_url('assets/images/JudgingCriteria.png')?>" width="277" height="50">
+                            <img src="<?=base_url('assets/images/JudgingCriteria.jpg')?>" width="277" height="50">
                         </picture>
                     </div>
 
@@ -270,9 +270,9 @@
                 <div class="main-title">
                     <div class="catagory-txt">
                         <picture>
-                            <source srcset="<?=base_url('assets/images/Benefits.svg')?>">
-                            <source srcset="<?=base_url('assets/images/Benefits.png')?>">
-                            <img src="<?=base_url('assets/images/Benefits.png')?>" width="277" height="50">
+                            <source srcset="<?=base_url('assets/images/benefits.svg')?>">
+                            <source srcset="<?=base_url('assets/images/benefits.png')?>">
+                            <img src="<?=base_url('assets/images/benefits.svg')?>" width="277" height="50">
                         </picture>
                     </div>
 

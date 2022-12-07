@@ -78,7 +78,9 @@ class EstimateController extends BaseController
             );
 
             helper('semail');
-            send_email_frontend((object)['id' => $form->created_by],'estimate-request');
+            send_email_frontend((object)[
+                'id' => $form->created_by,
+            ],'estimate-request');
                 
             $result = ['result' => 'success'];
         } catch(\Exception $e){
@@ -333,6 +335,7 @@ class EstimateController extends BaseController
                 helper('semail');
                 send_email_frontend((object)[
                     'id' => $form->created_by,
+                    'appId' => $input->appId,
                     'stage' => $input->stage
                 ],'estimate-complete');
 
