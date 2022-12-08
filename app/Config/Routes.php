@@ -43,6 +43,7 @@ $routes->get('about-us', 'Home::aboutus');
 $routes->get('contact-us', 'Home::contactus');
 $routes->post('contact-us/send', 'Home::sendEmailContact');
 $routes->get('judge', 'Home::judge');
+$routes->post('get-awards-winner', 'EstimateController::getAwardResut');
 $routes->get('awards-infomation', 'Home::winnerinfo');
 $routes->get('awards-winner', 'Home::winneraward');
 $routes->get('awards-winner-13', 'Home::winneraward13');
@@ -269,6 +270,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
         $routes->get('', 'Complete::index', ['filter' => 'auth:backend']);
         $routes->post('getScore/(:any)', 'Onsite::getScore/$1', ['filter' => 'api:backend']);
         $routes->get('view/(:any)', 'Complete::viewEdit/$1', ['filter' => 'auth:backend']);
+        $routes->post('reSubmit', 'Complete::reSubmit', ['filter' => 'api:backend']);
     });
 
     // Report (เฉพาะแอดมินที่เข้าได้)
@@ -276,6 +278,13 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
         $routes->get('', 'Report::index', ['filter' => 'auth:4']);
         $routes->get('register', 'Report::register', ['filter' => 'api:4']);
         $routes->get('export/(:any)', 'Report::export/$1', ['filter' => 'auth:4']);
+    });
+
+    // Award (เฉพาะแอดมินที่เข้าได้)
+    $routes->group('Award', static function ($routes) {
+        $routes->get('', 'Award::index', ['filter' => 'auth:4']);
+        $routes->get('register', 'Award::register', ['filter' => 'api:4']);
+        $routes->get('export/(:any)', 'Award::export/$1', ['filter' => 'auth:4']);
     });
 
     // MarkTest is Controller for Test Only

@@ -175,7 +175,7 @@ class AnswerController extends BaseController
         elseif($reject > 0) return 'reject';
         elseif($finish > 0) return 'finish';
         elseif($estimate > 0) return 'estimate'; 
-        else return 'draft';
+        else return 'finish';
     }
 
     public function getAnswerByAjax($qid)

@@ -54,7 +54,7 @@ const init = () =>{
     .then((rs) => {
         tycoon = rs.tycoon;     
         dataset = rs.data;        
-
+        console.log(dataset)
         let tmp = tycoon.t_name.split('(');
         tycoon.t_name = tmp[0].trim();
 
@@ -113,7 +113,10 @@ const setRequest = () => {
 }
 
 const setFinish = () => {
-    let tscore, mscore, tescore, ttescore, sbscoe, tsbscoe, rsscore, trsscore;
+    let tscore, mscore, tescore, ttescore, sbscoe, 
+        tsbscoe, rsscore, trsscore, 
+        te, sb, rs;
+        
     tscore = mscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
@@ -122,40 +125,43 @@ const setFinish = () => {
         let index = av-1;
 
         if(av == 1){ 
-            tescore = Number(dataset[index].group.score_prescreen);
+            te = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
         }
         else if(av == 2){ 
-            sbscoe = Number(dataset[index].group.score_prescreen);
+            sb = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
         }
         else{
-            rsscore = Number(dataset[index].group.score_prescreen);
+            rs = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
         }
 
         $.each(dataset[index].question,(qk,qv) => {
             if(!empty(qv.score_pre)){
                 if(av == 1){ 
+                    tescore += Number(qv.score_pre);
                     ttescore += Number(qv.pre_score);
                 }
                 else if(av == 2){ 
+                    sbscoe += Number(qv.score_pre);
                     tsbscoe += Number(qv.pre_score);
                 }
                 else{
+                    rsscore += Number(qv.score_pre);
                     trsscore += Number(qv.pre_score);
                 }                
-
-                mscore += Number(qv.pre_score);
             }
         });
     });
 
-    const stescore = ((tescore * ttescore) / ttescore).toFixed(2);
-    const ssbscore = ((sbscoe * tsbscoe) / tsbscoe).toFixed(2);
-    const srsscore = ((rsscore * trsscore) / trsscore).toFixed(2);
-    const sscore = ((tscore * mscore) / mscore).toFixed(2);
-    
+    const stescore = (tescore / ttescore).toFixed(2);
+    const ssbscore = (sbscoe / tsbscoe).toFixed(2);
+    const srsscore = (rsscore / trsscore).toFixed(2);
+    const totalScore = tescore + tescore + tescore;
+    const totalMax = ttescore + ttescore + ttescore; 
+    const sscore = (totalScore * tscore / totalMax).toFixed(2);
+
     alert.confirm({
         mode: 'confirm-main',
         icon: 'info',
@@ -440,7 +446,7 @@ const checkComplete = () => {
     $.each(assign,(ak,av) => {
         let check = true,
             index = av-1;
-            
+       
         $.each(dataset[index].question,(qk,qv) => {
             if(Number(qv.pre_status ) == 1){
                 if(empty(qv.score_pre)){
@@ -467,7 +473,6 @@ const checkComplete = () => {
 }
 
 const disabledForm = () => {
-    
     if(
         $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
         || getIsFinish() == 'finish'

@@ -9,7 +9,7 @@ class Admin extends BaseController
 {
     public function __construct()
     {
-        // helper('main');
+        helper(['semail', 'verify']);
         $this->ApplicationType = new ApplicationType();
     }
 
@@ -186,15 +186,15 @@ class Admin extends BaseController
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }
         $email_data = [
-            '_header' => 'สถานะการสมัคร',
-            '_content' => 'คุณ ' . $data['admin']->name . ' ' . $data['admin']->surname . ' ได้รับการเพิ่มให้เป็นผู้ดูแลระบบ (Admin)'
+            '_header' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
+            '_content' => 'คุณ ' . $data['admin']->name . ' ' . $data['admin']->surname . ' ได้รับการเพิ่มให้เป็นผู้ดูแลระบบ (Admin) '
                 . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
-                . 'ดัวยอีเมล ' . $data['admin']->email
+                . 'ด้วยอีเมล ' . $data['admin']->email . ' '
                 . $text
         ];
         $requestEmail = [
             'to' => $data['admin']->email,
-            'subject' => 'สถานะการสมัคร',
+            'subject' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
             'message' => view('administrator/template_email', $email_data),
             // 'from' => $from,
             // 'cc' => [],

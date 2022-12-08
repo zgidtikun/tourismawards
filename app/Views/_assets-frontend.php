@@ -15,6 +15,7 @@
 <link href="<?=base_url('assets/css/device.css')?>?v=<?=$app->script_v?>" rel="stylesheet" type="text/css">
 <link href="<?=base_url('assets/css/mobilemenu.css')?>?v=<?=$app->script_v?>" rel="stylesheet" type="text/css">
 <link href="<?=base_url('assets/css/index-login.css')?>?v=<?=$app->script_v?>" rel="stylesheet" type="text/css">
+<link href="<?=base_url('assets/css/sfr-css.css')?>?v=<?=$app->script_v?>" rel="stylesheet" type="text/css" media="all">
 
 <script src="<?= base_url('assets/js/main.js') ?>?v=<?=$app->script_v?>" charset="utf-8" type="text/javascript"></script>
 <script src="<?=base_url('assets/js/jquery.mmenu.min.all.js')?>?v=<?=$app->script_v?>" type="text/javascript" charset="utf-8"></script>

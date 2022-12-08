@@ -83,7 +83,7 @@ class Officer extends BaseController
         if (empty($post["assessment_group"])) {
             $post["assessment_group"] = [];
         }
-        
+
         $verify_code = genVerifyCode();
         $data = [
             // 'id'                    => $post[""],
@@ -380,15 +380,15 @@ class Officer extends BaseController
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }
         $email_data = [
-            '_header' => 'สถานะการสมัคร',
+            '_header' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
             '_content' => 'คุณ ' . $data['users']->name . ' ' . $data['users']->surname . ' ได้รับการสมัครเป็นคณะกรรมการการตัดสิน '
                 . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
-                . 'ดัวยอีเมล ' . $data['users']->email
+                . 'ด้วยอีเมล ' . $data['users']->email . ' '
                 . $text
         ];
         $requestEmail = [
             'to' => $data['users']->email,
-            'subject' => 'สถานะสมาชิก',
+            'subject' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
             'message' => view('administrator/template_email', $email_data),
             // 'from' => $from,
             // 'cc' => [],

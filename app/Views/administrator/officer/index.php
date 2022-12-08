@@ -60,7 +60,7 @@
                       $path = base_url() . '/assets/images/unknown_user.jpg';
                     }
                     ?>
-                    <img src="<?= $path ?>" style="height: 50px; width: 50px"> <?= $value->name ?>
+                    <img src="<?= $path ?>" style="height: 50px; width: 50px"> <?= $value->name ?>  <?= $value->surname ?>
                   </td>
                   <td class=""><?= $value->mobile ?></td>
                   <td class="text-start"><?= $value->email ?></td>

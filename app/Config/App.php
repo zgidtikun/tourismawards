@@ -471,6 +471,7 @@ class App extends BaseConfig
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
     public $APPForm_expired = '2023-02-28';
     public $Pre_expired = '2023-03-05';
+    public $announcement_date = '2022-01-01';
     public $JudgingCriteriaPre = 25;
     public $JudgingCriteriaOnst = 75;
     public $JudgingCriteriaScore;
@@ -479,7 +480,7 @@ class App extends BaseConfig
     public function __construct()
     {
         $this->JudgingCriteriaScore = (object) [
-            'ttga' => (object) [
+            'ttg' => (object) [
                 'low' => 85.00,
                 'max' => 100.00
             ],
@@ -487,7 +488,7 @@ class App extends BaseConfig
                 'low' => 75.00,
                 'max' => 84.99
             ],
-            'kha' => (object) [
+            'ttc' => (object) [
                 'low' => 65.00,
                 'max' => 74.99
             ]

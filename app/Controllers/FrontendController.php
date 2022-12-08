@@ -118,18 +118,48 @@ class FrontendController extends BaseController
         $data = (object) [
             'title' => 'สรุปผลการประเมิน',
             'view' => 'frontend/entrepreneur/result',
-            'result' => (object) []
+            'result' => (object) [
+                'award_result' => false,
+            ]
         ];
 
-        if(!empty($onsite) && in_array($onsite->status,[6,7])){    
+        if(!empty($onsite) && in_array($onsite->status,[6])){   
             $data->result->sts_title = 'สรุปผลการประเมินรอบลงพื้นที่เรียบร้อยแล้ว';   
             $data->result->sts_content = 'ระบบได้แจ้งผลการประเมินของท่านเรียบร้อยแล้ว';     
             $data->result->title = 'ผลการประเมินรอบลงพื้นที่';
 
             if($onsite->status == 6){
-                $data->result->img = base_url('assets/images/prescreen_pass.png');
-                $data->result->content = 'ขอแสดงความยินดีด้วย แบบประเมินของท่านผ่านการประเมินรอบลงพื้นที่ 
-                    ทางโครงการฯ จะประกาศผลอย่างเป็นทางการอีกครั้ง';
+                $app = new \Config\App();
+                $duedate = $app->announcement_date;
+                $current = date('Y-m-d');
+
+                if($current >= $duedate){ 
+                    $data->result->award_result = true;                   
+                    $data->result->sts_title = 'สรุปผลการประกาศรางวัลเรียบร้อยแล้ว';   
+                    $data->result->sts_content = 'ระบบได้แจ้งสรุปผลการประกาศรางวัลของท่านเรียบร้อยแล้ว';     
+                    $data->result->title = 'ประกาศผลรางัล';
+                    $data->result->img = base_url('assets/images/logo.png');    
+
+                    $award_obj = new \App\Models\AwardResult();
+                    $award = $award_obj->where('user_id',session()->get('id'))
+                        ->select('award_type type')->first();
+
+                    if($award && $award->type !== 0){
+                        $data->result->content = 'ขอแสดงความยินดีด้วย ท่านได้รับรางวัล ';
+
+                        switch($award->type){
+                            case 1: $data->result->content .= 'รางวัลยอดเยี่ยม (Thailand Tourism Gold Award)'; break;
+                            case 2: $data->result->content .= 'รางวัลดีเด่น (Thailand Tourism Silver Award)'; break;
+                            case 3: $data->result->content .= 'เกียรติบัตรรางวัลอุตสาหกรรมท่องเที่ยวไทย (Thailand Tourism Certificate)'; break;
+                        }
+                    } else {
+                        $data->result->content = 'ท่านไม่ผ่านเกณฑ์ประเมินการได้รับรางวัล';
+                    }
+                } else { 
+                    $data->result->img = base_url('assets/images/prescreen_pass.png');
+                    $data->result->content = 'ขอแสดงความยินดีด้วย แบบประเมินของท่านผ่านการประเมินรอบลงพื้นที่ 
+                        ทางโครงการฯ จะประกาศผลอย่างเป็นทางการอีกครั้ง';
+                }
             } else {
                 $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
                 $data->result->content = 'แบบประเมินขอท่าน ไม่ผ่านการประเมินรอบลงื้นที่ 
@@ -140,7 +170,7 @@ class FrontendController extends BaseController
             $data->result->sts_content = '';    
             $data->result->title = 'สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว (Pre-screen)';
 
-            if($onsite->status == 6){
+            if($prescreen->status == 6){
                 $data->result->img = base_url('assets/images/prescreen_complete.png');
                 $data->result->content = 'ขอแสดงความยินดีด้วย ใบสมัครของท่านผ่านการประเมินขั้นต้น (Pre-Screen) 
                     ลำดับถัดไปให้เตรียมตัวให้พร้อมสำหรับการประเมินรองลงพื้นที่ 

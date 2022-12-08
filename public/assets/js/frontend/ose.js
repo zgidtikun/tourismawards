@@ -132,7 +132,8 @@ const draft = (cate,seg) => {
 
 const setFinish = () => {
     let tscore, mscore, tescore, ttescore, sbscoe, 
-        tsbscoe, rsscore, trsscore, cscore;
+        tsbscoe, rsscore, trsscore, 
+        te, sb, rs;
 
     tscore = mscore = cscore = 0;
     tescore = sbscoe = rsscore = 0;
@@ -142,42 +143,42 @@ const setFinish = () => {
         let index = ak+1;
 
         if(av == 1){ 
-            tescore = Number(dataset[index].group.score_onsite);
+            te = Number(dataset[index].group.score_onsite);
             tscore += Number(dataset[index].group.score_onsite);
         }
         else if(av == 2){ 
-            sbscoe = Number(dataset[index].group.score_onsite);
+            sb = Number(dataset[index].group.score_onsite);
             tscore += Number(dataset[index].group.score_onsite);
         }
         else{
-            rsscore = Number(dataset[index].group.score_onsite);
+            rs = Number(dataset[index].group.score_onsite);
             tscore += Number(dataset[index].group.score_onsite);
         }
 
         $.each(dataset[index].question,(qk,qv) => {
-            if(!empty(qv.score_onsite) && Number(qv.weight) > 0){
+            if(!empty(qv.score_onsite)){
                 if(av == 1){ 
+                    tescore += Number(qv.score_pre);
                     ttescore += Number(qv.onside_score);
                 }
                 else if(av == 2){ 
+                    sbscoe += Number(qv.score_pre);
                     tsbscoe += Number(qv.onside_score);
                 }
                 else{
+                    rsscore += Number(qv.score_pre);
                     trsscore += Number(qv.onside_score);
                 }
-                
-                mscore += Number(qv.onside_score);
-            }
-            else if(!empty(qv.score_onsite) && Number(qv.weight) <= 0){
-                cscore += Number(qv.score_onsite);
             }
         });
     });
 
-    const stescore = ((tescore * ttescore) / ttescore).toFixed(2);
-    const ssbscore = ((sbscoe * tsbscoe) / tsbscoe).toFixed(2);
-    const srsscore = ((rsscore * trsscore) / trsscore).toFixed(2);
-    const sscore = ((tscore * mscore) / mscore).toFixed(2);
+    const stescore = (tescore / ttescore).toFixed(2);
+    const ssbscore = (sbscoe / tsbscoe).toFixed(2);
+    const srsscore = (rsscore / trsscore).toFixed(2);
+    const totalScore = tescore + tescore + tescore;
+    const totalMax = ttescore + ttescore + ttescore; 
+    const sscore = (totalScore * tscore / totalMax).toFixed(2);
     
     alert.confirm({
         mode: 'confirm-main',

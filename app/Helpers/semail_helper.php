@@ -245,15 +245,8 @@ class semail {
                     $_from = $email_sys;
                     $_cc = [];
                     $_bcc = [];
-
-                    $cmt = $this->getCommittees($dataset->app_id);                    
+                                       
                     $list_admin = $this->getAdmin();
-                    
-                    if(!empty($cmt)){
-                        foreach($cmt as $user){
-                            array_push($_to,$user->email);
-                        }
-                    }
                     
                     if(!empty($list_admin)){
                         foreach($list_admin as $admin){

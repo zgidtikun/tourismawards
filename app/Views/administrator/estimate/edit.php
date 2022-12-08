@@ -585,10 +585,10 @@
     if (validated()) {
       var insert_id = $('#insert_id').val();
       if (insert_id == 0 || insert_id == "") {
-        var res = main_save(BASE_URL_BACKEND + '/Onsite/saveInsert', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/Estimate/saveInsert', '#input_form');
         res_swal(res, 1);
       } else {
-        var res = main_save(BASE_URL_BACKEND + '/Onsite/saveUpdate', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/Estimate/saveUpdate', '#input_form');
         res_swal(res, 1);
       }
     }

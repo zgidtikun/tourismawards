@@ -25,3 +25,4 @@
 <link href="<?=base_url('assets/css/device.css')?>?v=<?=$app->script_v?>" rel="stylesheet" type="text/css" media="all">
 <link href="<?=base_url('assets/css/index.css')?>?v=<?=$app->script_v?>" rel="stylesheet" type="text/css" media="all">
 <link href="<?=base_url('assets/css/index-login.css')?>?v=<?=$app->script_v?>" rel="stylesheet" type="text/css" media="all">
+<link href="<?=base_url('assets/css/sfr-css.css')?>?v=<?=$app->script_v?>" rel="stylesheet" type="text/css" media="all">

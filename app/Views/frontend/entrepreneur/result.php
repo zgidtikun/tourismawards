@@ -79,7 +79,9 @@
             <div class="formmainbox">
                 <div class="estimate-result">
                     <span class="header"><?=$result->title?></span>
-                    <img src="<?=$result->img?>">
+                    <img src="<?=$result->img?>" <?php if($result->award_result) : ?>
+                        style="width: 300px !important;padding-bottom: 2rem !important;"
+                    <?php endif; ?>>
                     <span class="content"><?=$result->content?></span>
                 </div>
             </div>

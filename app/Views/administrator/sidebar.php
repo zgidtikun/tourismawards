@@ -48,7 +48,7 @@
             <li><a href="<?= base_url() ?>/administrator/PreScreen" data-type="process"><label>ใบสมัครที่ผ่านการอนุมัติ</label></a></li>
             <li>
               <a href="<?= base_url() ?>/administrator/Estimate" data-type="process">
-                <label>แบบประเมินขั้นต้น (Prescreen)
+                <label>เพิ่มกรรมการรอบ Pre-screen
                   <?php if (countNotification(2) != 0) : ?>
                     <span class="menu-list-amount"><?= countNotification(2) ?></span>
                   <?php endif; ?>
@@ -78,6 +78,20 @@
           </ul>
         </div>
       </div>
+      
+      <?php if (isAdmin()) : ?>
+        <div class="backendmenu-list-row">
+          <a href="javascript:void(0)" class="btn-menulist" data-tab="4" data-type="award"><i class="bi bi-file-text"></i> ผลรางวัล</a>
+          <div class="hide-menu-list" data-tab="4" data-type="award">
+            <ul>
+              <li><a href="<?= base_url() ?>/administrator/Award" data-type="award"><label>รางวัลยอดเยี่ยม</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/Award" data-type="award"><label>รางวัลดีเด่น</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/Award" data-type="award"><label>เกียรติบัตรรางวัลอุตสาหกรรมท่องเที่ยวไทย</label></a></li>
+            </ul>
+          </div>
+        </div>
+      <?php endif; ?>
+
       <?php if (isAdmin()) : ?>
         <div class="backendmenu-list-row">
           <a href="<?= base_url() ?>/administrator/Report" data-tab="4" data-type="report"><i class="bi bi-file-text"></i> รายงาน</a>

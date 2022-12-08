@@ -272,8 +272,12 @@ class Home extends BaseController
             case 'tourism-program': $tid = 4; break;
         }
 
+        $app = new \Config\App();
         $type = new \App\Models\ApplicationType();
         $type_s = new \App\Models\ApplicationTypeSub();
+
+        $duedate = $app->announcement_date;
+        $current = date('Y-m-d');
 
         $main = $type->where('id',$tid)
             ->select('id, name')
@@ -286,8 +290,10 @@ class Home extends BaseController
         $data = [
             'title' => 'ผลงานที่ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ปี 2566',
             '_banner' => false,
+            'tid' => $tid,
             'main' => $main,
             'sub' => $sub,
+            'duedate' => $current >= $duedate ? 'ture' : 'false',
             'view' => 'awards-winner-14'
         ];
 
@@ -320,7 +326,7 @@ class Home extends BaseController
                 '_header' => 'ยืนยันตัวตนการเข้าร่วมประกวด',
                 '_content' => 'คุณ xxxxxxxxxx xxxxxxxxxxxx ได้ลงทะเบียนเข้าาประกวดรางวัล'
                     . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2556 (Thailand Tourism Awards 2023) '
-                    . 'ดัวยอีเมล xxxxxxxxxxx โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ '
+                    . 'ด้วยอีเมล xxxxxxxxxxx โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ '
                     . '<b><a href="#">'
                     . 'Verify</a></b>'
             ]);

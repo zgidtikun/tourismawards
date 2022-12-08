@@ -140,13 +140,12 @@ class EstimateController extends BaseController
                     $data['request_status'] = NULL;
                 }
             }
-            
-            $data['application_id'] = $input->application_id;
-            $data['question_id'] = $input->question_id;
            
             switch($input->action){
-                case 'create':
-
+                case 'create':                    
+            
+                    $data['application_id'] = $input->application_id;
+                    $data['question_id'] = $input->question_id;
                     $data['estimate_by'] = session()->get('id');  
                     $data['estimate_name'] = session()->get('user');  
                     $data['status_pre'] = 1;
@@ -162,7 +161,12 @@ class EstimateController extends BaseController
 
                     break;
                 case 'update':
-                    $this->estimate->update($input->est_id,$data);
+                    $this->estimate->where([
+                            'id' => $input->est_id,
+                            'estimate_by' => session()->get('id'),
+                        ])
+                        ->set($data)
+                        ->update();
                     $result = ['result' => 'success'];
                     break;
             }
@@ -258,7 +262,7 @@ class EstimateController extends BaseController
                 $avg_te = $input->score_te / $count_est;
                 $avg_sb = $input->score_sb / $count_est;
                 $avg_rs = $input->score_rs / $count_est;
-                $avg_tt = $avg_te + $avg_sb + $avg_rs;
+                $avg_tt = ($input->score_te + $input->score_sb + $input->score_rs) / $count_est;
 
                 $inst_avg['application_id'] = $input->appId;
 
@@ -362,6 +366,7 @@ class EstimateController extends BaseController
     {
         $app = new \Config\App();
         $award = new \App\Models\AwardResult();
+        $ass = new \App\Models\AssessmentGroup();
 
         $subQuery = $this->db->table('users_stage us')
             ->select(
@@ -377,24 +382,26 @@ class EstimateController extends BaseController
 
         $score = $this->db->table('estimate_score es')
                 ->join('('.$subQuery.') ap', 'es.application_id = ap.id')
-                ->join('question_score qs', 'ap.type_id = qs.type_id AND ap.sub_id = qs.type_sub_id')
                 ->select(
                     'es.application_id app_id, ap.created_by,
-                    ap.type_id, ap.sub_id, qs.total_net,
+                    ap.type_id, ap.sub_id,
                     (es.score_prescreen_tt + es.score_onsite_tt) score_tt'                    
                 )
                 ->get();
-                
-        $scores = [];
+                    
+        $builder = $ass->select('(SUM(score_prescreen) + SUM(score_onsite)) total_score');
+        $builder = $builder->whereIn('id',[1,2,3])->first();
+        $total_net = $builder->total_score;
+        
         foreach($score->getResult() as $v){
-            $persent = $v->score_tt * 100 / $v->total_net;
+            $persent = $v->score_tt * 100 / $total_net;
             $judge = $app->JudgingCriteriaScore;
 
-            if( $persent >= $judge->ttga->low )
+            if( $persent >= $judge->ttg->low )
                 $award_s = 1;
             elseif( $persent >= $judge->tta->low && $persent <= $judge->tta->max )
                 $award_s = 2;
-            elseif( $persent >= $judge->kha->low && $persent <= $judge->kha->max )
+            elseif( $persent >= $judge->ttc->low && $persent <= $judge->ttc->max )
                 $award_s = 3;
             else $award_s = 0;
             
@@ -410,6 +417,24 @@ class EstimateController extends BaseController
             ];
             
             $award->insert($temp);
+        }
+    }
+
+    public function getAwardResut()
+    {
+        $gold = [];
+        $silver = [];
+        $input =  (object) $this->input->getVar();
+        $where_type = [1,2];
+
+        foreach($where_type as $type){
+            $builder = $this->db->table('award_result ar')
+                ->join('application_form af','ar.application = af.id')
+                ->select()
+                ->where([
+                    
+                ])
+                ->get();
         }
     }
 }

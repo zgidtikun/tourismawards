@@ -19,7 +19,7 @@ class Users extends BaseController
             // $where['surname'] = $_GET['keyword'];
             // $where['email'] = $_GET['keyword'];
         }
-        $data['result']  = $this->db->table('users')->where('role_id', 1)->where('status_delete', 1)->like($where, 'match', 'both')->orderBy('status', 'desc')->get()->getResultObject();
+        $data['result']  = $this->db->table('users')->where('role_id', 1)->like($where, 'match', 'both')->orderBy('status', 'desc')->get()->getResultObject();
 
         // $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name, R.user_groups AS role_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('award_type AT', 'AT.id = U.award_type', 'left')->join('assessment_group AG', 'AG.id = U.assessment_group', 'left')->where('U.member_type = 1 AND status_delete = 1')->join('role R', 'R.id = U.role_id', 'left')->orderBy('U.id', 'desc')->get()->getResultObject();
 
@@ -254,15 +254,15 @@ class Users extends BaseController
         // px($data['users']);
         $email_data = [
             '_header' => 'สถานะการอนุมัติการเข้าร่วมประกวด',
-            '_content' => 'คุณ ' . $data['users']->name . ' ' . $data['users']->surname . ' ได้รับการอนุมัติลงทะเบียนเข้าประกวดรางวัล'
+            '_content' => 'คุณ ' . $data['users']->name . ' ' . $data['users']->surname . ' ได้รับการอนุมัติลงทะเบียนเข้าประกวดรางวัล '
                 . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
-                . 'ดัวยอีเมล ' . $data['users']->email
+                . 'ด้วยอีเมล ' . $data['users']->email . ' '
                 . $text
         ];
         // px($email_data);
         $requestEmail = [
             'to' => $data['users']->email,
-            'subject' => 'สถานะสมาชิก',
+            'subject' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
             'message' => view('administrator/template_email', $email_data),
             // 'from' => $from,
             // 'cc' => [],

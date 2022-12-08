@@ -196,10 +196,60 @@
                 </div>
 
                 <div class="award-list txt-center">
-                    <button type="button" class="btn btn-main" 
-                    onclick="download_file(1)">
-                        <i class="bi bi-cloud-download"></i> Download File
-                    </button>
+                    <ul>
+                        <li>
+                            <div class="award-list-name">
+                                ประเภทแหล่งท่องเที่ยว<br>
+                                (Attraction)
+                            </div>
+                            <div class="award-list-section">
+                                <button type="button" class="btn btn-main" 
+                                onclick="window.open('<?=base_url('download/คุณสมบัติ_ประเภทแหล่งท่องเที่ยว.pdf')?>','_blank')">
+                                    <i class="bi bi-cloud-download"></i> Download File
+                                </button>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="award-list-name">
+                                ประเภทที่พักนักท่องเที่ยว<br>
+                                (Accommodation)
+                            </div>
+                            <div class="award-list-section">
+                                <button type="button" class="btn btn-main" 
+                                onclick="window.open('<?=base_url('download/คุณสมบัติ_ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>','_blank')">
+                                    <i class="bi bi-cloud-download"></i> Download File
+                                </button>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="award-list-name">
+                                ประเภทการท่องเที่ยวเชิงสุขภาพ<br>
+                                (Health and Wellness Tourism)
+                            </div>
+                            <div class="award-list-section">
+                                <button type="button" class="btn btn-main" 
+                                onclick="window.open('<?=base_url('download/คุณสมบัติ_ประเภทที่พัก.pdf')?>','_blank')">
+                                    <i class="bi bi-cloud-download"></i> Download File
+                                </button>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="award-list-name">
+                                ประเภทรายการนำเที่ยว<br>
+                                (Tour Program)
+                            </div>
+                            <div class="award-list-section">
+                                <button type="button" class="btn btn-main" 
+                                onclick="window.open('<?=base_url('download/คุณสมบัติ_ประเภทรายการนำเที่ยว.pdf')?>','_blank')">
+                                    <i class="bi bi-cloud-download"></i> Download File
+                                </button>
+                            </div>
+
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

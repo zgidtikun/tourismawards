@@ -68,6 +68,14 @@
     --bs-highlight-bg: #fff3cd;
 }
 
+input[type='checkbox'] {
+    -webkit-appearance: checkbox !important;
+}
+
+input[type="radio"] {
+    -webkit-appearance: radio !important;
+}
+
 a.btn-regis.disabled {
     pointer-events: none;
 }

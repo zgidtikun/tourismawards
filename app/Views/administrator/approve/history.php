@@ -140,10 +140,10 @@
       searching: false,
       columnDefs: [{
         responsivePriority: 1,
-        targets: 1
+        targets: 5
       }, {
         responsivePriority: 10001,
-        targets: 5
+        targets: 6
       }, {
         responsivePriority: 10001,
         targets: 3

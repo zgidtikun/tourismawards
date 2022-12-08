@@ -73,6 +73,7 @@ if (!empty($result)) {
   $i = 4;
   foreach ($result as $key => $value) {
 
+    $status = '';
     if ($value->status == 1) {
       $status = 'รอตรวจสอบ';
     } else if ($value->status == 2) {
@@ -83,15 +84,15 @@ if (!empty($result)) {
       $status = 'ไม่อนุมัติ';
     }
     $address = [
-        // 'address'           => '',
-        'address_number'    => $value->address_no,
-        // 'address_soi'       => '',
-        'address_road'      => $value->address_road,
-        // 'address_moo'       => '',
-        'subdistrict'       => $value->address_sub_district,
-        'district'          => $value->address_district,
-        'province'          => $value->address_province,
-        'postcode'          => $value->address_zipcode,
+      // 'address'           => '',
+      'address_number'    => $value->address_no,
+      // 'address_soi'       => '',
+      'address_road'      => $value->address_road,
+      // 'address_moo'       => '',
+      'subdistrict'       => $value->address_sub_district,
+      'district'          => $value->address_district,
+      'province'          => $value->address_province,
+      'postcode'          => $value->address_zipcode,
     ];
 
     $data = [
