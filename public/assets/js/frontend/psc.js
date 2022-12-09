@@ -29,7 +29,7 @@ const psc = {
             psc.appId = response.app_id;    
             psc.questions = response.data;
             psc.stage = stage;
-            
+            console.log(psc.status)
             if(!psc.expired){
                 switch(psc.status){
                     case 'draft':   

@@ -168,14 +168,13 @@ class AnswerController extends BaseController
 
         $estimate = $this->ans->select('status')
             ->where('reply_by',$id)
-            ->whereIn('status',[4,2])
+            ->where('status',4)
             ->countAllResults();
         
         if($draft > 0) return 'draft';
         elseif($reject > 0) return 'reject';
-        elseif($finish > 0) return 'finish';
-        elseif($estimate > 0) return 'estimate'; 
-        else return 'finish';
+        elseif($finish > 0 || $estimate > 0) return 'finish';
+        else return 'draft';
     }
 
     public function getAnswerByAjax($qid)
@@ -220,11 +219,10 @@ class AnswerController extends BaseController
                     $ins = $this->ans->insert($dtdb);
                     $insId = $this->ans->getInsertID();
                     break;
-                case 'update':
-                    $upd = $this->ans->update(
-                        $this->input->getVar('aid'),
-                        [ 'reply' => $this->input->getVar('reply') ] 
-                    );                    
+                case 'update':                    
+                    $this->ans->where('id',$this->input->getVar('aid'),)
+                        ->set([ 'reply' => $this->input->getVar('reply') ])
+                        ->update();                 
                     $insId = $this->input->getVar('aid');
                     break;
                 case 'finish':
@@ -240,9 +238,15 @@ class AnswerController extends BaseController
                                 'status' => 2,
                             ]);
                         } else {
-                            $this->ans->update($ans->aid, [ 'reply' => $ans->reply, 'status' => 2 ]);
+                            $this->ans->where('id',$ans->aid)
+                                ->set([ 'reply' => $ans->reply, 'status' => 2 ])
+                                ->update();
                         }
                     }
+
+                    $this->ans->where('reply_by', session()->get('id'))
+                        ->set([ 'status' => 2 ])
+                        ->update();
 
                     $cusstg = $this->usStg->where([
                         'user_id' => session()->get('id'), 
@@ -265,7 +269,7 @@ class AnswerController extends BaseController
                     }
 
                     set_multi_noti(
-                        get_receive_noti(session()->get('id')),
+                        get_receive_admin(),
                         (object) [
                             'bank' => 'frontend'
                         ],

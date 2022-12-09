@@ -212,7 +212,7 @@ const register = {
                 register.status = app.status;
                 register.formData.currentStep = app.current_step;
                 register.formData.step1.appType = app.application_type_id;
-
+                
                 if(!register.expired){
                     switch(Number(register.status)){
                         case 1: 

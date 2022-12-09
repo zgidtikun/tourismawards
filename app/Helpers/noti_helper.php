@@ -43,10 +43,23 @@ function get_receive_noti($id)
         ->select('admin_id_tourism, admin_id_supporting, admin_id_responsibility')
         ->first();
 
-    $tourism = json_decode($data->admin_id_tourism,true);
-    $support = json_decode($data->admin_id_supporting,true);
-    $respons = json_decode($data->admin_id_responsibility,true);
-    $result = array_unique(array_merge($tourism,$support,$respons));
+    $result = $tourism = $support = $respons = [];
+
+    if(!empty($data->admin_id_tourism)){
+        $tourism = json_decode($data->admin_id_tourism,true);
+        $result = array_unique(array_merge($result,$tourism));
+    }
+
+    if(!empty($data->admin_id_supporting)){
+        $support = json_decode($data->admin_id_supporting,true);
+        $result = array_unique(array_merge($result,$support));
+    }
+
+    if(!empty($data->admin_id_responsibility)){
+        $respons = json_decode($data->admin_id_responsibility,true);
+        $result = array_unique(array_merge($result,$respons));
+    }
+    
     $result = json_decode(json_encode($result),false);
     return $result;
 }
