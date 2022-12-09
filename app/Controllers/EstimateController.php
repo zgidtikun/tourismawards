@@ -251,10 +251,15 @@ class EstimateController extends BaseController
             $count_adm = $commit->where('application_form_id',$input->appId)
                 ->select('admin_count')->first();
 
-            $count_est = $this->estInd->where('application_id',$input->appId)
+            $where_est ='application_id = '.$input->appId;
+            if($input->stage == 1)
+                $where_est = ' AND score_pre NOT NULL';
+            else $where_est = ' AND score_onsite NOT NULL';
+
+            $count_est = $this->estInd->where($where_est)
                 ->countAllResults();
 
-            if($count_adm->admin_count >= $count_est){
+            if($count_est >= $count_adm->admin_count){
 
                 $existEstScr = $this->estScr->where('application_id',$input->appId)
                     ->countAllResults();
@@ -429,12 +434,28 @@ class EstimateController extends BaseController
 
         foreach($where_type as $type){
             $builder = $this->db->table('award_result ar')
-                ->join('application_form af','ar.application = af.id')
-                ->select()
+                ->join('application_form af','ar.application_id = af.id')
+                ->select(
+                    "IFNULL(af.attraction_name_th, af.attraction_name_en) place_name,
+                    af.address_province province, af.address_no, af.address_road, 
+                    af.address_sub_district, af.address_district, af.address_province, 
+                    af.address_zipcode, mobile, af.other_social web, af.facebook fb,
+                    af.google_map gps"
+                ,false)
                 ->where([
-                    
+                    'app_type_id' => $input->type,
+                    'app_type_sub_id' => $input->sub,
+                    'award_type' => $type,
                 ])
                 ->get();
+
+            foreach($builder->getResult() as $v){
+                if($type == 1) array_push($gold,$v);
+                else array_push($silver,$v);
+            }
         }
+
+        $result = ['gold' => $gold, 'silver' => $silver];
+        return $this->response->setJSON($result);
     }
 }

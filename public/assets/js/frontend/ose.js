@@ -138,9 +138,10 @@ const setFinish = () => {
     tscore = mscore = cscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
-
+    
     $.each(assign,(ak,av) => {
-        let index = ak+1;
+        
+        let index = av+1;
 
         if(av == 1){ 
             te = Number(dataset[index].group.score_onsite);
@@ -158,15 +159,15 @@ const setFinish = () => {
         $.each(dataset[index].question,(qk,qv) => {
             if(!empty(qv.score_onsite)){
                 if(av == 1){ 
-                    tescore += Number(qv.score_pre);
+                    tescore += Number(qv.score_onsite);
                     ttescore += Number(qv.onside_score);
                 }
                 else if(av == 2){ 
-                    sbscoe += Number(qv.score_pre);
+                    sbscoe += Number(qv.score_onsite);
                     tsbscoe += Number(qv.onside_score);
                 }
                 else{
-                    rsscore += Number(qv.score_pre);
+                    rsscore += Number(qv.score_onsite);
                     trsscore += Number(qv.onside_score);
                 }
             }
@@ -176,8 +177,8 @@ const setFinish = () => {
     const stescore = (tescore / ttescore).toFixed(2);
     const ssbscore = (sbscoe / tsbscoe).toFixed(2);
     const srsscore = (rsscore / trsscore).toFixed(2);
-    const totalScore = tescore + tescore + tescore;
-    const totalMax = ttescore + ttescore + ttescore; 
+    const totalScore = tescore + sbscoe + rsscore;
+    const totalMax = ttescore + tsbscoe + trsscore; 
     const sscore = (totalScore * tscore / totalMax).toFixed(2);
     
     alert.confirm({

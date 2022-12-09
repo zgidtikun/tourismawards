@@ -98,6 +98,8 @@ const register = {
         currentStep: null,
         step1: {}, step2: {}, step3: {}, step4: {}, step5: {},
     },
+    passYear: true,
+    passYearCount: '',
     init: function(expired){        
         loading('show');
         this.expired = expired == 'Expired' ? true : false;
@@ -506,7 +508,7 @@ const register = {
         return map;
     },
     validate: function(){
-        let bool = true;        
+        let bool_input = true;        
         
         ;[1,2,3,4,5].forEach(index => {
             let mapFData = this.getMapField('step',index),
@@ -516,7 +518,7 @@ const register = {
                 if(map.require){    
                     if(empty(formData[map.variant])){
                         $(map.input).addClass('is-invalid');
-                        bool = false;
+                        bool_input = false;
                     } else {
                         $(map.input).removeClass('is-invalid');
                     }
@@ -524,11 +526,25 @@ const register = {
             });
         });
 
-        return bool;
+        return bool_input;
 
     },
     saveApp: function(){
         if(register.validate()){
+
+            if(!register.passYear){
+                let title_a = 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+register.passYearCount+' ปีขึ้นไป';
+                alert.show('error',title_a,'');
+                return;
+            }
+
+            if(!checkRequireFiles('awards/application')){                
+                let title_c = 'ท่านยังแนบเอสารไม่ครบถ้วน';
+                let txt_c = 'ท่านยังแนบเอสารไม่ครบถ้วน กรุณาตรวจสอบการแนบไฟล์ของท่าน'
+                alert.show('error',title_c,txt_c);
+                return;
+            }
+
             let setting = {
                 icon: 'info',
                 title: 'ยืนยันการส่งใบสมัคร',
@@ -679,21 +695,19 @@ $('#step5-openYear').on('change', function(){
         let totalYear = calcDate(from,to);
         
         register.change = true;
+        register.passYear = true;
         register.formData.step5.openYear = $(this).val();
         register.formData.step5.totalYear = totalYear.result;
         $('#step5-totalYear').val(totalYear.result);
 
         let app = register.formData.step1.appType;
         let confYear = register.appType.main.find(el => el.id = app);
+        register.passYearCount = confYear.fixe_year_open;
         
         if(Number(totalYear.total_year) < Number(confYear.fixe_year_open)){
-            Swal.fire({
-                icon: 'error',
-                title: 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                showDenyButton: false,
-            });
+            register.passYear = false;
+            let title = 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป';
+            alert.show('error',title,'');
         }
     } else { $('#step5-totalYear').val(''); }
 });

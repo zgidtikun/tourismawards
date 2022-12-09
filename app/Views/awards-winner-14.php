@@ -87,7 +87,7 @@
 
     const setTabs = (tab) => {
         const htmltab = $(tab).html();
-        const typeId = $('#banner-box').attr('data-id');
+        const typeId = $('.banner-box').attr('data-id');
         const subId = $(tab).attr('data-id');
 
         let temp = htmltab.split('<br>');
@@ -97,9 +97,39 @@
         $('.btn-selectsec').removeClass('active');
         $(tab).addClass('active');
         $('.main-title-txt').html(title);        
-
+        
         setListDefault().then((rs) => {
+            <?php if($duedate) : ?>
+            $.ajax({
+                type: 'post',
+                url: '<?=base_url('get-awards-winner')?>',
+                async: false,
+                data: {
+                    type: typeId,
+                    sub: subId
+                },
+                dataType: 'json',
+                success: res => {
+                    let content_g = '',
+                        content_s = '';
+                    
+                    if(res.gold.length > 0){
+                        $.each(res.gold,(gk, gv) => {
+                            content_g += setListContent(gv);
+                        });
+                    }
+                    
+                    if(res.silver.length > 0){
+                        $.each(res.silver,(sk, sv) => {
+                            content_s += setListContent(sv);
+                        });
+                    }
 
+                    lga.html(content_g);
+                    lsa.html(content_s);
+                }
+            });
+            <?php endif; ?>
         });
     };
 

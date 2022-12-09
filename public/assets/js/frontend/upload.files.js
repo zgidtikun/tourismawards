@@ -656,13 +656,14 @@ const referance = [{
     },
     {
         input: '#step5-landOwner',
-        pointer: ['step5', 'landOwner'],
+        pointer: ['step5', 'landOwner', 1],
         btn: '#step5-landOwner-btn',
         btnrm: '#step5-landOwner-remove',
         show: '#step5-landOwner-list',
         label: '#step5-landOwner-label',
         api: '/inner-api/app/upload',
         position: 'landOwnerFiles',
+        require: true,
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,
@@ -670,13 +671,14 @@ const referance = [{
     },
     {
         input: '#step5-businessCert',
-        pointer: ['step5', 'businessCert'],
+        pointer: ['step5', 'businessCert', 1],
         btn: '#step5-businessCert-btn',
         btnrm: '#step5-businessCert-remove',
         show: '#step5-businessCert-list',
         label: '#step5-businessCert-label',
         api: '/inner-api/app/upload',
         position: 'businessCertFiles',
+        require: true,
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,
@@ -698,13 +700,14 @@ const referance = [{
     },
     {
         input: '#step5-bussLicenseFiles',
-        pointer: ['step5', 'bussLicenseFiles'],
+        pointer: ['step5', 'bussLicenseFiles', 2],
         btn: '#step5-bussLicenseFiles-btn',
         btnrm: '#step5-bussLicenseFiles-remove',
         show: '#step5-bussLicenseFiles-list',
         label: '#step5-bussLicenseFiles-label',
         api: '/inner-api/app/upload',
         position: 'bussLicenseFiles',
+        require: true,
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,
@@ -712,13 +715,14 @@ const referance = [{
     },
     {
         input: '#step5-EIAreport',
-        pointer: ['step5', 'EIAreport'],
+        pointer: ['step5', 'EIAreport', 2],
         btn: '#step5-EIAreport-btn',
         btnrm: '#step5-EIAreport-remove',
         show: '#step5-EIAreport-list',
         label: '#step5-EIAreport-label',
         api: '/inner-api/app/upload',
         position: 'EIAreportFiles',
+        require: true,
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,
@@ -740,13 +744,14 @@ const referance = [{
     },
     {
         input: '#step5-spaCert',
-        pointer: ['step5', 'spaCert'],
+        pointer: ['step5', 'spaCert',3],
         btn: '#step5-spaCert-btn',
         btnrm: '#step5-spaCert-remove',
         show: '#step5-spaCert-list',
         label: '#step5-spaCert-label',
         api: '/inner-api/app/upload',
         position: 'spaCertFiles',
+        require: true,
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,
@@ -768,13 +773,14 @@ const referance = [{
     },
     {
         input: '#step5-wellnessCert',
-        pointer: ['step5', 'wellnessCert'],
+        pointer: ['step5', 'wellnessCert',3,12],
         btn: '#step5-wellnessCert-btn',
         btnrm: '#step5-wellnessCert-remove',
         show: '#step5-wellnessCert-list',
         label: '#step5-wellnessCert-label',
         api: '/inner-api/app/upload',
         position: 'wellnessCertFiles',
+        require: true,
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,
@@ -782,13 +788,14 @@ const referance = [{
     },
     {
         input: '#step5-spaManger',
-        pointer: ['step5', 'spaManger'],
+        pointer: ['step5', 'spaManger',3,11],
         btn: '#step5-spaManger-btn',
         btnrm: '#step5-spaManger-remove',
         show: '#step5-spaManger-list',
         label: '#step5-spaManger-label',
         api: '/inner-api/app/upload',
         position: 'spaMangerFiles',
+        require: true,
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,
@@ -810,13 +817,14 @@ const referance = [{
     },
     {
         input: '#step5-outlander',
-        pointer: ['step5', 'outlander'],
+        pointer: ['step5', 'outlander',3],
         btn: '#step5-outlander-btn',
         btnrm: '#step5-outlander-remove',
         show: '#step5-outlander-list',
         label: '#step5-outlander-label',
         api: '/inner-api/app/upload',
         position: 'outlanderFiles',
+        require: true,
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,
@@ -824,13 +832,14 @@ const referance = [{
     },
     {
         input: '#step5-guideCert',
-        pointer: ['step5', 'guideCert'],
+        pointer: ['step5', 'guideCert',4],
         btn: '#step5-guideCert-btn',
         btnrm: '#step5-guideCert-remove',
         show: '#step5-guideCert-list',
         label: '#step5-guideCert-label',
         api: '/inner-api/app/upload',
         position: 'guideCertFiles',
+        require: true,
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,
@@ -851,18 +860,20 @@ const referance = [{
         maxSize: 15
     },
     {
-        input: '#step5-guideOldCert', pointer: ['step5','guideOldCert'],
+        input: '#step5-guideOldCert', pointer: ['step5','guideOldCert',4],
         btn: '#step5-guideOldCert-btn', btnrm: '#step5-guideOldCert-remove',
         show: '#step5-guideOldCert-list', label: '#step5-guideOldCert-label',
         api: '/inner-api/app/upload', position: 'guideOldCertFiles',
+        require: true,
         path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
     {
-        input: '#step5-titleDeedT4', pointer: ['step5','titleDeedT4'],
+        input: '#step5-titleDeedT4', pointer: ['step5','titleDeedT4',4],
         btn: '#step5-titleDeedT4-btn', btnrm: '#step5-titleDeedT4-remove',
         show: '#step5-titleDeedT4-list', label: '#step5-titleDeedT4-label',
         api: '/inner-api/app/upload', position: 'gtitleDeedT4Files',
+        require: true,
         path: 'paper', app: 'awards/application',
         maxUpload: 5, maxSize: 15
     },
@@ -962,3 +973,32 @@ const referance = [{
         maxSize: 15
     },
 ];
+
+const checkRequireFiles = (app) => {
+    let check = true;
+
+    $.each(referance,(rk,rv) => {
+        if(app == rv.app){
+            if(!empty(rv.require) && rv.require){
+                if(!empty(rv.pointer[3])){
+                    if(
+                        Number(register.appType.main) == rv.pointer[3]
+                        && Number(register.appType.sub) == rv.pointer[4]
+                    ){
+                        if(register.count[rv.pointer[1]] <= 0){
+                            check = false;
+                        }
+                    }
+                } else {
+                    if(Number(register.appType.main) == rv.pointer[3]){
+                        if(register.count[rv.pointer[1]] <= 0){
+                            check = false;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    return check;
+}

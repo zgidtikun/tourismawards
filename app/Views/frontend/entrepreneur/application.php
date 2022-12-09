@@ -545,7 +545,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                 <span class="fs-18 fw-semibold">
                                     หลักฐานการถือครองที่ดินที่กฎหมายรับรอง สัญญาเช่า หรือหนังสือยินยอมให้ใช้สถานที่
-                                    <!-- <span class="required">*</span> -->
+                                    <span class="required">*</span>
                                 </span>
                                 <div class="card" style="border: 1px solid #E5E6ED;">
                                     <div class="card-body selecter-file">
@@ -584,7 +584,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                 <span class="fs-18 fw-semibold" id="step5-file1-title">
                                     สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน
-                                    <!-- <span class="required">*</span> -->
+                                    <span class="required">*</span>
                                 </span>
                                 <div class="card" style="border: 1px solid #E5E6ED;">
                                     <div class="card-body selecter-file">
@@ -665,7 +665,7 @@
                         <div class="regis-form-data-col1">
                             <h4>
                                 เลขที่ใบอนุญาตประกอบธุรกิจ
-                                <!-- <span class="required">*</span> -->
+                                <span class="required">*</span>
                             </h4>
                             <input type="text" class="form-control" id="step5-t2-bussLicense">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
@@ -678,7 +678,7 @@
                                     <span class="fs-18 fw-semibold">
                                         ใบอนุญาตประกอบการธุรกิจโรงแรม (ตาม พ.ร.บ. โรงแรม ปี พ.ศ. 2547) เป็นระยะเวลาไม่ต่ำกว่า 1 ปี 
                                         นับถึงวันปิดรับสมัคร
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -718,7 +718,7 @@
                                     <div class="regis-form-data-col1">
                                         <h4>
                                             ต้องมีชื่อโรงแรมและจำนวนห้องพักตรงกับที่ระบุในใบอนุญาต 
-                                            <!-- <span class="required">*</span> -->
+                                            <span class="required">*</span>
                                         </h4>
                                         <p><input type="radio" name="step5-t2-bussCkRoom" id="step5-t2-bussCkRoom-1" value="1" > ตรง</p>
                                         <p><input type="radio" name="step5-t2-bussCkRoom" id="step5-t2-bussCkRoom-0" value="0"> ไม่ตรง</p>
@@ -729,7 +729,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">สำเนาหนังสือให้ความเห็นชอบต่อรายงานการประเมินผลกระทบสิ่งแวดล้อม (EIA) ในกรณีที่มีจำนวนห้องพักตั้งแต่ 80 ห้องขึ้นไปหรือมีพื้นที่ใช้สอยตั้งแต่ 4,000 ตารางเมตรขึ้นไป 
                                         หรือสำเนาหนังสือให้ความเห็นชอบต่อรายงานการประเมินผลกระทบสิ่งแวดล้อมเบื้องต้น (IEE) ในกรณีที่มีจำนวนห้องพักหรือพื้นที่ใช้สอยต่ำกว่าและอยู่ในพื้นที่ที่กฎหมายกำหนด
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -769,7 +769,7 @@
                                     <div class="regis-form-data-col1">
                                         <h4>
                                             กรณีมีส่วนต่อขยายของอาคารจะต้องแสดงรายงานการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน 
-                                            <!-- <span class="required">*</span> -->
+                                            <span class="required">*</span>
                                         </h4>
                                         <p><input type="radio" name="step5-t2-buildExt" id="step5-t2-buildExt-1" value="1"> มี (กรณีที่เลือก ต้องแนบเอกสารการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน)</p>
                                         <p><input type="radio" name="step5-t2-buildExt" id="step5-t2-buildExt-0" value="0"> ไม่มี</p>
@@ -824,7 +824,7 @@
                         <div class="regis-form-data-col1">
                             <h4>
                                 เลขที่ใบอนุญาตประกอบธุรกิจ
-                                <!-- <span class="required">*</span> -->
+                                <span class="required">*</span>
                             </h4>
                             <input type="text" class="form-control" id="step5-t3-bussLicense">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
@@ -851,7 +851,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">มีใบอนุญาตประกอบกิจการสถานประกอบการสปาเพื่อสุขภาพจากกระทรวงสาธารณสุขมาแล้วไม่น้อยกว่า 1 ปี นับจนถึงวันปิดรับสมัคร ในกรณีที่ใบรับรองมาตรฐานสปาเพื่อสุขภาพหมดอายุหรืออยู่ระหว่างการยื่นเอกสารขอต่ออายุ 
                                         ให้แสดงหลักฐานการยื่นขอต่ออายุจากกระทรวงสาธารณสุขหรือสำนักงานสาธารณสุขจังหวัดที่สถานประกอบการนั้นตั้งอยู่
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -928,7 +928,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">
                                         มีใบอนุญาตประกอบกิจการสถานพยาบาล หรือใบอนุญาตให้ดำเนินการสถานพยาบาล (เฉพาะสาขา Wellness Spa)
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -967,7 +967,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">
                                         สำเนาใบอนุญาตเป็นผู้ดำเนินการสปา (Spa Manager)
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -1006,7 +1006,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">
                                         สำเนาโฉนดที่ดิน/เอกสารสิทธิ์ที่ถูกต้องตามกฎหมาย หรือมีเอกสารที่ได้รับอนุญาตให้ใช้พื้นที่จากทางราชการหรือสัญญาเช่า
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -1083,7 +1083,7 @@
                                     <span class="fs-18 fw-semibold">
                                         จะต้องเป็นสถานประกอบการที่ไม่มีการจ้างแรงงานที่ผิดกฎหมาย หากมี
                                         การจ้างแรงงานต่างด้าวจะต้องแสดงหลักฐานการจ้างแรงงานที่ถูกต้องตามกฎหมายกำหนด
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div></div>
                                     <div class="form-check form-check-inline">
@@ -1148,7 +1148,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">   
                                     <span class="fs-18 fw-semibold">
                                         ต้องมีใบอนุญาตประกอบธุรกิจนำเที่ยวไม่น้อยกว่า 2 ปี จนถึงวันปิดรับสมัคร
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -1188,7 +1188,7 @@
                                     <span class="fs-18 fw-semibold">
                                         มีใบอนุญาตประกอบธุรกิจนำเที่ยวจากกรมการท่องเที่ยว ในกรณีที่ใบอนุญาตหมดอายุ หรืออยู่ระหว่างการยื่นเอกสารขอต่ออายุ 
                                         ให้แสดงหลักฐานการยื่นขอต่ออายุจากกรมการท่องเที่ยว หรือสำนักงานทะเบียนจังหวัดที่สถานประกอบการนั้นตั้งอยู่
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -1228,7 +1228,7 @@
                                     <span class="fs-18 fw-semibold">
                                         หลักฐานการถือครองที่ดินที่กฎหมายรับรอง สัญญาเช่า หรือหนังสือยินยอม
                                         ให้ใช้สถานที่ หรือมีเอกสารที่ได้รับอนุญาตให้ใช้พื้นที่จากทางราชการ
-                                        <!-- <span class="required">*</span> -->
+                                        <span class="required">*</span>
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -1337,13 +1337,14 @@
     // $('.bfd-dropfield-inner').click(function() {
     //     $('#step1-images')[0].click();
     // });
-
+    
     $.datetimepicker.setLocale('th');
 
     $("#step5-openYear").datetimepicker({
         timepicker:false,
         format:'Y/m/d',   
         lang:'th',
+        isBuddhist: true,
         onSelectDate:function(dp,$input){
             var yearT=new Date(dp).getFullYear()-0;  
             var yearTH=yearT+543;

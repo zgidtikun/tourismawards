@@ -471,7 +471,7 @@ class App extends BaseConfig
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
     public $APPForm_expired = '2023-02-28';
     public $Pre_expired = '2023-03-05';
-    public $announcement_date = '2022-01-01';
+    public $announcement_date = '2024-01-01';
     public $JudgingCriteriaPre = 25;
     public $JudgingCriteriaOnst = 75;
     public $JudgingCriteriaScore;

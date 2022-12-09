@@ -53,8 +53,8 @@ const init = () =>{
     api({ method: 'get', url: '/inner-api/boards/estimate/'+appid })
     .then((rs) => {
         tycoon = rs.tycoon;     
-        dataset = rs.data;        
-        console.log(dataset)
+        dataset = rs.data;       
+        
         let tmp = tycoon.t_name.split('(');
         tycoon.t_name = tmp[0].trim();
 
@@ -120,8 +120,8 @@ const setFinish = () => {
     tscore = mscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
-
-    $.each(assign,(ak,av) => {
+    
+    $.each(assign,(ak,av) => {        
         let index = av-1;
 
         if(av == 1){ 
@@ -158,9 +158,9 @@ const setFinish = () => {
     const stescore = (tescore / ttescore).toFixed(2);
     const ssbscore = (sbscoe / tsbscoe).toFixed(2);
     const srsscore = (rsscore / trsscore).toFixed(2);
-    const totalScore = tescore + tescore + tescore;
-    const totalMax = ttescore + ttescore + ttescore; 
-    const sscore = (totalScore * tscore / totalMax).toFixed(2);
+    const totalScore = tescore + sbscoe + rsscore;
+    const totalMax = ttescore + tsbscoe + trsscore; 
+    const sscore = ((totalScore * tscore) / totalMax).toFixed(2);
 
     alert.confirm({
         mode: 'confirm-main',

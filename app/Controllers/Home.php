@@ -293,7 +293,7 @@ class Home extends BaseController
             'tid' => $tid,
             'main' => $main,
             'sub' => $sub,
-            'duedate' => $current >= $duedate ? 'ture' : 'false',
+            'duedate' => $current >= $duedate,
             'view' => 'awards-winner-14'
         ];
 
