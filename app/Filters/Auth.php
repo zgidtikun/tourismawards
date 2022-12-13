@@ -23,7 +23,7 @@ class Auth implements FilterInterface
 
     public function before(RequestInterface $request, $arguments = null)
     {       
-        if(!session()->has('isLoggedIn') || !session()->get('isLoggedIn')){
+        if(empty(session()->has('isLoggedIn')) || !session()->get('isLoggedIn')){
             return redirect()->to($this->getUrl($arguments));
         } else {
             if(!empty($arguments)){
@@ -50,12 +50,12 @@ class Auth implements FilterInterface
         if(!empty($arg)){
             if(is_array($arg)){
                 if(in_array($arg[0],array('frontend','1','3')))
-                    return base_url('login/forntend');
+                    return base_url('login');
                 elseif(in_array($arg[0],array('backend','2','4')))
                     return base_url('administrator/login');
-                else return base_url('login');
+                else return base_url('home');
             } else return base_url($arg);
-        } else return base_url('login');
+        } else return base_url('home');
     }
     
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)

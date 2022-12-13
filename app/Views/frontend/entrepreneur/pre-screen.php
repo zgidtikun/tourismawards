@@ -176,16 +176,19 @@
                                 </div>
                             </div>
                             <span class="text-muted">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
-                            <textarea class="form-control" id="reply" onkeyup="countChar(this)" maxlength="1000" rows="12"></textarea>                                                     
+                            <textarea class="form-control" id="reply" 
+                            onkeyup="countChar($('#reply'))"
+                            maxlength="1000" rows="12"></textarea>                                                     
                             <div id="remark" class="alert alert-info fs-18 mt-3" role="alert">                            
                             </div>
                             <script>
-                                function countChar(val) {
-                                    var len = val.value.length;
+                                function countChar(inp) {
+                                    var len = inp.val().length;
                                     if (len >= 1000) {
-                                        val.value = val.value.substring(0, 1000);
+                                        $('#charNum').text('0');
+                                        inp.val(inp.val().substring(0, 1000));
                                     } else {
-                                        $('#charNum').text(1000 - len);
+                                        $('#charNum').text((1000 - len).toLocaleString("en"));
                                     }
                                 };
                             </script>
@@ -244,28 +247,47 @@
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6">
                                 <div class="col-12">
                                     <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-header text-center" style="border-bottom: 0;">
+                                        <div class="card-header text-center" style="background-color: rgba(0, 0, 0, 0.03);">
                                             <span class="fs-18 fw-semibold">แนบไฟล์</span>
                                         </div>
                                         <div class="card-body selecter-file">
-                                            <div class="bs-row mb-2">
+                                            <div class="bs-row">
                                                 <div class="col-12">
-                                                    <button class="btn btn-file" id="file-btn">
+                                                    <!-- <button class="btn btn-file" id="file-btn">
                                                         <span id="file-label">Upload Files</span>
                                                         <input type="file" id="file"
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'paper')"/>
-                                                    </button>                                                                    
+                                                    </button>                                                                     -->
                                                     <button class="btn btn-action" id="file-remove"
                                                     onclick="removeFile('#file',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
                                                         Remove All
                                                     </button>
                                                 </div>
+                                                <div class="col-12"> 
+                                                    <div class='bfd-dropfield'> 
+                                                        <div class='bfd-dropfield-inner' id="file-drop">
+                                                            <div class="mt-4 mb-4" id="file-input">
+                                                                <span class="fw-semibold">Drop File Here</span><br>
+                                                                <button class="btn btn-file" style="font-size: 16px;" id="file-btn">
+                                                                    <span id="file-label">Upload Files</span>
+                                                                    <input type="file" id="file"
+                                                                    accept=".pdf" multiple
+                                                                    onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'paper')"/>
+                                                                </button>   
+                                                            </div>
+                                                            <div class="mt-4 mb-4 hide" id="file-progress">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bs-row mb-2">
+                                                <span class="text-muted" style="font-size: 14px;">
+                                                    จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์
+                                                </span>
                                             </div>
                                             <div class="bs-row" id="file-list">
-                                            </div>
-                                            <div class="bs-row">
-                                                <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
@@ -304,6 +326,14 @@
         </div>
     </div>
 </div>
+
+<div id="images-modal" class="images-modal" onclick="this.style.display='none'">
+    <div class="images-modal-content">
+        <span class="images-close">&times;</span>
+        <img id="img-modal" class="w-100">
+    </div>
+</div>
+
 <!-- <div class="loading" id="loading-page"></div> -->
 
 <?php $app = new \Config\App(); ?>
@@ -325,4 +355,20 @@
     // $('.bfd-dropfield-inner').click(function() {
     //     $('#file')[0].click();
     // });
+
+    const zoomImages = (el) => {
+        Swal.fire({
+            imageUrl: el.src,
+            width: 800,
+            height: 800,
+            confirmButtonColor: '#DD3342',
+            confirmButtonText: '<i class="fas fa-times"></i> ปิด',
+            showCloseButton: true,
+            customClass: {
+                confirmButton: 'btn btn-danger',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        });
+    }
 </script>

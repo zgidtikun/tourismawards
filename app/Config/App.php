@@ -475,7 +475,7 @@ class App extends BaseConfig
     public $JudgingCriteriaPre = 25;
     public $JudgingCriteriaOnst = 75;
     public $JudgingCriteriaScore;
-    public $script_v = 1;
+    public $script_v = 199;
 
     public function __construct()
     {

@@ -40,35 +40,42 @@ class RegisterController extends BaseController
         if($method !== 'get'){
 
             if($this->recapcha){
-                $checkReCapcha = $this->checkCaptcha($data->recapcha_token);            
-            } else $checkReCapcha = (object) array('result' => true);
-            
-            if($checkReCapcha->result){
-                $valid = $this->validation->run((array)$data,'signup');
-                if($valid){  
-                    helper('verify');
-                    $verify_code = genVerifyCode();
+                $checkReCapcha = $this->checkCaptcha($data->recapcha_token);  
 
-                    $instData = array(
-                        'prefix' => $data->prefix,
-                        'name' => $data->name,
-                        'surname' => $data->surname,
-                        'member_type' => $data->role,
-                        'mobile' => $data->telephone,
-                        'email' => $data->email,
-                        'username' => $data->email,
-                        'password' => password_hash($data->password,PASSWORD_DEFAULT),
-                        'role_id' => $data->role,
-                        'verify_code' => $verify_code,
-                        'verify_status' => 0,
-                        'status' => 0
-                    );
+                if(!$checkReCapcha->result){
+                    $error['recapcha'] = $checkReCapcha->message;    
+                    $status = false;
+                }      
+            }
+            
+            $valid = $this->validation->run((array)$data,'signup');
+
+            if($valid){  
+                helper('verify');
+                $verify_code = genVerifyCode();
+
+                $instData = array(
+                    'prefix' => $data->prefix,
+                    'name' => $data->name,
+                    'surname' => $data->surname,
+                    'member_type' => $data->role,
+                    'mobile' => $data->telephone,
+                    'email' => $data->email,
+                    'username' => $data->email,
+                    'password' => password_hash($data->password,PASSWORD_DEFAULT),
+                    'role_id' => $data->role,
+                    'verify_code' => $verify_code,
+                    'verify_status' => 0,
+                    'status' => 0
+                );
+
+                if($status){
 
                     $result = $this->user->insertUser($instData);
                     
                     if(!$result->result){
                         $status = false;
-                        array_push($error,$result->error);
+                        $error['insert'] = $result->error;
                     } else {
                         $expire = date('YmdHis',strtotime('+3 days'));
                         $data->user_id = $result->id;
@@ -77,16 +84,15 @@ class RegisterController extends BaseController
                         send_email_frontend($data,'register');
                         $status = true;
                     }
-                } else {
-                    $status = false;
-                    foreach($data as $key=>$value){
-                        if(!empty($this->validation->getError($key)))
-                            array_push($error,$this->validation->getError($key));
-                    }
+
                 }
             } else {
                 $status = false;
-                array_push($error,$checkReCapcha->message);
+                foreach($data as $key=>$value){
+                    if(!empty($this->validation->getError($key))){
+                        $error[$key] = $this->validation->getError($key);
+                    }
+                }
             }
         }
 
@@ -97,10 +103,11 @@ class RegisterController extends BaseController
             '_signup' => (object) array(
                 'method' => $method,
                 'status' => $status,
-                'error' => $error,
+                'error' => (object) $error,
                 'data' => $data
             )
         ];
+
         return view('template-frontend',$data);
     }
 

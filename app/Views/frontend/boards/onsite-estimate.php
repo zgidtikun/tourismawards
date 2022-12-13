@@ -212,14 +212,16 @@
                             <div class="regis-form-data-col1">
                                 <span class="fw-semibold">ความคิดเห็นของกรรมการ</span>
                                 <span class="text-muted">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
-                                <textarea class="form-control" rows="6" id="comment" onkeyup="countChar(this)"></textarea>
+                                <textarea class="form-control" rows="6" id="comment" 
+                                onkeyup="countCha($('#comment'))"></textarea>
                                 <script>
-                                    function countChar(val) {
-                                        var len = val.value.length;
+                                    function countChar(inp) {
+                                        var len = inp.val().length;
                                         if (len >= 1000) {
-                                            val.value = val.value.substring(0, 1000);
+                                            $('#charNum').text('0');
+                                            inp.val(inp.val().substring(0, 1000));
                                         } else {
-                                            $('#charNum').text(1000 - len);
+                                            $('#charNum').text((1000 - len).toLocaleString("en"));
                                         }
                                     };
                                 </script>

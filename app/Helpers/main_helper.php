@@ -99,10 +99,10 @@ function countNotification($type)
         $application_form = $db->table('application_form')->where('status', 2)->where($where)->get()->getResultObject();
         return count($application_form);
     } else if ($type == 2) { // แบบประเมินขั้นต้น (Prescreen)
-        $application_form = $db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id, C.assessment_round')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id AND C.assessment_round = 1', 'left')->where('C.application_form_id', NULL)->where('US.stage', 1)->where('AP.status', 3)->where('US.status', 1)->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
+        $application_form = $db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id, C.assessment_round')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id AND C.assessment_round = 1', 'left')->where('C.application_form_id', NULL)->where('US.stage', 1)->where('AP.status', 3)->where('US.status = 1 OR US.status = 4 OR US.status = 5')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
         return count($application_form);
     } else if ($type == 3) { // เพิ่มกรรมการรอบลงพื้นที่
-        $application_form = $db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id, C.assessment_round')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id AND C.assessment_round = 2', 'left')->where('C.application_form_id', NULL)->where('US.stage', 2)->where('AP.status', 3)->where('US.status', 1)->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
+        $application_form = $db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id, C.assessment_round')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id AND C.assessment_round = 2', 'left')->where('C.application_form_id', NULL)->where('US.stage', 2)->where('AP.status', 3)->where('US.status = 1 OR US.status = 4 OR US.status = 5')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
         return count($application_form);
     }
     return 0;
@@ -394,6 +394,7 @@ function mainAddress($addressUse)
     ];
 
     $address = array_merge($addressDefault, $addressUse);
+    $addr = [];
     if (!empty($address['address'])) {
         $addr[] = trim($address['address']);
     }
@@ -414,11 +415,11 @@ function mainAddress($addressUse)
         $addr[] = 'หมู่ ' . trim(str_replace('หมู่', ' ', $address['address_moo']));
     }
 
-    if ($address['province'] == 'กรุงเทพมหานคร' || strpos($address['province'], 'กรุงเทพ') || strpos(($address['province']), 'กทม')) {
+    if (!empty($address['province']) && ($address['province'] == 'กรุงเทพมหานคร' || strpos($address['province'], 'กรุงเทพ') || strpos(($address['province']), 'กทม'))) {
         $addr[] = 'แขวง' . trim(str_replace('แขวง', ' ', $address['subdistrict']));
         $addr[] = 'เขต' . trim(str_replace('เขต', ' ', $address['district']));
         $addr[] = 'กรุงเทพมหานคร';
-    } else {
+    } else if (!empty($address['province'])) {
         $addr[] = 'ตำบล' . trim(str_replace('ตำบล', ' ', $address['subdistrict']));
         $addr[] = 'อำเภอ' . trim(str_replace('อำเภอ', ' ', $address['district']));
         $addr[] = 'จังหวัด' . trim(str_replace('จังหวัด', ' ', $address['province']));

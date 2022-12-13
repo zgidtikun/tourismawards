@@ -20,12 +20,11 @@
             <?= view('_header-menu') ?>
         </div>
 
-        <!--include banner-->
-        <div id="includedbanneruser" class="loginform">
-            <?= view('frontend/_banner') ?>
-        </div>
-
         <div class="mainsite loginform">
+            <!--include banner-->
+            <div id="includedbanneruser" class="loginform">
+                <?= view('frontend/_banner') ?>
+            </div>
             <?= view($view) ?>
         </div>
 

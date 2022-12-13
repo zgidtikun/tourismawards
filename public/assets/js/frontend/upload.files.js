@@ -384,7 +384,7 @@ const showFiles = {
                             + '<div class="bs-row">'
                                 + '<div class="col-12">'
                                     + '<span class="fs-file-name">' + setting.file_original + ' '
-                                    + '(' + setting.file_size + 'MB)</span>'
+                                    + '<br>(' + setting.file_size + 'MB)</span>'
                                     + '<a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">'
                                         + '<i class="bi bi-trash-fill"></i> ลบ'
                                     + '</a>'
@@ -509,14 +509,18 @@ const resetFileInput = (input) => {
 
 }
 
-let dropArea;
+let dropAreaImg, dropAreaFile;
 
 if ($('#step1-images-drop').length > 0) {
-    dropArea = document.getElementById('step1-images-drop');
+    dropAreaImg = document.getElementById('step1-images-drop');
 } else if ($('#images-drop').length > 0) {
-    dropArea = document.getElementById('images-drop');
+    dropAreaImg = document.getElementById('images-drop');
 } else if ($('#etm-images-drop').length > 0) {
-    dropArea = document.getElementById('etm-images-drop');
+    dropAreaImg = document.getElementById('etm-images-drop');
+}
+
+if ($('#file-drop').length > 0) {
+    dropAreaFile = document.getElementById('file-drop');
 }
 
 const preventDefaults = (e) => {
@@ -524,14 +528,14 @@ const preventDefaults = (e) => {
     e.stopPropagation();
 }
 
-const imagesDrop = (e) => {
+const imagesFileDrop = (e) => {
     let dt = e.dataTransfer,
         files = dt.files
     id = '#' + e.target.id;
-    handleDropImages(id, files);
+    handleDrop(id, files);
 }
 
-const handleDropImages = (id, files) => {
+const handleDrop = (id, files) => {
     let temp = [],
         check = true,
         error, appId, total, pointer, setting,
@@ -551,11 +555,17 @@ const handleDropImages = (id, files) => {
     }
 
     if (total > ref.maxUpload) {
-        alert.show('warning', 'ไม่สามารถอัพโหลดรูปได้', 'คุณสามารถอัพโหลดรูปได้ไม่เกิน ' + ref.maxUpload + ' ไฟล์เท่านั้น');
+        alert.show(
+            'warning', 
+            ref.pointer[1] == 'images' ?  'ไม่สามารถอัพโหลดรูปได้' : 'ไม่สามารถอัพโหลดเอกสารได้', 
+            'คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน ' + ref.maxUpload + ' ไฟล์เท่านั้น'
+        );
     }
 
+    const acceptType = ref.pointer[1] == 'images' ? accept.images : accept.paper;
+
     $.each([...files], function(key, file) {
-        if ($.inArray(file.type, accept.images) !== '1') {
+        if ($.inArray(file.type, acceptType) !== '1') {
             let mb = (file.size / (1024 * 1024)).toFixed(2);
 
             if (mb > ref.maxSize) {
@@ -573,10 +583,14 @@ const handleDropImages = (id, files) => {
 
     if (!check) {
         let error_title, error_text;
-        error_title = 'ไม่สามารถอัพโหลดรูปได้';
+        error_title = ref.pointer[1] == 'images' ?  'ไม่สามารถอัพโหลดรูปได้' : 'ไม่สามารถอัพโหลดเอกสารได้';
 
         if (error == 'outType') {
-            error_text = 'กรุณาเลือกเป็นไฟล์ .jpeg, .jpg, .png เท่านั้น';
+            error_text = (
+                'กรุณาเลือกเป็นไฟล์ '
+                + ref.pointer[1] == 'images' ? '.jpg, jpeg, png' : '.pdf'
+                + ' เท่านั้น'
+            );
         } else if (error == 'outSize') {
             error_text = 'กรุณาเลือกขนาดไฟล์ไม่เกิน ' + ref.maxSize + ' MiB.'
         }
@@ -596,11 +610,24 @@ const handleDropImages = (id, files) => {
 }
 
 ;
+
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dropArea.addEventListener(eventName, preventDefaults, false);
+    if(dropAreaImg !== undefined && dropAreaImg !== 'undefined'){
+        dropAreaImg.addEventListener(eventName, preventDefaults, false);
+    }
+
+    if(dropAreaFile !== undefined && dropAreaFile !== 'undefined'){
+        dropAreaFile.addEventListener(eventName, preventDefaults, false);
+    }
 });
 
-dropArea.addEventListener('drop', imagesDrop, false);
+if(dropAreaImg !== undefined && dropAreaImg !== 'undefined'){
+    dropAreaImg.addEventListener('drop', imagesFileDrop, false);
+}
+
+if(dropAreaFile !== undefined && dropAreaFile !== 'undefined'){
+    dropAreaFile.addEventListener('drop', imagesFileDrop, false);
+}
 
 const accept = {
     paper: ['application/pdf'],
@@ -917,6 +944,24 @@ const referance = [{
         btnrm: '#file-remove',
         show: '#file-list',
         label: '#file-label',
+        api: '/inner-api/answer/upload',
+        position: 'paper',
+        path: 'paper',
+        app: 'awards/pre-screen',
+        maxUpload: 5,
+        maxSize: 15
+    },
+    {
+        input: '#file',
+        area: '#file-input',
+        pointer: ['', 'paper'],
+        btn: '#file-btn',
+        btnrm: '#file-remove',
+        show: '#file-list',
+        label: {
+            input: '#file-input',
+            progress: '#file-progress'
+        },
         api: '/inner-api/answer/upload',
         position: 'paper',
         path: 'paper',

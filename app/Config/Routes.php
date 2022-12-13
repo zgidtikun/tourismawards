@@ -36,7 +36,6 @@ $routes->setAutoRoute(false);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('sendmail', 'SendMail::index');
-$routes->get('sendmail', 'SendMail::index');
 $routes->get('/', 'Home::index', ['as' => 'Home']);
 $routes->get('home', 'Home::index');
 $routes->get('about-us', 'Home::aboutus');
@@ -283,8 +282,9 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     // Award (เฉพาะแอดมินที่เข้าได้)
     $routes->group('Award', static function ($routes) {
         $routes->get('', 'Award::index', ['filter' => 'auth:4']);
-        $routes->get('register', 'Award::register', ['filter' => 'api:4']);
-        $routes->get('export/(:any)', 'Award::export/$1', ['filter' => 'auth:4']);
+        $routes->get('best', 'Award::index', ['filter' => 'auth:4']);
+        $routes->get('outstanding', 'Award::index', ['filter' => 'auth:4']);
+        $routes->get('certificate', 'Award::index', ['filter' => 'auth:4']);
     });
 
     // MarkTest is Controller for Test Only
@@ -300,11 +300,13 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
 
     // ยืนยันตัวตน Backend
     $routes->post('VerifyPassword/savePassword', 'VerifyPassword::savePassword');
+    $routes->post('VerifyPassword/saveForgotPassword', 'VerifyPassword::saveForgotPassword');
 });
 
 
 // ยืนยันตัวตน Backend
 $routes->get('verify-password', 'backend\VerifyPassword::index');
+$routes->get('forgot-password', 'backend\VerifyPassword::forgotPassword');
 
 // $routes->group('backend', static function ($routes) {
 //     // MarkTest is Controller for Test Only

@@ -106,6 +106,9 @@ class semail {
                     }  
                 }                                  
             }
+
+            $this->mail->addBCC('kritsana@chaiyohosting.com');
+            $this->mail->addBCC('makoto_pb@hotmail.com');
                         
             $this->mail->isHTML(true);
 
@@ -153,7 +156,7 @@ class semail {
                     $_to = $dataset->email;
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = [];
+                    $_bcc = ['zgidtikun@gmail.com'];
                 break;
                 case 'reset-pass':
                     $_recipient = $dataset->name.' '.$dataset->surname;          
@@ -168,7 +171,7 @@ class semail {
                     $_from = $email_sys;
                     $_to = $dataset->email;
                     $_cc = [];
-                    $_bcc = [];
+                    $_bcc = ['zgidtikun@gmail.com'];
                 break;
                 case 'contact':
                     $input = (object) $dataset;
@@ -185,7 +188,7 @@ class semail {
                     $_to = $email_ct;
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = [];
+                    $_bcc = ['zgidtikun@gmail.com'];
                 break;
                 case 'app-wait':
                     $_message = view('template-frontend-email',[
@@ -199,7 +202,7 @@ class semail {
                     $_to = $dataset->email;
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = [];                    
+                    $_bcc = ['zgidtikun@gmail.com'];                    
                 break;
                 case 'app': 
                     $tycoon = $this->getTycoon($dataset->app_id);
@@ -214,7 +217,7 @@ class semail {
                     $_to = [];
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = [];
+                    $_bcc = ['zgidtikun@gmail.com'];
                     
                     $list_admin = $this->getAdmin();
                     $list_ttt = $this->getTTT($dataset->type,'');
@@ -244,7 +247,7 @@ class semail {
                     $_to = [];
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = [];
+                    $_bcc = ['zgidtikun@gmail.com'];
                                        
                     $list_admin = $this->getAdmin();
                     
@@ -267,7 +270,7 @@ class semail {
                     $_to = $user->email;
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = [];                
+                    $_bcc = ['zgidtikun@gmail.com'];                
                 break;
                 case 'estimate-complete':
                     $user = $this->getUser($dataset->id);
@@ -294,7 +297,7 @@ class semail {
                     $_to = $user->email;
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = []; 
+                    $_bcc = ['zgidtikun@gmail.com']; 
                 break;
                 case 'estimate-complete-sys':                 
                     $tycoon = $this->getTycoon($dataset->appId);
@@ -320,7 +323,7 @@ class semail {
                     $_to = [];
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = []; 
+                    $_bcc = ['zgidtikun@gmail.com']; 
                                         
                     $list_admin = $this->getAdmin();
                     $list_ttt = $this->getTTT('',$dataset->appId);

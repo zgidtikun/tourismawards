@@ -19,7 +19,7 @@
                         <table id="tbl-noti" class="table boards" style="font-size: 16px;">
                             <thead style="border-radius: 6px;">
                                 <tr>
-                                    <th class="text-center">ลำดับ</th>
+                                    <th class="text-center">#</th>
                                     <th class="text-center">รายละเอียด</th>
                                     <th class="text-center">วันเวลาที่แจ้ง</th>
                                     <th class="text-center">ผู้แจ้ง</th>

@@ -287,7 +287,7 @@ class FrontendController extends BaseController
     public function prescreenEstimate($id)
     {
         $stage = $this->getStage($id,1);
-        $assign = $this->getGroupEstimate('asm',session()->get('id'));
+        $assign = $this->getGroupEstimate($id,session()->get('id'),1);
         $isFinish = $this->checkEstimateFinish($id,1,session()->get('id'));
         
         $data = [
@@ -305,7 +305,7 @@ class FrontendController extends BaseController
     public function onsiteEstimate($id)
     {
         $stage = $this->getStage($id,2);
-        $assign = $this->getGroupEstimate('asm',session()->get('id'));
+        $assign = $this->getGroupEstimate($id,session()->get('id'),2);
         $isFinish = $this->checkEstimateFinish($id,2,session()->get('id'));
 
         $obj = new EstimateScore();
@@ -346,22 +346,56 @@ class FrontendController extends BaseController
         }
     }
 
-    private function getGroupEstimate($group,$id)
+    private function getGroupEstimate($appId,$id,$round = null)
     {
-        $user = new \App\Models\Users();
+        $comm = new \App\Models\Committees();
+        $assessment_group = [];
 
-        if($group == 'awt'){
-            $result = $user->where('id',$id)
-                ->select('award_type')
-                ->first();
-            return json_decode($result->award_type);
+        $builder_t = $comm->select('admin_id_tourism')
+            ->where([
+                'assessment_round' => $round,
+                'application_form_id' => $appId
+            ])
+            ->like('admin_id_tourism','"'.$id.'"')
+            ->first();
+
+        $builder_s = $comm->select('admin_id_supporting')
+            ->where([
+                'assessment_round' => $round,
+                'application_form_id' => $appId
+            ])
+            ->orLike('admin_id_supporting','"'.$id.'"')
+            ->first();
+
+        $builder_r = $comm->select('admin_id_responsibility')
+            ->where([
+                'assessment_round' => $round,
+                'application_form_id' => $appId
+            ])
+            ->orLike('admin_id_responsibility','"'.$id.'"')
+            ->first();
+
+        if(!empty($builder_t->admin_id_tourism)){
+            $tourism = json_decode($builder_t->admin_id_tourism,true);
+            if(!empty($tourism)){
+                $assessment_group[] = 1;
+            }
         }
-        else {
-            $result = $user->where('id',$id)
-                ->select('assessment_group')
-                ->first();
-            return json_decode($result->assessment_group);
+    
+        if(!empty($builder_s->admin_id_supporting)){
+            $support = json_decode($builder_s->admin_id_supporting,true);
+            if(!empty($support)){
+                $assessment_group[] = 2;
+            }
         }
+        if(!empty($builder_r->admin_id_responsibility)){
+            $respons = json_decode($builder_r->admin_id_responsibility,true);
+            if(!empty($respons)){
+                $assessment_group[] = 3;
+            }
+        }
+
+        return $assessment_group;
     }
 
     private function getStage($id,$stage)

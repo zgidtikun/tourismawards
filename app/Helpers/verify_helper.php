@@ -10,13 +10,13 @@ function vEncryption($code)
 {
     $obj = new Encrypter();
     $cipher = $obj->encryption($code);
-    return $cipher;
+    return urlencode($cipher);
 }
 
 function vDecryption($code)
 {
     $obj = new Encrypter();
-    $cipher = $obj->decryption($code);
+    $cipher = $obj->decryption(urldecode($code));
     return $cipher;
 }
 

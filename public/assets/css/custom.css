@@ -5735,3 +5735,9 @@ img.profile {
 .swal2-popup {
     width: auto !important;
 }
+
+.swal2-close { 
+    justify-content: end !important;
+    margin-right: 1rem !important;
+    margin-bottom: -1.8rem !important
+}

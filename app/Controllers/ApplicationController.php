@@ -170,17 +170,20 @@ class ApplicationController extends BaseController
             $user = new \App\Models\Users();
             $user->update(session()->get('id'),['stage' => 2]);   
 
+            $form = $this->appForm->where('id',$app_id)
+                ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
+                ->first();
+
             set_multi_noti(
                 get_receive_admin(),
                 (object) [
                     'bank' => 'backend'
                 ],
                 (object) [
-                    'message' => 'แจ้งผลการส่งใบสัครเข้าระบบจากผู้ประกอบการจาก '
-                        .session()->get('account'),
+                    'message' => $form->place_name.' ได้ทำการส่งใบสมัครเข้าสู่ระบบ กรุณาทำการตรวจสอบใบสมัคร',
                     'link' => base_url('awards/result'),
                     'send_date' => date('Y-m-d H:i:s'),
-                    'send_by' => 'ททท'
+                    'send_by' => $form->place_name
                 ]
             );
             

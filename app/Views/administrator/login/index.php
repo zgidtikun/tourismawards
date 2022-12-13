@@ -58,7 +58,10 @@
                     <label for="remember">จดจำการเข้าสู่ระบบ</label>
                   </div>
                 </div>
-                <button class="btn btn-lg border-white gradient-4 gradient-4-hover gradient-4-shadow w-100 waves-effect" type="button" onclick="signin.authen()">เข้าสู่ระบบ</button>
+                <button class="btn btn-lg border-white gradient-4 gradient-4-hover gradient-4-shadow w-100 waves-effect mb-2" type="button" onclick="signin.authen()">เข้าสู่ระบบ</button>
+                <div class="form-group ml-3">
+                  <a href="<?= base_url('forgot-password') ?>" class="mt-2" rel="noopener noreferrer">ลืมรหัสผ่าน</a>
+                </div>
               </form>
             </div>
           </div>

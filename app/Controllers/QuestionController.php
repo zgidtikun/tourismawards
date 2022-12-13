@@ -23,6 +23,7 @@ class QuestionController extends BaseController
                 
             $subComm = $this->db->table('committees')
                 ->select('application_form_id afid')
+                ->where('assessment_round',($round == 'pre-screen' ? 1 : 2))
                 ->like('admin_id_tourism','"'.session()->get('id').'"')
                 ->orLike('admin_id_supporting','"'.session()->get('id').'"')
                 ->orLike('admin_id_responsibility','"'.session()->get('id').'"')

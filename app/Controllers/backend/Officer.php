@@ -19,7 +19,7 @@ class Officer extends BaseController
             // $where['surname'] = $_GET['keyword'];
             // $where['email'] = $_GET['keyword'];
         }
-        $data['result']  = $this->db->table('users')->where('role_id', 3)->where('status', 1)->like($where, 'match', 'both')->get()->getResultObject();
+        $data['result']  = $this->db->table('users')->where('role_id', 3)->like($where, 'match', 'both')->get()->getResultObject();
 
         // $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('award_type AT', 'AT.id = U.award_type', 'left')->join('assessment_group AG', 'AG.id = U.assessment_group', 'left')->where('U.member_type = 3 AND U.status = 1')->orWhere($where)->orderBy('U.id', 'desc')->get()->getResultObject();
 
@@ -120,6 +120,7 @@ class Officer extends BaseController
             }
             $data = [];
             $data['users'] = $this->db->table('users')->where('id', $insert_id)->get()->getRowObject();
+            $data['verify_code'] = vEncryption('users-' . $data['users']->verify_code);
             $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
@@ -287,7 +288,8 @@ class Officer extends BaseController
                 }
             }
             $data = [];
-            $data['users'] = $this->db->table('users')->where('id', $insert_id)->get()->getRowObject();
+            $data['users'] = $this->db->table('admin')->where('id', $insert_id)->get()->getRowObject();
+            $data['verify_code'] = vEncryption('admin-' . $data['users']->verify_code);
             $this->sendMail($data);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
@@ -375,7 +377,9 @@ class Officer extends BaseController
 
     public function sendMail($data)
     {
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('verify-password?t=' . vEncryption('users-' . $data['users']->verify_code)) . '"  target="_blank">Verify</a></b>';
+        // px(vDecryption($data['verify_code']));
+        // px($data);
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('verify-password?t=' . $data['verify_code']) . '"  target="_blank">Verify</a></b>';
         if ($data['users']->password != "") {
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }

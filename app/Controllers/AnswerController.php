@@ -8,7 +8,7 @@ use App\Models\AssessmentGroup;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\UsersStage;
-
+use App\Models\ApplicationForm;
 
 class AnswerController extends BaseController
 {
@@ -18,6 +18,7 @@ class AnswerController extends BaseController
         $this->assg = new AssessmentGroup();
         $this->ans = new Answer();
         $this->usStg = new UsersStage();
+        $this->appForm = new ApplicationForm();
 
         if(!isset($this->db))
             $this->db = \Config\Database::connect();
@@ -268,16 +269,20 @@ class AnswerController extends BaseController
                         ]);
                     }
 
+                    $form = $this->appForm->where('id',$this->input->getVar('appId'))
+                        ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
+                        ->first();
+
                     set_multi_noti(
                         get_receive_admin(),
                         (object) [
-                            'bank' => 'frontend'
+                            'bank' => 'backend'
                         ],
                         (object) [
-                            'message'=> 'มีการส่งแบบประเมินขั้นตัน (Pre-screen) จากคุณ '.session()->get('user'),
+                            'message'=> $form->place_name.' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณามอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)',
                             'link' => base_url('boards/estimate/pre-screen/'.get_app_id(session()->get('id'))),
                             'send_date' => date('Y-m-d H:i:s'),
-                            'send_by' => session()->get('user')
+                            'send_by' => $form->place_name
                         ]);
 
                     helper('semail');

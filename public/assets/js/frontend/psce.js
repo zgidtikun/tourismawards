@@ -254,7 +254,10 @@ const draft = (cate,seg) => {
 }
 
 const setQuestion = (cate,seg) => {
-    let point = getPointer();
+    let point = getPointer(),
+        qcontent = '';
+
+
     setPointer(cate,seg);
 
     if(point.cate != cate){
@@ -277,7 +280,10 @@ const setQuestion = (cate,seg) => {
     $('body').removeClass('lockbody');
 
     $('.sl').removeClass('active');
-    $('#sl-'+seg).addClass('active');
+    
+    if(!$('#sl-'+seg).hasClass('complete') && !$('#sl-'+seg).hasClass('request')){
+        $('#sl-'+seg).addClass('active');
+    }
 
     if(
         empty(dataset[point.cate].question[point.seg].request_status)
@@ -296,6 +302,20 @@ const setQuestion = (cate,seg) => {
     }
 
     setPointer(cate,seg);
+
+    if(question.question.search('โปรดระบุ,') !== -1){
+        const qno = question.question.split(',');
+
+        $.each(qno,(qk,qv) => {
+            if(qk != 0){
+                qcontent += '<br>&nbsp;&nbsp;';
+            }
+
+            qcontent += qv;
+        });
+    } else {
+        qcontent = question.question;
+    }
     
     qTitle.attr('data-id',question.reply_id);
     qTitle.html(category.group.name);
@@ -304,9 +324,11 @@ const setQuestion = (cate,seg) => {
     qNum.html(question.no);
     mTNum.html(question.no);
     mNum.html(question.no);
-    hSubject.html(question.no+'. '+question.question);
+    hSubject.html(question.no+'. '+qcontent);
     esCmm.val(question.comment_pre);
     esNote.val(question.note_pre);
+
+    countChar($('#comment'))
 
     let back = seg != 0 ? seg-1 : seg,
         next = seg != category.question.length-1 ? seg+1 : seg;
@@ -343,6 +365,7 @@ const setQuestion = (cate,seg) => {
     
     qSubject.html(question.no+'. '+question.question);
     qReply.html(question.reply);
+    countChar1($('#qRequest'));
 
     let ap = ev = sc = '';
     const url = getBaseUrl();
@@ -431,7 +454,7 @@ const setDropdown = (qt,cate,seg) => {
         }
             
         cl = 'class="sl '+cp+'"';
-        modal += '<li><a '+hr+' '+id+' '+cl+'> ช้อที่ '+v.no+'</a></li>';
+        modal += '<li><a '+hr+' '+id+' '+cl+'> ข้อที่ '+v.no+'</a></li>';
         slt += '<option value="'+k+'">'+v.no+'</option>';
     });
 
@@ -532,8 +555,19 @@ const getCurrentDate = () => {
 }
 
 const zoomImages = (el) => {
-    $("#img-modal").attr('src', el.src);
-    $("#images-modal").show();
+    Swal.fire({
+        imageUrl: el.src,
+        width: 800,
+        height: 800,
+        confirmButtonColor: '#DD3342',
+        confirmButtonText: '<i class="fas fa-times"></i> ปิด',
+        showCloseButton: true,
+        customClass: {
+            confirmButton: 'btn btn-danger',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    });
 }
 
 esCmm.keyup(() => {
@@ -572,6 +606,7 @@ $('.btn-getdata').click(function() {
     mNum.html(question.no);
     mSelect.val(point.seg);
     qRequest.val(question.request_list);
+    countChar1($('#qRequest'))
 
     if($.inArray(Number(question.request_status),[1,2,3]) !== -1){
         qRequest.prop('readonly','readonly');

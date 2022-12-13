@@ -29,7 +29,7 @@ const psc = {
             psc.appId = response.app_id;    
             psc.questions = response.data;
             psc.stage = stage;
-            console.log(psc.status)
+            
             if(!psc.expired){
                 switch(psc.status){
                     case 'draft':   
@@ -207,7 +207,8 @@ const psc = {
     setNewQuestion: function(cate,seg){        
         let point = this.getPointer(),
             category = this.questions[cate],
-            question = this.questions[cate].question[seg];
+            question = this.questions[cate].question[seg],
+            qcontent = '';
 
         if(point.cate != cate){
             $('.btn-form-step').removeClass('active');
@@ -239,15 +240,47 @@ const psc = {
         }
               
         $('.sl').removeClass('active');
-        $(MapData.label.model.item+seg).addClass('active');            
+
+        if(!empty(question.reply)){
+            if(
+                !empty(question.reply_sts)
+                && question.reply_sts == 3
+            ){
+                if(!$(MapData.label.model.item+seg).hasClass('request')){
+                    $(MapData.label.model.item+seg).addClass('request');
+                }
+            } else {
+                if(!$(MapData.label.model.item+seg).hasClass('complete')){
+                    $(MapData.label.model.item+seg).addClass('complete');
+                }
+            }
+        } else {
+            $(MapData.label.model.item+seg).addClass('active');
+        }          
         
         this.setPointer(cate,seg);
+
+        if(question.question.search('โปรดระบุ,') !== -1){
+            const qno = question.question.split(',');
+
+            $.each(qno,(qk,qv) => {
+                if(qk != 0){
+                   qcontent += '<br>&nbsp;&nbsp;';
+                }
+
+                qcontent += qv;
+            });
+        } else {
+            qcontent = question.question;
+        }
 
         $(MapData.label.title).html(category.group.name);
         $(MapData.label.sum).html(category.question.length); 
         $(MapData.label.num).html(question.no);
-        $(MapData.label.question).html(question.no+'. '+question.question);
+        $(MapData.label.question).html(question.no+'. '+qcontent);
         $(MapData.input.reply.id).val(question.reply);
+
+        countChar($('#reply'));
 
         showFiles.tycoon('#file',question.paper);
         showFiles.tycoon('#images',question.images);
@@ -322,7 +355,7 @@ const psc = {
             }
                 
             cl = 'class="sl '+cp+'"';
-            model += '<li><a '+hr+' '+id+' '+cl+'> ช้อที่ '+value.no+'</a></li>';
+            model += '<li><a '+hr+' '+id+' '+cl+'> ข้อที่ '+value.no+'</a></li>';
         });
 
         $(MapData.label.model.selection).html(model);

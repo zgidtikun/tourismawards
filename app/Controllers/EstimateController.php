@@ -30,7 +30,10 @@ class EstimateController extends BaseController
             $current = date('Y-m-d');
             $duedate = date('Y-m-d',strtotime($current.' + 3 day'));
             $appid = $this->input->getVar('application_id');
-            $form = $this->appForm->where('id',$appid)->select('created_by')->first();
+
+            $form = $this->appForm->where('id',$appid)
+                ->select('created_by, IFNULL(attraction_name_th,attraction_name_en) place_name',false)
+                ->first();
 
             $this->estimate->where([
                     'application_id' => $appid,
@@ -200,7 +203,7 @@ class EstimateController extends BaseController
             $input = (object) $this->input->getVar();
 
             $form = $this->appForm->where('id',$input->appId)
-                ->select('created_by')
+                ->select('created_by,IFNULL(attraction_name_th,attraction_name_en) place_name',false)
                 ->first();
 
             $answer->where('reply_by',$form->created_by)
@@ -320,12 +323,15 @@ class EstimateController extends BaseController
                 
                 if($input->stage == 1){
                     if($pass){
-                        $message = 'แจ้งผลการประเมินขั้นต้น (Pre-screen) ของท่านเรียบร้อยแล้ว';
+                        $message_u = 'แจ้งผลการประเมินขั้นต้น (Pre-screen) ของท่านเรียบร้อยแล้ว';
+                        $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณามอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)';                       
                     } else {
-                        $message = 'ข้อมูลแบบประเมินขั้นต้น (Pre-screen) ของท่านไม่ผ่านเกณฑ์';
+                        $message_u = 'ข้อมูลแบบประเมินขั้นต้น (Pre-screen) ของท่านไม่ผ่านเกณฑ์';
+                        $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินขั้นต้น (Pre-screen) เข้าสู่ระบบ';
                     }
                 } else {
-                    $message = 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว';
+                    $message_u = 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว';
+                    $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินรอบลงพื้นที่เข้าสู่ระบบ';
                 }
 
                 set_noti(
@@ -334,12 +340,24 @@ class EstimateController extends BaseController
                         'bank' => 'frontend'
                     ],
                     (object) [
-                        'message' => $message,
+                        'message' => $message_u,
                         'link' => base_url('awards/result'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => 'คณะกรรมการ'
                     ]
                 );
+
+                set_multi_noti(
+                    get_receive_admin(),
+                    (object) [
+                        'bank' => 'backend'
+                    ],
+                    (object) [
+                        'message'=> $message_a,
+                        'link' => base_url('boards/estimate/pre-screen/'.get_app_id(session()->get('id'))),
+                        'send_date' => date('Y-m-d H:i:s'),
+                        'send_by' => $form->place_name
+                    ]);
 
                 helper('semail');
                 send_email_frontend((object)[

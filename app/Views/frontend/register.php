@@ -1,3 +1,21 @@
+<style>
+    .in-valid {
+        font-size: 13px;
+        color: red;
+        margin-left: 1rem;
+    }
+
+    .inp-invalid {
+        border-color: #dc3545;
+    }
+
+    .inp-remark {
+        font-size: 13px;
+        color: red;
+        color: #6c757d;
+        margin-left: 1rem;
+    }
+</style>
 <div class="container login">
     <div class="row">
         <div class="col6 loginbox">
@@ -15,16 +33,23 @@
                                 สมัครสมาชิกเรียบร้อยแล้ว กรุณารอการตรวจสอบอีเมลของท่านเพื่อทำการยืนยันตัวตนเข้าสู่ระบบ
                             </b>
                         </div>
-                            <?php else: ?>
+                            <?php 
+                                else : 
+                                    $error_counter = 1;
+                                    if(!empty($_signup->error->recapcha) || !empty($_signup->error->insert)):
+                            ?>
                         <div class="alert alert-danger alert-dismissible fade show" id="error">
                             <p><b><i class="bi bi-exclamation-triangle-fill"></i> เกิดข้อผิดพลาดตามรายการนี้</b></p>
-                            <?php foreach($_signup->error as $key=>$e){ ?>
-                            <?=($key+1)?>. <?=$e?><br>
-                            <?php } ?>
-                            
+                            <?php if(!empty($_signup->error->recapcha)):?>
+                            <?=$error_counter++?>. <?=$_signup->error->recapcha?><br>
+                            <?php endif; ?>  
+                            <?php if(!empty($_signup->error->insert)):?>
+                            <?=$error_counter++?>. <?=$_signup->error->insert?><br>
+                            <?php endif; ?>                          
                             <button type="button" class="btn-close" onclick="hide('error')"></button>
                         </div>
                         <?php 
+                                    endif;
                                 endif;
                             endif; 
 
@@ -48,10 +73,14 @@
                                         'id' => 'name',
                                         'name' => 'name',
                                         'value' => !empty($_signup->data->name) ? $_signup->data->name  : '',
-                                        'placeholder' => 'ชื่อ *'
+                                        'placeholder' => 'ชื่อ *', 
+                                        'class' => !empty($_signup->error->name) ? 'inp-invalid' : ''
                                     ];
                                     echo form_input($attr);
                                 ?>
+                                <?php if(!empty($_signup->error->name)) : ?>
+                                    <span class="in-valid"><?=$_signup->error->name?></span>
+                                <?php endif;?>
                                 </div>
                                 <div class="inp_form_col3">
                                 <?php 
@@ -60,18 +89,14 @@
                                         'id' => 'surname',
                                         'name' => 'surname',
                                         'value' => !empty($_signup->data->surname) ? $_signup->data->surname  : '',
-                                        'placeholder' => 'นามสกุล *'
+                                        'placeholder' => 'นามสกุล *', 
+                                        'class' => !empty($_signup->error->surname) ? 'inp-invalid' : ''
                                     ];
                                     echo form_input($attr);
                                 ?>
-                                </div>
-                                <div class="inp_form_col1">
-                                <?php 
-                                    $attr = ['id' => 'role', 'readonly' => 'readonly'];
-                                    $options = ['1' => 'ผู้ประกอบการ'/*, '2' => 'คณะกรรมการ'*/];
-                                    $selected = !empty($_signup->data->role) ? $_signup->data->role  : '1';
-                                    echo form_dropdown('role', $options, $selected,$attr);
-                                ?>
+                                <?php if(!empty($_signup->error->surname)) : ?>
+                                    <span class="in-valid"><?=$_signup->error->surname?></span>
+                                <?php endif;?>
                                 </div>
                                 <div class="inp_form_col1">
                                 <?php 
@@ -80,34 +105,47 @@
                                         'id' => 'telephone',
                                         'name' => 'telephone',
                                         'value' => !empty($_signup->data->telephone) ? $_signup->data->telephone  : '',
-                                        'placeholder' => 'เบอร์โทรศัพท์ *'
+                                        'placeholder' => 'เบอร์โทรศัพท์ *', 
+                                        'maxlength' => 10,
+                                        'class' => !empty($_signup->error->telephone) ? 'inp-invalid' : ''
                                     ];
                                     echo form_input($attr);
                                 ?>
+                                <?php if(!empty($_signup->error->telephone)) : ?>
+                                    <span class="in-valid"><?=$_signup->error->telephone?></span>
+                                <?php endif;?>
                                 </div>
                                 <div class="inp_form_col2">
                                 <?php 
                                     $attr = [
-                                        'type' => 'email',
+                                        'type' => 'text',
                                         'id' => 'email',
                                         'name' => 'email',
                                         'value' => !empty($_signup->data->email) ? $_signup->data->email  : '',
-                                        'placeholder' => 'อีเมล *'
+                                        'placeholder' => 'อีเมล *', 
+                                        'class' => !empty($_signup->error->email) ? 'inp-invalid' : ''
                                     ];
                                     echo form_input($attr);
                                 ?>
+                                <?php if(!empty($_signup->error->email)) : ?>
+                                    <span class="in-valid"><?=$_signup->error->email?></span>
+                                <?php endif;?>
                                 </div>
                                 <div class="inp_form_col2">
                                 <?php 
                                     $attr = [
-                                        'type' => 'email',
+                                        'type' => 'text',
                                         'id' => 'confirmemail',
                                         'name' => 'confirmemail',
                                         'value' => !empty($_signup->data->confirmemail) ? $_signup->data->confirmemail  : '',
-                                        'placeholder' => 'ยืนยันอีเมล *'
+                                        'placeholder' => 'ยืนยันอีเมล *', 
+                                        'class' => !empty($_signup->error->confirmemail) ? 'inp-invalid' : ''
                                     ];
                                     echo form_input($attr);
                                 ?>
+                                <?php if(!empty($_signup->error->confirmemail)) : ?>
+                                    <span class="in-valid"><?=$_signup->error->confirmemail?></span>
+                                <?php endif;?>
                                 </div>
                                 <div class="inp_form_col2">
                                 <?php 
@@ -116,10 +154,15 @@
                                         'id' => 'password',
                                         'name' => 'password',
                                         'value' => !empty($_signup->data->password) ? $_signup->data->password  : '',
-                                        'placeholder' => 'รหัสผ่าน *'
+                                        'placeholder' => 'รหัสผ่าน *', 
+                                        'class' => !empty($_signup->error->password) ? 'inp-invalid' : ''
                                     ];
                                     echo form_input($attr);
                                 ?>
+                                    <span class="inp-remark">รหัสผ่านต้องมี A-Z, a-z, 0-9 และอย่างน้อย 6 ตัวอักษร</span>
+                                <?php if(!empty($_signup->error->password)) : ?>
+                                    <span class="in-valid"><?=$_signup->error->password?></span>
+                                <?php endif;?>
                                 </div>
                                 <div class="inp_form_col2">
                                 <?php 
@@ -128,10 +171,14 @@
                                         'id' => 'confirmpass',
                                         'name' => 'confirmpass',
                                         'value' => !empty($_signup->data->confirmpass) ? $_signup->data->confirmpass  : '',
-                                        'placeholder' => 'ยืนยันรหัสผ่าน *'
+                                        'placeholder' => 'ยืนยันรหัสผ่าน *', 
+                                        'class' => !empty($_signup->error->confirmpass) ? 'inp-invalid' : ''
                                     ];
                                     echo form_input($attr);
                                 ?>
+                                <?php if(!empty($_signup->error->confirmpass)) : ?>
+                                    <span class="in-valid"><?=$_signup->error->confirmpass?></span>
+                                <?php endif;?>
                                 </div>
                                 <div class="inp_form_col1">
                                     <textarea rows="7" id="policy" class="policy" style="font-size: 15px;" readonly>
@@ -144,9 +191,11 @@
                                 <div class="inp_form_col1 submit">
                                     <button id="btn-regis" type="submit" disabled>ลงทะเบียน</button>
                                 </div>
-                                <?php                                 
-                                    $attr = ['type' => 'hidden', 'id' => 'recapcha_token', 'name' => 'recapcha_token',
-                                    ];
+                                <?php    
+                                    $attr = ['type' => 'hidden', 'id' => 'role', 'name' => 'role', 'value' => 1];
+                                    echo form_input($attr);
+
+                                    $attr = ['type' => 'hidden', 'id' => 'recapcha_token', 'name' => 'recapcha_token'];
                                     echo form_input($attr);
                                 ?>
                             </div>
@@ -184,6 +233,19 @@
             $('#btn-regis').prop('disabled',false);
         else $('#btn-regis').prop('disabled',true);
     });
+
+    $('#telephone').on('keyup',function(){
+        replaceTel($('#telephone').val());
+    });
+
+    $('#telephone').on('change',function(){
+        replaceTel($('#telephone').val());
+    });
+
+    const replaceTel = str => {
+        str = str.replace(/\D/g,'');
+        $('#telephone').val(str);
+    }
 
     var hide = (id) => {
         if(!$('#'+id).hasClass('hide'))

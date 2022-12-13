@@ -61,9 +61,10 @@ class Validation extends BaseConfig
             ]
         ],
         'telephone' => [
-            'rules' => 'required',
+            'rules' => 'required|max_length[10]',
             'errors' => [
-                'required' => 'กรุณาระบุเบอร์โทรศัพท์'
+                'required' => 'กรุณาระบุเบอร์โทรศัพท์',
+                'max_length' => 'เบอร์โทรศัพท์ต้องไม่เกิน 10 ตัวอักษร'
             ]
         ],
         'email' => [
@@ -75,10 +76,9 @@ class Validation extends BaseConfig
             ]
         ],
         'confirmemail' => [
-            'rules' => 'required|valid_email|matches[email]',
+            'rules' => 'required||matches[email]',
             'errors' => [
-                'required' => 'กรุณายืนยันอีเมล',
-                'valid_email' => 'รูปแบบอีเมลไม่ถูกต้อง',                
+                'required' => 'กรุณายืนยันอีเมล',               
                 'matches' => 'การยืนยันอีเมลไม่ตรงกัน'
             ]
         ],
@@ -91,7 +91,7 @@ class Validation extends BaseConfig
             ]
         ],
         'confirmpass' => [
-            'rules' => 'required|min_length[6]|matches[password]',
+            'rules' => 'required|matches[password]',
             'errors' => [
                 'required' => 'กรุณายืนยันรหัสผ่าน',
                 'min_length' => 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',

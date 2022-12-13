@@ -11,7 +11,7 @@ class Award extends BaseController
         $app = new \Config\App();
 
         $judge = $app->JudgingCriteriaScore;
-        pp($judge);
+        // pp($judge);
 
         // if ($persent >= $judge->ttg->low) {
         //     $award_s = 1;
@@ -23,8 +23,14 @@ class Award extends BaseController
         //     $award_s = 0;
         // }
 
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, ES.score_prescreen_tt, ES.score_onsite_tt')->join('users_stage US', 'US.user_id = AP.created_by AND US.status >= 6', 'left')->join('estimate_score ES', 'ES.application_id = AP.id', 'left')->where('US.stage', 2)->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*,AR.award_persent')->join('award_result AR', 'AR.application_id = AP.id', 'left')->where('AR.award_type', 1)->get()->getResultObject();
 
-        px($data['result']);
+        // px($data['result']);
+        
+        $data['title']  = 'รางวัลยอดเยี่ยม';
+        $data['view']   = 'administrator/award/index';
+        $data['ci']     = $this;
+
+        return view('administrator/template', $data);
     }
 }

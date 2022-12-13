@@ -9,13 +9,13 @@ class VerifyPassword extends BaseController
 
     public function __construct()
     {
-        helper('verify');
+        helper(['semail', 'verify']);
     }
 
     public function index()
     {
-        // pp($_GET['t']);
-        // px(vDecryption($_GET['t']));
+        pp($_GET['t']);
+        px(vDecryption($_GET['t']));
         if (!empty($_GET['t'])) {
             $token = explode('-', vDecryption($_GET['t']));
 
@@ -72,5 +72,58 @@ class VerifyPassword extends BaseController
             $this->session->setFlashdata(['error' => 'ระบบทำการบันทึกไม่สำเร็จกรุณาทำรายการอีกครั้งหรือติดต่อเจ้าหน้าที่']);
             return redirect()->to(base_url());
         }
+    }
+
+    public function forgotPassword()
+    {
+        $data['title_name']  = 'ลืมรหัสผ่าน';
+
+        $data['title']  = 'Tourist Award | Forgot Password';
+        $data['view']   = 'administrator/verify/forgot_password';
+        $data['ci']     = $this;
+
+        return view('administrator/template_blank', $data);
+    }
+
+    public function saveForgotPassword()
+    {
+        $post = $this->input->getVar();
+        $admin = $this->db->table('admin')->where('username', $post['username'])->get()->getRowObject();
+        $verify_code = genVerifyCode();
+        if (empty($admin)) {
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ไม่สามารถเปลี่ยนรหัสผ่านได้กรุณาตรวจสอบ E-Mail']);
+            exit;
+        }
+
+        $result = $this->db->table('admin')->where('username', $post['username'])->update(['verify_code' => $verify_code]);
+        if ($result) {
+            $data = [];
+            $data['admin'] = $this->db->table('admin')->where('id', $admin->id)->get()->getRowObject();
+            $this->sendMail($data);
+            echo json_encode(['type' => 'success', 'title' => 'เปลี่ยนรหัสผ่านสำเร็จ', 'text' => 'กรุณาตรวจสอบ E-Mail']);
+        } else {
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ไม่สามารถเปลี่ยนรหัสผ่านได้กรุณาตรวจสอบ E-Mail']);
+        }
+    }
+
+    public function sendMail($data)
+    {
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code)) . '"  target="_blank">Verify</a></b>';
+        $email_data = [
+            '_header' => 'มีการแก้ไขข้อมูลผู้ใช้งานบนเว็บไซต์',
+            '_content' => 'เรียนคุณ ' . $data['admin']->name . ' ' . $data['admin']->surname . ' ท่านได้ส่งคำร้องขอในการเปลี่ยนรหัสผ่าน '
+                . 'ด้วยอีเมล ' . $data['admin']->email . ' '
+                . $text
+        ];
+        $requestEmail = [
+            'to' => $data['admin']->email,
+            'subject' => 'มีการแก้ไขข้อมูลผู้ใช้งานบนเว็บไซต์',
+            'message' => view('administrator/template_email', $email_data),
+            // 'from' => $from,
+            // 'cc' => [],
+            // 'bcc' => []
+        ];
+
+        send_email($requestEmail);
     }
 }

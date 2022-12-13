@@ -238,7 +238,9 @@ const setFinish = () => {
 }
 
 const setQuestion = (cate,seg) => {
-    let point = getPointer();
+    let point = getPointer(),
+        qcontent = '';
+
     setPointer(cate,seg);
 
     if(point.cate != cate){
@@ -261,7 +263,10 @@ const setQuestion = (cate,seg) => {
     $('body').removeClass('lockbody');
 
     $('.sl').removeClass('active');
-    $('#sl-'+seg).addClass('active');
+
+    if(!$('#sl-'+seg).hasClass('complete')){
+        $('#sl-'+seg).addClass('active');
+    }
     
     if(!empty(dataset[point.cate].question[point.seg].score_onsite)){
         $('#sl-'+point.seg).addClass('complete');
@@ -271,6 +276,20 @@ const setQuestion = (cate,seg) => {
     }
 
     setPointer(cate,seg);
+
+    if(question.question.search('โปรดระบุ,') !== -1){
+        const qno = question.question.split(',');
+
+        $.each(qno,(qk,qv) => {
+            if(qk != 0){
+                qcontent += '<br>&nbsp;&nbsp;';
+            }
+
+            qcontent += qv;
+        });
+    } else {
+        qcontent = question.question;
+    }
     
     qTitle.attr('data-id',question.reply_id);
     qTitle.html(category.group.name);
@@ -279,9 +298,11 @@ const setQuestion = (cate,seg) => {
     qNum.html(question.no);
     mTNum.html(question.no);
     mNum.html(question.no);
-    hSubject.html(question.no+'. '+question.question);
+    hSubject.html(question.no+'. '+qcontent);
     esCmm.val(question.comment_onsite);
     esNote.val(question.note_onsite);
+
+    countCha($('#comment'))
 
     if(Number(question.onside_status) == 1){
         $('.none-estimate').hide();
@@ -407,7 +428,7 @@ const setDropdown = (qt,cate,seg) => {
         }
             
         cl = 'class="sl '+cp+'"';
-        modal += '<li><a '+hr+' '+id+' '+cl+'> ช้อที่ '+v.no+'</a></li>';
+        modal += '<li><a '+hr+' '+id+' '+cl+'> ข้อที่ '+v.no+'</a></li>';
         slt += '<option value="'+k+'">'+v.no+'</option>';
     });
 
@@ -471,8 +492,19 @@ const downloadFileAnswer = () => {
 }
 
 const zoomImages = (el) => {
-    $("#img-modal").attr('src', el.src);
-    $("#images-modal").show();
+    Swal.fire({
+        imageUrl: el.src,
+        width: 800,
+        height: 800,
+        confirmButtonColor: '#DD3342',
+        confirmButtonText: '<i class="fas fa-times"></i> ปิด',
+        showCloseButton: true,
+        customClass: {
+            confirmButton: 'btn btn-danger',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    });
 }
 
 const resetEstimate = (cate,seg) => {

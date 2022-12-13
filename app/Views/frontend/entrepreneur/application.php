@@ -573,7 +573,7 @@
                                         <div class="bs-row">
                                             <div class="d-grid">
                                                 <button class="btn btn-primary" type="button"
-                                                onclick="downloadFile('#step5-step5')">
+                                                onclick="downloadFile('#step5-landOwner-btn')">
                                                     <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
                                                 </button>
                                             </div>
@@ -1313,7 +1313,12 @@
                             <button class="btn btn-action" id="btn-next" 
                             onclick="register.setStep(4)">
                                 ย้อนกลับ
+                            </button>                                                                                                             
+                            <button class="btn btn-confirm-submit"
+                            onclick="register.saveApp()">
+                                ส่งใบสมัคร
                             </button>
+                            
                         </div>
                     </div>   
                 </div>
@@ -1322,6 +1327,14 @@
         </div>
     </div>
 </div>
+
+<div id="images-modal" class="images-modal" onclick="this.style.display='none'">
+    <div class="images-modal-content">
+        <span class="images-close">&times;</span>
+        <img id="img-modal" class="w-100">
+    </div>
+</div>
+
 <div class="loading" id="loading-page"></div>
 
 <?php $app = new \Config\App(); ?>
@@ -1383,4 +1396,20 @@
         $province: $('#step3-province'),
         $zipcode: $('#step3-zipcode'),
     });
+
+    const zoomImages = (el) => {
+        Swal.fire({
+            imageUrl: el.src,
+            width: 800,
+            height: 800,
+            confirmButtonColor: '#DD3342',
+            confirmButtonText: '<i class="fas fa-times"></i> ปิด',
+            showCloseButton: true,
+            customClass: {
+                confirmButton: 'btn btn-danger',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        });
+    }
 </script>
