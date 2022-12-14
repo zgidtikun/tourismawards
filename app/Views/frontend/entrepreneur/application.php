@@ -305,7 +305,7 @@
                         <div class="regis-form-data-col1">
                            <h4>ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (TH)<span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-siteNameTh">
-                           <span style="font-size: 14px;" class="text-muted">(หมายเหตุ: ชื่อโรมแรม ตามใบอนุญาตประกอบการธุรกิจโรงแรม)*</span>
+                           <span style="font-size: 14px;" class="text-muted">(หมายเหตุ: ชื่อโรงแรม ตามใบอนุญาตประกอบการธุรกิจโรงแรม)*</span>
                            <div class="invalid-feedback">กรุณากรอก ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (TH)</div>
                         </div>
                         <div class="regis-form-data-col1">
@@ -479,7 +479,7 @@
                             <div class="invalid-feedback">กรุณากรอก ชื่อ-นามสกุลผู้ประสานงาน</div>
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>ตำแหน่ง<span class="required">*</span></h4>
+                           <h4>ตำแหน่ง</h4>
                             <input type="text" class="form-control" id="step4-position">
                             <div class="invalid-feedback">กรุณากรอก ตำแหน่ง</div>
                         </div>
@@ -524,7 +524,11 @@
                         </div>
                         <div class="regis-form-data-col2">
                             <h4>เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ.<span class="required">*</span></h4>
-                            <input type="text" class="form-control" id="step5-openYear">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="step5-openYear" readonly style="pointer-events: none;"> 
+                                <input type="hidden" id="step5-hiddenDate">                               
+                                <button class="btn btn-outline-success" type="button" id="step5-openYear-btn"><i class="bi bi-calendar"></i></button>
+                            </div>
                             <div class="invalid-feedback">กรุณากรอก เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ.</div>
                         </div>
                         <div class="regis-form-data-col2">
@@ -583,7 +587,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                 <span class="fs-18 fw-semibold" id="step5-file1-title">
-                                    สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน
+                                    ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง
                                     <span class="required">*</span>
                                 </span>
                                 <div class="card" style="border: 1px solid #E5E6ED;">
@@ -1338,50 +1342,69 @@
 <div class="loading" id="loading-page"></div>
 
 <?php $app = new \Config\App(); ?>
-<link rel="stylesheet" href="<?= base_url('assets/css/jquery.datetimepicker.css') ?>">
-<script src="<?= base_url('assets/js/jquery.datetimepicker.full.js') ?>"></script>
+<link  href="<?= base_url('assets/js/frontend/datepicker/jquery-ui.css') ?>?v=<?= $app->script_v ?>" rel="stylesheet">
+<script src="<?= base_url('assets/js/frontend/datepicker/jquery-ui.js') ?>?v=<?= $app->script_v ?>"></script>
+
+
 <script src="<?= base_url('assets/js/frontend/upload.files.js') ?>?v=<?= $app->script_v ?>"></script>
 <script src="<?= base_url('assets/js/frontend/apc.js') ?>?v=<?= $app->script_v ?>"></script>
-<script>
+<script>    
+    $( function() {
+        
+        $( "#step5-hiddenDate" ).datepicker({ 
+            dateFormat: 'yy/mm/dd', 
+            maxDate: '+0d',
+            changeMonth: true,
+            changeYear: true,
+            dayNames: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
+            dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],             
+            monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+            monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
+            onSelect:function(dp,input){    
+                var yearT = new Date(dp).getFullYear()-0;  
+                var yearTH = yearT+543;
+                var fulldate = dp;    
+                var fulldateTH= fulldate.replace(yearT,yearTH);
+                $('#step5-openYear').val(fulldateTH);
+                $('#step5-hiddenDate').val(fulldate);    
+
+                if(!empty(dp)){
+                    let date = new Date(),
+                        fulldate = $(this).val().split('/');
+
+                    let from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0];
+                        to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
+
+                    let totalYear = calcDate(from,to);
+                    
+                    register.change = true;
+                    register.passYear = true;
+                    register.formData.step5.openYear = fulldateTH;
+                    register.formData.step5.totalYear = totalYear.result;
+                    $('#step5-totalYear').val(totalYear.result);
+
+                    let app = register.formData.step1.appType;
+                    let confYear = register.appType.main.find(el => el.id == app);
+                    register.passYearCount = confYear.fixe_year_open;
+                    
+                    if(Number(totalYear.total_year) < Number(confYear.fixe_year_open)){
+                        register.passYear = false;
+                        let title = 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป';
+                        alert.show('error',title,'');
+                    }
+                } else { $('#step5-totalYear').val(''); }
+            }
+        });
+
+        $( "#step5-openYear-btn" ).click(() => {
+            $('#step5-hiddenDate').datepicker('show');
+        });
+        
+    } );
+
     $(document).ready(function() {
-        register.init('<?=$duedate->expired_sts ? 'Expired' : 'Unexpired'?>');
+        register.init('<?=$duedate->expired_sts ? 'Expired' : 'Unexpired'?>');        
     });
-
-    // $('.bfd-dropfield-inner').click(function() {
-    //     $('#step1-images')[0].click();
-    // });
-    
-    $.datetimepicker.setLocale('th');
-
-    $("#step5-openYear").datetimepicker({
-        timepicker:false,
-        format:'Y/m/d',   
-        lang:'th',
-        isBuddhist: true,
-        onSelectDate:function(dp,$input){
-            var yearT=new Date(dp).getFullYear()-0;  
-            var yearTH=yearT+543;
-            var fulldate=$input.val();
-            var fulldateTH=fulldate.replace(yearT,yearTH);
-            $input.val(fulldateTH);
-        },
-    });
-
-    $("#step5-openYear").on("mouseenter mouseleave",function(e){
-        var dateValue=$(this).val();
-        if(dateValue!=""){
-            var arr_date=dateValue.split("/"); 
-            if(e.type=="mouseenter"){
-                var yearT=arr_date[0]-543;
-            }       
-            if(e.type=="mouseleave"){
-                var yearT=parseInt(arr_date[0])+543;
-            }   
-            dateValue=dateValue.replace(arr_date[0],yearT);
-            $(this).val(dateValue);                                                 
-        }       
-    });
-     
 
     $.Thailand({
         $district: $('#step2-subDistrict'),

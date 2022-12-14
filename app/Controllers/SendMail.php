@@ -37,6 +37,15 @@ class SendMail extends BaseController
 			// $mail->Body         = $message;
 			// $mail->setFrom('no-reply@thailandsha.com', 'no-reply@thailandsha.com');
 
+			$mail->Host = 'smtp.office365.com';      
+			$mail->SMTPAuth = true;                             
+			$mail->Username = 'noreply@thailandtourismawards.com';
+			$mail->Password = 'Fob13825';
+			$mail->SMTPSecure = 'tls';                           
+			$mail->Port = 587;
+			// TCP port to connect to
+			$mail->From = 'noreply@thailandtourismawards.com';
+
 			$mail->SMTPDebug = 2;  
 		    $mail->isSMTP();  
 			$mail->CharSet 		= "utf-8";

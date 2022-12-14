@@ -595,78 +595,6 @@ var DateFormatter;
 	'use strict';
 	var default_options  = {
 		i18n: {
-			ar: { // Arabic
-				months: [
-					"ÙƒØ§Ù†ÙˆÙ† Ø§Ù„Ø«Ø§Ù†ÙŠ", "Ø´Ø¨Ø§Ø·", "Ø¢Ø°Ø§Ø±", "Ù†ÙŠØ³Ø§Ù†", "Ù…Ø§ÙŠÙˆ", "Ø­Ø²ÙŠØ±Ø§Ù†", "ØªÙ…ÙˆØ²", "Ø¢Ø¨", "Ø£ÙŠÙ„ÙˆÙ„", "ØªØ´Ø±ÙŠÙ† Ø§Ù„Ø£ÙˆÙ„", "ØªØ´Ø±ÙŠÙ† Ø§Ù„Ø«Ø§Ù†ÙŠ", "ÙƒØ§Ù†ÙˆÙ† Ø§Ù„Ø£ÙˆÙ„"
-				],
-				dayOfWeekShort: [
-					"Ù†", "Ø«", "Ø¹", "Ø®", "Ø¬", "Ø³", "Ø­"
-				],
-				dayOfWeek: ["Ø§Ù„Ø£Ø­Ø¯", "Ø§Ù„Ø§Ø«Ù†ÙŠÙ†", "Ø§Ù„Ø«Ù„Ø§Ø«Ø§Ø¡", "Ø§Ù„Ø£Ø±Ø¨Ø¹Ø§Ø¡", "Ø§Ù„Ø®Ù…ÙŠØ³", "Ø§Ù„Ø¬Ù…Ø¹Ø©", "Ø§Ù„Ø³Ø¨Øª", "Ø§Ù„Ø£Ø­Ø¯"]
-			},
-			ro: { // Romanian
-				months: [
-					"Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"
-				],
-				dayOfWeekShort: [
-					"Du", "Lu", "Ma", "Mi", "Jo", "Vi", "SÃ¢"
-				],
-				dayOfWeek: ["DuminicÄƒ", "Luni", "MarÅ£i", "Miercuri", "Joi", "Vineri", "SÃ¢mbÄƒtÄƒ"]
-			},
-			id: { // Indonesian
-				months: [
-					"Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-				],
-				dayOfWeekShort: [
-					"Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"
-				],
-				dayOfWeek: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"]
-			},
-			is: { // Icelandic
-				months: [
-					"JanÃºar", "FebrÃºar", "Mars", "AprÃ­l", "MaÃ­", "JÃºnÃ­", "JÃºlÃ­", "ÃgÃºst", "September", "OktÃ³ber", "NÃ³vember", "Desember"
-				],
-				dayOfWeekShort: [
-					"Sun", "MÃ¡n", "ÃžriÃ°", "MiÃ°", "Fim", "FÃ¶s", "Lau"
-				],
-				dayOfWeek: ["Sunnudagur", "MÃ¡nudagur", "ÃžriÃ°judagur", "MiÃ°vikudagur", "Fimmtudagur", "FÃ¶studagur", "Laugardagur"]
-			},
-			bg: { // Bulgarian
-				months: [
-					"Ð¯Ð½ÑƒÐ°Ñ€Ð¸", "Ð¤ÐµÐ²Ñ€ÑƒÐ°Ñ€Ð¸", "ÐœÐ°Ñ€Ñ‚", "ÐÐ¿Ñ€Ð¸Ð»", "ÐœÐ°Ð¹", "Ð®Ð½Ð¸", "Ð®Ð»Ð¸", "ÐÐ²Ð³ÑƒÑÑ‚", "Ð¡ÐµÐ¿Ñ‚ÐµÐ¼Ð²Ñ€Ð¸", "ÐžÐºÑ‚Ð¾Ð¼Ð²Ñ€Ð¸", "ÐÐ¾ÐµÐ¼Ð²Ñ€Ð¸", "Ð”ÐµÐºÐµÐ¼Ð²Ñ€Ð¸"
-				],
-				dayOfWeekShort: [
-					"ÐÐ´", "ÐŸÐ½", "Ð’Ñ‚", "Ð¡Ñ€", "Ð§Ñ‚", "ÐŸÑ‚", "Ð¡Ð±"
-				],
-				dayOfWeek: ["ÐÐµÐ´ÐµÐ»Ñ", "ÐŸÐ¾Ð½ÐµÐ´ÐµÐ»Ð½Ð¸Ðº", "Ð’Ñ‚Ð¾Ñ€Ð½Ð¸Ðº", "Ð¡Ñ€ÑÐ´Ð°", "Ð§ÐµÑ‚Ð²ÑŠÑ€Ñ‚ÑŠÐº", "ÐŸÐµÑ‚ÑŠÐº", "Ð¡ÑŠÐ±Ð¾Ñ‚Ð°"]
-			},
-			fa: { // Persian/Farsi
-				months: [
-					'ÙØ±ÙˆØ±Ø¯ÛŒÙ†', 'Ø§Ø±Ø¯ÛŒØ¨Ù‡Ø´Øª', 'Ø®Ø±Ø¯Ø§Ø¯', 'ØªÛŒØ±', 'Ù…Ø±Ø¯Ø§Ø¯', 'Ø´Ù‡Ø±ÛŒÙˆØ±', 'Ù…Ù‡Ø±', 'Ø¢Ø¨Ø§Ù†', 'Ø¢Ø°Ø±', 'Ø¯ÛŒ', 'Ø¨Ù‡Ù…Ù†', 'Ø§Ø³ÙÙ†Ø¯'
-				],
-				dayOfWeekShort: [
-					'ÛŒÚ©Ø´Ù†Ø¨Ù‡', 'Ø¯ÙˆØ´Ù†Ø¨Ù‡', 'Ø³Ù‡ Ø´Ù†Ø¨Ù‡', 'Ú†Ù‡Ø§Ø±Ø´Ù†Ø¨Ù‡', 'Ù¾Ù†Ø¬Ø´Ù†Ø¨Ù‡', 'Ø¬Ù…Ø¹Ù‡', 'Ø´Ù†Ø¨Ù‡'
-				],
-				dayOfWeek: ["ÛŒÚ©â€ŒØ´Ù†Ø¨Ù‡", "Ø¯ÙˆØ´Ù†Ø¨Ù‡", "Ø³Ù‡â€ŒØ´Ù†Ø¨Ù‡", "Ú†Ù‡Ø§Ø±Ø´Ù†Ø¨Ù‡", "Ù¾Ù†Ø¬â€ŒØ´Ù†Ø¨Ù‡", "Ø¬Ù…Ø¹Ù‡", "Ø´Ù†Ø¨Ù‡", "ÛŒÚ©â€ŒØ´Ù†Ø¨Ù‡"]
-			},
-			ru: { // Russian
-				months: [
-					'Ð¯Ð½Ð²Ð°Ñ€ÑŒ', 'Ð¤ÐµÐ²Ñ€Ð°Ð»ÑŒ', 'ÐœÐ°Ñ€Ñ‚', 'ÐÐ¿Ñ€ÐµÐ»ÑŒ', 'ÐœÐ°Ð¹', 'Ð˜ÑŽÐ½ÑŒ', 'Ð˜ÑŽÐ»ÑŒ', 'ÐÐ²Ð³ÑƒÑÑ‚', 'Ð¡ÐµÐ½Ñ‚ÑÐ±Ñ€ÑŒ', 'ÐžÐºÑ‚ÑÐ±Ñ€ÑŒ', 'ÐÐ¾ÑÐ±Ñ€ÑŒ', 'Ð”ÐµÐºÐ°Ð±Ñ€ÑŒ'
-				],
-				dayOfWeekShort: [
-					"Ð’Ñ", "ÐŸÐ½", "Ð’Ñ‚", "Ð¡Ñ€", "Ð§Ñ‚", "ÐŸÑ‚", "Ð¡Ð±"
-				],
-				dayOfWeek: ["Ð’Ð¾ÑÐºÑ€ÐµÑÐµÐ½ÑŒÐµ", "ÐŸÐ¾Ð½ÐµÐ´ÐµÐ»ÑŒÐ½Ð¸Ðº", "Ð’Ñ‚Ð¾Ñ€Ð½Ð¸Ðº", "Ð¡Ñ€ÐµÐ´Ð°", "Ð§ÐµÑ‚Ð²ÐµÑ€Ð³", "ÐŸÑÑ‚Ð½Ð¸Ñ†Ð°", "Ð¡ÑƒÐ±Ð±Ð¾Ñ‚Ð°"]
-			},
-			uk: { // Ukrainian
-				months: [
-					'Ð¡Ñ–Ñ‡ÐµÐ½ÑŒ', 'Ð›ÑŽÑ‚Ð¸Ð¹', 'Ð‘ÐµÑ€ÐµÐ·ÐµÐ½ÑŒ', 'ÐšÐ²Ñ–Ñ‚ÐµÐ½ÑŒ', 'Ð¢Ñ€Ð°Ð²ÐµÐ½ÑŒ', 'Ð§ÐµÑ€Ð²ÐµÐ½ÑŒ', 'Ð›Ð¸Ð¿ÐµÐ½ÑŒ', 'Ð¡ÐµÑ€Ð¿ÐµÐ½ÑŒ', 'Ð’ÐµÑ€ÐµÑÐµÐ½ÑŒ', 'Ð–Ð¾Ð²Ñ‚ÐµÐ½ÑŒ', 'Ð›Ð¸ÑÑ‚Ð¾Ð¿Ð°Ð´', 'Ð“Ñ€ÑƒÐ´ÐµÐ½ÑŒ'
-				],
-				dayOfWeekShort: [
-					"ÐÐ´Ð»", "ÐŸÐ½Ð´", "Ð’Ñ‚Ñ€", "Ð¡Ñ€Ð´", "Ð§Ñ‚Ð²", "ÐŸÑ‚Ð½", "Ð¡Ð±Ñ‚"
-				],
-				dayOfWeek: ["ÐÐµÐ´Ñ–Ð»Ñ", "ÐŸÐ¾Ð½ÐµÐ´Ñ–Ð»Ð¾Ðº", "Ð’Ñ–Ð²Ñ‚Ð¾Ñ€Ð¾Ðº", "Ð¡ÐµÑ€ÐµÐ´Ð°", "Ð§ÐµÑ‚Ð²ÐµÑ€", "ÐŸ'ÑÑ‚Ð½Ð¸Ñ†Ñ", "Ð¡ÑƒÐ±Ð¾Ñ‚Ð°"]
-			},
 			en: { // English
 				months: [
 					"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
@@ -676,60 +604,6 @@ var DateFormatter;
 				],
 				dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 			},
-			el: { // Î•Î»Î»Î·Î½Î¹ÎºÎ¬
-				months: [
-					"Î™Î±Î½Î¿Ï…Î¬ÏÎ¹Î¿Ï‚", "Î¦ÎµÎ²ÏÎ¿Ï…Î¬ÏÎ¹Î¿Ï‚", "ÎœÎ¬ÏÏ„Î¹Î¿Ï‚", "Î‘Ï€ÏÎ¯Î»Î¹Î¿Ï‚", "ÎœÎ¬Î¹Î¿Ï‚", "Î™Î¿ÏÎ½Î¹Î¿Ï‚", "Î™Î¿ÏÎ»Î¹Î¿Ï‚", "Î‘ÏÎ³Î¿Ï…ÏƒÏ„Î¿Ï‚", "Î£ÎµÏ€Ï„Î­Î¼Î²ÏÎ¹Î¿Ï‚", "ÎŸÎºÏ„ÏŽÎ²ÏÎ¹Î¿Ï‚", "ÎÎ¿Î­Î¼Î²ÏÎ¹Î¿Ï‚", "Î”ÎµÎºÎ­Î¼Î²ÏÎ¹Î¿Ï‚"
-				],
-				dayOfWeekShort: [
-					"ÎšÏ…Ï", "Î”ÎµÏ…", "Î¤ÏÎ¹", "Î¤ÎµÏ„", "Î ÎµÎ¼", "Î Î±Ï", "Î£Î±Î²"
-				],
-				dayOfWeek: ["ÎšÏ…ÏÎ¹Î±ÎºÎ®", "Î”ÎµÏ…Ï„Î­ÏÎ±", "Î¤ÏÎ¯Ï„Î·", "Î¤ÎµÏ„Î¬ÏÏ„Î·", "Î Î­Î¼Ï€Ï„Î·", "Î Î±ÏÎ±ÏƒÎºÎµÏ…Î®", "Î£Î¬Î²Î²Î±Ï„Î¿"]
-			},
-			de: { // German
-				months: [
-					'Januar', 'Februar', 'MÃ¤rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
-				],
-				dayOfWeekShort: [
-					"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"
-				],
-				dayOfWeek: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
-			},
-			nl: { // Dutch
-				months: [
-					"januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"
-				],
-				dayOfWeekShort: [
-					"zo", "ma", "di", "wo", "do", "vr", "za"
-				],
-				dayOfWeek: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"]
-			},
-			tr: { // Turkish
-				months: [
-					"Ocak", "Åžubat", "Mart", "Nisan", "MayÄ±s", "Haziran", "Temmuz", "AÄŸustos", "EylÃ¼l", "Ekim", "KasÄ±m", "AralÄ±k"
-				],
-				dayOfWeekShort: [
-					"Paz", "Pts", "Sal", "Ã‡ar", "Per", "Cum", "Cts"
-				],
-				dayOfWeek: ["Pazar", "Pazartesi", "SalÄ±", "Ã‡arÅŸamba", "PerÅŸembe", "Cuma", "Cumartesi"]
-			},
-			fr: { //French
-				months: [
-					"Janvier", "FÃ©vrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "AoÃ»t", "Septembre", "Octobre", "Novembre", "DÃ©cembre"
-				],
-				dayOfWeekShort: [
-					"Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"
-				],
-				dayOfWeek: ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"]
-			},
-			es: { // Spanish
-				months: [
-					"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-				],
-				dayOfWeekShort: [
-					"Dom", "Lun", "Mar", "MiÃ©", "Jue", "Vie", "SÃ¡b"
-				],
-				dayOfWeek: ["Domingo", "Lunes", "Martes", "MiÃ©rcoles", "Jueves", "Viernes", "SÃ¡bado"]
-			},
 			th: { // Thai
 				months: [
 					"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
@@ -738,359 +612,7 @@ var DateFormatter;
 					'อา.', 'จ.', 'อ­.', 'พ.', 'พฤ.', 'ศ.', 'ส.'
 				],
 				dayOfWeek: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัส", "ศุกร์", "เสาร์"]
-			},
-			pl: { // Polish
-				months: [
-					"styczeÅ„", "luty", "marzec", "kwiecieÅ„", "maj", "czerwiec", "lipiec", "sierpieÅ„", "wrzesieÅ„", "paÅºdziernik", "listopad", "grudzieÅ„"
-				],
-				dayOfWeekShort: [
-					"nd", "pn", "wt", "Å›r", "cz", "pt", "sb"
-				],
-				dayOfWeek: ["niedziela", "poniedziaÅ‚ek", "wtorek", "Å›roda", "czwartek", "piÄ…tek", "sobota"]
-			},
-			pt: { // Portuguese
-				months: [
-					"Janeiro", "Fevereiro", "MarÃ§o", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-				],
-				dayOfWeekShort: [
-					"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"
-				],
-				dayOfWeek: ["Domingo", "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta", "SÃ¡bado"]
-			},
-			ch: { // Simplified Chinese
-				months: [
-					"ä¸€æœˆ", "äºŒæœˆ", "ä¸‰æœˆ", "å››æœˆ", "äº”æœˆ", "å…­æœˆ", "ä¸ƒæœˆ", "å…«æœˆ", "ä¹æœˆ", "åæœˆ", "åä¸€æœˆ", "åäºŒæœˆ"
-				],
-				dayOfWeekShort: [
-					"æ—¥", "ä¸€", "äºŒ", "ä¸‰", "å››", "äº”", "å…­"
-				]
-			},
-			se: { // Swedish
-				months: [
-					"Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September",  "Oktober", "November", "December"
-				],
-				dayOfWeekShort: [
-					"SÃ¶n", "MÃ¥n", "Tis", "Ons", "Tor", "Fre", "LÃ¶r"
-				]
-			},
-			kr: { // Korean
-				months: [
-					"1ì›”", "2ì›”", "3ì›”", "4ì›”", "5ì›”", "6ì›”", "7ì›”", "8ì›”", "9ì›”", "10ì›”", "11ì›”", "12ì›”"
-				],
-				dayOfWeekShort: [
-					"ì¼", "ì›”", "í™”", "ìˆ˜", "ëª©", "ê¸ˆ", "í† "
-				],
-				dayOfWeek: ["ì¼ìš”ì¼", "ì›”ìš”ì¼", "í™”ìš”ì¼", "ìˆ˜ìš”ì¼", "ëª©ìš”ì¼", "ê¸ˆìš”ì¼", "í† ìš”ì¼"]
-			},
-			it: { // Italian
-				months: [
-					"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
-				],
-				dayOfWeekShort: [
-					"Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"
-				],
-				dayOfWeek: ["Domenica", "LunedÃ¬", "MartedÃ¬", "MercoledÃ¬", "GiovedÃ¬", "VenerdÃ¬", "Sabato"]
-			},
-			da: { // Dansk
-				months: [
-					"January", "Februar", "Marts", "April", "Maj", "Juni", "July", "August", "September", "Oktober", "November", "December"
-				],
-				dayOfWeekShort: [
-					"SÃ¸n", "Man", "Tir", "Ons", "Tor", "Fre", "LÃ¸r"
-				],
-				dayOfWeek: ["sÃ¸ndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lÃ¸rdag"]
-			},
-			no: { // Norwegian
-				months: [
-					"Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember"
-				],
-				dayOfWeekShort: [
-					"SÃ¸n", "Man", "Tir", "Ons", "Tor", "Fre", "LÃ¸r"
-				],
-				dayOfWeek: ['SÃ¸ndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'LÃ¸rdag']
-			},
-			ja: { // Japanese
-				months: [
-					"1æœˆ", "2æœˆ", "3æœˆ", "4æœˆ", "5æœˆ", "6æœˆ", "7æœˆ", "8æœˆ", "9æœˆ", "10æœˆ", "11æœˆ", "12æœˆ"
-				],
-				dayOfWeekShort: [
-					"æ—¥", "æœˆ", "ç«", "æ°´", "æœ¨", "é‡‘", "åœŸ"
-				],
-				dayOfWeek: ["æ—¥æ›œ", "æœˆæ›œ", "ç«æ›œ", "æ°´æ›œ", "æœ¨æ›œ", "é‡‘æ›œ", "åœŸæ›œ"]
-			},
-			vi: { // Vietnamese
-				months: [
-					"ThÃ¡ng 1", "ThÃ¡ng 2", "ThÃ¡ng 3", "ThÃ¡ng 4", "ThÃ¡ng 5", "ThÃ¡ng 6", "ThÃ¡ng 7", "ThÃ¡ng 8", "ThÃ¡ng 9", "ThÃ¡ng 10", "ThÃ¡ng 11", "ThÃ¡ng 12"
-				],
-				dayOfWeekShort: [
-					"CN", "T2", "T3", "T4", "T5", "T6", "T7"
-				],
-				dayOfWeek: ["Chá»§ nháº­t", "Thá»© hai", "Thá»© ba", "Thá»© tÆ°", "Thá»© nÄƒm", "Thá»© sÃ¡u", "Thá»© báº£y"]
-			},
-			sl: { // SlovenÅ¡Äina
-				months: [
-					"Januar", "Februar", "Marec", "April", "Maj", "Junij", "Julij", "Avgust", "September", "Oktober", "November", "December"
-				],
-				dayOfWeekShort: [
-					"Ned", "Pon", "Tor", "Sre", "ÄŒet", "Pet", "Sob"
-				],
-				dayOfWeek: ["Nedelja", "Ponedeljek", "Torek", "Sreda", "ÄŒetrtek", "Petek", "Sobota"]
-			},
-			cs: { // ÄŒeÅ¡tina
-				months: [
-					"Leden", "Ãšnor", "BÅ™ezen", "Duben", "KvÄ›ten", "ÄŒerven", "ÄŒervenec", "Srpen", "ZÃ¡Å™Ã­", "Å˜Ã­jen", "Listopad", "Prosinec"
-				],
-				dayOfWeekShort: [
-					"Ne", "Po", "Ãšt", "St", "ÄŒt", "PÃ¡", "So"
-				]
-			},
-			hu: { // Hungarian
-				months: [
-					"JanuÃ¡r", "FebruÃ¡r", "MÃ¡rcius", "Ãprilis", "MÃ¡jus", "JÃºnius", "JÃºlius", "Augusztus", "Szeptember", "OktÃ³ber", "November", "December"
-				],
-				dayOfWeekShort: [
-					"Va", "HÃ©", "Ke", "Sze", "Cs", "PÃ©", "Szo"
-				],
-				dayOfWeek: ["vasÃ¡rnap", "hÃ©tfÅ‘", "kedd", "szerda", "csÃ¼tÃ¶rtÃ¶k", "pÃ©ntek", "szombat"]
-			},
-			az: { //Azerbaijanian (Azeri)
-				months: [
-					"Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul", "Avqust", "Sentyabr", "Oktyabr", "Noyabr", "Dekabr"
-				],
-				dayOfWeekShort: [
-					"B", "Be", "Ã‡a", "Ã‡", "Ca", "C", "Åž"
-				],
-				dayOfWeek: ["Bazar", "Bazar ertÉ™si", "Ã‡É™rÅŸÉ™nbÉ™ axÅŸamÄ±", "Ã‡É™rÅŸÉ™nbÉ™", "CÃ¼mÉ™ axÅŸamÄ±", "CÃ¼mÉ™", "ÅžÉ™nbÉ™"]
-			},
-			bs: { //Bosanski
-				months: [
-					"Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"
-				],
-				dayOfWeekShort: [
-					"Ned", "Pon", "Uto", "Sri", "ÄŒet", "Pet", "Sub"
-				],
-				dayOfWeek: ["Nedjelja","Ponedjeljak", "Utorak", "Srijeda", "ÄŒetvrtak", "Petak", "Subota"]
-			},
-			ca: { //CatalÃ 
-				months: [
-					"Gener", "Febrer", "MarÃ§", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"
-				],
-				dayOfWeekShort: [
-					"Dg", "Dl", "Dt", "Dc", "Dj", "Dv", "Ds"
-				],
-				dayOfWeek: ["Diumenge", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte"]
-			},
-			'en-GB': { //English (British)
-				months: [
-					"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-				],
-				dayOfWeekShort: [
-					"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-				],
-				dayOfWeek: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-			},
-			et: { //"Eesti"
-				months: [
-					"Jaanuar", "Veebruar", "MÃ¤rts", "Aprill", "Mai", "Juuni", "Juuli", "August", "September", "Oktoober", "November", "Detsember"
-				],
-				dayOfWeekShort: [
-					"P", "E", "T", "K", "N", "R", "L"
-				],
-				dayOfWeek: ["PÃ¼hapÃ¤ev", "EsmaspÃ¤ev", "TeisipÃ¤ev", "KolmapÃ¤ev", "NeljapÃ¤ev", "Reede", "LaupÃ¤ev"]
-			},
-			eu: { //Euskara
-				months: [
-					"Urtarrila", "Otsaila", "Martxoa", "Apirila", "Maiatza", "Ekaina", "Uztaila", "Abuztua", "Iraila", "Urria", "Azaroa", "Abendua"
-				],
-				dayOfWeekShort: [
-					"Ig.", "Al.", "Ar.", "Az.", "Og.", "Or.", "La."
-				],
-				dayOfWeek: ['Igandea', 'Astelehena', 'Asteartea', 'Asteazkena', 'Osteguna', 'Ostirala', 'Larunbata']
-			},
-			fi: { //Finnish (Suomi)
-				months: [
-					"Tammikuu", "Helmikuu", "Maaliskuu", "Huhtikuu", "Toukokuu", "KesÃ¤kuu", "HeinÃ¤kuu", "Elokuu", "Syyskuu", "Lokakuu", "Marraskuu", "Joulukuu"
-				],
-				dayOfWeekShort: [
-					"Su", "Ma", "Ti", "Ke", "To", "Pe", "La"
-				],
-				dayOfWeek: ["sunnuntai", "maanantai", "tiistai", "keskiviikko", "torstai", "perjantai", "lauantai"]
-			},
-			gl: { //Galego
-				months: [
-					"Xan", "Feb", "Maz", "Abr", "Mai", "Xun", "Xul", "Ago", "Set", "Out", "Nov", "Dec"
-				],
-				dayOfWeekShort: [
-					"Dom", "Lun", "Mar", "Mer", "Xov", "Ven", "Sab"
-				],
-				dayOfWeek: ["Domingo", "Luns", "Martes", "MÃ©rcores", "Xoves", "Venres", "SÃ¡bado"]
-			},
-			hr: { //Hrvatski
-				months: [
-					"SijeÄanj", "VeljaÄa", "OÅ¾ujak", "Travanj", "Svibanj", "Lipanj", "Srpanj", "Kolovoz", "Rujan", "Listopad", "Studeni", "Prosinac"
-				],
-				dayOfWeekShort: [
-					"Ned", "Pon", "Uto", "Sri", "ÄŒet", "Pet", "Sub"
-				],
-				dayOfWeek: ["Nedjelja", "Ponedjeljak", "Utorak", "Srijeda", "ÄŒetvrtak", "Petak", "Subota"]
-			},
-			ko: { //Korean (í•œêµ­ì–´)
-				months: [
-					"1ì›”", "2ì›”", "3ì›”", "4ì›”", "5ì›”", "6ì›”", "7ì›”", "8ì›”", "9ì›”", "10ì›”", "11ì›”", "12ì›”"
-				],
-				dayOfWeekShort: [
-					"ì¼", "ì›”", "í™”", "ìˆ˜", "ëª©", "ê¸ˆ", "í† "
-				],
-				dayOfWeek: ["ì¼ìš”ì¼", "ì›”ìš”ì¼", "í™”ìš”ì¼", "ìˆ˜ìš”ì¼", "ëª©ìš”ì¼", "ê¸ˆìš”ì¼", "í† ìš”ì¼"]
-			},
-			lt: { //Lithuanian (lietuviÅ³)
-				months: [
-					"Sausio", "Vasario", "Kovo", "BalandÅ¾io", "GeguÅ¾Ä—s", "BirÅ¾elio", "Liepos", "RugpjÅ«Äio", "RugsÄ—jo", "Spalio", "LapkriÄio", "GruodÅ¾io"
-				],
-				dayOfWeekShort: [
-					"Sek", "Pir", "Ant", "Tre", "Ket", "Pen", "Å eÅ¡"
-				],
-				dayOfWeek: ["Sekmadienis", "Pirmadienis", "Antradienis", "TreÄiadienis", "Ketvirtadienis", "Penktadienis", "Å eÅ¡tadienis"]
-			},
-			lv: { //Latvian (LatvieÅ¡u)
-				months: [
-					"JanvÄris", "FebruÄris", "Marts", "AprÄ«lis ", "Maijs", "JÅ«nijs", "JÅ«lijs", "Augusts", "Septembris", "Oktobris", "Novembris", "Decembris"
-				],
-				dayOfWeekShort: [
-					"Sv", "Pr", "Ot", "Tr", "Ct", "Pk", "St"
-				],
-				dayOfWeek: ["SvÄ“tdiena", "Pirmdiena", "Otrdiena", "TreÅ¡diena", "Ceturtdiena", "Piektdiena", "Sestdiena"]
-			},
-			mk: { //Macedonian (ÐœÐ°ÐºÐµÐ´Ð¾Ð½ÑÐºÐ¸)
-				months: [
-					"Ñ˜Ð°Ð½ÑƒÐ°Ñ€Ð¸", "Ñ„ÐµÐ²Ñ€ÑƒÐ°Ñ€Ð¸", "Ð¼Ð°Ñ€Ñ‚", "Ð°Ð¿Ñ€Ð¸Ð»", "Ð¼Ð°Ñ˜", "Ñ˜ÑƒÐ½Ð¸", "Ñ˜ÑƒÐ»Ð¸", "Ð°Ð²Ð³ÑƒÑÑ‚", "ÑÐµÐ¿Ñ‚ÐµÐ¼Ð²Ñ€Ð¸", "Ð¾ÐºÑ‚Ð¾Ð¼Ð²Ñ€Ð¸", "Ð½Ð¾ÐµÐ¼Ð²Ñ€Ð¸", "Ð´ÐµÐºÐµÐ¼Ð²Ñ€Ð¸"
-				],
-				dayOfWeekShort: [
-					"Ð½ÐµÐ´", "Ð¿Ð¾Ð½", "Ð²Ñ‚Ð¾", "ÑÑ€Ðµ", "Ñ‡ÐµÑ‚", "Ð¿ÐµÑ‚", "ÑÐ°Ð±"
-				],
-				dayOfWeek: ["ÐÐµÐ´ÐµÐ»Ð°", "ÐŸÐ¾Ð½ÐµÐ´ÐµÐ»Ð½Ð¸Ðº", "Ð’Ñ‚Ð¾Ñ€Ð½Ð¸Ðº", "Ð¡Ñ€ÐµÐ´Ð°", "Ð§ÐµÑ‚Ð²Ñ€Ñ‚Ð¾Ðº", "ÐŸÐµÑ‚Ð¾Ðº", "Ð¡Ð°Ð±Ð¾Ñ‚Ð°"]
-			},
-			mn: { //Mongolian (ÐœÐ¾Ð½Ð³Ð¾Ð»)
-				months: [
-					"1-Ñ€ ÑÐ°Ñ€", "2-Ñ€ ÑÐ°Ñ€", "3-Ñ€ ÑÐ°Ñ€", "4-Ñ€ ÑÐ°Ñ€", "5-Ñ€ ÑÐ°Ñ€", "6-Ñ€ ÑÐ°Ñ€", "7-Ñ€ ÑÐ°Ñ€", "8-Ñ€ ÑÐ°Ñ€", "9-Ñ€ ÑÐ°Ñ€", "10-Ñ€ ÑÐ°Ñ€", "11-Ñ€ ÑÐ°Ñ€", "12-Ñ€ ÑÐ°Ñ€"
-				],
-				dayOfWeekShort: [
-					"Ð”Ð°Ð²", "ÐœÑÐ³", "Ð›Ñ…Ð°", "ÐŸÒ¯Ñ€", "Ð‘ÑÐ½", "Ð‘ÑÐ¼", "ÐÑÐ¼"
-				],
-				dayOfWeek: ["Ð”Ð°Ð²Ð°Ð°", "ÐœÑÐ³Ð¼Ð°Ñ€", "Ð›Ñ…Ð°Ð³Ð²Ð°", "ÐŸÒ¯Ñ€ÑÐ²", "Ð‘Ð°Ð°ÑÐ°Ð½", "Ð‘ÑÐ¼Ð±Ð°", "ÐÑÐ¼"]
-			},
-			'pt-BR': { //PortuguÃªs(Brasil)
-				months: [
-					"Janeiro", "Fevereiro", "MarÃ§o", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-				],
-				dayOfWeekShort: [
-					"Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "SÃ¡b"
-				],
-				dayOfWeek: ["Domingo", "Segunda", "TerÃ§a", "Quarta", "Quinta", "Sexta", "SÃ¡bado"]
-			},
-			sk: { //SlovenÄina
-				months: [
-					"JanuÃ¡r", "FebruÃ¡r", "Marec", "AprÃ­l", "MÃ¡j", "JÃºn", "JÃºl", "August", "September", "OktÃ³ber", "November", "December"
-				],
-				dayOfWeekShort: [
-					"Ne", "Po", "Ut", "St", "Å t", "Pi", "So"
-				],
-				dayOfWeek: ["NedeÄ¾a", "Pondelok", "Utorok", "Streda", "Å tvrtok", "Piatok", "Sobota"]
-			},
-			sq: { //Albanian (Shqip)
-				months: [
-					"Janar", "Shkurt", "Mars", "Prill", "Maj", "Qershor", "Korrik", "Gusht", "Shtator", "Tetor", "NÃ«ntor", "Dhjetor"
-				],
-				dayOfWeekShort: [
-					"Die", "HÃ«n", "Mar", "MÃ«r", "Enj", "Pre", "Shtu"
-				],
-				dayOfWeek: ["E Diel", "E HÃ«nÃ«", "E MartÄ“", "E MÃ«rkurÃ«", "E Enjte", "E Premte", "E ShtunÃ«"]
-			},
-			'sr-YU': { //Serbian (Srpski)
-				months: [
-					"Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"
-				],
-				dayOfWeekShort: [
-					"Ned", "Pon", "Uto", "Sre", "Äet", "Pet", "Sub"
-				],
-				dayOfWeek: ["Nedelja","Ponedeljak", "Utorak", "Sreda", "ÄŒetvrtak", "Petak", "Subota"]
-			},
-			sr: { //Serbian Cyrillic (Ð¡Ñ€Ð¿ÑÐºÐ¸)
-				months: [
-					"Ñ˜Ð°Ð½ÑƒÐ°Ñ€", "Ñ„ÐµÐ±Ñ€ÑƒÐ°Ñ€", "Ð¼Ð°Ñ€Ñ‚", "Ð°Ð¿Ñ€Ð¸Ð»", "Ð¼Ð°Ñ˜", "Ñ˜ÑƒÐ½", "Ñ˜ÑƒÐ»", "Ð°Ð²Ð³ÑƒÑÑ‚", "ÑÐµÐ¿Ñ‚ÐµÐ¼Ð±Ð°Ñ€", "Ð¾ÐºÑ‚Ð¾Ð±Ð°Ñ€", "Ð½Ð¾Ð²ÐµÐ¼Ð±Ð°Ñ€", "Ð´ÐµÑ†ÐµÐ¼Ð±Ð°Ñ€"
-				],
-				dayOfWeekShort: [
-					"Ð½ÐµÐ´", "Ð¿Ð¾Ð½", "ÑƒÑ‚Ð¾", "ÑÑ€Ðµ", "Ñ‡ÐµÑ‚", "Ð¿ÐµÑ‚", "ÑÑƒÐ±"
-				],
-				dayOfWeek: ["ÐÐµÐ´ÐµÑ™Ð°","ÐŸÐ¾Ð½ÐµÐ´ÐµÑ™Ð°Ðº", "Ð£Ñ‚Ð¾Ñ€Ð°Ðº", "Ð¡Ñ€ÐµÐ´Ð°", "Ð§ÐµÑ‚Ð²Ñ€Ñ‚Ð°Ðº", "ÐŸÐµÑ‚Ð°Ðº", "Ð¡ÑƒÐ±Ð¾Ñ‚Ð°"]
-			},
-			sv: { //Svenska
-				months: [
-					"Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"
-				],
-				dayOfWeekShort: [
-					"SÃ¶n", "MÃ¥n", "Tis", "Ons", "Tor", "Fre", "LÃ¶r"
-				],
-				dayOfWeek: ["SÃ¶ndag", "MÃ¥ndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "LÃ¶rdag"]
-			},
-			'zh-TW': { //Traditional Chinese (ç¹é«”ä¸­æ–‡)
-				months: [
-					"ä¸€æœˆ", "äºŒæœˆ", "ä¸‰æœˆ", "å››æœˆ", "äº”æœˆ", "å…­æœˆ", "ä¸ƒæœˆ", "å…«æœˆ", "ä¹æœˆ", "åæœˆ", "åä¸€æœˆ", "åäºŒæœˆ"
-				],
-				dayOfWeekShort: [
-					"æ—¥", "ä¸€", "äºŒ", "ä¸‰", "å››", "äº”", "å…­"
-				],
-				dayOfWeek: ["æ˜ŸæœŸæ—¥", "æ˜ŸæœŸä¸€", "æ˜ŸæœŸäºŒ", "æ˜ŸæœŸä¸‰", "æ˜ŸæœŸå››", "æ˜ŸæœŸäº”", "æ˜ŸæœŸå…­"]
-			},
-			zh: { //Simplified Chinese (ç®€ä½“ä¸­æ–‡)
-				months: [
-					"ä¸€æœˆ", "äºŒæœˆ", "ä¸‰æœˆ", "å››æœˆ", "äº”æœˆ", "å…­æœˆ", "ä¸ƒæœˆ", "å…«æœˆ", "ä¹æœˆ", "åæœˆ", "åä¸€æœˆ", "åäºŒæœˆ"
-				],
-				dayOfWeekShort: [
-					"æ—¥", "ä¸€", "äºŒ", "ä¸‰", "å››", "äº”", "å…­"
-				],
-				dayOfWeek: ["æ˜ŸæœŸæ—¥", "æ˜ŸæœŸä¸€", "æ˜ŸæœŸäºŒ", "æ˜ŸæœŸä¸‰", "æ˜ŸæœŸå››", "æ˜ŸæœŸäº”", "æ˜ŸæœŸå…­"]
-			},
-			he: { //Hebrew (×¢×‘×¨×™×ª)
-				months: [
-					'×™× ×•××¨', '×¤×‘×¨×•××¨', '×ž×¨×¥', '××¤×¨×™×œ', '×ž××™', '×™×•× ×™', '×™×•×œ×™', '××•×’×•×¡×˜', '×¡×¤×˜×ž×‘×¨', '××•×§×˜×•×‘×¨', '× ×•×‘×ž×‘×¨', '×“×¦×ž×‘×¨'
-				],
-				dayOfWeekShort: [
-					'×\'', '×‘\'', '×’\'', '×“\'', '×”\'', '×•\'', '×©×‘×ª'
-				],
-				dayOfWeek: ["×¨××©×•×Ÿ", "×©× ×™", "×©×œ×™×©×™", "×¨×‘×™×¢×™", "×—×ž×™×©×™", "×©×™×©×™", "×©×‘×ª", "×¨××©×•×Ÿ"]
-			},
-			hy: { // Armenian
-				months: [
-					"Õ€Õ¸Ö‚Õ¶Õ¾Õ¡Ö€", "Õ“Õ¥Õ¿Ö€Õ¾Õ¡Ö€", "Õ„Õ¡Ö€Õ¿", "Ô±ÕºÖ€Õ«Õ¬", "Õ„Õ¡ÕµÕ«Õ½", "Õ€Õ¸Ö‚Õ¶Õ«Õ½", "Õ€Õ¸Ö‚Õ¬Õ«Õ½", "Õ•Õ£Õ¸Õ½Õ¿Õ¸Õ½", "ÕÕ¥ÕºÕ¿Õ¥Õ´Õ¢Õ¥Ö€", "Õ€Õ¸Õ¯Õ¿Õ¥Õ´Õ¢Õ¥Ö€", "Õ†Õ¸ÕµÕ¥Õ´Õ¢Õ¥Ö€", "Ô´Õ¥Õ¯Õ¿Õ¥Õ´Õ¢Õ¥Ö€"
-				],
-				dayOfWeekShort: [
-					"Ô¿Õ«", "ÔµÖ€Õ¯", "ÔµÖ€Ö„", "Õ‰Õ¸Ö€", "Õ€Õ¶Õ£", "ÕˆÖ‚Ö€Õ¢", "Õ‡Õ¢Õ©"
-				],
-				dayOfWeek: ["Ô¿Õ«Ö€Õ¡Õ¯Õ«", "ÔµÖ€Õ¯Õ¸Ö‚Õ·Õ¡Õ¢Õ©Õ«", "ÔµÖ€Õ¥Ö„Õ·Õ¡Õ¢Õ©Õ«", "Õ‰Õ¸Ö€Õ¥Ö„Õ·Õ¡Õ¢Õ©Õ«", "Õ€Õ«Õ¶Õ£Õ·Õ¡Õ¢Õ©Õ«", "ÕˆÖ‚Ö€Õ¢Õ¡Õ©", "Õ‡Õ¡Õ¢Õ¡Õ©"]
-			},
-			kg: { // Kyrgyz
-				months: [
-					'Ò®Ñ‡Ñ‚Ò¯Ð½ Ð°Ð¹Ñ‹', 'Ð‘Ð¸Ñ€Ð´Ð¸Ð½ Ð°Ð¹Ñ‹', 'Ð–Ð°Ð»Ð³Ð°Ð½ ÐšÑƒÑ€Ð°Ð½', 'Ð§Ñ‹Ð½ ÐšÑƒÑ€Ð°Ð½', 'Ð‘ÑƒÐ³Ñƒ', 'ÐšÑƒÐ»Ð¶Ð°', 'Ð¢ÐµÐºÐµ', 'Ð‘Ð°Ñˆ ÐžÐ¾Ð½Ð°', 'ÐÑÐº ÐžÐ¾Ð½Ð°', 'Ð¢Ð¾Ð³ÑƒÐ·Ð´ÑƒÐ½ Ð°Ð¹Ñ‹', 'Ð–ÐµÑ‚Ð¸Ð½Ð¸Ð½ Ð°Ð¹Ñ‹', 'Ð‘ÐµÑˆÑ‚Ð¸Ð½ Ð°Ð¹Ñ‹'
-				],
-				dayOfWeekShort: [
-					"Ð–ÐµÐº", "Ð”Ò¯Ð¹", "Ð¨ÐµÐ¹", "Ð¨Ð°Ñ€", "Ð‘ÐµÐ¹", "Ð–ÑƒÐ¼", "Ð˜ÑˆÐµ"
-				],
-				dayOfWeek: [
-					"Ð–ÐµÐºÑˆÐµÐ¼Ð±", "Ð”Ò¯Ð¹ÑˆÓ©Ð¼Ð±", "Ð¨ÐµÐ¹ÑˆÐµÐ¼Ð±", "Ð¨Ð°Ñ€ÑˆÐµÐ¼Ð±", "Ð‘ÐµÐ¹ÑˆÐµÐ¼Ð±Ð¸", "Ð–ÑƒÐ¼Ð°", "Ð˜ÑˆÐµÐ½Ð±"
-				]
-			},
-			rm: { // Romansh
-				months: [
-					"Schaner", "Favrer", "Mars", "Avrigl", "Matg", "Zercladur", "Fanadur", "Avust", "Settember", "October", "November", "December"
-				],
-				dayOfWeekShort: [
-					"Du", "Gli", "Ma", "Me", "Gie", "Ve", "So"
-				],
-				dayOfWeek: [
-					"Dumengia", "Glindesdi", "Mardi", "Mesemna", "Gievgia", "Venderdi", "Sonda"
-				]
-			},
+			}
 		},
 		value: '',
 		rtl: false,
@@ -1184,8 +706,8 @@ var DateFormatter;
 	};
 
 	var dateHelper = null,
-		globalLocaleDefault = 'en',
-		globalLocale = 'en';
+		globalLocaleDefault = 'th',
+		globalLocale = 'th';
 
 	var dateFormatterOptionsDefault = {
 		meridiem: ['AM', 'PM']
@@ -1567,12 +1089,12 @@ var DateFormatter;
 
 					datetimepicker.trigger('xchange.xdsoft');
 					if (options.onChangeMonth && $.isFunction(options.onChangeMonth)) {
-//						console.log("onChangeMonth");
+						console.log("onChangeMonth");
 						options.onChangeMonth.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 					}
 
 					if (year !== _xdsoft_datetime.currentTime.getFullYear() && $.isFunction(options.onChangeYear)) {
-//						console.log("onChangeYear");
+						console.log("onChangeYear");
 						options.onChangeYear.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 					}
 				});
@@ -1886,12 +1408,12 @@ var DateFormatter;
 					_this.currentTime.setMonth(month);
 
 					if (options.onChangeMonth && $.isFunction(options.onChangeMonth)) {
-//						console.log("onChangeMonth2");
+						console.log("onChangeMonth2");
 						options.onChangeMonth.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 					}
 
 					if (year !== _this.currentTime.getFullYear() && $.isFunction(options.onChangeYear)) {
-//						console.log("onChangeYear2");
+						console.log("onChangeYear2");
 						options.onChangeYear.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 					}
 
@@ -1918,7 +1440,7 @@ var DateFormatter;
 					);
 					_this.currentTime.setMonth(month);
 					if (options.onChangeMonth && $.isFunction(options.onChangeMonth)) {
-//						console.log("onChangeMonth3");
+						console.log("onChangeMonth3");
 						options.onChangeMonth.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 					}
 					datetimepicker.trigger('xchange.xdsoft');
@@ -2021,7 +1543,13 @@ var DateFormatter;
 					if (currentDate > maxDate) {
 						return;
 					}
-					input.val(_xdsoft_datetime.str());
+
+					// var lastYear = currentDate.getFullYear()-1;
+					// var lastDayTH = (lastYear+543)+'/'+(currentDate.getMonth()+1)+'/'+currentDate.getDate();
+					// input.val(_xdsoft_datetime.str());
+
+					input.val(_xdsoft_datetime.str());	
+					input.val(lastDayTH);				
 					input.trigger('change');
 					datetimepicker.trigger('close.xdsoft');
 				});
@@ -2231,7 +1759,7 @@ var DateFormatter;
 
 						mounth_picker.find('.xdsoft_label span').eq(0).text(options.i18n[globalLocale].months[_xdsoft_datetime.currentTime.getMonth()]);
 						if(options.lang=='th'){
-						mounth_picker.find('.xdsoft_label span').eq(1).text(_xdsoft_datetime.currentTime.getFullYear()+543);							
+						mounth_picker.find('.xdsoft_label span').eq(1).text(_xdsoft_datetime.currentTime.getFullYear()/*+543*/);							
 						}else{
 						mounth_picker.find('.xdsoft_label span').eq(1).text(_xdsoft_datetime.currentTime.getFullYear());
 						}
@@ -2302,7 +1830,7 @@ var DateFormatter;
 
 						for (i = parseInt(options.yearStart, 10) + options.yearOffset; i <= parseInt(options.yearEnd, 10) + options.yearOffset; i += 1) {
 							if(options.lang=='th'){
-//								console.log(i);
+								// console.log(i);
 							opt += '<div class="xdsoft_option ' + (_xdsoft_datetime.currentTime.getFullYear() === i ? 'xdsoft_current' : '') + '" data-value="' + i + '">' + (i+543) + '</div>';								
 							}else{
 							opt += '<div class="xdsoft_option ' + (_xdsoft_datetime.currentTime.getFullYear() === i ? 'xdsoft_current' : '') + '" data-value="' + i + '">' + i + '</div>';
@@ -2349,7 +1877,7 @@ var DateFormatter;
 					timerclick += 1;
 					var $this = $(this),
 						currentTime = _xdsoft_datetime.currentTime;
-
+					console.log($(this))
 					if (currentTime === undefined || currentTime === null) {
 						_xdsoft_datetime.currentTime = _xdsoft_datetime.now();
 						currentTime = _xdsoft_datetime.currentTime;
@@ -2358,7 +1886,7 @@ var DateFormatter;
 					if ($this.hasClass('xdsoft_disabled')) {
 						return false;
 					}
-
+					
 					currentTime.setDate(1);
 					currentTime.setFullYear($this.data('year'));
 					currentTime.setMonth($this.data('month'));
@@ -2369,7 +1897,7 @@ var DateFormatter;
 					input.val(_xdsoft_datetime.str());
 
 					if (options.onSelectDate &&	$.isFunction(options.onSelectDate)) {
-//						console.log("onSelectDate"+" == "+_xdsoft_datetime.currentTime);
+						console.log("onSelectDate"+" == "+_xdsoft_datetime.currentTime);
 						options.onSelectDate.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'), xdevent);
 					}
 
@@ -2405,7 +1933,7 @@ var DateFormatter;
 					datetimepicker.data('input').val(_xdsoft_datetime.str());
 
 					if (options.onSelectTime && $.isFunction(options.onSelectTime)) {
-//						console.log("onSelectTime");
+						console.log("onSelectTime");
 						options.onSelectTime.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'), xdevent);
 					}
 					datetimepicker.data('changed', true);
@@ -2459,7 +1987,7 @@ var DateFormatter;
 				.on('changedatetime.xdsoft', function (event) {
 					if (options.onChangeDateTime && $.isFunction(options.onChangeDateTime)) {
 						var $input = datetimepicker.data('input');
-	//					console.log("onChangeDateTime");
+						console.log("onChangeDateTime");
 						options.onChangeDateTime.call(datetimepicker, _xdsoft_datetime.currentTime, $input, event);
 						delete options.value;
 						$input.trigger('change');
@@ -2467,7 +1995,7 @@ var DateFormatter;
 				})
 				.on('generate.xdsoft', function () {
 					if (options.onGenerate && $.isFunction(options.onGenerate)) {
-//						console.log("onGenerate");
+						console.log("onGenerate",datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 						options.onGenerate.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
 					}
 					if (triggerAfterOpen) {
@@ -2538,7 +2066,7 @@ var DateFormatter;
 				.on('open.xdsoft', function (event) {
 					var onShow = true;
 					if (options.onShow && $.isFunction(options.onShow)) {
-//						console.log("onShow");
+						console.log("onShow");
 						onShow = options.onShow.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'), event);
 					}
 					if (onShow !== false) {
@@ -2563,7 +2091,7 @@ var DateFormatter;
 							.find('.xdsoft_select')
 								.hide();
 					if (options.onClose && $.isFunction(options.onClose)) {
-//						console.log("onClose");
+						console.log("onClose");
 						onClose = options.onClose.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'), event);
 					}
 					if (onClose !== false && !options.opened && !options.inline) {

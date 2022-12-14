@@ -16,11 +16,24 @@ class QuestionController extends BaseController
     public function getListEstimate($round,$status = 'wait')
     {
         try{
+            $subEstimateSelect = 'application_id app_id, MAX(updated_at) updated_at, '
+                . 'MIN(request_status) request_status';
+            if($round == 'pre-screen'){
+                $subEstimateSelect .= ', MIN(status_pre) show_status';
+            } else {
+                $subEstimateSelect .= ', MIN(status_onsite) show_status';
+            }
+
             $subEstimate = $this->db->table('estimate')
-                ->select('application_id app_id, MAX(updated_at) updated_at',false)
+                ->select(
+                    $subEstimateSelect
+                )
+                ->where([
+                    'estimate_by' => session()->get('id')
+                ])
                 ->groupBy('application_id')
                 ->getCompiledSelect();
-                
+            
             $subComm = $this->db->table('committees')
                 ->select('application_form_id afid')
                 ->where('assessment_round',($round == 'pre-screen' ? 1 : 2))
@@ -28,20 +41,22 @@ class QuestionController extends BaseController
                 ->orLike('admin_id_supporting','"'.session()->get('id').'"')
                 ->orLike('admin_id_responsibility','"'.session()->get('id').'"')
                 ->getCompiledSelect();
-                
+                      
             $builder = $this->db->table('application_form af')
                 ->select(
                     'af.id, af.attraction_name_th att_name, at.name type, 
                     ats.name section, us.stage, us.status, 
                     IFNULL(inse.updated_at,\'\') updated_at,
-                    IFNULL(es.score_prescreen_tt,0) score_pre,
-                    IFNULL(es.score_onsite_tt,0) score_onsite'
+                    IFNULL(es.score_pre,0) score_pre,
+                    IFNULL(es.score_onsite,0) score_onsite,
+                    IFNULL(inse.request_status,\'\') request_status,
+                    IFNULL(inse.show_status,\'\') show_status'                    
                 )
                 ->join('application_type at','af.application_type_id = at.id')
                 ->join('application_type_sub ats','af.application_type_sub_id = ats.id','LEFT')
                 ->join('users_stage us','af.created_by = us.user_id')
                 ->join('('.$subComm.') insc','insc.afid = af.id')
-                ->join('estimate_score es','af.id = es.id','LEFT')
+                ->join('estimate_individual es','insc.afid = es.application_id','LEFT')
                 ->join('('.$subEstimate.') inse','af.id = inse.app_id','LEFT');
 
             if($round == 'pre-screen'){
@@ -55,7 +70,8 @@ class QuestionController extends BaseController
             } else {
                 $builder = $builder->whereIn('us.status',[6,7]);
             }
-
+            // $builder = $builder->getCompiledSelect();
+            // echo $builder;exit;
             $builder = $builder->get();
             $list = [];
             

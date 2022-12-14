@@ -422,7 +422,7 @@ const setDropdown = (qt,cate,seg) => {
             cp, cl;        
             
         if(Number(v.onside_status) == 1){
-            cp = !empty(v.score_onsite) && seg != k ? 'complete' : '';
+            cp = !empty(v.score_onsite) ? 'complete' : '';
         } else {
             cp = 'hold';
         }

@@ -196,7 +196,7 @@ tabindex="-1" aria-labelledby="modal-score-label" aria-hidden="true">
         <div class="modal-content">
             <div class="modal-header border-bottom-0">
                 <span class="modal-title text-base-main fw-semibold" id="modal-score-label">
-                    สรุปผลการประเมิน
+                    ผลการประเมิน
                 </span>
                 <button type="button" class="btn-close"
                 onclick="boards.closeScore()"></button>
@@ -207,14 +207,12 @@ tabindex="-1" aria-labelledby="modal-score-label" aria-hidden="true">
                         <tr>
                             <th class="text-center" width="33.34%">คะแนนรวม<br>(Pre-screen)</th>
                             <th class="text-center" width="33.34%">คะแนนรวม<br>(รอบลงพื้นที่)</th>
-                            <th class="text-center" width="33.34%">คะแนนรวมทั้งหมด</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center" id="td-spre">1.00</td>
-                            <td class="text-center" id="td-sons">5.00</td>
-                            <td class="text-center fw-semibold" id="td-stt">6.00</td>
+                            <td class="text-center" id="td-spre">0.00</td>
+                            <td class="text-center" id="td-sons">0.00</td>
                         </tr>
                     </tbody>
                 </table>

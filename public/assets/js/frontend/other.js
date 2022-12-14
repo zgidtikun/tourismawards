@@ -76,6 +76,21 @@ const setSpinner = (text = null) => {
     return html;
 }
 
+const convertYearThToEn = (date) => {
+    let arrayDate;
+
+    if(date.includes('/')){
+        arrayDate = date.split('/')
+    } 
+    else if(date.includes('-')){
+        arrayDate = date.split('-')
+    } else {
+        return '';
+    }
+
+    return (Number(arrayDate[0]) - 543)+'/'+arrayDate[1]+'/'+arrayDate[2];
+}
+
 const calcDate = (date1, date2) => {
     
     const dt_date1 = new Date(date1);
@@ -106,12 +121,19 @@ const calcDate = (date1, date2) => {
     
     const total_days = (years_passed * 365) + (months_passed * 30.417) + days_passed;
     
-    const result = ((years_passed == 1) ? years_passed + ' ' + yrsTxt[0] + ' ' : (years_passed > 1) ?
-        years_passed + ' ' + yrsTxt[1] + ' ' : '') +
-        ((months_passed == 1) ? months_passed + ' ' + mnthsTxt[0] : (months_passed > 1) ?
-            months_passed + ' ' + mnthsTxt[1] + ' ' : '') +
-        ((days_passed == 1) ? days_passed + ' ' + daysTxt[0] : (days_passed > 1) ?
-            days_passed + ' ' + daysTxt[1] : '');
+    let result = '';
+
+    if(years_passed >= 1){
+        result += years_passed + ' ' + yrsTxt[1] + ' ';
+    }
+
+    if(months_passed >= 1){
+        result += months_passed + ' ' + mnthsTxt[1] + ' ';
+    }
+
+    if(days_passed >= 1){
+        result += days_passed + ' ' + daysTxt[1] + ' ';
+    }
             
     return {
         "total_year": years_passed,

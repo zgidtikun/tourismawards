@@ -472,8 +472,8 @@ class App extends BaseConfig
     public $APPForm_expired = '2023-02-28';
     public $Pre_expired = '2023-03-05';
     public $announcement_date = '2024-01-01';
-    public $JudgingCriteriaPre = 25;
-    public $JudgingCriteriaOnst = 75;
+    public $JudgingCriteriaPre = 18;
+    public $JudgingCriteriaOnst = 57;
     public $JudgingCriteriaScore;
     public $script_v = 199;
 

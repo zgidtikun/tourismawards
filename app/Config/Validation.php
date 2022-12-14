@@ -76,7 +76,7 @@ class Validation extends BaseConfig
             ]
         ],
         'confirmemail' => [
-            'rules' => 'required||matches[email]',
+            'rules' => 'required|matches[email]',
             'errors' => [
                 'required' => 'กรุณายืนยันอีเมล',               
                 'matches' => 'การยืนยันอีเมลไม่ตรงกัน'
@@ -94,7 +94,6 @@ class Validation extends BaseConfig
             'rules' => 'required|matches[password]',
             'errors' => [
                 'required' => 'กรุณายืนยันรหัสผ่าน',
-                'min_length' => 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',
                 'matches' => 'การยืนยันรหัสผ่านไม่ตรงกัน'
             ]
         ],

@@ -39,7 +39,7 @@ const MapField = {
         ],
         s4: [
             { input: '#step4-name', variant: 'name', api: 'knitter_name', require: true },
-            { input: '#step4-position', variant: 'position', api: 'knitter_position', require: true },
+            { input: '#step4-position', variant: 'position', api: 'knitter_position', require: false },
             { input: '#step4-telephone', variant: 'telephone', api: 'knitter_tel', require: true },
             { input: '#step4-email', variant: 'email', api: 'knitter_email', require: true },
             { input: '#step4-lid', variant: 'lid', api: 'knitter_line', require: false },
@@ -98,6 +98,7 @@ const register = {
         currentStep: null,
         step1: {}, step2: {}, step3: {}, step4: {}, step5: {},
     },
+    currentDate: null,
     passYear: true,
     passYearCount: '',
     init: function(expired){        
@@ -273,14 +274,21 @@ const register = {
                             if(vulm.api == keya){
                                 if(!empty(vula)){
                                     tmp[str][vulm.variant] = vula;
-                                    
+
                                     if($(vulm.input).length > 0){
                                         let = attrType = $(vulm.input).attr('type');
                                         
                                         if($.inArray(attrType,['radio','checkbox']) === -1){
-                                            $(vulm.input).val(vula);
-                                        } else {                                            
-                                            $(vulm.id+vula).prop('checked',true);   
+                                            if(vulm.variant == 'openYear'){
+                                                $(vulm.input).val(vula); 
+                                                $('#step5-hiddenDate').val(convertYearThToEn(vula));
+                                            } else {
+                                                $(vulm.input).val(vula);  
+                                            }
+                                        } else { 
+                                            if(vulm.api != 'application_type_sub_id'){                                            
+                                                $(vulm.id+vula).prop('checked',true); 
+                                            }  
                                         }
                                     }
                                 }
@@ -294,6 +302,8 @@ const register = {
                 Object.assign(register.formData.step3, tmp['step3']);
                 Object.assign(register.formData.step4, tmp['step4']);
                 Object.assign(register.formData.step5, tmp['step5']);
+                
+                register.setAppTypeSub(register.formData.step1.appType)
                 
                 $.each(referance, function(key,ref){
                     if(ref.app == 'awards/application'){
@@ -684,43 +694,15 @@ $('#step4-email').on('keyup', function(){ register.formData.step4.email = $(this
 $('#step4-lid').on('keyup', function(){ register.formData.step4.lid = $(this).val(); register.change = true;});
 
 // Step 5
-$('#step5-openYear').on('change', function(){    
-    if(!empty($(this).val())){
-        let date = new Date(),
-            openDate = $(this).val().split('/');
-
-        let from = openDate[1]+'/'+openDate[2]+'/'+(Number(openDate[0]) - 543)
-            to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
-
-        let totalYear = calcDate(from,to);
-        
-        register.change = true;
-        register.passYear = true;
-        register.formData.step5.openYear = $(this).val();
-        register.formData.step5.totalYear = totalYear.result;
-        $('#step5-totalYear').val(totalYear.result);
-
-        let app = register.formData.step1.appType;
-        let confYear = register.appType.main.find(el => el.id = app);
-        register.passYearCount = confYear.fixe_year_open;
-        
-        if(Number(totalYear.total_year) < Number(confYear.fixe_year_open)){
-            register.passYear = false;
-            let title = 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป';
-            alert.show('error',title,'');
-        }
-    } else { $('#step5-totalYear').val(''); }
-});
-
 $('[name=step5-t1-manageBy]').on('click', function(){ 
     register.formData.step5.manageBy = $(this).val(); 
     register.change = true;
     let title;
 
     switch($(this).val()){
-        case '1': title = 'สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน'; break;
-        case '2': title = 'สำเนาใบอนุญาตประกอบธุรกิจที่ถูกต้องตามกฎหมาย'; break;
-        case '3': title = 'ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง'; break;
+        case '1': title = 'ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง'; break;
+        case '2': title = 'สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน'; break;
+        case '3': title = 'สำเนาใบอนุญาตประกอบธุรกิจที่ถูกต้องตามกฎหมาย'; break;
     }
     
     $('#step5-file1-title').html(title+'<span class="required">*</span>');

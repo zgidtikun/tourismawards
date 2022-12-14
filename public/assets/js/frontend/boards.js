@@ -41,27 +41,8 @@ const boards = {
         const st = {
             method: 'post',
             url: '/inner-api/boards',
-            data: {}
+            data: boards.getStage()            
         };
-          
-        switch(Number(vt)){
-            case 1:
-                st.data.stage = 'pre-screen';
-                st.data.status = 'wait';
-            break;
-            case 2:
-                st.data.stage = 'pre-screen';
-                st.data.status = 'finish';
-            break;
-            case 3:
-                st.data.stage = 'onsite';
-                st.data.status = 'wait';
-            break;
-            case 4:
-                st.data.stage = 'onsite';
-                st.data.status = 'finish';
-            break;
-        }
         
         api(st).then(function(rs){
             $('#sat-main').val('');
@@ -75,7 +56,61 @@ const boards = {
                 boards.setDataTable([]);
             }
         })
-    },    
+    },  
+    getStage(){
+        const vt = $('.btn-dashboard.active').attr('data-tab');
+        let st = {};
+          
+        switch(Number(vt)){
+            case 1:
+                st.stage = 'pre-screen';
+                st.status = 'wait';
+            break;
+            case 2:
+                st.stage = 'pre-screen';
+                st.status = 'finish';
+            break;
+            case 3:
+                st.stage = 'onsite';
+                st.status = 'wait';
+            break;
+            case 4:
+                st.stage = 'onsite';
+                st.status = 'finish';
+            break;
+        }
+
+        return st;
+    },
+    setShowStatus(stageSts,requestSts,showSts){
+        const st = boards.getStage();
+
+        if(st.stage == 'pre-screen'){
+            if(st.status == 'wait'){
+                if(requestSts != '' && requestSts != 0){
+                    return stageSts;
+                } else {
+                    if(showSts == ''){
+                        return 1;
+                    } else {
+                        return 2;
+                    }
+                }
+            } else {
+                return stageSts;
+            }
+        } else {
+            if(st.status == 'wait'){
+                if(showSts == ''){
+                    return 1;
+                } else {
+                    return 2;
+                }
+            } else {
+                return stageSts;
+            }
+        }
+    },
     setDataTable(dt){
         if(!$.fn.DataTable.isDataTable('#tbl-boards')){
             this.dtb = $('#tbl-boards').DataTable({
@@ -95,7 +130,7 @@ const boards = {
                             content += '<i class="bi bi-arrow-right-square-fill text-success mr-2"></i>';
                             content += data;
 
-                            switch(Number(row.status)){
+                            switch(Number(boards.setShowStatus(row.status,row.request_status,row.show_status))){
                                 case 1:
                                     content += '<span class="badge badge-wait ml-1">';
                                     content += 'รอการประเมิน</span>';
@@ -160,7 +195,7 @@ const boards = {
                         data: 'status',
                         render: function(data, type, row, meta){
                             let content;
-                            switch(Number(data)){
+                            switch(Number(boards.setShowStatus(row.status,row.request_status,row.show_status))){
                                 case 1:
                                     content = '<span class="wait">';
                                     content += 'รอการประเมิน</span>';
@@ -282,7 +317,7 @@ const boards = {
         $('#modal-appts').html(ref.section);
         
         $('#modal-badge').removeClass('badge-wait, badge-estimate, badge-request, badge-estcon, badge-norecall, badge-pass, badge-notpass');
-        switch(Number(ref.status)){
+        switch(Number(boards.setShowStatus(ref.status,ref.request_status,ref.show_status))){
             case 1: 
                 $('#modal-badge').html('รอการประเมิน');
                 $('#modal-badge').addClass('badge-wait');
@@ -330,11 +365,9 @@ const boards = {
         const ref = this.dt.find(el => el.id == id);
         const spre = ref.score_pre;
         const sons = ref.score_onsite;
-        const stt = (parseFloat(spre) + parseFloat(sons)).toFixed(2);
 
         $('#td-spre').html(spre);
         $('#td-sons').html(sons);
-        $('#td-stt').html(stt);
         $('#modal-score').modal('show');
     },
     closeScore(){

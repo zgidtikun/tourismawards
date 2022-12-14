@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\EstimateScore;
+use App\Models\Estimate;
 use Exception;
 
 class FrontendController extends BaseController
@@ -216,41 +217,45 @@ class FrontendController extends BaseController
 
     public function sumStage()
     {
-        $stage = new \App\Models\UsersStage();
+        $estimate = new \App\Models\Estimate();
         $committees = new \App\Models\Committees();
         $count_1 = $count_2 =  $count_3 = $count_4 = 0;
-        $users = [];
+        $app_array = [];
 
         $comm = $committees->like('admin_id_tourism','"'.session()->get('id').'"')
             ->orLike('admin_id_supporting','"'.session()->get('id').'"')
             ->orLike('admin_id_responsibility','"'.session()->get('id').'"')
-            ->select('users_id')
+            ->select('application_form_id app_id')
             ->distinct()
             ->findAll();
         
         if(!empty($comm)){
-            foreach($comm as $user){
-                array_push($users,$user->users_id);
+            foreach($comm as $app){
+                array_push($app_array,$app->app_id);
             }
 
-            $count_1 = $stage->where('stage',1)
-                ->whereIn('user_id',$users)
-                ->whereIn('status',[1,2,3,4,5])
+            $count_1 = $estimate->where('estimate_by',session()->get('id'))
+                ->whereIn('status_pre',[1,2])
+                ->select('application_id')
+                ->groupBy('application_id')
                 ->countAllResults();
 
-            $count_2 = $stage->where('stage',1)
-                ->whereIn('user_id',$users)
-                ->whereIn('status',[6,7])
+            $count_2 = $estimate->where('estimate_by',session()->get('id'))
+                ->whereIn('status_pre',[3,0])
+                ->select('application_id')
+                ->groupBy('application_id')
                 ->countAllResults();
 
-            $count_3 = $stage->where('stage',2)
-                ->whereIn('user_id',$users)
-                ->whereIn('status',[1,2,3,4,5])
+            $count_3 = $estimate->where('estimate_by',session()->get('id'))
+                ->whereIn('status_onsite',[1,2])
+                ->select('application_id')
+                ->groupBy('application_id')
                 ->countAllResults();
 
-            $count_4 = $stage->where('stage',2)
-                ->whereIn('user_id',$users)
-                ->whereIn('status',[6,7])
+            $count_4 = $estimate->where('estimate_by',session()->get('id'))
+                ->whereIn('status_onsite',[3,0])
+                ->select('application_id')
+                ->groupBy('application_id')
                 ->countAllResults();
         }
         
@@ -308,10 +313,24 @@ class FrontendController extends BaseController
         $assign = $this->getGroupEstimate($id,session()->get('id'),2);
         $isFinish = $this->checkEstimateFinish($id,2,session()->get('id'));
 
-        $obj = new EstimateScore();
-        $score = $obj->where('application_id',$id)
+        $obj_es = new EstimateScore();
+        $score = $obj_es->where('application_id',$id)
             ->select('score_prescreen_tt')
             ->first();
+
+        if($stage->status == 3){
+            $obj_est = new Estimate();
+            $cRequest = $obj_est->where([
+                    'application_id' => $id,
+                    'estimate_by' => session()->get('id'),
+                    'request_status' => 1
+                ])
+                ->countAllResults();
+
+            if($cRequest <= 0){
+                $stage->status = 2;
+            }
+        }
         
         $data = [
             'title' => 'ประเมินรอบ ลงพื้นที่',

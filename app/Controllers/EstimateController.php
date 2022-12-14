@@ -210,8 +210,10 @@ class EstimateController extends BaseController
                 ->set(['status'  => 4])
                 ->update();
 
+            $estsf = $input->stage == 1 ? 'status_pre' : 'status_onsite';
+
             $this->estimate->where('application_id',$input->appId)
-                ->set(['status' => 3, 'request_status' => 3])
+                ->set([$estsf => 3, 'request_status' => 3])
                 ->update();
 
             $existEstInd = $this->estInd->where([
@@ -256,21 +258,57 @@ class EstimateController extends BaseController
 
             $where_est ='application_id = '.$input->appId;
             if($input->stage == 1)
-                $where_est = ' AND score_pre NOT NULL';
-            else $where_est = ' AND score_onsite NOT NULL';
+                $where_est .= ' AND score_pre != NULL';
+            else $where_est .= ' AND score_onsite != NULL';
 
             $count_est = $this->estInd->where($where_est)
                 ->countAllResults();
 
             if($count_est >= $count_adm->admin_count){
 
-                $existEstScr = $this->estScr->where('application_id',$input->appId)
-                    ->countAllResults();
-            
-                $avg_te = $input->score_te / $count_est;
-                $avg_sb = $input->score_sb / $count_est;
-                $avg_rs = $input->score_rs / $count_est;
-                $avg_tt = ($input->score_te + $input->score_sb + $input->score_rs) / $count_est;
+                if($input->stage == 1){
+                    $select_sum = 'SUM(score_pte) score_te, SUM(score_psb) score_sb,
+                        SUM(score_prs) score_rs, SUM(score_pre) score_tt';
+                } else {
+                    $select_sum = 'SUM(score_ote) score_te, SUM(score_osb) score_sb,
+                        SUM(score_ors) score_rs, SUM(score_onsite) score_tt';
+                }
+
+                $sumScr = $this->estInd->where('application_id',$input->appId)
+                    ->select($select_sum)
+                    ->first();
+
+                $cJudge = $commit->where([
+                        'application_form_id' => $input->appId,
+                        'assessment_round' => $input->stage == 1 ? 1 : 2
+                    ])
+                    ->select(
+                        'admin_id_tourism tourism,
+                        admin_id_supporting support,
+                        admin_id_responsibility respons'
+                    )->first(); 
+                    
+                $ctourism = $csupport = $crespons = 1;
+
+                if(!empty($cJudge->tourism)){
+                    $tourism = json_decode($cJudge->tourism,true);
+                    $ctourism = !empty($tourism) ? count($tourism) : 1;
+                }
+
+                if(!empty($cJudge->support)){
+                    $support = json_decode($cJudge->support,true);
+                    $csupport = !empty($support) ? count($support) : 1;
+                }
+
+                if(!empty($cJudge->respons)){
+                    $respons = json_decode($cJudge->respons,true);
+                    $crespons = !empty($respons) ? count($respons) : 1;
+                }
+
+                $avg_te = $sumScr->score_te / $ctourism;
+                $avg_sb = $sumScr->score_sb / $csupport;
+                $avg_rs = $sumScr->score_rs / $crespons;
+                $avg_tt = ($sumScr->score_te + $sumScr->score_sb + $sumScr->score_rs) / $count_adm;
 
                 $inst_avg['application_id'] = $input->appId;
 
@@ -286,6 +324,9 @@ class EstimateController extends BaseController
                     $inst_avg['score_onsite_rs'] = $avg_rs;
                     $inst_avg['score_onsite_tt'] = $avg_tt;
                 }
+
+                $existEstScr = $this->estScr->where('application_id',$input->appId)
+                    ->countAllResults();
 
                 if($existEstScr <= 0){
                     $this->estScr->insert($inst_avg);

@@ -69,7 +69,7 @@ class RegisterController extends BaseController
                     'status' => 0
                 );
 
-                if($status){
+                if($checkReCapcha->result){
 
                     $result = $this->user->insertUser($instData);
                     

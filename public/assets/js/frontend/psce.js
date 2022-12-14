@@ -443,11 +443,11 @@ const setDropdown = (qt,cate,seg) => {
         if(Number(v.pre_status) == 1){            
             if(
                 !empty(v.request_status)
-                && $.inArray(Number(v.request_status),[0,1,2]) === -1
+                && $.inArray(Number(v.request_status),[0,1,2]) !== -1
             ){
-                cp = !empty(v.score_pre) && seg != k ? 'complete' : '';
-            } else {
                 cp = 'request';
+            } else {
+                cp = !empty(v.score_pre) ? 'complete' : '';
             }
         } else {
             cp = 'hold';
