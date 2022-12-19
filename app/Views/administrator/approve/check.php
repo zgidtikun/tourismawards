@@ -234,7 +234,7 @@
   $(function() {
     // Active Menu
     var menu = $('#menu');
-    var item = $(menu).find("a[href='<?= base_url() ?>/backend/Approve']");
+    var item = $(menu).find("a[href='<?= base_url() ?>/backend/approve']");
     var ul = $(item).closest('ul');
     var li = $(ul).closest('li');
 
@@ -266,7 +266,7 @@
   });
 
   $('[name="application_type"]').change(function(e) {
-    var res = main_post(BASE_URL_BACKEND + '/Approve/getAplicationTypeSub/' + $(this).val());
+    var res = main_post(BASE_URL_BACKEND + '/approve/getAplicationTypeSub/' + $(this).val());
     var html = ``;
     if (!$.isEmptyObject(res)) {
       $.each(res, function(index, value) {

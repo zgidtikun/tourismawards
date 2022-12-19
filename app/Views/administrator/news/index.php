@@ -104,7 +104,7 @@
 
 <script>
   $(function() {
-    var pgurl = BASE_URL_BACKEND + '/News';
+    var pgurl = BASE_URL_BACKEND + '/news';
     active_page(pgurl);
   });
 
@@ -120,7 +120,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/News/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/news/delete', {
         id: id,
         image_cover: $('#image_cover_old').val(),
       });
@@ -136,10 +136,10 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/News/edit/' + id;
+    window.location.href = BASE_URL_BACKEND + '/news/edit/' + id;
   }
 
   function insert_item(elm) {
-    window.location.href = BASE_URL_BACKEND + '/News/add';
+    window.location.href = BASE_URL_BACKEND + '/news/add';
   }
 </script>

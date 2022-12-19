@@ -454,7 +454,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/Complete';
+    var pgurl = BASE_URL_BACKEND + '/complete';
     active_page(pgurl);
 
     $('#field').keyup();
@@ -486,7 +486,7 @@
   });
 
   $('[name="application_type"]').change(function(e) {
-    var res = main_post(BASE_URL_BACKEND + '/Approve/getAplicationTypeSub/' + $(this).val());
+    var res = main_post(BASE_URL_BACKEND + '/approve/getAplicationTypeSub/' + $(this).val());
     var html = ``;
     if (!$.isEmptyObject(res)) {
       $.each(res, function(index, value) {

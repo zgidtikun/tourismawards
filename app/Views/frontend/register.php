@@ -22,7 +22,11 @@
             <div class="formbox">
                 <div class="formbox_row">
                     <div class="inp_form">
+                        <?php if(!$_register_expire): ?>
                         <h3>สมัครสมาชิก</h3>
+                        <?php else: ?>
+                        <h3>หมดเวลาการสมัครสมาชิก</h3>
+                        <?php endif; ?>
                         <?php 
                             if($_signup->method == 'post') : 
                                 if($_signup->status) :
@@ -53,7 +57,7 @@
                                 endif;
                             endif; 
 
-                            if(!$_signup->status) :
+                            if(!$_signup->status && !$_register_expire) :
                                 $attr = ['id' => 'regis-form'];
                                 echo form_open(route_to('register'), $attr);
                         ?>

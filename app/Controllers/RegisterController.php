@@ -77,7 +77,7 @@ class RegisterController extends BaseController
                         $status = false;
                         $error['insert'] = $result->error;
                     } else {
-                        $expire = date('YmdHis',strtotime('+3 days'));
+                        $expire = date('YmdHis',strtotime('+1 days'));
                         $data->user_id = $result->id;
                         $data->verify_token = vEncryption($data->user_id .'-'.$expire.'-'.$verify_code);
                         helper('semail');
@@ -96,10 +96,14 @@ class RegisterController extends BaseController
             }
         }
 
+        $_app = new \Config\App();
+        $_register_expire = date('Y-m-d') > $_app->Register_expired;
+
         $data = [
             'title' => 'Register',
             'view' => 'frontend/register',
             '_recapcha' => $this->recapcha,
+            '_register_expire' => $_register_expire,
             '_signup' => (object) array(
                 'method' => $method,
                 'status' => $status,

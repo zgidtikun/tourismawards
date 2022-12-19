@@ -12,7 +12,7 @@
 
         <div class="backendform-row">
           <div class="backendform-col subject">
-            รูปผู้ใช้งาน <span class="required">*</span>
+            รูปผู้ใช้งาน
           </div>
           <div class="backendform-col inpfield">
             <!-- <form id="multiple1"> -->
@@ -139,7 +139,7 @@
     </div>
 
     <div class="form-main-btn">
-      <a href="javascript:void(0)" class="btn-cancle" onclick="window.location.href = BASE_URL_BACKEND + '/TAT'">ยกเลิก</a>
+      <a href="javascript:void(0)" class="btn-cancle" onclick="window.location.href = BASE_URL_BACKEND + '/tat'">ยกเลิก</a>
       <a href="javascript:void(0)" class="btn-save" data-tab="1" id="btn_save">บันทึก</a>
     </div>
 
@@ -149,7 +149,7 @@
 
 <script>
   $(function() {
-    var pgurl = BASE_URL_BACKEND + '/TAT';
+    var pgurl = BASE_URL_BACKEND + '/tat';
     active_page(pgurl);
   });
   
@@ -181,17 +181,17 @@
           toastr.error('E-Mail นี้มีการสมัครเข้าใช้งานแล้ว');
           return false;
         }
-        var res = main_save(BASE_URL_BACKEND + '/TAT/saveInsert', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/tat/saveInsert', '#input_form');
         res_swal(res, 0, function() {
           if (res.type == 'success') {
-            window.location.href = BASE_URL_BACKEND + '/TAT';
+            window.location.href = BASE_URL_BACKEND + '/tat';
           }
         });
       } else {
-        var res = main_save(BASE_URL_BACKEND + '/TAT/saveUpdate', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/tat/saveUpdate', '#input_form');
         res_swal(res, 0, function() {
           if (res.type == 'success') {
-            window.location.href = BASE_URL_BACKEND + '/TAT';
+            window.location.href = BASE_URL_BACKEND + '/tat';
           }
         });
       }

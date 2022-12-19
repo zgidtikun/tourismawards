@@ -19,9 +19,9 @@
 
   <div class="regis-form-data-col1">
     <h4>แหล่งท่องเที่ยว/กิจกรรมอยู่ในความดูแล</h4>
-    <p><input type="radio" name="manage_by" id="manage_by_1" <?= ($result->manage_by == 1) ? 'checked' : ''; ?>><label for="manage_by_1">ภาครัฐ</label></p>
-    <p><input type="radio" name="manage_by" id="manage_by_2" <?= ($result->manage_by == 2) ? 'checked' : ''; ?>><label for="manage_by_2">ชุมชนท่องเที่ยว</label></p>
-    <p><input type="radio" name="manage_by" id="manage_by_3" <?= ($result->manage_by == 3) ? 'checked' : ''; ?>><label for="manage_by_3">ภาคเอกชน</label></p>
+    <p><input type="radio" name="manage_by" id="manage_by_1" <?= ($result->manage_by == 1 || $result->manage_by == null) ? 'checked' : ''; ?> disabled><label for="manage_by_1">ภาครัฐ</label></p>
+    <p><input type="radio" name="manage_by" id="manage_by_2" <?= ($result->manage_by == 2) ? 'checked' : ''; ?> disabled><label for="manage_by_2">ชุมชนท่องเที่ยว</label></p>
+    <p><input type="radio" name="manage_by" id="manage_by_3" <?= ($result->manage_by == 3) ? 'checked' : ''; ?> disabled><label for="manage_by_3">ภาคเอกชน</label></p>
   </div>
 
   <div class="regis-form-data-col2">

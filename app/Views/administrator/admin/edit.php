@@ -12,7 +12,7 @@
 
         <div class="backendform-row">
           <div class="backendform-col subject">
-            รูปผู้ใช้งาน <span class="required">*</span>
+            รูปผู้ใช้งาน
           </div>
           <div class="backendform-col inpfield">
             <!-- <form id="multiple1"> -->
@@ -120,7 +120,7 @@
     </div>
 
     <div class="form-main-btn">
-      <a href="javascript:void(0)" class="btn-cancle" onclick="window.location.href = BASE_URL_BACKEND + '/Admin'">ยกเลิก</a>
+      <a href="javascript:void(0)" class="btn-cancle" onclick="window.location.href = BASE_URL_BACKEND + '/admin'">ยกเลิก</a>
       <a href="javascript:void(0)" class="btn-save" data-tab="1" id="btn_save">บันทึก</a>
     </div>
 
@@ -130,7 +130,7 @@
 
 <script>
   $(function() {
-    var pgurl = BASE_URL_BACKEND + '/Admin';
+    var pgurl = BASE_URL_BACKEND + '/admin';
     active_page(pgurl);
   });
 
@@ -159,14 +159,14 @@
           toastr.error('E-Mail นี้มีการสมัครเข้าใช้งานแล้ว');
           return false;
         }
-        var res = main_save(BASE_URL_BACKEND + '/Admin/saveInsert', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/admin/saveInsert', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = BASE_URL_BACKEND + '/Admin';
+          window.location.href = BASE_URL_BACKEND + '/admin';
         });
       } else {
-        var res = main_save(BASE_URL_BACKEND + '/Admin/saveUpdate', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/admin/saveUpdate', '#input_form');
         res_swal(res, 0, function() {
-          window.location.href = BASE_URL_BACKEND + '/Admin';
+          window.location.href = BASE_URL_BACKEND + '/admin';
         });
       }
     }
@@ -179,7 +179,7 @@
 
   function validated_email() {
     var email = $('#email').val();
-    var res = main_post(BASE_URL_BACKEND + '/Admin/checkData', {
+    var res = main_post(BASE_URL_BACKEND + '/admin/checkData', {
       email: email
     });
     return res;

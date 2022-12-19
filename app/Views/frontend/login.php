@@ -13,9 +13,15 @@
                                 <input type="password" id="password" placeholder="รหัสผ่าน">
                             </div>
                             <div class="inp_form_col1 userregister">
+                                <?php 
+                                    $_app = new \Config\App();
+                                    $_register_expire = date('Y-m-d') > $_app->Register_expired;
+                                    if(!$_register_expire):
+                                ?>
                                 มีบัญชีผู้ใช้อยู่แล้ว? 
                                 <a href="<?= base_url('register') ?>" class="link_yellow">ลงทะเบียน</a>
                                 <br>
+                                <?php endif; ?>
                                 <a href="<?= base_url('forget-password') ?>" class="link_yellow">ลืมรหัสผ่าน</a>
                             </div>
                             <div class="inp_form_col1 submit">

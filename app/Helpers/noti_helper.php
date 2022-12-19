@@ -75,7 +75,7 @@ function set_noti($target,$data)
             $noti->insert([
                 'user_id' => $target->user_id,
                 'target' => $target->bank,
-                'pack_noti' => json_encode([ 0 => $data])
+                'pack_noti' => json_encode([ 0 => $data],JSON_UNESCAPED_UNICODE)
             ]);
         } else {
             if(!empty($us_noti->pack_noti)){
@@ -86,7 +86,7 @@ function set_noti($target,$data)
             }
 
             $noti->where('id',$us_noti->id)
-            ->set(['pack_noti' => json_encode($temp)])
+            ->set(['pack_noti' => json_encode($temp,JSON_UNESCAPED_UNICODE)])
             ->update();
         }
 

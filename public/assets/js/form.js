@@ -1,10 +1,11 @@
+/******************* Update GD02_15122565 ******************/
 //------------------- regis-form-step ----------------------//
 jQuery(document).ready(function(){
 var screen_w = $(window).width();
 var screen_h = $(window).height();
 
 var pgurl = window.location.href.substr(window.location.href.lastIndexOf("/")+1);
-    // alert(pgurl);
+    // console.log(pgurl);
 	$(".regis-form-step a").each(function(){
 	if($(this).attr("href") == pgurl || $(this).attr("href") == '' ){
 		$(this).addClass("active");}
@@ -23,11 +24,11 @@ $("html , body").animate({scrollTop : $('a[name = pageform]').offset().top},500)
 }
 var maxvaldatalink = datalinkaray.reduce(function(a, b) { return Math.max(a, b); });
 
-					$('.regis-form-step a').css("display","none");
+					// $('.regis-form-step a').css("display","none");
 					$(".regis-form-step a").each(function(){
 										if($(this).attr("href") == pgurl){
-										
-											$(this).css({"display":"inline-flex","z-index":"1"});
+											$(this).css({"z-index":"1","justify-content":"center"});
+
 
 								// first page prev don't click
 												if(datatab == 1){

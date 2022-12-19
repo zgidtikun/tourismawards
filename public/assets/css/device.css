@@ -294,6 +294,9 @@ display: none;
 .banner-box-scale {
     padding-top: 100%;
 }
+.banner-box-scale.aboutus {
+    padding-top: 75%;
+}
 .banner-txt h1 {
     margin: 10px 0;
     line-height: 1;
@@ -451,3 +454,5 @@ margin-right: 20px;
     -webkit-box-orient: vertical;
 }
 }
+
+/*GD-02-V.15122565*/

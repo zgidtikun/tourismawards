@@ -68,15 +68,11 @@
                             message = 'ด้วยปุ่ม "ตกลง" เพื่อยังหน้าข้อมูลส่วนตัว';
                             <?php endif; ?>
 
-                            alert.show('success','Reset Password Complete.', message).then(function(data){
-                                <?php if(!session()->get('isLoggedIn')) : ?>
-                                window.location.href = '<?=base_url('login/'.$id)?>';
-                                <?php else : ?>
-                                window.location.href = '<?=base_url('profile')?>';
-                                <?php endif; ?>
+                            alert.show('success','เปลี่ยนรหัสผ่านใหม่เรียบร้อยแล้ว', message).then(function(data){
+                                window.location.href = '<?=base_url('login')?>';
                             });
                         } else {
-                            alert.show('error','Oops Reset Password Fail...!', response.message);                               
+                            alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', response.message);                               
                         }
                     }
                 });

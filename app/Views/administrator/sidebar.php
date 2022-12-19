@@ -15,17 +15,17 @@
         <a href="<?= base_url() ?>/administrator"><i class="bi bi-layers-fill"></i> สถิติการใช้งาน</a>
       </div>
       <div class="backendmenu-list-row title">เมนูหลัก</div>
-      
+
       <?php if (isAdmin()) : ?>
         <div class="backendmenu-list-row">
           <a href="javascript:void(0)" class="btn-menulist" data-tab="1" data-type="user"><i class="bi bi-grid-fill"></i>สมาชิก</a>
           <div class="hide-menu-list" data-tab="1" data-type="user">
             <ul>
-              <li><a href="<?= base_url() ?>/administrator/Users/all" data-type="user"><label>สมาชิกทั้งหมด</label></a></li>
-              <li><a href="<?= base_url() ?>/administrator/Users" data-type="user"><label>ผู้ประกอบการ</label></a></li>
-              <li><a href="<?= base_url() ?>/administrator/Officer" data-type="user"><label>กรรมการ</label></a></li>
-              <li><a href="<?= base_url() ?>/administrator/TAT" data-type="user"><label>เจ้าหน้าที่ ททท.</label></a></li>
-              <li><a href="<?= base_url() ?>/administrator/Admin" data-type="user"><label>ผู้ดูแลระบบ</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/users/all" data-type="user"><label>สมาชิกทั้งหมด</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/users" data-type="user"><label>ผู้ประกอบการ</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/officer" data-type="user"><label>กรรมการ</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/tat" data-type="user"><label>เจ้าหน้าที่ ททท.</label></a></li>
+              <li><a href="<?= base_url() ?>/administrator/admin" data-type="user"><label>ผู้ดูแลระบบ</label></a></li>
             </ul>
           </div>
         </div>
@@ -35,19 +35,19 @@
         <div class="hide-menu-list" data-tab="2" data-type="process">
           <ul>
             <li>
-              <a href="<?= base_url() ?>/administrator/Approve" data-type="process">
+              <a href="<?= base_url() ?>/administrator/approve" data-type="process">
                 <label>
-                  ตรวจสอบใบสมัคร
+                  ตรวจสอบสถานะใบสมัคร
                   <?php if (countNotification(1) != 0) : ?>
                     <span class="menu-list-amount"><?= countNotification(1) ?></span>
                   <?php endif; ?>
                 </label>
               </a>
             </li>
-            <li><a href="<?= base_url() ?>/administrator/Approve/history" data-type="process"><label>ประวัติการตรวจสอบใบสมัคร</label></a></li>
-            <li><a href="<?= base_url() ?>/administrator/PreScreen" data-type="process"><label>ใบสมัครที่ผ่านการอนุมัติ</label></a></li>
+            <!-- <li><a href="<?= base_url() ?>/administrator/Approve/history" data-type="process"><label>ประวัติการตรวจสอบใบสมัคร</label></a></li> -->
+            <!-- <li><a href="<?= base_url() ?>/administrator/PreScreen" data-type="process"><label>ใบสมัครที่ผ่านการอนุมัติ</label></a></li> -->
             <li>
-              <a href="<?= base_url() ?>/administrator/Estimate" data-type="process">
+              <a href="<?= base_url() ?>/administrator/estimate" data-type="process">
                 <label>เพิ่มกรรมการรอบ Pre-screen
                   <?php if (countNotification(2) != 0) : ?>
                     <span class="menu-list-amount"><?= countNotification(2) ?></span>
@@ -55,9 +55,9 @@
                 </label>
               </a>
             </li>
-            <li><a href="<?= base_url() ?>/administrator/Estimate/prescreen" data-type="process"><label>การประเมินขั้นต้น</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/estimate/prescreen" data-type="process"><label>การประเมินขั้นต้น</label></a></li>
             <li>
-              <a href="<?= base_url() ?>/administrator/Onsite" data-type="process">
+              <a href="<?= base_url() ?>/administrator/onsite" data-type="process">
                 <label>เพิ่มกรรมการรอบลงพื้นที่
                   <?php if (countNotification(3) != 0) : ?>
                     <span class="menu-list-amount"><?= countNotification(3) ?></span>
@@ -65,8 +65,8 @@
                 </label>
               </a>
             </li>
-            <li><a href="<?= base_url() ?>/administrator/Onsite/estimate" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
-            <li><a href="<?= base_url() ?>/administrator/Complete" data-type="process"><label>ดำเนินการเสร็จสมบูรณ์</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/onsite/estimate" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/complete" data-type="process"><label>ดำเนินการเสร็จสมบูรณ์</label></a></li>
           </ul>
         </div>
       </div>
@@ -74,11 +74,11 @@
         <a href="javascript:void(0)" class="btn-menulist" data-tab="3" data-type="news"><i class="bi bi-gear-fill"></i> ตั้งค่าอื่นๆ</a>
         <div class="hide-menu-list" data-tab="3" data-type="news">
           <ul>
-            <li><a href="<?= base_url() ?>/administrator/News" data-type="news"><label>ข่าวประชาสัมพันธ์</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/news" data-type="news"><label>ข่าวประชาสัมพันธ์</label></a></li>
           </ul>
         </div>
       </div>
-      
+
       <?php if (isAdmin()) : ?>
         <!-- <div class="backendmenu-list-row">
           <a href="javascript:void(0)" class="btn-menulist" data-tab="4" data-type="award"><i class="bi bi-award-fill"></i> ผลรางวัล</a>
@@ -92,11 +92,9 @@
         </div> -->
       <?php endif; ?>
 
-      <?php if (isAdmin()) : ?>
-        <div class="backendmenu-list-row">
-          <a href="<?= base_url() ?>/administrator/Report" data-tab="4" data-type="report"><i class="bi bi-file-text"></i> รายงาน</a>
-        </div>
-      <?php endif; ?>
+      <div class="backendmenu-list-row">
+        <a href="<?= base_url() ?>/administrator/report" data-tab="4" data-type="report"><i class="bi bi-file-text"></i> รายงาน</a>
+      </div>
     </div>
   </div>
 </div>

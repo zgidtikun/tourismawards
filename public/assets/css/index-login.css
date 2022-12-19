@@ -160,7 +160,8 @@
 
 .user-box-content {
     position: relative;
-    width: 350px;
+    width: 95vw;
+    max-width: 400px;
     height: auto;
     max-height: 400px;
     background-color: #FFF;
@@ -216,7 +217,7 @@
 
 .user-status-img {
     flex: none;
-    width: 100px;
+    width: 64px;
     position: relative;
 }
 
@@ -248,7 +249,7 @@
 }
 
 .user-status p {
-    margin: 0;
+    margin: 0 0 5px 0;
     color: #999;
 }
 

@@ -5486,19 +5486,19 @@ img.profile {
         justify-content: flex-start;
     }
 
-    .regis-form-step a {
-        display: flex;
-        padding: 40px 30px;
-        margin: 0;
-        position: relative;
-        scroll-snap-align: start;
-        flex: none;
-        color: #b6b4c3;
-        align-content: flex-start;
-        width: auto;
-        text-align: center;
-        width: auto;
-    }
+.regis-form-step a {
+    display: flex;
+    padding: 0 30px;
+    margin: 0;
+    position: relative;
+    scroll-snap-align: start;
+    flex: none;
+    color: #b6b4c3;
+    align-content: flex-start;
+    width: auto;
+    text-align: center;
+    width: auto;
+}
 }
 
 @media (min-width: 576px) {

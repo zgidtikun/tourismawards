@@ -469,9 +469,14 @@ class App extends BaseConfig
     public $RECAPCHA_CK = false;
     public $RECAPCHA_KEY = '6LdC6vghAAAAANJyaGCqYGZ1eY6YrKgRb40B8Ay4';
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
-    public $APPForm_expired = '2023-02-28';
-    public $Pre_expired = '2023-03-05';
-    public $announcement_date = '2024-01-01';
+    public $Register_expired = '2024-01-01'; // วันหมดเขต Register
+    public $APPForm_expired = '2023-02-28'; // วันหมดเขตส่งใบสมัคร
+    public $Pre_expired = '2023-03-05'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
+    public $announcement_ons_date = '2024-01-01'; // วันที่ประกาศผล ลงพื้นที่
+    public $announcement_pre_date = '2024-01-01'; // วันที่ประกาศผล prescreen
+    public $announcement_date = '2024-01-01'; // วันที่ประกาศผลรางวัล
+    public $Estimate_pre_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ Pre-screen
+    public $Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่
     public $JudgingCriteriaPre = 18;
     public $JudgingCriteriaOnst = 57;
     public $JudgingCriteriaScore;

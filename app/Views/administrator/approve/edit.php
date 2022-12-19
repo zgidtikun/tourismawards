@@ -87,7 +87,7 @@
                     }
                 ?>
                     <p>
-                      <input type="radio" id="application_type_<?= $value->id ?>" name="application_type" value="<?= $value->id ?>" <?= $checked ?>>
+                      <input type="radio" id="application_type_<?= $value->id ?>" name="application_type" value="<?= $value->id ?>" <?= $checked ?> disabled>
                       <label for="application_type_<?= $value->id ?>"> <?= $value->name ?></label>
                     </p>
                 <?php
@@ -108,7 +108,7 @@
                       }
                   ?>
                       <p>
-                        <input type="radio" id="application_type_sub_<?= $value->id ?>" name="application_type_sub" value="<?= $value->id ?>" <?= $checked ?>>
+                        <input type="radio" id="application_type_sub_<?= $value->id ?>" name="application_type_sub" value="<?= $value->id ?>" <?= $checked ?> disabled>
                         <label for="application_type_sub_<?= $value->id ?>"> <?= $value->name ?></label>
                       </p>
                   <?php
@@ -132,7 +132,7 @@
               <div class="regis-form-data-col1">
                 <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด<span class="required">*</span></h4>
                 ระบุคำตอบ<span class="required">*</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
-                <textarea rows="6" id="field" onkeyup="countChar(this)"><?= $result->highlights ?></textarea>
+                <textarea rows="6" id="field" onkeyup="countChar(this)" readonly><?= $result->highlights ?></textarea>
                 <script>
                   function countChar(val) {
                     var len = val.value.length;
@@ -211,7 +211,7 @@
                           <div class="ablumbox-col">
                             <div class="ablum-mainimg">
                               <div class="ablum-mainimg-scale">
-                                <img src="<?= base_url() . '/' . $value->file_path ?>" title="<?= $value->file_original ?>">
+                                <img src="<?= base_url() . '/' . $value->file_path ?>" title="<?= $value->file_original ?>" class="ablum-img" onclick="view_img(this)">
                               </div>
                             </div>
                           </div>
@@ -245,7 +245,7 @@
               <div class="regis-form-data-col1">
                 <h4>ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (TH)<span class="required">*</span></h4>
                 <input value="<?= $result->attraction_name_th ?>" readonly>
-                <span class="inpcomment">(หมายเหตุ: ชื่อโรมแรม ตามใบอนุญาตประกอบการธุรกิจโรงแรม)*</span>
+                <span class="inpcomment">(หมายเหตุ: ชื่อโรงแรม ตามใบอนุญาตประกอบการธุรกิจโรงแรม)*</span>
               </div>
 
               <div class="regis-form-data-col1">
@@ -333,13 +333,13 @@
                 <div class="selectaddress">
                   <div class="selectaddresscol">
                     <p>
-                      <input type="radio" name="company_setaddr" value="1" id="oldaddress" <?= ($result->company_setaddr == 1) ? 'checked' : ''; ?>>
+                      <input type="radio" name="company_setaddr" value="1" id="oldaddress" <?= ($result->company_setaddr == 1) ? 'checked' : ''; ?> disabled>
                       <label for="oldaddress"> สถานที่เดียวกับผลงานที่ส่งเข้าประกวด</label>
                     </p>
                   </div>
                   <div class="selectaddresscol">
                     <p>
-                      <input type="radio" name="company_setaddr" value="2" id="newaddress" <?= ($result->company_setaddr == 2) ? 'checked' : ''; ?>>
+                      <input type="radio" name="company_setaddr" value="2" id="newaddress" <?= ($result->company_setaddr == 2) ? 'checked' : ''; ?> disabled>
                       <label for="newaddress"> ระบุที่อยู่ใหม่</label>
                     </p>
                   </div>
@@ -468,40 +468,43 @@
 
     <div class="backendform">
 
-      <div class="backendform-row">
-        <div class="backendform-col1 subject">
-          สถานะ
+      <form id="insert_form">
+        <div class="backendform-row">
+          <div class="backendform-col1 subject">
+            สถานะ
+          </div>
+          <input type="hidden" name="insert_id" id="insert_id" value="<?= $id ?>">
+          <div class="backendform-col1 judgeradio">
+            <div class="judgeradio-col">
+              <input type="radio" id="status_4" name="status" value="4" <?= ($result->status == 4) ? 'checked' : ''; ?>>
+              <label for="status_4">ขอข้อมูลเพิ่มเติม</label>
+            </div>
+            <div class="judgeradio-col">
+              <input type="radio" id="status_3" name="status" value="3" <?= ($result->status == 3) ? 'checked' : ''; ?>>
+              <label for="status_3">อนุมัติ</label>
+            </div>
+            <div class="judgeradio-col">
+              <input type="radio" id="status_0" name="status" value="0" <?= ($result->status == 0) ? 'checked' : ''; ?>>
+              <label for="status_0">ไม่อนุมัติ</label>
+            </div>
+          </div>
         </div>
-        <input type="hidden" name="insert_id" id="insert_id" value="<?= $id ?>">
-        <div class="backendform-col1 judgeradio">
-          <div class="judgeradio-col">
-            <input type="radio" id="status_2" name="status" value="4" <?= ($result->status == 4) ? 'checked' : ''; ?>>
-            <label for="status_2">ขอข้อมูลเพิ่มเติม</label>
-          </div>
-          <div class="judgeradio-col">
-            <input type="radio" id="status_3" name="status" value="3" <?= ($result->status == 3) ? 'checked' : ''; ?>>
-            <label for="status_3">อนุมัติ</label>
-          </div>
-          <div class="judgeradio-col">
-            <input type="radio" id="status_4" name="status" value="0" <?= ($result->status == 0) ? 'checked' : ''; ?>>
-            <label for="status_4">ไม่อนุมัติ</label>
-          </div>
-        </div>
-      </div>
 
-      <div class="backendform-row">
-        <div class="backendform-col1 subject">
-          ความคิดเห็น
+        <div class="backendform-row">
+          <div class="backendform-col1 subject">
+            ความคิดเห็น
+          </div>
+          <div class="backendform-col1 inpfield">
+            <textarea rows="5" name="judge_comment" id="judge_comment"><?= $result->judge_comment ?></textarea>
+          </div>
         </div>
-        <div class="backendform-col1 inpfield">
-          <textarea rows="5" name="judge_comment" id="judge_comment"><?= $result->judge_comment ?></textarea>
-        </div>
-      </div>
 
-      <div class="form-main-btn">
-        <a href="javascript:void(0)" class="btn-cancle">ยกเลิก</a>
-        <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
-      </div>
+        <div class="form-main-btn">
+          <a href="javascript:void(0)" class="btn-cancle">ยกเลิก</a>
+          <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
+        </div>
+      </form>
+
 
     </div>
   </div>
@@ -510,7 +513,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/Approve';
+    var pgurl = BASE_URL_BACKEND + '/approve';
     active_page(pgurl);
 
     $('#field').keyup();
@@ -535,23 +538,39 @@
   });
 
   $('#btn_save').click(function(e) {
-    var status = $('input[name="status"]:checked').val();
     var insert_id = $('#insert_id').val();
     var judge_comment = $('#judge_comment').val();
+    var status = $('input[name="status"]:checked').val();
+    if (status == undefined) {
+      $('input[name="status"]').first().focus();
+      toastr.error('กรุณาระบุสถานะ');
+      return false;
+    }
+
+    $('#').addClass('was-validated');
+    if (status == 4 && judge_comment == "") {
+      $('#judge_comment').focus();
+      $('#judge_comment').prop('required', true);
+      toastr.error('กรุณาระบุความคิดเห็น');
+      return false;
+    } else {
+      $('#judge_comment').prop('required', false);
+    }
+
     var data = {
       status: status,
       insert_id: insert_id,
       judge_comment: judge_comment,
     }
-    var res = main_post(BASE_URL_BACKEND + '/Approve/saveStatus', data);
+    var res = main_post(BASE_URL_BACKEND + '/approve/saveStatus', data);
     // cc(res)
-    res_swal(res, 0, function () {
+    res_swal(res, 0, function() {
       window.history.back();
     });
   });
 
   $('[name="application_type"]').change(function(e) {
-    var res = main_post(BASE_URL_BACKEND + '/Approve/getAplicationTypeSub/' + $(this).val());
+    var res = main_post(BASE_URL_BACKEND + '/approve/getAplicationTypeSub/' + $(this).val());
     var html = ``;
     if (!$.isEmptyObject(res)) {
       $.each(res, function(index, value) {

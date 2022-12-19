@@ -162,16 +162,13 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
 
     $routes->get('login', 'Login::index');
 
+    // Dashboard (แอดมินและเจ้าหน้าที่เข้าถึงได้)
     $routes->get('', 'Dashboard::index', ['filter' => 'auth:backend']);
     $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth:backend']);
-    // Dashboard (แอดมินและเจ้าหน้าที่เข้าถึงได้)
-    $routes->group('Dashboard', static function ($routes) {
-        $routes->get('', 'Dashboard::index', ['filter' => 'auth:backend']);
-        $routes->post('getData', 'Dashboard::getData', ['filter' => 'api:backend']);
-    });
+    $routes->post('dashboard/getData', 'Dashboard::getData', ['filter' => 'api:backend']);
 
     // Users (เฉพาะแอดมินที่เข้าได้)
-    $routes->group('Users', static function ($routes) {
+    $routes->group('users', static function ($routes) {
         $routes->get('', 'Users::index', ['filter' => 'auth:4']);
         $routes->get('all', 'Users::all', ['filter' => 'auth:4']);
         $routes->get('add', 'Users::add', ['filter' => 'auth:4']);
@@ -184,7 +181,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     });
 
     // Admin (เฉพาะแอดมินที่เข้าได้)
-    $routes->group('Admin', static function ($routes) {
+    $routes->group('admin', static function ($routes) {
         $routes->get('', 'Admin::index', ['filter' => 'auth:4']);
         $routes->get('add', 'Admin::add', ['filter' => 'auth:4']);
         $routes->get('edit/(:any)', 'Admin::edit/$1', ['filter' => 'auth:4']);
@@ -195,7 +192,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     });
 
     // Officer (เฉพาะแอดมินที่เข้าได้)
-    $routes->group('Officer', static function ($routes) {
+    $routes->group('officer', static function ($routes) {
         $routes->get('', 'Officer::index', ['filter' => 'auth:4']);
         $routes->get('add', 'Officer::add', ['filter' => 'auth:4']);
         $routes->get('edit/(:any)', 'Officer::edit/$1', ['filter' => 'auth:4']);
@@ -203,7 +200,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
         $routes->post('saveUpdate', 'Officer::saveUpdate', ['filter' => 'api:4']);
         $routes->post('delete', 'Officer::delete', ['filter' => 'api:4']);
     });
-    $routes->group('TAT', static function ($routes) {
+    $routes->group('tat', static function ($routes) {
         $routes->get('', 'Officer::tat', ['filter' => 'auth:4']);
         $routes->get('add', 'Officer::addTAT', ['filter' => 'auth:4']);
         $routes->get('edit/(:any)', 'Officer::editTAT/$1', ['filter' => 'auth:4']);
@@ -213,7 +210,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     });
 
     // News (แอดมินและเจ้าหน้าที่เข้าถึงได้)
-    $routes->group('News', static function ($routes) {
+    $routes->group('news', static function ($routes) {
         $routes->get('', 'News::index', ['filter' => 'auth:backend']);
         $routes->get('add', 'News::add', ['filter' => 'auth:backend']);
         $routes->get('edit/(:any)', 'News::edit/$1', ['filter' => 'auth:backend']);
@@ -226,7 +223,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     });
 
     // Approve (แอดมินและเจ้าหน้าที่เข้าถึงได้)
-    $routes->group('Approve', static function ($routes) {
+    $routes->group('approve', static function ($routes) {
         $routes->get('', 'Approve::index', ['filter' => 'auth:backend']);
         $routes->get('history', 'Approve::history', ['filter' => 'auth:backend']);
         $routes->get('check', 'Approve::check', ['filter' => 'auth:backend']);
@@ -236,28 +233,30 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     });
 
     // PreScreen (แอดมินและเจ้าหน้าที่เข้าถึงได้)
-    $routes->group('PreScreen', static function ($routes) {
+    $routes->group('prescreen', static function ($routes) {
         $routes->get('', 'PreScreen::index', ['filter' => 'auth:backend']);
         $routes->get('edit/(:any)', 'PreScreen::edit/$1', ['filter' => 'auth:backend']);
     });
 
     // Estimate (แอดมินและเจ้าหน้าที่เข้าถึงได้)
-    $routes->group('Estimate', static function ($routes) {
+    $routes->group('estimate', static function ($routes) {
         $routes->get('', 'Estimate::index', ['filter' => 'auth:backend']);
         $routes->get('edit/(:any)', 'Estimate::edit/$1', ['filter' => 'auth:backend']);
         $routes->post('saveInsert', 'Estimate::saveInsert', ['filter' => 'api:backend']);
         $routes->post('saveUpdate', 'Estimate::saveUpdate', ['filter' => 'api:backend']);
+        $routes->post('getAnswer', 'Estimate::getAnswer', ['filter' => 'api:backend']);
 
         $routes->get('prescreen', 'Estimate::prescreen', ['filter' => 'auth:backend']);
         $routes->get('view/(:any)', 'Estimate::viewEdit/$1', ['filter' => 'auth:backend']);
     });
 
     // Onsite (แอดมินและเจ้าหน้าที่เข้าถึงได้)
-    $routes->group('Onsite', static function ($routes) {
+    $routes->group('onsite', static function ($routes) {
         $routes->get('', 'Onsite::index', ['filter' => 'auth:backend']);
         $routes->get('edit/(:any)', 'Onsite::edit/$1', ['filter' => 'auth:backend']);
         $routes->post('saveInsert', 'Onsite::saveInsert', ['filter' => 'api:backend']);
         $routes->post('saveUpdate', 'Onsite::saveUpdate', ['filter' => 'api:backend']);
+        $routes->post('getAnswer', 'Onsite::getAnswer', ['filter' => 'api:backend']);
 
         $routes->post('getScore/(:any)', 'Onsite::getScore/$1', ['filter' => 'api:backend']);
         $routes->get('estimate', 'Onsite::estimate', ['filter' => 'auth:backend']);
@@ -265,7 +264,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     });
 
     // Complete (แอดมินและเจ้าหน้าที่เข้าถึงได้)
-    $routes->group('Complete', static function ($routes) {
+    $routes->group('complete', static function ($routes) {
         $routes->get('', 'Complete::index', ['filter' => 'auth:backend']);
         $routes->post('getScore/(:any)', 'Onsite::getScore/$1', ['filter' => 'api:backend']);
         $routes->get('view/(:any)', 'Complete::viewEdit/$1', ['filter' => 'auth:backend']);
@@ -273,14 +272,14 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     });
 
     // Report (เฉพาะแอดมินที่เข้าได้)
-    $routes->group('Report', static function ($routes) {
+    $routes->group('report', static function ($routes) {
         $routes->get('', 'Report::index', ['filter' => 'auth:4']);
         $routes->get('register', 'Report::register', ['filter' => 'api:4']);
         $routes->get('export/(:any)', 'Report::export/$1', ['filter' => 'auth:4']);
     });
 
     // Award (เฉพาะแอดมินที่เข้าได้)
-    $routes->group('Award', static function ($routes) {
+    $routes->group('award', static function ($routes) {
         $routes->get('', 'Award::index', ['filter' => 'auth:4']);
         $routes->get('best', 'Award::index', ['filter' => 'auth:4']);
         $routes->get('outstanding', 'Award::index', ['filter' => 'auth:4']);

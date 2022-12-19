@@ -15,7 +15,7 @@ class Admin extends BaseController
 
     public function index()
     {
-        $data['result'] = $this->db->table('admin A')->select('A.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = A.member_type', 'left')->join('award_type AT', 'AT.id = A.award_type', 'left')->join('assessment_group AG', 'AG.id = A.assessment_group', 'left')->where('A.member_type = 4 AND A.status = 1')->orderBy('A.id', 'desc')->get()->getResultObject();
+        $data['result'] = $this->db->table('admin A')->select('A.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = A.member_type', 'left')->join('award_type AT', 'AT.id = A.award_type', 'left')->join('assessment_group AG', 'AG.id = A.assessment_group', 'left')->where('A.member_type = 4')->orderBy('A.id', 'desc')->get()->getResultObject();
         $data['award_type'] = $this->db->table('award_type')->get()->getResultObject();
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
 
@@ -83,7 +83,7 @@ class Admin extends BaseController
             // 'password'              => $post["password"],
             'verify_code'           => $verify_code,
             'role_id'               => 4,
-            'status'                => 1,
+            'status'                => 0,
             'created_at'            => date('Y-m-d H:i:s'),
             'updated_at'            => date('Y-m-d H:i:s'),
         ];

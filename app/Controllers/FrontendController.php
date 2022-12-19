@@ -103,6 +103,7 @@ class FrontendController extends BaseController
 
     public function AssessmentResults()
     {
+        $app = new \Config\App();
         $stage = new \App\Models\UsersStage();
         $prescreen = $stage->where(['user_id' => session()->get('id'), 'stage' => 1])
             ->select('status')->first();
@@ -124,17 +125,42 @@ class FrontendController extends BaseController
             ]
         ];
 
+        $current = date('Y-m-d');
+        $duedate_pre = $app->announcement_pre_date;        
+        $duedate_onsite = $app->announcement_ons_date;
+        $duedate_reult = $app->announcement_date;
+
+        if($current < $duedate_pre){
+            $data->result->sts_title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen)';   
+            $data->result->sts_content = '';
+            $data->result->title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen)';
+            $data->result->img = base_url('assets/images/prescreen_pass.png');
+            $data->result->content = 'ขณะนี้กำลังอยู่ในช่วงขั้นตอยการประเมินขั้นต้น (Pre-screen) 
+                จากทางคณะกรรมการ จะประกาศผลการประเมินในวันที่ '
+                . FormatTree($duedate_pre,'thailand');
+
+            return view('frontend/entrepreneur/_template',(array) $data);
+        }        
+
+        if($current < $duedate_onsite){
+            $data->result->sts_title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินรอบลงพื้นที่';   
+            $data->result->sts_content = '';
+            $data->result->title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินรอบลงพื้นที่';
+            $data->result->img = base_url('assets/images/prescreen_pass.png');
+            $data->result->content = 'ขณะนี้กำลังอยู่ในช่วงขั้นตอยการประเมินรอบลงพื้นที่ 
+                จากทางคณะกรรมการ จะประกาศผลการประเมินในวันที่ '
+                . FormatTree($duedate_onsite,'thailand');
+
+            return view('frontend/entrepreneur/_template',(array) $data);
+        }
+
         if(!empty($onsite) && in_array($onsite->status,[6])){   
             $data->result->sts_title = 'สรุปผลการประเมินรอบลงพื้นที่เรียบร้อยแล้ว';   
             $data->result->sts_content = 'ระบบได้แจ้งผลการประเมินของท่านเรียบร้อยแล้ว';     
             $data->result->title = 'ผลการประเมินรอบลงพื้นที่';
 
             if($onsite->status == 6){
-                $app = new \Config\App();
-                $duedate = $app->announcement_date;
-                $current = date('Y-m-d');
-
-                if($current >= $duedate){ 
+                if($current >= $duedate_reult){ 
                     $data->result->award_result = true;                   
                     $data->result->sts_title = 'สรุปผลการประกาศรางวัลเรียบร้อยแล้ว';   
                     $data->result->sts_content = 'ระบบได้แจ้งสรุปผลการประกาศรางวัลของท่านเรียบร้อยแล้ว';     
@@ -168,7 +194,7 @@ class FrontendController extends BaseController
             }
         } else {         
             $data->result->sts_title = 'สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว (Pre-screen)';   
-            $data->result->sts_content = '';    
+            $data->result->sts_content = '';
             $data->result->title = 'สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว (Pre-screen)';
 
             if($prescreen->status == 6){
@@ -222,9 +248,11 @@ class FrontendController extends BaseController
         $count_1 = $count_2 =  $count_3 = $count_4 = 0;
         $app_array = [];
 
-        $comm = $committees->like('admin_id_tourism','"'.session()->get('id').'"')
-            ->orLike('admin_id_supporting','"'.session()->get('id').'"')
-            ->orLike('admin_id_responsibility','"'.session()->get('id').'"')
+        $comm = $committees->where(
+                '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
+                OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
+                OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')'
+            )
             ->select('application_form_id app_id')
             ->distinct()
             ->findAll();
@@ -291,56 +319,80 @@ class FrontendController extends BaseController
 
     public function prescreenEstimate($id)
     {
+        $config = new \Config\App();
+        $expire_date = $config->Estimate_ons_date;
+        $current_date = date('Y-m-d');
         $stage = $this->getStage($id,1);
-        $assign = $this->getGroupEstimate($id,session()->get('id'),1);
-        $isFinish = $this->checkEstimateFinish($id,1,session()->get('id'));
-        
-        $data = [
-            'title' => 'ประเมินรอบ Pre-screen',
-            'view' => 'frontend/boards/pre-screen-estimate',
-            'app_id' => $id,
-            'stage' => $stage,
-            'assign' => $assign,
-            'isFinish' => $isFinish
-        ];
+
+        if($current_date > $expire_date && !in_array($stage->status,[6,7])){
+            $data = [
+                'title' => 'ประเมินรอบ Pre-screen',
+                'view' => 'frontend/expire/judge-estimate-expire.php',
+                'stage' => 1
+            ];
+        } else {
+            $assign = $this->getGroupEstimate($id,session()->get('id'),1);
+            $isFinish = $this->checkEstimateFinish($id,1,session()->get('id'));
+            
+            $data = [
+                'title' => 'ประเมินรอบ Pre-screen',
+                'view' => 'frontend/boards/pre-screen-estimate',
+                'app_id' => $id,
+                'stage' => $stage,
+                'assign' => $assign,
+                'isFinish' => $isFinish
+            ];
+        }
         
         return view('frontend/entrepreneur/_template',$data);
     }
 
     public function onsiteEstimate($id)
     {
+        $config = new \Config\App();
+        $expire_date = $config->Estimate_ons_date;
+        $current_date = date('Y-m-d');
         $stage = $this->getStage($id,2);
-        $assign = $this->getGroupEstimate($id,session()->get('id'),2);
-        $isFinish = $this->checkEstimateFinish($id,2,session()->get('id'));
 
-        $obj_es = new EstimateScore();
-        $score = $obj_es->where('application_id',$id)
-            ->select('score_prescreen_tt')
-            ->first();
+        if($current_date > $expire_date && !in_array($stage->status,[6,7])){
+            $data = [
+                'title' => 'ประเมินรอบ ลงพื้นที่',
+                'view' => 'frontend/expire/judge-estimate-expire.php',
+                'stage' => 2
+            ];
+        } else {
+            $assign = $this->getGroupEstimate($id,session()->get('id'),2);
+            $isFinish = $this->checkEstimateFinish($id,2,session()->get('id'));
 
-        if($stage->status == 3){
-            $obj_est = new Estimate();
-            $cRequest = $obj_est->where([
-                    'application_id' => $id,
-                    'estimate_by' => session()->get('id'),
-                    'request_status' => 1
-                ])
-                ->countAllResults();
+            $obj_es = new EstimateScore();
+            $score = $obj_es->where('application_id',$id)
+                ->select('score_prescreen_tt')
+                ->first();
 
-            if($cRequest <= 0){
-                $stage->status = 2;
+            if($stage->status == 3){
+                $obj_est = new Estimate();
+                $cRequest = $obj_est->where([
+                        'application_id' => $id,
+                        'estimate_by' => session()->get('id'),
+                        'request_status' => 1
+                    ])
+                    ->countAllResults();
+
+                if($cRequest <= 0){
+                    $stage->status = 2;
+                }
             }
+            
+            $data = [
+                'title' => 'ประเมินรอบ ลงพื้นที่',
+                'view' => 'frontend/boards/onsite-estimate',
+                'app_id' => $id,
+                'stage' => $stage,
+                'assign' => $assign,
+                'score' => $score->score_prescreen_tt,
+                'isFinish' => $isFinish
+            ];
         }
-        
-        $data = [
-            'title' => 'ประเมินรอบ ลงพื้นที่',
-            'view' => 'frontend/boards/onsite-estimate',
-            'app_id' => $id,
-            'stage' => $stage,
-            'assign' => $assign,
-            'score' => $score->score_prescreen_tt,
-            'isFinish' => $isFinish
-        ];
         
         return view('frontend/entrepreneur/_template',$data);
     }
@@ -375,7 +427,7 @@ class FrontendController extends BaseController
                 'assessment_round' => $round,
                 'application_form_id' => $appId
             ])
-            ->like('admin_id_tourism','"'.$id.'"')
+            ->like('admin_id_tourism','%"'.$id.'"%')
             ->first();
 
         $builder_s = $comm->select('admin_id_supporting')
@@ -383,7 +435,7 @@ class FrontendController extends BaseController
                 'assessment_round' => $round,
                 'application_form_id' => $appId
             ])
-            ->orLike('admin_id_supporting','"'.$id.'"')
+            ->like('admin_id_supporting','%"'.$id.'"%')
             ->first();
 
         $builder_r = $comm->select('admin_id_responsibility')
@@ -391,7 +443,7 @@ class FrontendController extends BaseController
                 'assessment_round' => $round,
                 'application_form_id' => $appId
             ])
-            ->orLike('admin_id_responsibility','"'.$id.'"')
+            ->like('admin_id_responsibility','%"'.$id.'"%')
             ->first();
 
         if(!empty($builder_t->admin_id_tourism)){

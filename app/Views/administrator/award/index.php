@@ -46,7 +46,7 @@
                     <tr>
                       <td><?= $key + 1 ?></td>
                       <td class="text-center"><?= $value->code ?></td>
-                      <td class="text-start"><?= $value->company_name ?></td>
+                      <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-center"></td>
                       <td class="text-center"></td>
                       <td class="text-center"><?= $value->award_persent ?></td>
@@ -77,7 +77,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/Award/best';
+    var pgurl = BASE_URL_BACKEND + '/award/best';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -85,27 +85,24 @@
       responsive: true,
       searching: true,
       columnDefs: [{
-          width: '50%',
-          responsivePriority: 1,
-          targets: 1
-        },
-        {
-          "width": "20%",
-          "targets": 0
-        },
-        {
-          responsivePriority: 10001,
-          targets: 5
-        },
-        {
-          responsivePriority: 10001,
-          targets: 3
-        },
-        {
-          responsivePriority: 10001,
-          targets: 2
-        }
-      ],
+        responsivePriority: 1,
+        targets: 2
+      }, {
+        responsivePriority: 1,
+        targets: 5
+      }, {
+        responsivePriority: 10001,
+        targets: 6
+      }, {
+        responsivePriority: 10001,
+        targets: 4
+      }, {
+        responsivePriority: 10001,
+        targets: 3
+      }, {
+        responsivePriority: 10001,
+        targets: 1
+      }],
       lengthMenu: [10, 25, 50, 100],
       oLanguage: {
         sSearchPlaceholder: "ค้นหา",
@@ -122,6 +119,6 @@
   })
 
   function view_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/Complete/view/' + id;
+    window.location.href = BASE_URL_BACKEND + '/complete/view/' + id;
   }
 </script>

@@ -2,7 +2,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายการใบสมัครที่รอกรรมการส่งแบบประเมินขั้นต้น (Pre-Screen) </h3>
+        <h3>รายการแบบประเมินที่รอกรรมการส่งผลการประเมินขั้นต้น (Pre-Screen)</h3>
       </div>
       <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
     </div>
@@ -45,6 +45,20 @@
           </select>
         </div>
 
+        <div class="backendcontent-subcol selectbox col-sm-2">
+          <label>สถานะ</label>
+          <select id="status" name="status">
+            <option value="">ทั้งหมด</option>
+            <option value="1" <?= (@$_GET['status'] == 1) ? 'selected' : ''; ?>>รอส่งผลการประเมิน</option>
+            <option value="2" <?= (@$_GET['status'] == 2) ? 'selected' : ''; ?>>กำลังประเมิน</option>
+            <option value="3" <?= (@$_GET['status'] == 3) ? 'selected' : ''; ?>>ขอข้อมูลเพิ่มเติม</option>
+            <option value="4" <?= (@$_GET['status'] == 4) ? 'selected' : ''; ?>>ตอบรับคำขอ</option>
+            <option value="5" <?= (@$_GET['status'] == 5) ? 'selected' : ''; ?>>ไม่มีการตอบกลับ</option>
+            <option value="6" <?= (@$_GET['status'] == 6) ? 'selected' : ''; ?>>ผ่านการประเมิน</option>
+            <option value="7" <?= (@$_GET['status'] == 7) ? 'selected' : ''; ?>>ไม่ผ่านการประเมิน</option>
+          </select>
+        </div>
+
         <div class="backendcontent-subcol btn col-sm-3">
           <button type="submit" class="but-blue" id="btn_search">ค้นหา</button>
         </div>
@@ -62,11 +76,11 @@
                 <tr>
                   <th class="text-center no">#</th>
                   <th class="text-center noid">รหัสใบสมัคร</th>
-                  <th class="text-center name">ชื่อ</th>
+                  <th class="text-center name">ชื่อสถานประกอบการ</th>
                   <th class="text-center type">ประเภทที่ตัดสิน</th>
                   <th class="text-center section">สาขารางวัล</th>
                   <th class="text-center status">สถานะ</th>
-                  <th class="text-center date">กำหนดส่ง</th>
+                  <!-- <th class="text-center date">กำหนดส่ง</th> -->
                   <th class="text-center edit">จัดการ</th>
                 </tr>
               </thead>
@@ -93,13 +107,13 @@
                     <tr>
                       <td><?= $key + 1 ?></td>
                       <td class="text-center"><?= $value->code ?></td>
-                      <td class="text-start"><?= $value->company_name ?></td>
+                      <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>
                       <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
                       <td class="text-center"><?= $status ?></td>
-                      <td class="text-center">
+                      <!-- <td class="text-center">
                         <?php echo docDate($value->duedate, 3); ?>
-                      </td>
+                      </td> -->
                       <td>
                         <div class="form-table-col edit">
                           <a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-eye"></i></a>
@@ -125,7 +139,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/Estimate/prescreen';
+    var pgurl = BASE_URL_BACKEND + '/estimate/prescreen';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -134,16 +148,22 @@
       searching: false,
       columnDefs: [{
         responsivePriority: 1,
-        targets: 1
+        targets: 2
+      }, {
+        responsivePriority: 1,
+        targets: 5
       }, {
         responsivePriority: 10001,
-        targets: 5
+        targets: 6
+      }, {
+        responsivePriority: 10001,
+        targets: 4
       }, {
         responsivePriority: 10001,
         targets: 3
       }, {
         responsivePriority: 10001,
-        targets: 2
+        targets: 1
       }],
       lengthMenu: [10, 25, 50, 100],
       oLanguage: {
@@ -175,13 +195,17 @@
     $('#btn_search').click();
   });
 
+  $('#status').change(function(e) {
+    $('#btn_search').click();
+  });
+
   function delete_item(id) {
     var option = {
       title: "Warning!",
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/Estimate/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/estimate/delete', {
         id: id,
         image_cover: $('#image_cover_old').val(),
       });
@@ -190,6 +214,6 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/Estimate/view/' + id;
+    window.location.href = BASE_URL_BACKEND + '/estimate/view/' + id;
   }
 </script>

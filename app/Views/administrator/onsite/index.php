@@ -2,7 +2,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายการใบสมัครที่รอเพิ่มกรรมการรอบลงพื้นที่</h3>
+        <h3>รายการแบบประเมินที่รอมอบหมายกรรมการรอบลงพื้นที่</h3>
       </div>
       <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
     </div>
@@ -62,11 +62,11 @@
                 <tr>
                   <th class="text-center no">#</th>
                   <th class="text-center noid">รหัสใบสมัคร</th>
-                  <th class="text-center name">ชื่อ</th>
+                  <th class="text-center name">ชื่อสถานประกอบการ</th>
                   <th class="text-center type">ประเภทที่ตัดสิน</th>
                   <th class="text-center section">สาขารางวัล</th>
                   <th class="text-center status">สถานะ</th>
-                  <th class="text-center date">สิ้นสุดประเมิน</th>
+                  <!-- <th class="text-center date">สิ้นสุดประเมิน</th> -->
                   <th class="text-center edit">จัดการ</th>
                 </tr>
               </thead>
@@ -93,13 +93,13 @@
                     <tr>
                       <td><?= $key + 1 ?></td>
                       <td class="text-center"><?= $value->code ?></td>
-                      <td class="text-start"><?= $value->company_name ?></td>
+                      <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>
                       <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
                       <td class="text-center"><?= $status ?></td>
-                      <td class="text-center">
+                      <!-- <td class="text-center">
                         <?php echo docDate($value->created_at, 3) ?>
-                      </td>
+                      </td> -->
                       <td>
                         <div class="form-table-col edit">
                           <a href="#" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
@@ -174,7 +174,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/Onsite';
+    var pgurl = BASE_URL_BACKEND + '/onsite';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -184,6 +184,9 @@
       columnDefs: [{
         responsivePriority: 1,
         targets: 2
+      }, {
+        responsivePriority: 1,
+        targets: 5
       }, {
         responsivePriority: 10001,
         targets: 6
@@ -232,7 +235,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/Onsite/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/onsite/delete', {
         id: id,
         image_cover: $('#image_cover_old').val(),
       });
@@ -241,11 +244,11 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/Onsite/edit/' + id;
+    window.location.href = BASE_URL_BACKEND + '/onsite/edit/' + id;
   }
 
   function view_score(id) {
-    var res = main_post(BASE_URL_BACKEND + '/Onsite/getScore/' + id);
+    var res = main_post(BASE_URL_BACKEND + '/onsite/getScore/' + id);
     // cc(res)
     if (res != null) {
       $('#pre_tourism').html(res.score_prescreen_te);

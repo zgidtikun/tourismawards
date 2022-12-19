@@ -108,13 +108,13 @@ class EstimateController extends BaseController
                 $data['answer_id'] = $input->answer_id;
             }
 
-            if(!empty($input->score)){
+            if($input->score != '' && is_numeric($input->score)){
                 $data['score_'.$target] = $input->score;
             } else {
                 $data['score_'.$target] = NULL;
             }
 
-            if(!empty($input->tscore)){
+            if($input->tscore != '' && is_numeric($input->tscore)){
                 $data['tscore_'.$target] = $input->tscore;
             } else {
                 $data['tscore_'.$target] = NULL;
@@ -130,6 +130,32 @@ class EstimateController extends BaseController
                 $data['note_'.$target] = $input->note;
             } else {
                 $data['note_'.$target] = NULL;
+            }            
+
+            if($input->score_origin != '' && is_numeric($input->score_origin)){
+                $data['score_'.$target.'_origin'] = $input->score_origin;
+            } else {
+                $data['score_'.$target.'_origin'] = NULL;
+            }
+
+            if(empty($input->est_id)){
+                $cestimate = $this->estimate->where([
+                        'estimate_by' => session()->get('id'),
+                        'application_id' => $input->application_id,
+                        'question_id' => $input->question_id
+                    ])
+                    ->select('id')
+                    ->first();
+
+                if(!empty($cestimate)){
+                    $input->est_id = $cestimate->id;
+                    $action = 'update';
+                } else {
+                    $action = 'create';
+                }
+
+            } else {
+                $action = 'update';
             }
 
             if($input->target == 'pre-screen'){
@@ -144,7 +170,7 @@ class EstimateController extends BaseController
                 }
             }
            
-            switch($input->action){
+            switch($action){
                 case 'create':                    
             
                     $data['application_id'] = $input->application_id;
@@ -258,12 +284,12 @@ class EstimateController extends BaseController
 
             $where_est ='application_id = '.$input->appId;
             if($input->stage == 1)
-                $where_est .= ' AND score_pre != NULL';
-            else $where_est .= ' AND score_onsite != NULL';
-
-            $count_est = $this->estInd->where($where_est)
+                $where_est .= ' AND score_pre IS NOT NULL';
+            else $where_est .= ' AND score_onsite IS NOT NULL';
+            
+            $count_est = $this->estInd->where($where_est, NULL, FALSE)
                 ->countAllResults();
-
+                
             if($count_est >= $count_adm->admin_count){
 
                 if($input->stage == 1){
@@ -277,7 +303,7 @@ class EstimateController extends BaseController
                 $sumScr = $this->estInd->where('application_id',$input->appId)
                     ->select($select_sum)
                     ->first();
-
+                
                 $cJudge = $commit->where([
                         'application_form_id' => $input->appId,
                         'assessment_round' => $input->stage == 1 ? 1 : 2
@@ -289,7 +315,7 @@ class EstimateController extends BaseController
                     )->first(); 
                     
                 $ctourism = $csupport = $crespons = 1;
-
+                
                 if(!empty($cJudge->tourism)){
                     $tourism = json_decode($cJudge->tourism,true);
                     $ctourism = !empty($tourism) ? count($tourism) : 1;
@@ -308,8 +334,9 @@ class EstimateController extends BaseController
                 $avg_te = $sumScr->score_te / $ctourism;
                 $avg_sb = $sumScr->score_sb / $csupport;
                 $avg_rs = $sumScr->score_rs / $crespons;
-                $avg_tt = ($sumScr->score_te + $sumScr->score_sb + $sumScr->score_rs) / $count_adm;
-
+                $avg_tt = number_format(($avg_te + $avg_sb + $avg_rs),2);
+                
+                $inst_avg = [];
                 $inst_avg['application_id'] = $input->appId;
 
                 if($input->stage == 1) {
@@ -355,11 +382,19 @@ class EstimateController extends BaseController
                     ->update();
 
                 if($pass && $input->stage == 1){
-                    $this->stage->insert([
+                    $existStage = $this->stage->where([
                         'user_id' => $form->created_by,
                         'stage' => 2,
-                        'status' => 1
-                    ]);
+                    ])
+                    ->countAllResults();
+                    
+                    if($existStage <= 0){
+                        $this->stage->insert([
+                            'user_id' => $form->created_by,
+                            'stage' => 2,
+                            'status' => 1
+                        ]);
+                    }
                 } 
                 
                 if($input->stage == 1){
@@ -395,7 +430,7 @@ class EstimateController extends BaseController
                     ],
                     (object) [
                         'message'=> $message_a,
-                        'link' => base_url('boards/estimate/pre-screen/'.get_app_id(session()->get('id'))),
+                        'link' => '',
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => $form->place_name
                     ]);
@@ -407,11 +442,11 @@ class EstimateController extends BaseController
                     'stage' => $input->stage
                 ],'estimate-complete');
 
-                send_email_frontend((object)[
-                    'id' => $form->created_by,
-                    'appId' => $input->appId,
-                    'stage' => $input->stage
-                ],'estimate-complete-sys');
+                // send_email_frontend((object)[
+                //     'id' => $form->created_by,
+                //     'appId' => $input->appId,
+                //     'stage' => $input->stage
+                // ],'estimate-complete-sys');
 
             }
 

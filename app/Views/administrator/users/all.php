@@ -41,127 +41,185 @@
 
     <div class="backendcontent-subrow">
       <div class="form-table">
-        <table id="main_datatable" class="display">
-          <thead>
-            <tr>
-              <th class="no">ลำดับ</th>
-              <th class="name">ชื่อ-สกุล</th>
-              <th class="tel">เบอร์โทรศัพท์</th>
-              <th class="mail">อีเมล</th>
-              <th class="status">บทบาทผู้ใช้งาน</th>
-              <th class="date">วันที่สร้าง</th>
-              <th class="edit">จัดการ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            $i = 1;
-            if (!empty($users)) :
-              foreach ($users as $key => $value) :
-                $label = '';
-                $url_edit = '';
-                if ($value->role_id == 1) {
-                  $label = '<div class="userstatus trader">ผู้ประกอบการ</div>';
-                  $url_edit = base_url() . '/administrator/Users/edit/';
-                } else if ($value->role_id == 2) {
-                  $label = '<div class="userstatus officer">เจ้าหน้าที่ ททท.</div>';
-                  $url_edit = base_url() . '/administrator/TAT/edit/';
-                } else if ($value->role_id == 3) {
-                  $label = '<div class="userstatus judge">กรรมการ</div>';
-                  $url_edit = base_url() . '/administrator/Officer/edit/';
-                } else if ($value->role_id == 4) {
-                  $label = '<div class="userstatus admin">ผู้ดูแลระบบ</div>';
-                  $url_edit = base_url() . '/administrator/Admin/edit/';
-                }
-            ?>
+        <div class="grid">
+          <div class="unit w-1-1">
+            <table id="example" class="display" style="width: 100%;">
+              <thead>
                 <tr>
-                  <td class=""><?= $i++ ?></td>
-                  <td class="text-center">
-                    <?php
-                    if (!empty($value->profile) && $value->profile != "") {
-                      $path = base_url() . "/" . $value->profile;
-                    } else {
-                      $path = base_url() . '/assets/images/unknown_user.jpg';
-                    }
-                    ?>
-                    <img src="<?= $path ?>" style="height: 50px; width: 50px"> <?= $value->name ?>  <?= $value->surname ?>
-                  </td>
-                  <td class=""><?= $value->mobile ?></td>
-                  <td class="text-start"><?= $value->email ?></td>
-                  <td class=""><?= $label ?></td>
-                  <td class=""><?= docDate($value->created_at, 3) ?></td>
-                  <td class="">
-                    <div class="form-table-col edit">
-                      <a href="<?= $url_edit . $value->id ?>" class="btn-edit"><i class="bi bi-pencil-square"></i></a>
-                      <!-- <a href="#" class="btn-delete"><i class="bi bi-trash-fill text-danger"></i></a> -->
-                    </div>
-                  </td>
+                  <th class="no">ลำดับ</th>
+                  <th class="name">ชื่อ-สกุล</th>
+                  <th class="tel">เบอร์โทรศัพท์</th>
+                  <th class="name">อีเมล</th>
+                  <th class="status">สถานะ</th>
+                  <th class="status">บทบาทผู้ใช้งาน</th>
+                  <th class="date">วันที่สร้าง</th>
+                  <th class="edit">จัดการ</th>
                 </tr>
-            <?php
-              endforeach;
-            endif;
-            ?>
-
-            <?php
-            if (!empty($admin)) :
-              foreach ($admin as $key => $value) :
-                $label = '';
-                $url_edit = '';
-                if ($value->role_id == 1) {
-                  $label = '<div class="userstatus trader">ผู้ประกอบการ</div>';
-                  $url_edit = base_url() . '/administrator/Users/edit/';
-                } else if ($value->role_id == 2) {
-                  $label = '<div class="userstatus officer">เจ้าหน้าที่ ททท.</div>';
-                  $url_edit = base_url() . '/administrator/TAT/edit/';
-                } else if ($value->role_id == 3) {
-                  $label = '<div class="userstatus judge">กรรมการ</div>';
-                  $url_edit = base_url() . '/administrator/Officer/edit/';
-                } else if ($value->role_id == 4) {
-                  $label = '<div class="userstatus admin">ผู้ดูแลระบบ</div>';
-                  $url_edit = base_url() . '/administrator/Admin/edit/';
-                }
-            ?>
-                <tr>
-                  <td class=""><?= $i++ ?></td>
-                  <td class="text-center">
-                    <?php
-                    if (!empty($value->profile) && $value->profile != "") {
-                      $path = base_url() . "/" . $value->profile;
-                    } else {
-                      $path = base_url() . '/assets/images/unknown_user.jpg';
+              </thead>
+              <tbody>
+                <?php
+                $i = 1;
+                if (!empty($users)) :
+                  foreach ($users as $key => $value) :
+                    $label = '';
+                    $url_edit = '';
+                    if ($value->role_id == 1) {
+                      $label = '<div class="userstatus trader">ผู้ประกอบการ</div>';
+                      $url_edit = base_url() . '/administrator/users/edit/';
+                    } else if ($value->role_id == 2) {
+                      $label = '<div class="userstatus officer">เจ้าหน้าที่ ททท.</div>';
+                      $url_edit = base_url() . '/administrator/tat/edit/';
+                    } else if ($value->role_id == 3) {
+                      $label = '<div class="userstatus judge">กรรมการ</div>';
+                      $url_edit = base_url() . '/administrator/officer/edit/';
+                    } else if ($value->role_id == 4) {
+                      $label = '<div class="userstatus admin">ผู้ดูแลระบบ</div>';
+                      $url_edit = base_url() . '/administrator/admin/edit/';
                     }
-                    ?>
-                    <img src="<?= $path ?>" style="height: 50px; width: 50px"> <?= $value->name ?>  <?= $value->surname ?>
-                  </td>
-                  <td class=""><?= $value->mobile ?></td>
-                  <td class="text-start"><?= $value->email ?></td>
-                  <td class=""><?= $label ?></td>
-                  <td class=""><?= docDate($value->created_at, 3) ?></td>
-                  <td class="">
-                    <div class="form-table-col edit">
-                      <a href="<?= $url_edit . $value->id ?>" class="btn-edit"><i class="bi bi-pencil-square"></i></a>
-                      <!-- <a href="#" class="btn-delete"><i class="bi bi-trash-fill text-danger"></i></a> -->
-                    </div>
-                  </td>
-                </tr>
-            <?php
-              endforeach;
-            endif;
-            ?>
 
-          </tbody>
-        </table>
+                    $status = '<div class="userstatus officer">ไม่ได้ยืนยัน</div>';
+                    if ($value->status == 1) {
+                      $status = '<div class="userstatus judge">ยืนยันแล้ว</div>';
+                    }
+                ?>
+                    <tr>
+                      <td class=""><?= $i++ ?></td>
+                      <td class="text-center">
+                        <?php
+                        if (!empty($value->profile) && $value->profile != "") {
+                          $path = base_url() . "/" . $value->profile;
+                        } else {
+                          $path = base_url() . '/assets/images/unknown_user.jpg';
+                        }
+                        ?>
+                        <img src="<?= $path ?>" class="d-none d-sm-block" style="height: 50px; width: 50px"> <?= $value->name ?> <?= $value->surname ?>
+                      </td>
+                      <td class=""><?= $value->mobile ?></td>
+                      <td class="text-start"><?= $value->email ?></td>
+                      <td class=""><?= $status ?></td>
+                      <td class=""><?= $label ?></td>
+                      <td class=""><?= docDate($value->created_at, 3) ?></td>
+                      <td class="">
+                        <div class="form-table-col edit">
+                          <a href="<?= $url_edit . $value->id ?>" class="btn-edit"><i class="bi bi-pencil-square"></i></a>
+                          <!-- <a href="#" class="btn-delete"><i class="bi bi-trash-fill text-danger"></i></a> -->
+                        </div>
+                      </td>
+                    </tr>
+                <?php
+                  endforeach;
+                endif;
+                ?>
+
+                <?php
+                if (!empty($admin)) :
+                  foreach ($admin as $key => $value) :
+                    $label = '';
+                    $url_edit = '';
+                    if ($value->role_id == 1) {
+                      $label = '<div class="userstatus trader">ผู้ประกอบการ</div>';
+                      $url_edit = base_url() . '/administrator/users/edit/';
+                    } else if ($value->role_id == 2) {
+                      $label = '<div class="userstatus officer">เจ้าหน้าที่ ททท.</div>';
+                      $url_edit = base_url() . '/administrator/tat/edit/';
+                    } else if ($value->role_id == 3) {
+                      $label = '<div class="userstatus judge">กรรมการ</div>';
+                      $url_edit = base_url() . '/administrator/officer/edit/';
+                    } else if ($value->role_id == 4) {
+                      $label = '<div class="userstatus admin">ผู้ดูแลระบบ</div>';
+                      $url_edit = base_url() . '/administrator/admin/edit/';
+                    }
+
+                    $status = '<div class="userstatus officer">ไม่ได้ยืนยัน</div>';
+                    if ($value->status == 1) {
+                      $status = '<div class="userstatus judge">ยืนยันแล้ว</div>';
+                    }
+                ?>
+                    <tr>
+                      <td class=""><?= $i++ ?></td>
+                      <td class="text-center">
+                        <?php
+                        if (!empty($value->profile) && $value->profile != "") {
+                          $path = base_url() . "/" . $value->profile;
+                        } else {
+                          $path = base_url() . '/assets/images/unknown_user.jpg';
+                        }
+                        ?>
+                        <img src="<?= $path ?>" class="d-none d-sm-block" style="height: 50px; width: 50px"> <?= $value->name ?> <?= $value->surname ?>
+                      </td>
+                      <td class=""><?= $value->mobile ?></td>
+                      <td class="text-start"><?= $value->email ?></td>
+                      <td class=""><?= $status ?></td>
+                      <td class=""><?= $label ?></td>
+                      <td class=""><?= docDate($value->created_at, 3) ?></td>
+                      <td class="">
+                        <div class="form-table-col edit">
+                          <a href="<?= $url_edit . $value->id ?>" class="btn-edit"><i class="bi bi-pencil-square"></i></a>
+                          <!-- <a href="#" class="btn-delete"><i class="bi bi-trash-fill text-danger"></i></a> -->
+                        </div>
+                      </td>
+                    </tr>
+                <?php
+                  endforeach;
+                endif;
+                ?>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-
     </div>
+
   </div>
 </div>
 
 
 <script>
   $(function() {
-    var pgurl = BASE_URL_BACKEND + '/Users/all';
+    var pgurl = BASE_URL_BACKEND + '/users/all';
     active_page(pgurl);
+
+    $("#example").dataTable().fnDestroy();
+    $("#example").addClass("nowrap").dataTable({
+      responsive: true,
+      searching: false,
+      columnDefs: [{
+        responsivePriority: 1,
+        targets: 2
+      }, {
+        responsivePriority: 2,
+        targets: 4
+      }, {
+        responsivePriority: 10001,
+        targets: 6
+      }, {
+        responsivePriority: 10001,
+        targets: 5
+      }, {
+        responsivePriority: 10001,
+        targets: 4
+      }, {
+        responsivePriority: 10001,
+        targets: 3
+      }, {
+        responsivePriority: 10001,
+        targets: 1
+      }],
+      lengthMenu: [10, 25, 50, 100],
+      oLanguage: {
+        sSearchPlaceholder: "ค้นหา",
+        sLengthMenu: "แสดง _MENU_ รายการ",
+        sSearch: "ค้นหา",
+        sInfo: "แสดง _START_ ถึง _END_ ทั้งหมด _TOTAL_ รายการ",
+        sInfoEmpty: "แสดง 0 ถึง 0 ทั้งหมด 0 รายการ",
+        sInfoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+        sZeroRecords: "ไม่มีข้อมูล",
+        sProcessing: "Processing",
+        semptyTable: "ไม่มีข้อมูล",
+      }
+    });
+
   });
 
   $('#keyword').on('keypress', function(e) {

@@ -87,7 +87,7 @@
                     <tr>
                       <td><?= $key + 1 ?></td>
                       <td class="text-center"><?= $value->code ?></td>
-                      <td class="text-start"><?= $value->company_name ?></td>
+                      <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>
                       <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
                       <td class="text-center"><?= $status ?></td>
@@ -117,7 +117,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/PreScreen';
+    var pgurl = BASE_URL_BACKEND + '/prescreen';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -126,16 +126,22 @@
       searching: false,
       columnDefs: [{
         responsivePriority: 1,
-        targets: 1
+        targets: 2
+      }, {
+        responsivePriority: 1,
+        targets: 5
       }, {
         responsivePriority: 10001,
-        targets: 5
+        targets: 6
+      }, {
+        responsivePriority: 10001,
+        targets: 4
       }, {
         responsivePriority: 10001,
         targets: 3
       }, {
         responsivePriority: 10001,
-        targets: 2
+        targets: 1
       }],
       lengthMenu: [10, 25, 50, 100],
       oLanguage: {
@@ -173,7 +179,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/PreScreen/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/prescreen/delete', {
         id: id,
         image_cover: $('#image_cover_old').val(),
       });
@@ -182,6 +188,6 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/PreScreen/edit/' + id;
+    window.location.href = BASE_URL_BACKEND + '/prescreen/edit/' + id;
   }
 </script>

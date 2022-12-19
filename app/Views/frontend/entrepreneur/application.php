@@ -128,7 +128,7 @@
                             </h3>
                         </div>
                         <div class="regis-form-data-col1" id="group-type">
-                            <h4>กรุณาเลือกประเภทที่สอดคล้องกับการดำเนินงานและกลุ่มลูกค้าของท่านมากที่สุด<span class="required">*</span></h4>
+                            <h4>กรุณาเลือกประเภทที่สอดคล้องกับการดำเนินงานและกลุ่มลูกค้าของท่านมากที่สุด <span class="required">*</span></h4>
                         </div>
                         <div class="regis-form-data-col1" id="group-type-sub">
                         </div>
@@ -140,8 +140,8 @@
                             </div>
                         </div>
                         <div class="regis-form-data-col1">
-                           <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด<span class="required">*</span></h4>
-                           ระบุคำตอบ<span class="required">*</span> 
+                           <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด <span class="required">*</span></h4>
+                           ระบุคำตอบ <span class="required">*</span> 
                            <span class="text-muted">(จำนวนตัวอักษรคงเหลือ <span id="step1-desc-cc">1,000</span>/1,000)</span>
                            <textarea class="form-control" id="step1-desc" maxlength="1000" rows="12"></textarea>
                            <div class="invalid-feedback">กรุณาอธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด</div>
@@ -303,9 +303,9 @@
                             </h3>
                         </div>
                         <div class="regis-form-data-col1">
-                           <h4>ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (TH)<span class="required">*</span></h4>
+                           <h4>ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (TH) <span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-siteNameTh">
-                           <span style="font-size: 14px;" class="text-muted">(หมายเหตุ: ชื่อโรงแรม ตามใบอนุญาตประกอบการธุรกิจโรงแรม)*</span>
+                           <span style="font-size: 14px;" class="text-muted">(หมายเหตุ: ชื่อโรงแรม ตามใบอนุญาตประกอบการธุรกิจโรงแรม) *</span>
                            <div class="invalid-feedback">กรุณากรอก ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (TH)</div>
                         </div>
                         <div class="regis-form-data-col1">
@@ -313,32 +313,32 @@
                            <input type="text" class="form-control" id="step2-siteNameEng">
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>ที่ตั้ง/เลขที่<span class="required">*</span></h4>
+                           <h4>ที่ตั้ง/เลขที่ <span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-address">
                            <div class="invalid-feedback">กรุณากรอก ที่ตั้ง/เลขที่</div>
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>ถนน<span class="required">*</span></h4>
+                           <h4>ถนน <span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-road">
                            <div class="invalid-feedback">กรุณากรอก ถนน</div>
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>ตำบล<span class="required">*</span></h4>
+                           <h4>ตำบล <span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-subDistrict">
                            <div class="invalid-feedback">กรุณากรอก ตำบล</div>
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>อำเภอ<span class="required">*</span></h4>
+                           <h4>อำเภอ <span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-district">
                            <div class="invalid-feedback">กรุณากรอก อำเภอ</div>
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>จังหวัด<span class="required">*</span></h4>
+                           <h4>จังหวัด <span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-province">
                            <div class="invalid-feedback">กรุณากรอก จังหวัด</div>
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>รหัสไปรษณีย์<span class="required">*</span></h4>
+                           <h4>รหัสไปรษณีย์ <span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step2-zipcode">
                            <div class="invalid-feedback">กรุณากรอก รหัสไปรษณีย์</div>
                         </div>
@@ -388,12 +388,12 @@
                             </h3>
                         </div>
                         <div class="regis-form-data-col1">
-                            <h4>ชื่อหน่วยงาน/บริษัท<span class="required">*</span></h4>
+                            <h4>ชื่อหน่วยงาน/บริษัท <span class="required">*</span></h4>
                            <input type="text" class="form-control" id="step3-companyName">
                            <div class="invalid-feedback">กรุณากรอก ชื่อหน่วยงาน/บริษัท</div>
                         </div>
                         <div class="regis-form-data-col1">
-                            <h4>ที่อยู่<span class="required">*</span></h4>
+                            <h4>ที่อยู่</h4>
                            <div class="selectaddress">
                               <div class="selectaddresscol">
                                  <p><input type="radio" name="step3-setAddress" id="step3-setAddress-1" value="1"> สถานที่เดียวกับผลงานที่ส่งเข้าประกวด
@@ -405,42 +405,42 @@
                            </div>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>ที่ตั้ง/เลขที่<span class="required">*</span></h4>
+                            <h4>ที่ตั้ง/เลขที่</h4>
                             <input type="text" class="form-control" id="step3-address">
                             <div class="invalid-feedback">กรุณากรอก ที่ตั้ง/เลขที่</div>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>ถนน<span class="required">*</span></h4>
+                            <h4>ถนน</h4>
                             <input type="text" class="form-control" id="step3-road">
                             <div class="invalid-feedback">กรุณากรอก ถนน</div>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>ตำบล<span class="required">*</span></h4>
+                            <h4>ตำบล</h4>
                             <input type="text" class="form-control" id="step3-subDistrict">
                             <div class="invalid-feedback">กรุณากรอก ตำบล</div>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>อำเภอ<span class="required">*</span></h4>
+                            <h4>อำเภอ</h4>
                             <input type="text" class="form-control" id="step3-district">
                             <div class="invalid-feedback">กรุณากรอก อำเภอ</div>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>จังหวัด<span class="required">*</span></h4>
+                            <h4>จังหวัด</h4>
                             <input type="text" class="form-control" id="step3-province">
                             <div class="invalid-feedback">กรุณากรอก จังหวัด</div>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>รหัสไปรษณีย์<span class="required">*</span></h4>
+                            <h4>รหัสไปรษณีย์</h4>
                             <input type="text" class="form-control" id="step3-zipcode">
                             <div class="invalid-feedback">กรุณากรอก รหัสไปรษณีย์</div>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>หมายเลขโทรศัพท์<span class="required">*</span></h4>
+                            <h4>หมายเลขโทรศัพท์</h4>
                             <input type="text" class="form-control" id="step3-telephone">
                             <div class="invalid-feedback">กรุณากรอก หมายเลขโทรศัพท์</div>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>อีเมล<span class="required">*</span></h4>
+                            <h4>อีเมล</h4>
                             <input type="email" class="form-control" id="step3-email">
                             <div class="invalid-feedback">กรุณากรอก อีเมล</div>
                         </div>
@@ -474,7 +474,7 @@
                             </h3>
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>ชื่อ-นามสกุลผู้ประสานงาน<span class="required">*</span></h4>
+                           <h4>ชื่อ-นามสกุลผู้ประสานงาน <span class="required">*</span></h4>
                             <input type="text" class="form-control" id="step4-name">
                             <div class="invalid-feedback">กรุณากรอก ชื่อ-นามสกุลผู้ประสานงาน</div>
                         </div>
@@ -484,12 +484,12 @@
                             <div class="invalid-feedback">กรุณากรอก ตำแหน่ง</div>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>หมายเลขโทรศัพท์<span class="required">*</span></h4>
+                            <h4>หมายเลขโทรศัพท์ <span class="required">*</span></h4>
                             <input type="text" class="form-control" id="step4-telephone">
                             <div class="invalid-feedback">กรุณากรอก หมายเลขโทรศัพท์</div>
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>อีเมล<span class="required">*</span></h4>
+                           <h4>อีเมล <span class="required">*</span></h4>
                             <input type="email" class="form-control" id="step4-email">
                             <div class="invalid-feedback">กรุณากรอก อีเมล</div>
                         </div>
@@ -523,7 +523,7 @@
                             </h3>
                         </div>
                         <div class="regis-form-data-col2">
-                            <h4>เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ.<span class="required">*</span></h4>
+                            <h4>เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ. <span class="required">*</span></h4>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="step5-openYear" readonly style="pointer-events: none;"> 
                                 <input type="hidden" id="step5-hiddenDate">                               
@@ -548,7 +548,7 @@
                             <hr>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                 <span class="fs-18 fw-semibold">
-                                    หลักฐานการถือครองที่ดินที่กฎหมายรับรอง สัญญาเช่า หรือหนังสือยินยอมให้ใช้สถานที่
+                                    หลักฐานการถือครองที่ดินที่กฎหมายรับรอง สัญญาเช่า หรือหนังสือยินยอมให้ใช้สถานที่ 
                                     <span class="required">*</span>
                                 </span>
                                 <div class="card" style="border: 1px solid #E5E6ED;">
@@ -587,7 +587,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                 <span class="fs-18 fw-semibold" id="step5-file1-title">
-                                    ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง
+                                    ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง 
                                     <span class="required">*</span>
                                 </span>
                                 <div class="card" style="border: 1px solid #E5E6ED;">
@@ -668,7 +668,7 @@
                     <div class="regis-form-data-row hide" id="step5-type2">
                         <div class="regis-form-data-col1">
                             <h4>
-                                เลขที่ใบอนุญาตประกอบธุรกิจ
+                                เลขที่ใบอนุญาตประกอบธุรกิจ 
                                 <span class="required">*</span>
                             </h4>
                             <input type="text" class="form-control" id="step5-t2-bussLicense">
@@ -681,7 +681,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">
                                         ใบอนุญาตประกอบการธุรกิจโรงแรม (ตาม พ.ร.บ. โรงแรม ปี พ.ศ. 2547) เป็นระยะเวลาไม่ต่ำกว่า 1 ปี 
-                                        นับถึงวันปิดรับสมัคร
+                                        นับถึงวันปิดรับสมัคร 
                                         <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
@@ -732,7 +732,7 @@
                             <div class="bs-row">
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">สำเนาหนังสือให้ความเห็นชอบต่อรายงานการประเมินผลกระทบสิ่งแวดล้อม (EIA) ในกรณีที่มีจำนวนห้องพักตั้งแต่ 80 ห้องขึ้นไปหรือมีพื้นที่ใช้สอยตั้งแต่ 4,000 ตารางเมตรขึ้นไป 
-                                        หรือสำเนาหนังสือให้ความเห็นชอบต่อรายงานการประเมินผลกระทบสิ่งแวดล้อมเบื้องต้น (IEE) ในกรณีที่มีจำนวนห้องพักหรือพื้นที่ใช้สอยต่ำกว่าและอยู่ในพื้นที่ที่กฎหมายกำหนด
+                                        หรือสำเนาหนังสือให้ความเห็นชอบต่อรายงานการประเมินผลกระทบสิ่งแวดล้อมเบื้องต้น (IEE) ในกรณีที่มีจำนวนห้องพักหรือพื้นที่ใช้สอยต่ำกว่าและอยู่ในพื้นที่ที่กฎหมายกำหนด 
                                         <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
@@ -827,7 +827,7 @@
                     <div class="regis-form-data-row hide" id="step5-type3">
                         <div class="regis-form-data-col1">
                             <h4>
-                                เลขที่ใบอนุญาตประกอบธุรกิจ
+                                เลขที่ใบอนุญาตประกอบธุรกิจ 
                                 <span class="required">*</span>
                             </h4>
                             <input type="text" class="form-control" id="step5-t3-bussLicense">
@@ -855,7 +855,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">มีใบอนุญาตประกอบกิจการสถานประกอบการสปาเพื่อสุขภาพจากกระทรวงสาธารณสุขมาแล้วไม่น้อยกว่า 1 ปี นับจนถึงวันปิดรับสมัคร ในกรณีที่ใบรับรองมาตรฐานสปาเพื่อสุขภาพหมดอายุหรืออยู่ระหว่างการยื่นเอกสารขอต่ออายุ 
                                         ให้แสดงหลักฐานการยื่นขอต่ออายุจากกระทรวงสาธารณสุขหรือสำนักงานสาธารณสุขจังหวัดที่สถานประกอบการนั้นตั้งอยู่
-                                        <span class="required">*</span>
+                                         <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -929,10 +929,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4" id="step5-wellnessCert-only">
                                     <span class="fs-18 fw-semibold">
                                         มีใบอนุญาตประกอบกิจการสถานพยาบาล หรือใบอนุญาตให้ดำเนินการสถานพยาบาล (เฉพาะสาขา Wellness Spa)
-                                        <span class="required">*</span>
+                                         <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -968,10 +968,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4"  id="step5-spa-only">
                                     <span class="fs-18 fw-semibold">
                                         สำเนาใบอนุญาตเป็นผู้ดำเนินการสปา (Spa Manager)
-                                        <span class="required">*</span>
+                                         <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -1010,7 +1010,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">
                                         สำเนาโฉนดที่ดิน/เอกสารสิทธิ์ที่ถูกต้องตามกฎหมาย หรือมีเอกสารที่ได้รับอนุญาตให้ใช้พื้นที่จากทางราชการหรือสัญญาเช่า
-                                        <span class="required">*</span>
+                                         <span class="required">*</span>
                                     </span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -1046,6 +1046,46 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
+                                    <span class="fs-18 fw-semibold">
+                                        สำเนาผลการตรวจสอบลักษณะน้ำทิ้ง (ในกรณีเป็นสถานประกอบกิจการที่ต้องถูกควบคุมการระบายน้ำทิ้งตามที่กฎหมายกำหนด) (แนบเอกสาร)
+                                    </span>
+                                    <div class="card" style="border: 1px solid #E5E6ED;">
+                                        <div class="card-body selecter-file">
+                                            <div class="bs-row mb-2">
+                                                <div class="col-12">
+                                                    <button class="btn btn-file" id="step5-EffluentT3-btn">
+                                                        <span id="step5-EffluentT3-label">Upload Files</span>
+                                                        <input type="file" id="step5-EffluentT3"
+                                                        accept=".pdf" multiple
+                                                        onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
+                                                    </button>                                                                    
+                                                    <button class="btn btn-action" id="step5-EffluentT3-remove"
+                                                    onclick="removeFile('#step5-EffluentT3',{id: register.id,remove: 'all'})">
+                                                        Remove All
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="bs-row" id="step5-EffluentT3-list">
+                                            </div>
+                                            <div class="bs-row">
+                                                <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body attach-file">
+                                            <div class="bs-row">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button"
+                                                    onclick="downloadFile('#step5-EffluentT3')">
+                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">เอกสารแนบอื่น ๆ (ถ้ามี) เช่น หนังสือรับรอง GMP ของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ เอกสารรับรอง (Certificate) 
                                         หรือรางวัลมาตรฐานผลิตภัณฑ์ระดับนานาชาติของผลิตภัณฑ์หรือของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ</span>
@@ -1087,7 +1127,7 @@
                                     <span class="fs-18 fw-semibold">
                                         จะต้องเป็นสถานประกอบการที่ไม่มีการจ้างแรงงานที่ผิดกฎหมาย หากมี
                                         การจ้างแรงงานต่างด้าวจะต้องแสดงหลักฐานการจ้างแรงงานที่ถูกต้องตามกฎหมายกำหนด
-                                        <span class="required">*</span>
+                                         <span class="required">*</span>
                                     </span>
                                     <div></div>
                                     <div class="form-check form-check-inline">
@@ -1140,7 +1180,7 @@
                     <div class="regis-form-data-row hide" id="step5-type4">
                         <div class="regis-form-data-col1">
                             <h4>
-                                เลขที่ใบอนุญาตประกอบธุรกิจ<span class="required">*</span>
+                                เลขที่ใบอนุญาตประกอบธุรกิจ <span class="required">*</span>
                             </h4>
                             <input type="text" class="form-control" id="step5-t4-bussLicense">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
@@ -1152,7 +1192,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">   
                                     <span class="fs-18 fw-semibold">
                                         ต้องมีใบอนุญาตประกอบธุรกิจนำเที่ยวไม่น้อยกว่า 2 ปี จนถึงวันปิดรับสมัคร
-                                        <span class="required">*</span>
+                                         <span class="required">*</span>
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -1192,7 +1232,7 @@
                                     <span class="fs-18 fw-semibold">
                                         มีใบอนุญาตประกอบธุรกิจนำเที่ยวจากกรมการท่องเที่ยว ในกรณีที่ใบอนุญาตหมดอายุ หรืออยู่ระหว่างการยื่นเอกสารขอต่ออายุ 
                                         ให้แสดงหลักฐานการยื่นขอต่ออายุจากกรมการท่องเที่ยว หรือสำนักงานทะเบียนจังหวัดที่สถานประกอบการนั้นตั้งอยู่
-                                        <span class="required">*</span>
+                                         <span class="required">*</span>
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
@@ -1232,7 +1272,7 @@
                                     <span class="fs-18 fw-semibold">
                                         หลักฐานการถือครองที่ดินที่กฎหมายรับรอง สัญญาเช่า หรือหนังสือยินยอม
                                         ให้ใช้สถานที่ หรือมีเอกสารที่ได้รับอนุญาตให้ใช้พื้นที่จากทางราชการ
-                                        <span class="required">*</span>
+                                         <span class="required">*</span>
                                     </span>
                                     <div class="card mt-1" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">

@@ -55,7 +55,7 @@
         <div class="row ">
             <div class="col6">
                 <div class="list_copyright">
-                    Copyright © 2022
+                    Copyright © <?=date('Y')?>
                     <ul>
                         <li><a href="<?= base_url('privacy-policy') ?>" title="Privacy Policy">Privacy Policy</a></li>
                         <li><a href="<?= base_url('about-us') ?>" title="About Us">About Us</a></li>
@@ -65,7 +65,7 @@
             </div>
 
             <div class="col6">
-                Thailand Tourism Awards 2022.
+                Thailand Tourism Awards 2023.
             </div>
         </div>
     </div>

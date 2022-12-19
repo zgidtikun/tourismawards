@@ -2,7 +2,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายการประวัติการอนุมัติ </h3>
+        <h3>รายการประวัติการตรวจสอบใบสมัคร </h3>
       </div>
       <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
     </div>
@@ -73,7 +73,7 @@
                 <tr>
                   <th class="text-center no">#</th>
                   <th class="text-center noid">รหัสใบสมัคร</th>
-                  <th class="text-center name">ชื่อ</th>
+                  <th class="text-center name">ชื่อสถานประกอบการ</th>
                   <th class="text-center type">ประเภทที่ตัดสิน</th>
                   <th class="text-center section">สาขารางวัล</th>
                   <th class="text-center status">สถานะ</th>
@@ -101,7 +101,7 @@
                     <tr>
                       <td><?= $key + 1 ?></td>
                       <td class="text-center"><?= $value->code ?></td>
-                      <td class="text-start"><?= $value->company_name ?></td>
+                      <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>
                       <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
                       <td class="text-center"><?= $status ?></td>
@@ -131,7 +131,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/Approve/history';
+    var pgurl = BASE_URL_BACKEND + '/approve/history';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -140,16 +140,22 @@
       searching: false,
       columnDefs: [{
         responsivePriority: 1,
+        targets: 2
+      }, {
+        responsivePriority: 1,
         targets: 5
       }, {
         responsivePriority: 10001,
         targets: 6
       }, {
         responsivePriority: 10001,
+        targets: 4
+      }, {
+        responsivePriority: 10001,
         targets: 3
       }, {
         responsivePriority: 10001,
-        targets: 2
+        targets: 1
       }],
       lengthMenu: [10, 25, 50, 100],
       oLanguage: {
@@ -191,7 +197,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/Approve/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/approve/delete', {
         id: id,
         image_cover: $('#image_cover_old').val(),
       });
@@ -200,10 +206,10 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/Approve/edit/' + id;
+    window.location.href = BASE_URL_BACKEND + '/approve/edit/' + id;
   }
 
   function insert_item(elm) {
-    window.location.href = BASE_URL_BACKEND + '/Approve/add';
+    window.location.href = BASE_URL_BACKEND + '/approve/add';
   }
 </script>

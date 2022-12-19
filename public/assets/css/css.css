@@ -490,7 +490,7 @@ color: #cca22a;
 }
 .container.copyright .row {
     display: flex;
-    margin: 10px 0;
+    margin: 20px 0;
     padding: 0;
     width: 100%;
     max-width: 1700px;
@@ -738,7 +738,7 @@ list-style-type: none;
 .award-list-img{
 width: 100%;
 position: relative;
-padding-top: 75%;
+padding-top: 71.10%;
 margin-bottom: 20px;
 background-color: #EEE;
 }
@@ -779,9 +779,23 @@ padding:  0 20px;
 .award-section-img{
 width: 100%;
 position: relative;
-padding-top: 75%;
-background-color: #707070;
+padding-top: 71.10%;
+overflow: hidden;
 }
+
+.award-section-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 100%!important;
+    max-height: 100%!important;
+transition: all 0.5s;
+}
+
+.award-section-img img:hover{
+    transform: scale(1.1);
+}
+
 .award-section-imgscale{
 position: absolute;
 width: 100%;
@@ -798,14 +812,14 @@ top: 0;
 }
 .winner-title {
     color: #FFF;
-    font-size: 8vw;
+    font-size: 6.5em;
     text-align: center;
     margin-bottom: 40px;
     line-height: 1;
 }
 .winner-title-large {
     font-family: 'Abril Fatface', cursive;
-    font-size: 16vw;
+    font-size: 2em;
     line-height: 1;
 }
 .gold-award{
@@ -1111,6 +1125,7 @@ width: 50%;
 }
 .btn-save {
     background-color: #152a54;
+    border-bottom: 3px solid #08244a;
     color: #FFF;
 }
 .btn-save:link,.btn-save:visited {
@@ -1238,3 +1253,25 @@ line-height: 0;
     background-color: #C00;
     border-radius: 100%;
 }
+.award-section-txt {
+    color: #FFF;
+    font-size: 20px !important;
+    font-weight: 600;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5);
+    transition: .5s ease;
+    width: auto;
+    border-top-right-radius: 10px;
+    line-height: 20px;
+}
+
+.award-list [class^="btn"]{
+transition: all 0.2s;
+border-bottom: 3px solid #08244a;
+}
+.award-list [class^="btn"]:hover {
+    position: relative;
+    transform: translateY(-5px);
+}
+
+/*GD-02-V.15122565*/

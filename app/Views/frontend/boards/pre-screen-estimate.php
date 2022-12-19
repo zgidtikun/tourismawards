@@ -158,24 +158,14 @@
                             </div>
                         </div>
 
-                        <div class="regis-form-data-col1 none-estimate" style="display: none;">
-                            <h4 id="hSubject"></h4>
-                            <div class="alert alert-danger" role="alert">
-                                <span style="font-size: 18px;" class="fw-semibold">
-                                    <i class="bi bi-exclamation-diamond-fill mr-2"></i>
-                                    ไม่มีการประเมินในรอบขั้นต้น Pre-screen
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="regis-form-data-col1 is-estimate">
+                        <div class="regis-form-data-col1">
                             <h4 id="qSubject"></h4>
                             คำตอบ
                             <textarea class="form-control" id="qReply" rows="12" readonly>
                             </textarea>
                         </div>
 
-                        <div class="regis-form-data-col2 attachfile is-estimate">
+                        <div class="regis-form-data-col2 attachfile">
                             <div class="attachinp">
                                 <h4>รูปภาพ</h4>
                                 <div class="ablumbox" id="qAblum">
@@ -183,12 +173,12 @@
                             </div>
                         </div>
 
-                        <div class="regis-form-data-col2 attachfile is-estimate">
+                        <div class="regis-form-data-col2 attachfile">
                             <div class="attachinp">
                                 <h4>แนบไฟล์</h4>
                                 <a href="javascript:downloadFile();" class="btn-download">ดาวน์โหลดไฟล์แนบ</a>
                             </div>
-                            <div class="attachinp border-0">
+                            <div class="attachinp border-0 is-estimate">
                                 <a href="javascript:void(0)" class="btn-getdata active"
                                 >
                                     ขอข้อมูลเพิ่มเติม
@@ -199,9 +189,19 @@
 
                 </div>
 
-                <div class="regis-form-data judge-form-data is-estimate">
+                <div class="regis-form-data judge-form-data">
                     <div class="regis-form-data-row">
-                        <div class="regis-form-data-col1 title">
+
+                        <div class="regis-form-data-col1 none-estimate" style="display: none;">
+                            <div class="alert alert-danger" role="alert">
+                                <span style="font-size: 18px;" class="fw-semibold">
+                                    <i class="bi bi-exclamation-diamond-fill mr-2"></i>
+                                    ไม่มีการประเมินในรอบขั้นต้น Pre-screen
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="regis-form-data-col1 title is-estimate">
                             <h3>
                                 <picture>
                                     <source srcset="<?= base_url('assets/images/formicon-type.svg') ?>">
@@ -213,10 +213,10 @@
                             </h3>
                         </div>
 
-                        <div class="regis-form-data-col1 mt-2" id="qSco">
+                        <div class="regis-form-data-col1 mt-2 is-estimate" id="qSco">
                         </div>
 
-                        <div class="regis-form-data-col1">
+                        <div class="regis-form-data-col1 is-estimate">
                             <span class="fw-semibold">ความคิดเห็นของกรรมการ</span>
                             <span class="text-muted">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
                             <textarea class="form-control" rows="6" id="comment" 
@@ -240,7 +240,7 @@
                 <div class="regis-form-data">
                     <div class="regis-form-data-row">
                         <div class="regis-form-data-col2 clear">
-                            <button class="btn btn-danger" onclick="resetEstimate(pointer.cate,pointer.seg)"
+                            <button class="btn btn-danger is-estimate" onclick="resetEstimate(pointer.cate,pointer.seg)"
                             id="btn-reset">
                                 ล้างข้อมูลการให้คะแนน
                             </button>
@@ -248,7 +248,7 @@
                         <div class="regis-form-data-col2 continue">
                             <button class="btn-next" id="btn-back">ย้อนกลับ</button>
                             <button class="btn-next" id="btn-next">ถัดไป</button>
-                            <button class="btn-save" id="btn-save">บันทึก</button>
+                            <button class="btn-save is-estimate" id="btn-save">บันทึก</button>
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายการใบสมัครที่รอเพิ่มกรรมการรอบลงพื้นที่</h3>
+        <h3>รายการแบบประเมินที่เสร็จสมบูรณ์แล้ว</h3>
       </div>
       <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
       <!-- <a href="#" onclick="export_data()" class="btn-export"><i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i> Export</a> -->
@@ -71,7 +71,7 @@
                 <tr>
                   <th data-priority="2">ลำดับ</th>
                   <th>รหัสใบสมัคร</th>
-                  <th data-priority="1">ชื่อ</th>
+                  <th data-priority="1">ชื่อสถานประกอบการ</th>
                   <th>ประเภทที่ตัดสิน</th>
                   <th>สาขารางวัล</th>
                   <th>สถานะ</th>
@@ -102,7 +102,7 @@
                     <tr>
                       <td><?= $key + 1 ?></td>
                       <td class="text-center"><?= $value->code ?></td>
-                      <td class="text-start"><?= $value->company_name ?></td>
+                      <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>
                       <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
                       <td class="text-center"><?= $status ?></td>
@@ -113,7 +113,7 @@
                       <td>
                         <div class="form-table-col edit">
                           <a href="#" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
-                          <a href="#" class="btn-edit" title="ดูข้อมูล" onclick="view_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a>
+                          <!-- <a href="#" class="btn-edit" title="ดูข้อมูล" onclick="view_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a> -->
                           <a href="#" class="btn-edit" title="ให้กรรมการประเมินใหม่" onclick="re_submit('<?= $value->created_by ?>')"><i class="bi bi-arrow-clockwise"></i></a>
                         </div>
                       </td>
@@ -184,7 +184,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/Complete';
+    var pgurl = BASE_URL_BACKEND + '/complete';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -194,6 +194,15 @@
       columnDefs: [{
         responsivePriority: 1,
         targets: 2
+      }, {
+        responsivePriority: 1,
+        targets: 5
+      }, {
+        responsivePriority: 10001,
+        targets: 6
+      }, {
+        responsivePriority: 10001,
+        targets: 4
       }, {
         responsivePriority: 10001,
         targets: 3
@@ -235,11 +244,11 @@
   });
 
   function view_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/Complete/view/' + id;
+    window.location.href = BASE_URL_BACKEND + '/complete/view/' + id;
   }
 
   function view_score(id) {
-    var res = main_post(BASE_URL_BACKEND + '/Complete/getScore/' + id);
+    var res = main_post(BASE_URL_BACKEND + '/complete/getScore/' + id);
     // cc(res)
     if (res != null) {
       $('#pre_tourism').html(res.score_prescreen_te);
@@ -271,7 +280,7 @@
       text: "คุณต้องการยืนยันการตอบกลับเอกสารเพื่อให้กรรมการประเมินรอบลงพื้นที่ใหม่หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/Complete/reSubmit', {
+      var res = main_post(BASE_URL_BACKEND + '/complete/reSubmit', {
         id: id
       });
       res_swal(res, 1);
@@ -285,7 +294,7 @@
   });
 
   // function export_data() {
-  //   var url = BASE_URL_BACKEND + '/Complete/register';
+  //   var url = BASE_URL_BACKEND + '/complete/register';
   //   $('#search_form').attr('action', url);
   //   $('#search_form').attr('target', '_blank');
   //   $('#search_form').submit();

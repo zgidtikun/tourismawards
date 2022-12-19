@@ -105,6 +105,7 @@ const draft = (cate,seg) => {
             question_id: question.id,
             est_id: question.est_id,
             answer_id: question.reply_id,
+            score_origin: question.score_onsite_origin,
             score: question.score_onsite,
             tscore: question.tscore_onsite,
             comment: question.comment_onsite,
@@ -141,8 +142,8 @@ const setFinish = () => {
     
     $.each(assign,(ak,av) => {
         
-        let index = av+1;
-
+        let index = av-1;
+        
         if(av == 1){ 
             te = Number(dataset[index].group.score_onsite);
             tscore += Number(dataset[index].group.score_onsite);
@@ -173,13 +174,11 @@ const setFinish = () => {
             }
         });
     });
-
-    const stescore = (tescore / ttescore).toFixed(2);
-    const ssbscore = (sbscoe / tsbscoe).toFixed(2);
-    const srsscore = (rsscore / trsscore).toFixed(2);
-    const totalScore = tescore + sbscoe + rsscore;
-    const totalMax = ttescore + tsbscoe + trsscore; 
-    const sscore = (totalScore * tscore / totalMax).toFixed(2);
+    
+    const stescore = ((tescore * te) / ttescore).toFixed(2);
+    const ssbscore = ((sbscoe * sb) / tsbscoe).toFixed(2);
+    const srsscore = ((rsscore * rs) / trsscore).toFixed(2);
+    const sscore = (parseFloat(stescore) + parseFloat(ssbscore) + parseFloat(srsscore)).toFixed(2);
     
     alert.confirm({
         mode: 'confirm-main',
@@ -302,22 +301,41 @@ const setQuestion = (cate,seg) => {
     esCmm.val(question.comment_onsite);
     esNote.val(question.note_onsite);
 
-    countCha($('#comment'))
+    countChar($('#comment'))
+
+    let back = seg != 0 ? seg-1 : seg,
+        next = seg != category.question.length-1 ? seg+1 : seg;
+
+    btnBack.attr('onclick','setQuestion('+cate+','+back+')');
+    btnNext.attr('onclick','setQuestion('+cate+','+next+')');
+    btnSave.attr('onclick','draft('+cate+','+seg+')');
+    btnSMemo.attr('onclick','draft('+cate+','+seg+')');
+
+    if(seg == 0){
+        btnBack.hide();
+        btnNext.show();
+    } else if(seg >= category.question.length-1){
+        btnBack.show();
+        btnNext.hide();
+    } else {
+        btnBack.show();
+        btnNext.show();
+    }
 
     if(Number(question.onside_status) == 1){
         $('.none-estimate').hide();
         $('.is-estimate').show();
     } else {
         $('.none-estimate').show();
-        $('.is-estimate').hide();        
+        $('.is-estimate').hide();   
         return;
     }    
 
-    if(Number(question.pre_status) == 0){
-        $('#qResult, #qReply, #qImages, #qFiles').hide();
-    } else {
-        $('#qResult, #qReply, #qImages, #qFiles').show();
-    }
+    // if(Number(question.pre_status) == 0){
+    //     $('#qResult, #qReply, #qImages, #qFiles').hide();
+    // } else {
+    //     $('#qResult, #qReply, #qImages, #qFiles').show();
+    // }
     
     qSubject.html(question.no+'. '+question.question);
     qReply.html(question.reply);
@@ -374,7 +392,7 @@ const setQuestion = (cate,seg) => {
         }
         
         if(!empty(question.score_onsite)){
-            if(Number(question.score_onsite) == Number(tmp[0].trim())){
+            if((Number(question.score_onsite) / Number(question.weight)) == Number(tmp[0].trim())){
                 ck = 'checked';
             }
         }
@@ -391,25 +409,6 @@ const setQuestion = (cate,seg) => {
 
     qEva.html(ev);
     qSco.html(sc);
-
-    let back = seg != 0 ? seg-1 : seg,
-        next = seg != category.question.length-1 ? seg+1 : seg;
-
-    btnBack.attr('onclick','setQuestion('+cate+','+back+')');
-    btnNext.attr('onclick','setQuestion('+cate+','+next+')');
-    btnSave.attr('onclick','draft('+cate+','+seg+')');
-    btnSMemo.attr('onclick','draft('+cate+','+seg+')');
-
-    if(seg == 0){
-        btnBack.hide();
-        btnNext.show();
-    } else if(seg >= category.question.length-1){
-        btnBack.show();
-        btnNext.hide();
-    } else {
-        btnBack.show();
-        btnNext.show();
-    }
 }
 
 const setDropdown = (qt,cate,seg) => {
@@ -533,7 +532,8 @@ const calScore = (ele) => {
 
     const totalscore = selfscore / maxscore;
     
-    dataset[point.cate].question[point.seg].score_onsite = ele.value;
+    dataset[point.cate].question[point.seg].score_onsite_origin = ele.value;    
+    dataset[point.cate].question[point.seg].score_onsite = selfscore;
     dataset[point.cate].question[point.seg].tscore_onsite = totalscore;
     dataset[point.cate].question[point.seg].estimate = true;
 }

@@ -29,6 +29,7 @@
               <th class="name">ชื่อ-สกุล</th>
               <th class="tel">เบอร์โทรศัพท์</th>
               <th class="mail">อีเมล</th>
+              <th class="status">สถานะ</th>
               <th class="status">บทบาทผู้ใช้งาน</th>
               <th class="date">วันที่สร้าง</th>
               <th class="edit">จัดการ</th>
@@ -49,6 +50,11 @@
                 } else if ($value->role_id == 4) {
                   $label = '<div class="userstatus admin">ผู้ดูแลระบบ</div>';
                 }
+
+                $status = '<div class="userstatus officer">ไม่ได้ยืนยัน</div>';
+                if ($value->status == 1) {
+                  $status = '<div class="userstatus judge">ยืนยันแล้ว</div>';
+                }
             ?>
                 <tr>
                   <td class=""><?= $i++ ?></td>
@@ -60,10 +66,11 @@
                       $path = base_url() . '/assets/images/unknown_user.jpg';
                     }
                     ?>
-                    <img src="<?= $path ?>" style="height: 50px; width: 50px"> <?= $value->name ?>  <?= $value->surname ?>
+                    <img src="<?= $path ?>" class="d-none d-sm-block" style="height: 50px; width: 50px"> <?= $value->name ?>  <?= $value->surname ?>
                   </td>
                   <td class=""><?= $value->mobile ?></td>
                   <td class="text-start"><?= $value->email ?></td>
+                  <td class=""><?= $status ?></td>
                   <td class=""><?= $label ?></td>
                   <td class=""><?= docDate($value->created_at, 3) ?></td>
                   <td class="">
@@ -88,7 +95,7 @@
 
 <script>
   $(function() {
-    var pgurl = BASE_URL_BACKEND + '/Officer';
+    var pgurl = BASE_URL_BACKEND + '/officer';
     active_page(pgurl);
   });
 
@@ -104,7 +111,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/Officer/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/officer/delete', {
         id: id
       });
       res_swal(res, 1);
@@ -112,10 +119,10 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/Officer/edit/' + id;
+    window.location.href = BASE_URL_BACKEND + '/officer/edit/' + id;
   }
 
   function insert_item(elm) {
-    window.location.href = BASE_URL_BACKEND + '/Officer/add';
+    window.location.href = BASE_URL_BACKEND + '/officer/add';
   }
 </script>

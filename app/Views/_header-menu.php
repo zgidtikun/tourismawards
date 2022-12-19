@@ -5,12 +5,18 @@
          <div class="header-box-row regisform login_list">
             <div class="header-box-col">
                <ul>
-                  <?php if (!session()->get('isLoggedIn')) : ?>
+                  <?php 
+                     if (!session()->get('isLoggedIn')) : 
+                        $_app = new \Config\App();
+                        $_register_expire = date('Y-m-d') > $_app->Register_expired;
+                        if(!$_register_expire):
+                  ?>
                      <li class="nonlogin">
                         <a href="<?= base_url('register') ?>" title="ลงทะเบียน">
                            <i class="bi bi-person-circle"></i>&nbsp;&nbsp;ลงทะเบียน
                         </a>
                      </li>
+                     <?php endif; ?>
                      <li class="nonlogin">
                         <a href="<?= base_url('login') ?>" title="เข้าสู่ระบบ">
                            <i class="bi bi-box-arrow-in-right"></i>&nbsp;&nbsp;เข้าสู่ระบบ

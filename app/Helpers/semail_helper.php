@@ -145,9 +145,9 @@ class semail {
                 case 'register':
                     $_message = view('template-frontend-email',[
                         '_header' => 'ยืนยันตัวตนการเข้าร่วมประกวด',
-                        '_content' => '<p>เรียนคุณ '.$dataset->name.' '.$dataset->surname.'</p><br>'
-                            . '<p>กรุณายืนยันตัวตนผ่านทางอีเมล เพื่อทำการเข้าสู่ระบบท่านจำเป็นต้องยืนยันตัวตนภายใน 3 วัน</p>'
-                            . '<p>โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ '
+                        '_content' => '<p>กรุณายืนยันตัวตนของท่านผ่านทางอีเมล เพื่อทำการล็อกอินเข้าสู่เว็บไซต์ '
+                            . 'ท่านจำเป็นต้องยืนยันตัวตนภายใน 24 ชั่วโมง</p>'
+                            . '<p>โปรดยืนยันตัวตนด้วยการกดที่ลิงก์นี้ '
                             . '<b><a href="'.base_url('verify-user?c='.$dataset->verify_token).'" target="_blank">'
                             . 'ยืนยันตัวตน</a></b></p>'
                     ]);
@@ -162,8 +162,8 @@ class semail {
                     $_recipient = $dataset->name.' '.$dataset->surname;          
                     $_message = view('template-frontend-email',[
                         '_header' => 'เรียน คุณ'.$_recipient,
-                        '_content' => '<p>ท่านได้ส่งคำร้องขอในการเปลี่ยนรหัสผ่าน กรุณากดที่ลิ้งเพื่อทำการเปลี่ยนรหัสผ่าน '
-                            . '<b><a href="'.base_url('new-password/'.$dataset->id)
+                        '_content' => '<p>ท่านได้ส่งคำร้องขอในการเปลี่ยนรหัสผ่าน กรุณากดปุ่มด้านล่างเพื่อทำการเปลี่ยนรหัสผ่าน<p>'
+                            . '<p><b><a href="'.base_url('new-password/'.$dataset->id)
                             . '" target="_blank">เปลี่ยนรหัสผ่าน</a></b></p>'
                     ]);
     
@@ -193,9 +193,8 @@ class semail {
                 case 'app-wait':
                     $_message = view('template-frontend-email',[
                         '_header' => 'เรียน คุณ'.$dataset->tycon,
-                        '_content' => '<p>ท่านส่งใบสมัครเรียบร้อยแล้ว ใบสมัครของท่านอยู่ระหว่างการดำเนินการตรวจสอบ'
-                            .' กรุณารอผลการตรวจสอบภายใน 7 วัน</p>'
-                            . '<p>เมื่อทำการพิจารณาเสร็จแลัวจะส่งผ่านทางอีเมลนี้ กรุณารอการตอบกลับที่กล่องจดหมายหรือจดหมายขยะ</p>'
+                        '_content' => '<p>ท่านส่งใบสมัครเรียบร้อยแล้ว ใบสมัครของท่านอยู่ระหว่างการดำเนินการตรวจสอบข้อมูล '
+                            . 'กรุณารอผลการตรวจสอบข้อมูลภายใน 7 วัน</p>'
                     ]);
                     
                     $_subject = 'แจ้งการรับแบบฟอร์มการสมัครเข้ารับการพิจารณา';
@@ -235,25 +234,39 @@ class semail {
                     }
                 break;
                 case 'answer-complete':                    
-                    $tycoon = $this->getTycoon($dataset->app_id);
-                    $_header = 'แจ้งเตือนการส่งแบบประเมินขั้นต้น';
+                    $_header = 'การส่งแบบประเมินขั้นต้น';
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
-                        '_content' => $tycoon->place 
-                            . ' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณาเข้าสู่ระบบเพื่อทำการมอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)'
+                        '_content' => 'ท่านส่งแบบประเมินขั้นต้น (Pre-Screen) เรียบร้อยแล้ว กรุณาติดตามผลการประเมินทางอีเมล หรือเว็บไซต์'
                     ]);
     
                     $_subject = $_header;
+                    $_to = $dataset->email;
+                    $_from = $email_sys;
+                    $_cc = [];
+                    $_bcc = ['zgidtikun@gmail.com'];
+                break;
+                case 'answer-request-complete':
+                    $_header = 'ตอบกลับการขอข้อมูลเพิ่มเติม';
+                    $_content = "$dataset->tycon ได้ส่งคำตอบการประเมินเบื้องต้น (Pre-Screen) เพิ่มเติมกลับมาเรียบร้อยแล้ว "
+                        . "จึงขอให้ท่านคณะกรรมการกรุณาล็อกอินเข้าสู่เว็บไซต์ เพื่อทำการประเมินเบื้องต้น (Pre-Screen) อีกครั้ง";
+                    
+                    $_message = view('template-frontend-email',[
+                        '_header' => $_header,
+                        '_content' => $_content
+                    ]);
+
+                    $_subject = 'แจ้งการ'.$_header;
                     $_to = [];
                     $_from = $email_sys;
                     $_cc = [];
                     $_bcc = ['zgidtikun@gmail.com'];
-                                       
-                    $list_admin = $this->getAdmin();
                     
-                    if(!empty($list_admin)){
-                        foreach($list_admin as $admin){
-                            array_push($_to,$admin->email);
+                    $judge = $this->getCommittees($dataset->appId);                    
+                    
+                    if(!empty($judge)){
+                        foreach($judge as $user){
+                            array_push($_to,$user->email);
                         }
                     }
                 break;
@@ -262,15 +275,15 @@ class semail {
                     $_header = 'ขอข้อมูลเพิ่มเติม';                
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
-                        '_content' => '<p>เรียน คุณ'.$user->fullname.'</p><br>'
-                            . '<p>แบบประเมินของท่านมีการร้องขอข้อมูลเพิ่มเติม กรุณาเข้าสู่ระบบเพื่อตรวจสอบการร้องขอข้อมูล</p>'
+                        '_content' => '<p>คณะกรรมการมีการขอข้อมูลเพิ่มเติม แบบประเมินของท่าน '
+                        . 'กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบการขอข้อมูล และส่งข้อมูลตอบกลับภายใน 3 วัน</p>'
                     ]);
     
                     $_subject = 'แจ้งการขอข้อมูลเเพิ่มเติมในขั้นตอนการประเมินเบื่องต้น';
                     $_to = $user->email;
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = ['zgidtikun@gmail.com'];                
+                    $_bcc = ['zgidtikun@gmail.com'];    
                 break;
                 case 'estimate-complete':
                     $user = $this->getUser($dataset->id);
@@ -280,9 +293,8 @@ class semail {
                     $_content = '<p>เรียน คุณ'.$user->fullname.'</p><br>';
 
                     if($dataset->stage == 1){
-                        $_content .= '<p>แบบประเมินของท่าน ผ่านการประเมินรอบประเมินขั้นต้น (Pre-Screen)'
-                            . ' กรุณาส่ง VDO และ Power Point xxxxxxx ไปที่อีเมล '.$email_ct
-                            . ' เพื่อใช้ในการประเมินรอบก่อนลงพื้นที่</p>';
+                        $_content .= '<p>ท่านส่งแบบประเมินขั้นต้น (Pre-Screen) เรียบร้อยแล้ว '
+                            . 'กรุณาติดตามผลการประเมินทางอีเมล หรือเว็บไซต์</p>';
                     } else {
                         $_content.= '<p>แบบประเมินของท่าน ได้รับการประเมินเรียบร้อยแล้ว'
                             . ' กรุณาติดตามผลการประเมินทางอีเมล หรือเว็บไซต์</p>';
@@ -410,10 +422,22 @@ class semail {
             ->select('admin_id_tourism, admin_id_supporting, admin_id_responsibility')
             ->first();
 
-        $tourism = json_decode($data->admin_id_tourism,true);
-        $support = json_decode($data->admin_id_supporting,true);
-        $respons = json_decode($data->admin_id_responsibility,true);
-        $judge = array_unique(array_merge($tourism,$support,$respons));
+        $judge = $tourism = $support = $respons = [];
+    
+        if(!empty($data->admin_id_tourism)){
+            $tourism = json_decode($data->admin_id_tourism,true);
+            $judge = array_unique(array_merge($judge,$tourism));
+        }
+    
+        if(!empty($data->admin_id_supporting)){
+            $support = json_decode($data->admin_id_supporting,true);
+            $judge = array_unique(array_merge($judge,$support));
+        }
+    
+        if(!empty($data->admin_id_responsibility)){
+            $respons = json_decode($data->admin_id_responsibility,true);
+            $judge = array_unique(array_merge($judge,$respons));
+        }
 
         $result = $obj_user->whereIn('id',$judge)
             ->select('email')->findAll();

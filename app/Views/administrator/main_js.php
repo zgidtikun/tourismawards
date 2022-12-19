@@ -92,6 +92,7 @@
       imageWidth: 1100,
       confirmButtonColor: '#DD3342',
       confirmButtonText: '<i class="fas fa-times"></i> ปิด',
+      showCloseButton: true,
     });
   }
 

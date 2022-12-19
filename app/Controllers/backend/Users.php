@@ -71,8 +71,8 @@ class Users extends BaseController
         }
         $data['role']   = $this->db->table("role")->get()->getResultObject();
 
-        $data['users']  = $this->db->table('users')->like($where, 'match', 'both')->where('status', 1)->get()->getResultObject();
-        $data['admin']  = $this->db->table('admin')->like($where, 'match', 'both')->where('status', 1)->get()->getResultObject();
+        $data['users']  = $this->db->table('users')->like($where, 'match', 'both')->get()->getResultObject();
+        $data['admin']  = $this->db->table('admin')->like($where, 'match', 'both')->get()->getResultObject();
         // pp_sql();
         // $data['member_type'] = $this->db->table('member_type')->get()->getResultObject();
         // px($data['role']);

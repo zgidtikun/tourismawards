@@ -100,7 +100,7 @@ class Officer extends BaseController
             // 'password'              => $post["password"],
             'verify_code'           => $verify_code,
             'role_id'               => 3,
-            'status'                => 1,
+            'status'                => 0,
             'created_at'            => date('Y-m-d H:i:s'),
             'updated_at'            => date('Y-m-d H:i:s'),
         ];
@@ -194,7 +194,7 @@ class Officer extends BaseController
             // $where['surname'] = $_GET['keyword'];
             // $where['email'] = $_GET['keyword'];
         }
-        $data['result']  = $this->db->table('admin')->where('role_id', 2)->where('status', 1)->like($where, 'match', 'both')->get()->getResultObject();
+        $data['result']  = $this->db->table('admin')->where('role_id', 2)->like($where, 'match', 'both')->get()->getResultObject();
 
         // $data['result'] = $this->db->table('admin A')->select('A.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = A.member_type', 'left')->join('award_type AT', 'AT.id = A.award_type', 'left')->join('assessment_group AG', 'AG.id = A.assessment_group', 'left')->where("A.member_type = 2 AND A.status = 1 AND $or_where")->orderBy('A.id', 'desc')->get()->getResultObject();
         // pp_sql();
@@ -265,7 +265,7 @@ class Officer extends BaseController
             // 'password'              => $post["password"],
             'verify_code'           => $verify_code,
             'role_id'               => 2,
-            'status'                => 1,
+            'status'                => 0,
             'created_at'            => date('Y-m-d H:i:s'),
             'updated_at'            => date('Y-m-d H:i:s'),
         ];

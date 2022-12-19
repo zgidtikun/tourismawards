@@ -4,7 +4,7 @@ const onFileHandle = (setting, input, type) => {
         ref = referance.find(el => el.input == input),
         check = true,
         error, total;
-
+        
     if (handle.length > 0) {
         switch (ref.app) {
             case 'awards/application':
@@ -121,10 +121,10 @@ const uploadFile = (setting, input, handleBy) => {
         case 'awards/pre-screen':
 
             let answer = psc.questions[setting.cate].question[setting.seg];
-
+            let setAction = !empty(answer.reply_id) ? 'update' : 'create';
             formData.append('qid', answer.id);
             formData.append('aid', !empty(answer.reply_id) ? answer.reply_id : '');
-            formData.append('action', !empty(answer.reply_id) ? 'update' : 'create');
+            formData.append('action', setAction);
             formData.append('position', ref.position);
             formData.append('path', ref.path);
             api_setting.method = 'action';
@@ -137,6 +137,9 @@ const uploadFile = (setting, input, handleBy) => {
                 if (res.result == 'error_login') {
                     alert.login();
                 } else if (res.result == 'success') {
+                    if(setAction == 'create'){
+                        psc.questions[setting.cate].question[setting.seg].reply_id = res.id;
+                    }
                     psc.questions[setting.cate].question[setting.seg][ref.position] = res.files;
                     showFiles.tycoon(ref.input, psc.questions[setting.cate].question[setting.seg][ref.position]);
                 } else {
@@ -881,6 +884,20 @@ const referance = [{
         label: '#step5-otherT3-label',
         api: '/inner-api/app/upload',
         position: 'otherT3Files',
+        path: 'paper',
+        app: 'awards/application',
+        maxUpload: 5,
+        maxSize: 15
+    },
+    {
+        input: '#step5-EffluentT3',
+        pointer: ['step5', 'EffluentT3'],
+        btn: '#step5-EffluentT3-btn',
+        btnrm: '#step5-EffluentT3-remove',
+        show: '#step5-EffluentT3-list',
+        label: '#step5-EffluentT3-label',
+        api: '/inner-api/app/upload',
+        position: 'EffluentT3Files',
         path: 'paper',
         app: 'awards/application',
         maxUpload: 5,

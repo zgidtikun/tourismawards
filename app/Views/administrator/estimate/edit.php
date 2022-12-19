@@ -40,417 +40,6 @@
 </div>
 
 
-<a name="pageform"></a>
-<div class="backendcontent">
-  <div class="backendcontent-row">
-
-    <div class="formmainbox">
-
-      <div class="regis-form-step" style="grid-template-columns: repeat(5, 1fr);">
-        <a id="1" href="javascript:void(0);" class="btn-form-step complete active">
-          1. ประเภทการสมัคร
-        </a>
-        <a id="2" href="javascript:void(0);" class="btn-form-step complete">
-          2. ข้อมูลผลงาน
-        </a>
-        <a id="3" href="javascript:void(0);" class="btn-form-step complete">
-          3. ข้อมูลหน่วยงานบริษัท
-        </a>
-        <a id="4" href="javascript:void(0);" class="btn-form-step complete">
-          4. ข้อมูลผู้ประสานงาน
-        </a>
-        <a id="5" href="javascript:void(0);" class="btn-form-step complete">
-          5. คุณสมบัติเบื้องต้น/เอกสารประกอบการสมัคร
-        </a>
-      </div>
-      <div class="sections regis-form-data">
-        <div class="content content1 active">
-          <div class="regis-form-data">
-            <div class="regis-form-data-row">
-              <div class="regis-form-data-col1">
-                <h3>
-                  <picture>
-                    <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
-                    <img src="<?= base_url() ?>/assets/images/formicon-type.png">
-                  </picture> ประเภทที่ต้องการสมัครประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย
-                </h3>
-              </div>
-              <div class="regis-form-data-col1">
-                <h4>กรุณาเลือกประเภทที่สอดคล้องกับการดำเนินงานและกลุ่มลูกค้าของท่านมากที่สุด <span class="required">*</span></h4>
-
-                <?php
-                if (!empty($application_type)) :
-                  foreach ($application_type as $key => $value) :
-                    $checked = "";
-                    if ($value->id == $result->application_type_id) {
-                      $checked = "checked";
-                    }
-                ?>
-                    <p>
-                      <input type="radio" id="application_type_<?= $value->id ?>" name="application_type" value="<?= $value->id ?>" <?= $checked ?>>
-                      <label for="application_type_<?= $value->id ?>"> <?= $value->name ?></label>
-                    </p>
-                <?php
-                  endforeach;
-                endif;
-                ?>
-              </div>
-
-              <div class="regis-form-data-col1">
-                <h4>สาขารางวัล <span class="required">*</span></h4>
-                <div id="option_application_type_sub">
-                  <?php
-                  if (!empty($application_type_sub)) {
-                    foreach ($application_type_sub as $key => $value) :
-                      $checked = "";
-                      if ($value->id == $result->application_type_sub_id) {
-                        $checked = "checked";
-                      }
-                  ?>
-                      <p>
-                        <input type="radio" id="application_type_sub_<?= $value->id ?>" name="application_type_sub" value="<?= $value->id ?>" <?= $checked ?>>
-                        <label for="application_type_sub_<?= $value->id ?>"> <?= $value->name ?></label>
-                      </p>
-                  <?php
-                    endforeach;
-                  } else {
-                    echo '<span class="text-danger">ไม่พบสาขารางวัล</span>';
-                  }
-                  ?>
-                </div>
-
-              </div>
-
-              <div class="regis-form-data-col1">
-                <div class="comment yellow">
-                  <i class="bi bi-exclamation-lg"></i>
-                  <h4>นิยาม</h4>
-                  <p>กิจกรรมหรือสถานที่เที่ยวเที่ยวที่สร้างหรือพัฒนาขึ้น เพื่อเน้นการให้ความบันเทิงหรือความสนุกสนาน แก่นักท่องเที่ยว เช่น สวนสนุก สวนน้ำ การแสดงต่างๆ ตลาดน้ำ ตลาดย้อนยุค เป็นต้น</p>
-                </div>
-              </div>
-
-              <div class="regis-form-data-col1">
-                <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด<span class="required">*</span></h4>
-                ระบุคำตอบ<span class="required">*</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
-                <textarea rows="6" id="field" onkeyup="countChar(this)"><?= $result->highlights ?></textarea>
-                <script>
-                  function countChar(val) {
-                    var len = val.value.length;
-                    if (len >= 1000) {
-                      val.value = val.value.substring(0, 1000);
-                    } else {
-                      $('#charNum').text(1000 - len);
-                    }
-                  };
-                </script>
-              </div>
-
-              <div class="regis-form-data-col1 inpvdo">
-                <label>ลิ้งก์เว็บไซต์ หรือ ลิ้งก์วิดีโอ</label> <input value="<?= $result->link ?>" disabled="">
-              </div>
-
-              <div class="regis-form-data-col2 attachfile">
-                <div class="attachinp">
-                  <h4>รายละเอียดผลงาน</h4>
-                  <?php
-                  if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
-                    foreach (json_decode($result->pack_file) as $key => $value) {
-                      if ($value->file_position == 'paperFiles') {
-                  ?>
-                        <div class="card card-body">
-                          <div class="bs-row">
-                            <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                              <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
-                            </div>
-                          </div>
-                        </div>
-                  <?php
-                      }
-                    }
-                  }
-                  ?>
-                </div>
-
-                <div class="attachinp">
-                  <h4>สื่อสิ่งพิมพ์</h4>
-
-                  <?php
-                  if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
-                    foreach (json_decode($result->pack_file) as $key => $value) {
-                      if ($value->file_position == 'detailFiles') {
-                  ?>
-                        <div class="card card-body">
-                          <div class="bs-row">
-                            <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                              <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
-                            </div>
-                          </div>
-                        </div>
-                  <?php
-                      }
-                    }
-                  }
-                  ?>
-                </div>
-              </div>
-
-              <div class="regis-form-data-col2 attachfile">
-                <div class="attachinp">
-                  <h4>แนบรูปภาพความละเอียดสูง (ประมาณ 5-10 รูป)</h4>
-                  <div class="ablumbox">
-
-                    <?php
-                    if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
-                      foreach (json_decode($result->pack_file) as $key => $value) {
-                        if ($value->file_position == 'registerImages') {
-                    ?>
-                          <div class="ablumbox-col">
-                            <div class="ablum-mainimg">
-                              <div class="ablum-mainimg-scale">
-                                <img src="<?= base_url() . '/' . $value->file_path ?>" title="<?= $value->file_original ?>">
-                              </div>
-                            </div>
-                          </div>
-                    <?php
-                        }
-                      }
-                    }
-                    ?>
-
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="content content2">
-          <div class="regis-form-data">
-            <div class="regis-form-data-row">
-              <div class="regis-form-data-col1">
-                <h3>
-                  <picture>
-                    <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
-                    <img src="<?= base_url() ?>/assets/images/formicon-type.png">
-                  </picture> ข้อมูลผลงานที่ส่งเข้าประกวด
-                </h3>
-              </div>
-              <div class="regis-form-data-col1">
-                <h4>ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (TH)<span class="required">*</span></h4>
-                <input value="<?= $result->attraction_name_th ?>" readonly>
-                <span class="inpcomment">(หมายเหตุ: ชื่อโรมแรม ตามใบอนุญาตประกอบการธุรกิจโรงแรม)*</span>
-              </div>
-
-              <div class="regis-form-data-col1">
-                <h4>ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว (EN)</h4>
-                <input value="<?= $result->attraction_name_en ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>ที่ตั้ง/เลขที่<span class="required">*</span></h4>
-                <input value="<?= $result->address_no ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>ถนน<span class="required">*</span></h4>
-                <input value="<?= $result->address_road ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>จังหวัด<span class="required">*</span></h4>
-                <input value="<?= $result->address_province ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>อำเภอ<span class="required">*</span></h4>
-                <input value="<?= $result->address_district ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>ตำบล<span class="required">*</span></h4>
-                <input value="<?= $result->address_sub_district ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>รหัสไปรษณีย์<span class="required">*</span></h4>
-                <input value="<?= $result->address_zipcode ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>Facebook</h4>
-                <input value="<?= $result->facebook ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>Instagram</h4>
-                <input value="<?= $result->instagram ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>Line ID</h4>
-                <input value="<?= $result->line_id ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>Social Media อื่นๆ</h4>
-                <input value="<?= $result->other_social ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col1">
-                <h4>ลิ้งก์แผนที่ Google Map</h4>
-                <input value="<?= $result->google_map ?>" readonly>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="content content3">
-          <div class="regis-form-data">
-            <div class="regis-form-data-row">
-              <div class="regis-form-data-col1">
-                <h3>
-                  <picture>
-                    <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
-                    <img src="<?= base_url() ?>/assets/images/formicon-type.png">
-                  </picture> ข้อมูลหน่วยงาน/บริษัทที่ส่งเข้าประกวด
-                </h3>
-              </div>
-              <div class="regis-form-data-col1">
-                <h4>ชื่อหน่วยงาน/บริษัท<span class="required">*</span></h4>
-                <input value="<?= $result->company_name ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col1">
-                <h4>ที่อยู่<span class="required">*</span></h4>
-                <div class="selectaddress">
-                  <div class="selectaddresscol">
-                    <p>
-                      <input type="radio" name="company_setaddr" value="1" id="oldaddress" <?= ($result->company_setaddr == 1) ? 'checked' : ''; ?>>
-                      <label for="oldaddress"> สถานที่เดียวกับผลงานที่ส่งเข้าประกวด</label>
-                    </p>
-                  </div>
-                  <div class="selectaddresscol">
-                    <p>
-                      <input type="radio" name="company_setaddr" value="2" id="newaddress" <?= ($result->company_setaddr == 2) ? 'checked' : ''; ?>>
-                      <label for="newaddress"> ระบุที่อยู่ใหม่</label>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="hide-address">
-                <div class="regis-form-data-col2">
-                  <h4>ที่ตั้ง/เลขที่<span class="required">*</span></h4>
-                  <input value="<?= $result->company_addr_no ?>" readonly>
-                </div>
-
-                <div class="regis-form-data-col2">
-                  <h4>ถนน<span class="required">*</span></h4>
-                  <input value="<?= $result->company_addr_road ?>" readonly>
-                </div>
-
-                <div class="regis-form-data-col2">
-                  <h4>จังหวัด<span class="required">*</span></h4>
-                  <input value="<?= $result->company_addr_province ?>" readonly>
-                </div>
-
-                <div class="regis-form-data-col2">
-                  <h4>อำเภอ<span class="required">*</span></h4>
-                  <input value="<?= $result->company_addr_district ?>" readonly>
-                </div>
-
-                <div class="regis-form-data-col2">
-                  <h4>ตำบล<span class="required">*</span></h4>
-                  <input value="<?= $result->company_addr_sub_district ?>" readonly>
-                </div>
-
-                <div class="regis-form-data-col2">
-                  <h4>รหัสไปรษณีย์<span class="required">*</span></h4>
-                  <input value="<?= $result->company_addr_zipcode ?>" readonly>
-                </div>
-
-                <div class="regis-form-data-col2">
-                  <h4>Facebook</h4>
-                  <input value="<?= $result->facebook ?>" readonly>
-                </div>
-
-                <div class="regis-form-data-col2">
-                  <h4>Instagram</h4>
-                  <input value="<?= $result->instagram ?>" readonly>
-                </div>
-
-                <div class="regis-form-data-col2">
-                  <h4>Line ID</h4>
-                  <input value="<?= $result->line_id ?>" readonly>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="content content4">
-          <div class="regis-form-data">
-            <div class="regis-form-data-row">
-              <div class="regis-form-data-col1">
-                <h3>
-                  <picture>
-                    <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
-                    <img src="<?= base_url() ?>/assets/images/formicon-type.png">
-                  </picture> ข้อมูลผู้ประสานงาน
-                </h3>
-              </div>
-              <div class="regis-form-data-col2">
-                <h4>ชื่อ-นามสกุลผู้ประสานงาน<span class="required">*</span></h4>
-                <input value="<?= $result->knitter_name ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>ตำแหน่ง<span class="required">*</span></h4>
-                <input value="<?= $result->knitter_position ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>หมายเลขโทรศัพท์<span class="required">*</span></h4>
-                <input value="<?= $result->knitter_tel ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>อีเมล<span class="required">*</span></h4>
-                <input value="<?= $result->knitter_email ?>" readonly>
-              </div>
-
-              <div class="regis-form-data-col2">
-                <h4>Line ID</h4>
-                <input value="<?= $result->knitter_line ?>" readonly>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="content content5">
-          <div class="regis-form-data">
-            <?php
-            if ($result->application_type_id == 1) {
-              echo view('administrator/approve/form_1', ['result' => $result]);
-            } else if ($result->application_type_id == 2) {
-              echo view('administrator/approve/form_2', ['result' => $result]);
-            } else if ($result->application_type_id == 3) {
-              echo view('administrator/approve/form_3', ['result' => $result]);
-            } else if ($result->application_type_id == 4) {
-              echo view('administrator/approve/form_4', ['result' => $result]);
-            }
-            ?>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
 <div class="backendcontent forminput">
   <div class="backendcontent-row">
     <div class="backendcontent-title">
@@ -467,7 +56,7 @@
         <input type="hidden" name="application_form_id" id="application_form_id" value="<?= $result->id ?>">
         <div class="backendform-row">
           <div class="backendform-col3">
-            <label data-tab="1">1. Tourism Excellence (Product/Service) <span class="required">*</span></label>
+            <label>1. Tourism Excellence (Product/Service) <span class="required">*</span></label>
             <div class="editjudge-out">
               <select class="js-example-basic-multiple" id="status_1" name="tourism[]" multiple>
                 <?php
@@ -541,7 +130,7 @@
 
         <div class="form-main-btn">
           <a href="javascript: history.back(1)" class="btn-cancle">ยกเลิก</a>
-          <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
+          <a href="javascript:void(0)" class="btn-save" id="btn_save">บันทึก</a>
         </div>
       </form>
 
@@ -549,10 +138,333 @@
   </div>
 </div>
 
+
+<div class="backendcontent">
+  <div class="backendcontent-row">
+    <div class="regis-form-step" style="grid-template-columns: repeat(3, 1fr);">
+      <?php
+      $i = 1;
+      // pp($assessment_group);
+      foreach ($assessment_group as $key => $value) {
+        $active = "";
+        if ($i == 1) {
+          $active = "active";
+        }
+      ?>
+        <a id="<?= $i ?>" href="javascript:void(0);" class="btn-form-step <?= $active ?>"><?= $value->name ?></a>
+      <?php
+        $i++;
+      }
+      ?>
+    </div>
+
+    <div class="sections regis-form-data">
+
+      <div class="content content1 active">
+        <div class="regis-form-data">
+          <div class="regis-form-data-row">
+            <div class="regis-form-data-col1 title">
+              <h3>
+                <picture>
+                  <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
+                  <img src="<?= base_url() ?>/assets/images/formicon-type.png">
+                </picture>
+                Tourism Excellence<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_1"><?= count($question[1]) ?></span> ข้อ</span>
+              </h3>
+
+              <div class="choicebox">
+                <div class="choicebox-col select-choice">
+                  คำถามข้อที่ <span id="question_no_1">1</span>
+                </div>
+                <div class="choicebox-col">
+                  <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
+                </div>
+              </div>
+
+              <div class="hide-choice" style="display: none;">
+                <div class="hide-choice-overlay"></div>
+                <div class="hide-choice-box">
+                  <div class="hide-choice-title">
+                    รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                  </div>
+                  <div class="hide-choice-content">
+                    <ul>
+                      <?php foreach ($question[1] as $key => $value) : ?>
+                        <li><a href="javascript:void(0)" onclick="change_no(this, 1, '<?= $key ?>')" class="select_no_1" id="select_no_1_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
+                      <?php endforeach; ?>
+                    </ul>
+                  </div>
+                </div>
+                <script>
+                  jQuery(document).ready(function() {
+                    $('.btn-choice').click(function() {
+                      $('.hide-choice').show();
+                      $('body').addClass('lockbody');
+                    });
+                    $('.btn-choice-close').click(function() {
+                      $('.hide-choice').hide();
+                      $('body').removeClass('lockbody');
+                    });
+                    $('.hide-choice-overlay').click(function() {
+                      $('.hide-choice').hide();
+                      $('body').removeClass('lockbody');
+                    });
+                  });
+                </script>
+              </div>
+
+            </div>
+
+            <div class="regis-form-data-col1 inputfield">
+              <h4 id="question_name_1">1. <?= $question[1][0]->question ?></h4>
+              <div style="margin-bottom: 10px;">
+                ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_1">1,000</span>/1,000)</span>
+              </div>
+              <div>
+                <textarea rows="6" id="reply_1" onkeyup="countChar(this, 'charNum_1')"></textarea>
+              </div>
+            </div>
+
+            <div class="regis-form-data-col2 attachfile">
+              <div class="attachinp">
+                <h4>แนบรูปภาพ</h4>
+
+                <div class="ablumbox" id="ablumbox_1">
+                  <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+                </div>
+              </div>
+            </div>
+
+            <div class="regis-form-data-col2 attachfile">
+              <div class="attachinp">
+                <h4>แนบไฟล์เอกสาร</h4>
+                <div class="ablumbox" id="paper_1">
+                  <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="regis-form-data-row">
+            <div class="regis-form-data-col1 continue">
+              <button type="button" class="btn-next" id="btn_back_1" onclick="btn_back(this, 1)" no="<?= count($question[1]) ?>" style="display: none;">ย้อนกลับ</button>
+              <button type="button" class="btn-next" id="btn_next_1" onclick="btn_next(this, 1)" no="1">ถัดไป</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="content content2">
+        <div class="regis-form-data">
+          <div class="regis-form-data-row">
+            <div class="regis-form-data-col1 title">
+              <h3>
+                <picture>
+                  <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
+                  <img src="<?= base_url() ?>/assets/images/formicon-type.png">
+                </picture>
+                Supporting Business & Marketing Factors<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_2"><?= count($question[2]) ?></span> ข้อ</span>
+              </h3>
+
+              <div class="choicebox">
+                <div class="choicebox-col select-choice">
+                  คำถามข้อที่ <span id="question_no_2">1</span>
+                </div>
+                <div class="choicebox-col">
+                  <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
+                </div>
+              </div>
+
+              <div class="hide-choice" style="display: none;">
+                <div class="hide-choice-overlay"></div>
+                <div class="hide-choice-box">
+                  <div class="hide-choice-title">
+                    รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                  </div>
+                  <div class="hide-choice-content">
+                    <ul>
+                      <?php foreach ($question[2] as $key => $value) : ?>
+                        <li><a href="javascript:void(0)" onclick="change_no(this, 2, '<?= $key ?>')" class="select_no_2" id="select_no_2_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
+                      <?php endforeach; ?>
+                    </ul>
+                  </div>
+                </div>
+                <script>
+                  jQuery(document).ready(function() {
+                    $('.btn-choice').click(function() {
+                      $('.hide-choice').show();
+                      $('body').addClass('lockbody');
+                    });
+                    $('.btn-choice-close').click(function() {
+                      $('.hide-choice').hide();
+                      $('body').removeClass('lockbody');
+                    });
+                    $('.hide-choice-overlay').click(function() {
+                      $('.hide-choice').hide();
+                      $('body').removeClass('lockbody');
+                    });
+                  });
+                </script>
+              </div>
+
+            </div>
+
+            <div class="regis-form-data-col1 inputfield">
+              <h4 id="question_name_2">1. <?= $question[2][0]->question ?></h4>
+              <div style="margin-bottom: 10px;">
+                ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_2">1,000</span>/1,000)</span>
+              </div>
+              <div>
+                <textarea rows="6" id="reply_2" onkeyup="countChar(this, 'charNum_2')"></textarea>
+              </div>
+            </div>
+
+            <div class="regis-form-data-col2 attachfile">
+              <div class="attachinp">
+                <h4>แนบรูปภาพ</h4>
+
+                <div class="ablumbox" id="ablumbox_2">
+                  <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+                </div>
+              </div>
+            </div>
+
+            <div class="regis-form-data-col2 attachfile">
+              <div class="attachinp">
+                <h4>แนบไฟล์เอกสาร</h4>
+                <div class="ablumbox" id="paper_2">
+                  <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="regis-form-data-row">
+            <div class="regis-form-data-col1 continue">
+              <button type="button" class="btn-next" id="btn_back_2" onclick="btn_back(this, 2)" no="<?= count($question[2]) ?>" style="display: none;">ย้อนกลับ</button>
+              <button type="button" class="btn-next" id="btn_next_2" onclick="btn_next(this, 2)" no="1">ถัดไป</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="content content3">
+        <div class="regis-form-data">
+          <div class="regis-form-data-row">
+            <div class="regis-form-data-col1 title">
+              <h3>
+                <picture>
+                  <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
+                  <img src="<?= base_url() ?>/assets/images/formicon-type.png">
+                </picture>
+                Responsibility and Safety & Health Administration<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_3"><?= count($question[3]) ?></span> ข้อ</span>
+              </h3>
+
+              <div class="choicebox">
+                <div class="choicebox-col select-choice">
+                  คำถามข้อที่ <span id="question_no_3">1</span>
+                </div>
+                <div class="choicebox-col">
+                  <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
+                </div>
+              </div>
+
+              <div class="hide-choice" style="display: none;">
+                <div class="hide-choice-overlay"></div>
+                <div class="hide-choice-box">
+                  <div class="hide-choice-title">
+                    รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                  </div>
+                  <div class="hide-choice-content">
+                    <ul>
+                      <?php foreach ($question[3] as $key => $value) : ?>
+                        <li><a href="javascript:void(0)" onclick="change_no(this, 3, '<?= $key ?>')" class="select_no_3" id="select_no_3_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
+                      <?php endforeach; ?>
+                    </ul>
+                  </div>
+                </div>
+                <script>
+                  jQuery(document).ready(function() {
+                    $('.btn-choice').click(function() {
+                      $('.hide-choice').show();
+                      $('body').addClass('lockbody');
+                    });
+                    $('.btn-choice-close').click(function() {
+                      $('.hide-choice').hide();
+                      $('body').removeClass('lockbody');
+                    });
+                    $('.hide-choice-overlay').click(function() {
+                      $('.hide-choice').hide();
+                      $('body').removeClass('lockbody');
+                    });
+                  });
+                </script>
+              </div>
+
+            </div>
+
+            <div class="regis-form-data-col1 inputfield">
+              <h4 id="question_name_3">1. <?= $question[3][0]->question ?></h4>
+              <div style="margin-bottom: 10px;">
+                ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_3">1,000</span>/1,000)</span>
+              </div>
+              <div>
+                <textarea rows="6" id="reply_3" onkeyup="countChar(this, 'charNum_3')"></textarea>
+              </div>
+            </div>
+
+            <div class="regis-form-data-col2 attachfile">
+              <div class="attachinp">
+                <h4>แนบรูปภาพ</h4>
+
+                <div class="ablumbox" id="ablumbox_3">
+                  <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+                </div>
+              </div>
+            </div>
+
+            <div class="regis-form-data-col2 attachfile">
+              <div class="attachinp">
+                <h4>แนบไฟล์เอกสาร</h4>
+                <div class="ablumbox" id="paper_3">
+                  <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="regis-form-data-row">
+            <div class="regis-form-data-col1 continue">
+              <button type="button" class="btn-next" id="btn_back_3" onclick="btn_back(this, 3)" no="<?= count($question[3]) ?>" style="display: none;">ย้อนกลับ</button>
+              <button type="button" class="btn-next" id="btn_next_3" onclick="btn_next(this, 3)" no="1">ถัดไป</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<textarea id="data_question" style="display: none;"><?php echo json_encode($question) ?></textarea>
+<input type="hidden" id="created_by" value="<?= $result->created_by ?>">
 <script>
   $(function() {
+    var question = JSON.parse($('#data_question').val());
+    // cc(question)
+    add_aws('<?= $question[1][0]->id ?>', 1);
+    add_aws('<?= $question[2][0]->id ?>', 2);
+    add_aws('<?= $question[3][0]->id ?>', 3);
 
-    var pgurl = BASE_URL_BACKEND + '/Estimate';
+    $('.select_no_1').eq(0).addClass('active');
+    $('.select_no_3').eq(0).addClass('active');
+    $('.select_no_3').eq(0).addClass('active');
+
+    var pgurl = BASE_URL_BACKEND + '/estimate';
     active_page(pgurl);
 
     $('#field').keyup();
@@ -575,7 +487,6 @@
       });
     });
 
-
     $('.js-example-basic-multiple').select2({
       maximumSelectionLength: 2
     });
@@ -585,11 +496,19 @@
     if (validated()) {
       var insert_id = $('#insert_id').val();
       if (insert_id == 0 || insert_id == "") {
-        var res = main_save(BASE_URL_BACKEND + '/Estimate/saveInsert', '#input_form');
-        res_swal(res, 1);
+        var res = main_save(BASE_URL_BACKEND + '/estimate/saveInsert', '#input_form');
+        res_swal(res, 0, function () {
+          if (res.type == 'success') {
+            window.location.href = BASE_URL_BACKEND + '/estimate/prescreen';
+          }
+        });
       } else {
-        var res = main_save(BASE_URL_BACKEND + '/Estimate/saveUpdate', '#input_form');
-        res_swal(res, 1);
+        var res = main_save(BASE_URL_BACKEND + '/estimate/saveUpdate', '#input_form');
+        res_swal(res, 0, function () {
+          if (res.type == 'success') {
+            window.location.href = BASE_URL_BACKEND + '/estimate/prescreen';
+          }
+        });
       }
     }
   });
@@ -607,18 +526,18 @@
       return $(e).val();
     }).get();
 
-    if (status_1.length < 2) {
-      toastr.error('กรุณาระบุกรรมการสำหรับ Tourism Excellence อย่างน้อย 2 คน');
+    if (status_1.length < 1) {
+      toastr.error('กรุณาระบุกรรมการสำหรับ Tourism Excellence อย่างน้อย 1 คน');
       return false;
     }
 
-    if (status_2.length < 2) {
-      toastr.error('กรุณาระบุกรรมการสำหรับ Supporting Business อย่างน้อย 2 คน');
+    if (status_2.length < 1) {
+      toastr.error('กรุณาระบุกรรมการสำหรับ Supporting Business อย่างน้อย 1 คน');
       return false;
     }
 
-    if (status_3.length < 2) {
-      toastr.error('กรุณาระบุกรรมการสำหรับ Responsibility อย่างน้อย 2 คน');
+    if (status_3.length < 1) {
+      toastr.error('กรุณาระบุกรรมการสำหรับ Responsibility อย่างน้อย 1 คน');
       return false;
     }
 
@@ -626,7 +545,7 @@
   }
 
   $('[name="application_type"]').change(function(e) {
-    var res = main_post(BASE_URL_BACKEND + '/Approve/getAplicationTypeSub/' + $(this).val());
+    var res = main_post(BASE_URL_BACKEND + '/approve/getAplicationTypeSub/' + $(this).val());
     var html = ``;
     if (!$.isEmptyObject(res)) {
       $.each(res, function(index, value) {
@@ -644,4 +563,101 @@
     }
     $('#option_application_type_sub').html(html);
   });
+
+  function countChar(val, charNum) {
+    var len = val.value.length;
+    if (len >= 1000) {
+      val.value = val.value.substring(0, 1000);
+    } else {
+      $('#' + charNum).text(1000 - len);
+    }
+  };
+
+  function change_no(elm, tab, id) {
+    var question = JSON.parse($('#data_question').val());
+    // if (tab == 1) {
+    $('.select_no_' + tab).removeClass('active');
+    $(elm).addClass('active');
+    var no = Number(id) + Number(1);
+    $(question).filter(function(index) {
+      if (question[tab][id].question.indexOf("โปรดระบุ,")) {
+        var text = question[tab][id].question.split(',');
+        $('#question_name_' + tab).html(no + '. ' + text.join("<br>&nbsp;&nbsp;"));
+      } else {
+        $('#question_name_' + tab).html(no + '. ' + question[tab][id].question);
+      }
+      $('#question_no_' + tab).html(no);
+      $('#btn_next_' + tab).attr('no', no);
+      add_aws(question[tab][id].id, tab);
+    });
+    // }
+  }
+
+  function add_aws(id, tab) {
+    var data = {
+      id: id,
+      created_by: $('#created_by').val()
+    }
+    var res = main_post(BASE_URL_BACKEND + '/estimate/getAnswer', data);
+    $('#reply_' + tab).val(res.reply).keyup();
+
+    var ablumbox = '';
+    var paper = '';
+    $.each(JSON.parse(res.pack_file), function(index, value) {
+      if (value.file_position == "images") {
+        ablumbox += `<div class="ablumbox-col">
+                      <div class="ablum-mainimg">
+                        <div class="ablum-mainimg-scale">
+                          <img src="<?= base_url() ?>/` + value.file_path + `" title="` + value.file_original + `" class="ablum-img" onclick="view_img(this)">
+                        </div>
+                      </div>
+                    </div>`;
+      }
+
+      if (value.file_position == "paper") {
+        paper += `<div class="card card-body mb-2">
+                    <div class="bs-row">
+                      <div class="col-12"> <span class="fs-file-name">` + value.file_original + ` (` + value.file_size + ` Mb)</span>
+                        <a href="<?= base_url() ?>/` + value.file_path + `" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                      </div>
+                    </div>
+                  </div>`;
+      }
+
+    });
+    $('#paper_' + tab).html(paper);
+    $('#ablumbox_' + tab).html(ablumbox);
+  }
+
+  function btn_back(elm, tab) {
+    var id = $(elm).attr('no');
+    var no = Number(id) - Number(1);
+    $('#select_no_' + tab + '_' + no).click();
+    $('#btn_back_' + tab).attr('no', no);
+    if (no == 1) {
+      $('#btn_back_' + tab).hide();
+      $('#btn_next_' + tab).show();
+      $('#btn_back_' + tab).attr('no', 4);
+      $('#btn_next_' + tab).attr('no', 1);
+    } else {
+      $('#btn_back_' + tab).show();
+      $('#btn_next_' + tab).hide();
+    }
+  }
+
+  function btn_next(elm, tab) {
+    var id = $(elm).attr('no');
+    var no = Number(id) + Number(1);
+    var question_count = $('#question_count' + tab).text();
+    $('#select_no_' + tab + '_' + no).click();
+    $('#btn_next_' + tab).attr('no', no);
+    if (no == question_count) {
+      $('#btn_next_' + tab).hide();
+      $('#btn_back_' + tab).show();
+      $('#btn_next_' + tab).attr('no', 1);
+    } else {
+      $('#btn_next_' + tab).show();
+      $('#btn_back_' + tab).hide();
+    }
+  }
 </script>

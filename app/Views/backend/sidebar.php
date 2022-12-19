@@ -12,10 +12,10 @@
               <i class="icon-user"></i><span class="nav-text">สมาชิก</span>
             </a>
             <ul>
-              <li><a href="<?= base_url('backend/Users') ?>">ผู้ประกอบการ</a></li>
-              <li><a href="<?= base_url('backend/Officer') ?>">กรรมการ</a></li>
-              <li><a href="<?= base_url('backend/TAT') ?>">เจ้าหน้าที่ ททท.</a></li>
-              <li><a href="<?= base_url('backend/Admin') ?>">ผู้ดูแลระบบ</a></li>
+              <li><a href="<?= base_url('backend/users') ?>">ผู้ประกอบการ</a></li>
+              <li><a href="<?= base_url('backend/officer') ?>">กรรมการ</a></li>
+              <li><a href="<?= base_url('backend/tat') ?>">เจ้าหน้าที่ ททท.</a></li>
+              <li><a href="<?= base_url('backend/admin') ?>">ผู้ดูแลระบบ</a></li>
             </ul>
           </li>
         <?php endif; ?>
@@ -25,9 +25,9 @@
             <i class="icon-layers"></i><span class="nav-text">ขั้นตอนการดำเนินการ</span>
           </a>
           <ul>
-            <li><a href="<?= base_url('backend/Approve') ?>">ตรวจสอบใบสมัคร <div class="badge badge-pill badge-warning">24</div> </a></li>
-            <li><a href="<?= base_url('backend/Approve/history') ?>">ประวัติการตรวจสอบใบสมัคร </a></li>
-            <li><a href="<?= base_url('backend/Approve/check') ?>">ประเมินขั้นต้น (ผู้ประกอบการ)</a></li>
+            <li><a href="<?= base_url('backend/approve') ?>">ตรวจสอบใบสมัคร <div class="badge badge-pill badge-warning">24</div> </a></li>
+            <li><a href="<?= base_url('backend/approve/history') ?>">ประวัติการตรวจสอบใบสมัคร </a></li>
+            <li><a href="<?= base_url('backend/approve/check') ?>">ประเมินขั้นต้น (ผู้ประกอบการ)</a></li>
             <li><a href="<?= base_url('backend/Directors/initial') ?>">เพิ่มกรรมการประเมินขั้นต้น <div class="badge badge-pill badge-warning">49</div> </a></li>
             <li><a href="<?= base_url('backend/') ?>">ประเมินขั้นต้น (กรรมการ)</a></li>
             <li><a href="<?= base_url('backend/Directors/area') ?>">เพิ่มกรรมการรอบลงพื้นที่ <div class="badge badge-pill badge-warning">13</div> </a></li>

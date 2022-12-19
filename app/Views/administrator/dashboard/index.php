@@ -41,7 +41,7 @@
 <script>
   $(function() {
 
-    var res = main_post(BASE_URL_BACKEND + '/Dashboard/getData');
+    var res = main_post(BASE_URL_BACKEND + '/dashboard/getData');
     // cc(res)
 
     // Shared Colors Definition

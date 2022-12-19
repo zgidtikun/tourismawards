@@ -78,7 +78,7 @@ class ApplicationController extends BaseController
     {
         $detail = $this->appForm->where('created_by',$id)->first();
 
-        if($detail){
+        if(!empty($detail)){
             if(!empty($detail->pack_file))
                 $detail->pack_file = json_decode($detail->pack_file);
             $result = array('result' => 'success', 'data' => $detail);
@@ -115,11 +115,13 @@ class ApplicationController extends BaseController
     public function draftApp()
     {
 
-        try{    
-            $step = $this->input->getVar('step');
-            $input = $this->input->getVar();
+        try{
+            $input = $this->input->getVar();  
+            $step = $input['step'];
             $maps = $this->mapDBFiled[$step];            
             $app_id = $input['id'];
+            unset($input['step']);
+            unset($input['id']);
 
             $updd = [
                 'step' => $step, 
@@ -127,9 +129,11 @@ class ApplicationController extends BaseController
             ];
 
             foreach($maps as $map){
-                $updd[$map] = !empty($input[$map]) ? $input[$map] : NULL;
+                if(array_key_exists($map,$input)){
+                    $updd[$map] = $input[$map] != "" ? $input[$map] : NULL;
+                }
             }
-
+            
             $update = $this->appForm->update($app_id,$updd);
             $result = ['result' => 'success', 'message' => 'บันทึกร่างแบบฟอร์มเรียบร้อยแล้ว'];
 
@@ -163,9 +167,11 @@ class ApplicationController extends BaseController
             ];
 
             foreach($maps as $map){
-                $updd[$map] = !empty($input[$map]) ? $input[$map] : NULL;
+                if(array_key_exists($map,$input)){
+                    $updd[$map] = $input[$map] != "" ? $input[$map] : NULL;
+                }
             }
-
+                
             $this->appForm->update($app_id,$updd);
             $user = new \App\Models\Users();
             $user->update(session()->get('id'),['stage' => 2]);   
@@ -188,12 +194,12 @@ class ApplicationController extends BaseController
             );
             
             helper('semail');
-            send_email_frontend((object)[
-                'app_id' => $app_id,
-                'email' => session()->get('account'),
-                'tycon' => session()->get('user'),
-                'type' => $this->input->getVar('type')
-            ],'app');
+            // send_email_frontend((object)[
+            //     'app_id' => $app_id,
+            //     'email' => session()->get('account'),
+            //     'tycon' => session()->get('user'),
+            //     'type' => $this->input->getVar('type')
+            // ],'app');
 
             send_email_frontend((object)[
                 'email' => session()->get('account'),

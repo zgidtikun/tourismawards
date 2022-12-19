@@ -65,7 +65,7 @@
                       $path = base_url() . '/assets/images/unknown_user.jpg';
                     }
                     ?>
-                    <img src="<?= $path ?>" style="height: 50px; width: 50px"> <?= $value->name ?>  <?= $value->surname ?>
+                    <img src="<?= $path ?>" style="height: 50px; width: 50px" class="d-none d-sm-block"> <?= $value->name ?>  <?= $value->surname ?>
                   </td>
                   <td class=""><?= $value->mobile ?></td>
                   <td class="text-start"><?= $value->email ?></td>
@@ -96,7 +96,7 @@
 
 <script>
   $(function() {
-    var pgurl = BASE_URL_BACKEND + '/Users';
+    var pgurl = BASE_URL_BACKEND + '/users';
     active_page(pgurl);
   });
 
@@ -112,7 +112,7 @@
       text: "คุณต้องการยืนยันการสมัครสมาชิกของผู้ประกอบการหรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/Users/active', {
+      var res = main_post(BASE_URL_BACKEND + '/users/active', {
         id: id
       });
       res_swal(res, 1);
@@ -125,7 +125,7 @@
       text: "คุณต้องการยืนยันการลบข้อมูลผู้ประกอบการหรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/Users/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/users/delete', {
         id: id
       });
       res_swal(res, 1);
@@ -133,10 +133,10 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/Users/edit/' + id;
+    window.location.href = BASE_URL_BACKEND + '/users/edit/' + id;
   }
 
   function insert_item(elm) {
-    window.location.href = BASE_URL_BACKEND + '/Users/add';
+    window.location.href = BASE_URL_BACKEND + '/users/add';
   }
 </script>

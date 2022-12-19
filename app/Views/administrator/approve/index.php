@@ -2,7 +2,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายการใบสมัครที่รอตรวจสอบ </h3>
+        <h3>รายการใบสมัคร </h3>
       </div>
       <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
     </div>
@@ -45,6 +45,17 @@
           </select>
         </div>
 
+        <div class="backendcontent-subcol selectbox col-sm-2">
+          <label>สถานะ</label>
+          <select id="status" name="status">
+            <option value="">ทั้งหมด</option>
+            <option value="2" <?= (@$_GET['status'] == 2) ? 'selected' : ''; ?>>รอตรวจสอบ</option>
+            <option value="4" <?= (@$_GET['status'] == 4) ? 'selected' : ''; ?>>ขอข้อมูลเพิ่มเติม</option>
+            <option value="3" <?= (@$_GET['status'] == 3) ? 'selected' : ''; ?>>อนุมัติ</option>
+            <option value="0" <?= (@$_GET['status'] == '0') ? 'selected' : ''; ?>>ไม่อนุมัติ</option>
+          </select>
+        </div>
+
         <div class="backendcontent-subcol btn col-sm-3">
           <button type="submit" class="but-blue" id="btn_search">ค้นหา</button>
         </div>
@@ -62,7 +73,7 @@
                 <tr>
                   <th class="text-center no">#</th>
                   <th class="text-center noid">รหัสใบสมัคร</th>
-                  <th class="text-center name">ชื่อ</th>
+                  <th class="text-center name">ชื่อสถานประกอบการ</th>
                   <th class="text-center type">ประเภทที่ตัดสิน</th>
                   <th class="text-center section">สาขารางวัล</th>
                   <th class="text-center status">สถานะ</th>
@@ -74,7 +85,7 @@
                 <?php
                 if (!empty($result)) :
                   foreach ($result as $key => $value) :
-                    $status = "";
+                    $status = '';
                     if ($value->status == 2) {
                       $status = '<div class="userstatus trader">รอตรวจสอบ</div>';
                     } else if ($value->status == 4) {
@@ -88,7 +99,7 @@
                     <tr>
                       <td><?= $key + 1 ?></td>
                       <td class="text-center"><?= $value->code ?></td>
-                      <td class="text-start"><?= $value->company_name ?></td>
+                      <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>
                       <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
                       <td class="text-center"><?= $status ?></td>
@@ -117,7 +128,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/Approve';
+    var pgurl = BASE_URL_BACKEND + '/approve';
     active_page(pgurl);
 
     $("#example").dataTable().fnDestroy();
@@ -126,16 +137,22 @@
       searching: false,
       columnDefs: [{
         responsivePriority: 1,
-        targets: 1
+        targets: 2
+      }, {
+        responsivePriority: 1,
+        targets: 5
       }, {
         responsivePriority: 10001,
-        targets: 5
+        targets: 6
+      }, {
+        responsivePriority: 10001,
+        targets: 4
       }, {
         responsivePriority: 10001,
         targets: 3
       }, {
         responsivePriority: 10001,
-        targets: 2
+        targets: 1
       }],
       lengthMenu: [10, 25, 50, 100],
       oLanguage: {
@@ -150,7 +167,7 @@
         semptyTable: "ไม่มีข้อมูล",
       }
     });
-  })
+  });
 
 
   $('#keyword').on('keypress', function(e) {
@@ -167,13 +184,17 @@
     $('#btn_search').click();
   });
 
+  $('#status').change(function(e) {
+    $('#btn_search').click();
+  });
+
   function delete_item(id) {
     var option = {
       title: "Warning!",
       text: "คุณต้องการยืนยันการลบข้อมูล<?= $title ?>หรือไม่?",
     }
     swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/Approve/delete', {
+      var res = main_post(BASE_URL_BACKEND + '/approve/delete', {
         id: id,
         image_cover: $('#image_cover_old').val(),
       });
@@ -182,10 +203,10 @@
   }
 
   function edit_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/Approve/edit/' + id;
+    window.location.href = BASE_URL_BACKEND + '/approve/edit/' + id;
   }
 
   function insert_item(elm) {
-    window.location.href = BASE_URL_BACKEND + '/Approve/add';
+    window.location.href = BASE_URL_BACKEND + '/approve/add';
   }
 </script>

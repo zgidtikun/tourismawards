@@ -37,15 +37,17 @@ class QuestionController extends BaseController
             $subComm = $this->db->table('committees')
                 ->select('application_form_id afid')
                 ->where('assessment_round',($round == 'pre-screen' ? 1 : 2))
-                ->like('admin_id_tourism','"'.session()->get('id').'"')
-                ->orLike('admin_id_supporting','"'.session()->get('id').'"')
-                ->orLike('admin_id_responsibility','"'.session()->get('id').'"')
+                ->where(
+                    '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
+                    OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
+                    OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')')
                 ->getCompiledSelect();
                       
             $builder = $this->db->table('application_form af')
                 ->select(
                     'af.id, af.attraction_name_th att_name, at.name type, 
-                    ats.name section, us.stage, us.status, 
+                    ats.name section, us.stage, us.status, us.duedate,
+                    us.id stage_id,
                     IFNULL(inse.updated_at,\'\') updated_at,
                     IFNULL(es.score_pre,0) score_pre,
                     IFNULL(es.score_onsite,0) score_onsite,
@@ -74,6 +76,8 @@ class QuestionController extends BaseController
             // echo $builder;exit;
             $builder = $builder->get();
             $list = [];
+            $UsersStage = new \App\Models\UsersStage();
+            $current_date = date('Y-m-d');
             
             foreach($builder->getResult() as $val){
                 $val->no = 0;
@@ -82,6 +86,19 @@ class QuestionController extends BaseController
                     $val->updated_at = date('d-m-Y',strtotime($val->updated_at));
 
                 array_push($list,$val);
+
+                if($val->status == 3){
+                    if($current_date > $val->duedate){
+                        $UsersStage->where('id',$val->stage_id)
+                            ->set(['status' => 5])
+                            ->update();
+
+                        $val->status = 5;
+                    }
+                }
+
+                unset($val->duedate);
+                unset($val->stage_id);
             }
             
             $result = ['result' => 'success', 'data' => $list];
@@ -137,17 +154,17 @@ class QuestionController extends BaseController
 
             $sqans = $this->db->table('answer')->where('reply_by',$userId)
                 ->getCompiledSelect();
-
+            
             $sqset = $this->db->table('estimate')
                 ->where('estimate_by',session()->get('id'))
                 ->select('
                     id, question_id, score_pre, score_onsite, comment_pre, 
                     comment_onsite, note_pre, note_onsite, status_pre, status_onsite, 
                     request_list, request_date, request_status, estimate_by, tscore_pre,
-                    tscore_onsite, pack_file'
+                    tscore_onsite, pack_file, score_pre_origin, score_onsite_origin'
                 )
                 ->getCompiledSelect();
-
+                
             $builder = $this->db->table('question q')
                 ->select('
                     q.id, q.question, q.remark, q.pre_status, onside_status,
@@ -158,12 +175,12 @@ class QuestionController extends BaseController
                     b.id est_id, b.score_pre, b.score_onsite, b.comment_pre, 
                     b.comment_onsite, b.note_pre, b.note_onsite, b.status_pre, b.status_onsite, 
                     b.request_list, b.request_date, b.request_status, b.estimate_by, b.tscore_pre,
-                    b.tscore_onsite, b.pack_file est_files
+                    b.tscore_onsite, b.pack_file est_files, b.score_pre_origin, b.score_onsite_origin
                 ')
                 ->join('('.$sqans.') a','q.id = a.question_id','LEFT')
                 ->join('('.$sqset.') b','q.id = b.question_id','LEFT')
                 ->where($where)
-                ->orderBy('id','ASC')
+                ->orderBy('id','ASC') 
                 ->get();
         
             foreach($builder->getResult() as $val){   

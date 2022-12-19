@@ -14,8 +14,8 @@ class VerifyPassword extends BaseController
 
     public function index()
     {
-        pp($_GET['t']);
-        px(vDecryption($_GET['t']));
+        // pp($_GET['t']);
+        // px(vDecryption($_GET['t']));
         if (!empty($_GET['t'])) {
             $token = explode('-', vDecryption($_GET['t']));
 

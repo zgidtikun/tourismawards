@@ -37,6 +37,33 @@ class AnswerController extends BaseController
             ->select('status,duedate')
             ->first();
 
+        $countAnswer = $this->ans->where('reply_by',session()->get('id'))
+            ->countAllResults();
+
+        if(empty($stage) && $countAnswer <= 0){
+            $myId = session()->get('id');
+
+            $myApp = $this->appForm->where('created_by',$myId)
+                ->select('application_type_id type_id,application_type_sub_id sub_id')
+                ->first();
+
+            $myQuestion = $this->qt->where([
+                'application_type_id' => $myApp->type_id,
+                'application_type_sub_id' => $myApp->sub_id
+            ])
+            ->select('id')
+            ->findAll();
+
+            foreach($myQuestion as $mq){
+                $this->ans->insert([
+                    'question_id' => $mq->id,
+                    'reply_by' =>$myId,
+                    'status' => 1
+                ]);
+            }
+
+        }
+
         if(!empty($stage->duedate)) 
             $stage->duedate_str = FormatTree($stage->duedate,'thailand');
 
@@ -103,8 +130,8 @@ class AnswerController extends BaseController
                 $where['q.application_type_sub_id'] = $app->sub_type_id;
             }
 
-            if(session()->get('role') == 1)
-                $where['q.pre_status'] = 1;
+            // if(session()->get('role') == 1)
+            //     $where['q.pre_status'] = 1;
 
             $subquery = $this->db->table('answer')->where('reply_by',session()->get('id'))
                 ->getCompiledSelect();
@@ -252,15 +279,23 @@ class AnswerController extends BaseController
                     $cusstg = $this->usStg->where([
                         'user_id' => session()->get('id'), 
                         'stage' => 1
-                    ])->first();
+                    ])
+                    ->select('status')
+                    ->first();
+
+                    $isEstimateRequire = false;
                     
                     if(!empty($cusstg)){
-                        $this->usStg->where([
-                            'user_id' => session()->get('id'), 
-                            'stage' => 1
-                        ])
-                        ->set(['status' => 4])
-                        ->update();
+                        if($cusstg == 3){
+                            $this->usStg->where([
+                                'user_id' => session()->get('id'), 
+                                'stage' => 1
+                            ])
+                            ->set(['status' => 4])
+                            ->update();
+
+                            $isEstimateRequire = true;
+                        }
                     } else {
                         $this->usStg->insert([
                             'user_id' => session()->get('id'), 
@@ -286,11 +321,18 @@ class AnswerController extends BaseController
                         ]);
 
                     helper('semail');
-                    send_email_frontend((object)[
-                        'app_id' => $this->input->getVar('appId'),
-                        'email' => session()->get('account'),
-                        'tycon' => session()->get('user')
-                    ],'answer-complete');
+
+                    if($isEstimateRequire){
+                        send_email_frontend((object)[
+                            'appId' => $this->input->getVar('appId'),
+                            'tycon' => $form->place_name
+                        ],'answer-request-complete');
+                    } else {
+                        send_email_frontend((object)[
+                            'email' => session()->get('account'),
+                            'tycon' => session()->get('user')
+                        ],'answer-complete');
+                    }
                 break;
             }
             

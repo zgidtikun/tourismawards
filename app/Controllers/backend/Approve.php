@@ -25,6 +25,7 @@ class Approve extends BaseController
 
     public function index()
     {
+        // var_dump($_GET);
         // pp($_GET);
         $like = [];
         $where = [];
@@ -41,20 +42,27 @@ class Approve extends BaseController
             $where['application_type_sub_id'] = $_GET['application_type_sub_id'];
             $sub_id = $_GET['application_type_id'];
         }
-
         if (!empty(session()->award_type) && session()->award_type != "" && !isAdmin()) {
             $where['application_type_id'] = session()->award_type;
             $sub_id = session()->award_type;
         }
+        if (array_key_exists('status', $_GET) && $_GET['status'] != "") {
+            $where['status'] = $_GET['status'];
+        } else {
+            $where['status >= '] = '2';
+        }
+        // pp($where);
 
-        $data['result'] = $this->ApplicationForm->like($like, 'match', 'both')->where($where)->where('status', 2)->orderBy('id', 'desc')->findAll();
+        $data['result'] = $this->ApplicationForm->like($like, 'match', 'both')->where($where)->orderBy('id', 'desc')->findAll();
         // pp_sql();
+        // pp($data['result']);
+        // exit;
 
         $data['application_type'] = $this->ApplicationType->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
 
         // Template
-        $data['title']  = 'ตรวจสอบใบสมัคร';
+        $data['title']  = 'ตรวจสอบสถานะใบสมัคร';
         $data['view']   = 'administrator/approve/index';
         $data['ci']     = $this;
 
@@ -68,7 +76,7 @@ class Approve extends BaseController
         // px($data['application_type_sub']);
 
         // Template
-        $data['title']  = 'ตรวจสอบใบสมัคร';
+        $data['title']  = 'ตรวจสอบสถานะใบสมัคร';
         $data['view']   = 'administrator/approve/check';
         $data['ci']     = $this;
 
@@ -197,7 +205,7 @@ class Approve extends BaseController
             if ($post['status'] == 3) {
                 $result = $this->db->table('users')->where('id', $result->created_by)->update(['stage' => 2]);
             }
-            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
+            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => '']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
         }

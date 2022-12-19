@@ -512,7 +512,7 @@
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/PreScreen';
+    var pgurl = BASE_URL_BACKEND + '/prescreen';
     active_page(pgurl);
 
     $('#field').keyup();
@@ -545,13 +545,13 @@
       insert_id: insert_id,
       judge_comment: judge_comment,
     }
-    var res = main_post(BASE_URL_BACKEND + '/Approve/saveStatus', data);
+    var res = main_post(BASE_URL_BACKEND + '/approve/saveStatus', data);
     cc(res)
     res_swal(res, 1);
   });
 
   $('[name="application_type"]').change(function(e) {
-    var res = main_post(BASE_URL_BACKEND + '/Approve/getAplicationTypeSub/' + $(this).val());
+    var res = main_post(BASE_URL_BACKEND + '/approve/getAplicationTypeSub/' + $(this).val());
     var html = ``;
     if (!$.isEmptyObject(res)) {
       $.each(res, function(index, value) {

@@ -120,6 +120,8 @@ const setFinish = () => {
     tscore = mscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
+
+    let arrayScore = [];
     
     $.each(assign,(ak,av) => {        
         let index = av-1;
@@ -154,13 +156,11 @@ const setFinish = () => {
             }
         });
     });
-
-    const stescore = (tescore / ttescore).toFixed(2);
-    const ssbscore = (sbscoe / tsbscoe).toFixed(2);
-    const srsscore = (rsscore / trsscore).toFixed(2);
-    const totalScore = tescore + sbscoe + rsscore;
-    const totalMax = ttescore + tsbscoe + trsscore; 
-    const sscore = ((totalScore * tscore) / totalMax).toFixed(2);
+    
+    const stescore = ((tescore * te) / ttescore).toFixed(2);
+    const ssbscore = ((sbscoe * sb) / tsbscoe).toFixed(2);
+    const srsscore = ((rsscore * rs) / trsscore).toFixed(2);
+    const sscore = (parseFloat(stescore) + parseFloat(ssbscore) + parseFloat(srsscore)).toFixed(2);
 
     alert.confirm({
         mode: 'confirm-main',
@@ -200,10 +200,10 @@ const setFinish = () => {
                     alert.login();
                 }
                 else if(rs.result == 'error'){
-                    alert.show(rs.result,'ไม่สามารถส่งผลประเมินเข้าระบบได้',rs.message);
+                    alert.show('warning','ไม่สามารถส่งผลประเมินเข้าระบบได้',rs.message);
                 }
                 else {
-                    alert.show(rs.result, 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '').then(() => {
+                    alert.show('success', 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '').then(() => {
                         window.location.reload();
                     });
                 }
@@ -229,6 +229,7 @@ const draft = (cate,seg) => {
             tscore: question.tscore_pre,
             comment: question.comment_pre,
             note: question.note_pre,
+            score_origin: question.score_pre_origin,
             request_list: question.request_list,
             request_date: question.request_date,
             request_status: question.request_status,
@@ -359,12 +360,13 @@ const setQuestion = (cate,seg) => {
         $('.none-estimate').show();
         $('.is-estimate').hide();
         btnSave.hide();    
-        btnReset.hide();    
+        btnReset.hide();  
         return;
     }
     
     qSubject.html(question.no+'. '+question.question);
     qReply.html(question.reply);
+
     countChar1($('#qRequest'));
 
     let ap = ev = sc = '';
@@ -412,7 +414,7 @@ const setQuestion = (cate,seg) => {
         }
 
         if(!empty(question.score_pre)){
-            if(Number(question.score_pre) == Number(tmp[0].trim())){
+            if((Number(question.score_pre) / Number(question.weight)) == Number(tmp[0].trim())){
                 ck = 'checked';
             }
         }
@@ -537,9 +539,10 @@ const calScore = (ele) => {
     const maxscore = question.pre_score;
     const weight = question.weight;
     const selfscore = parseFloat(ele.value) * parseFloat(weight);
-    const totalscore = selfscore / maxscore;
+    const totalscore = selfscore / maxscore;    
     
-    dataset[point.cate].question[point.seg].score_pre = ele.value;
+    dataset[point.cate].question[point.seg].score_pre_origin = ele.value;
+    dataset[point.cate].question[point.seg].score_pre = selfscore;
     dataset[point.cate].question[point.seg].tscore_pre = totalscore;
     dataset[point.cate].question[point.seg].estimate = true;
 }

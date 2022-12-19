@@ -101,7 +101,7 @@
       </div>
 
       <div class="form-main-btn">
-        <a href="javascript:void(0)" class="btn-cancle" onclick="window.location.href = BASE_URL_BACKEND + '/News'">ยกเลิก</a>
+        <a href="javascript:void(0)" class="btn-cancle" onclick="window.location.href = BASE_URL_BACKEND + '/news'">ยกเลิก</a>
         <a href="javascript:void(0)" class="btn-save" id="btn_save">บันทึก</a>
       </div>
 
@@ -142,7 +142,7 @@
 
 <script>
   $(function() {
-    var pgurl = BASE_URL_BACKEND + '/News';
+    var pgurl = BASE_URL_BACKEND + '/news';
     active_page(pgurl);
   });
 
@@ -174,7 +174,7 @@
             text: "หากทำการกดยืนยันแล้วจะไม่สามารถนำกลับมาใช้ใหม่ได้",
           }
           swal_confirm(option).done(function() {
-            var res = main_post(BASE_URL_BACKEND + '/News/removeImage', {
+            var res = main_post(BASE_URL_BACKEND + '/news/removeImage', {
               path: image[6]
             });
             res_swal(res, 1);
@@ -188,7 +188,7 @@
   });
 
   function sendFile(file, editor, welEditable) {
-    var lib_url = BASE_URL_BACKEND + '/News/uploadImage';
+    var lib_url = BASE_URL_BACKEND + '/news/uploadImage';
     data = new FormData();
     data.append("file", file);
     $.ajax({
@@ -214,17 +214,17 @@
     }
     if (main_validated('input_form')) {
       if (insert_id == "" || insert_id == 0) {
-        var res = main_save(BASE_URL_BACKEND + '/News/saveInsert', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/news/saveInsert', '#input_form');
         res_swal(res, 0, function() {
           if (res.type == 'success') {
-            window.location.href = '<?= base_url('backend/News') ?>';
+            window.location.href = '<?= base_url('backend/news') ?>';
           }
         });
       } else {
-        var res = main_save(BASE_URL_BACKEND + '/News/saveUpdate', '#input_form');
+        var res = main_save(BASE_URL_BACKEND + '/news/saveUpdate', '#input_form');
         res_swal(res, 0, function() {
           if (res.type == 'success') {
-            window.location.href = BASE_URL_BACKEND + '/News';
+            window.location.href = BASE_URL_BACKEND + '/news';
           }
         });
       }
@@ -250,7 +250,7 @@
 
   $('#btn_save_category').click(function(e) {
     if (main_validated('input_form_category')) {
-      var res = main_save(BASE_URL_BACKEND + '/News/saveCategory', '#input_form_category');
+      var res = main_save(BASE_URL_BACKEND + '/news/saveCategory', '#input_form_category');
       var option = "";
       if (res.data !== null) {
         $.each(res.data, function(index, value) {
