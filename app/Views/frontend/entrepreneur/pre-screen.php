@@ -203,13 +203,19 @@
                                         </div>
                                         <div class="card-body selecter-file">
                                             <div class="bs-row">
-                                                <div class="col-12">                                                                 
+                                                <div class="col-12">       
+                                                    <button class="btn btn-file" style="font-size: 16px;" id="images-btn">
+                                                        <span id="images-label">Upload Files</span>
+                                                        <input type="file" id="images"
+                                                        accept=".jpg,.jpeg,.png" multiple
+                                                        onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'images')"/>
+                                                    </button>                                                            
                                                     <button class="btn btn-action" id="images-remove"
                                                     onclick="removeFile('#images',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
                                                         Remove All
                                                     </button>
                                                 </div>
-                                                <div class="col-12"> 
+                                                <!-- <div class="col-12"> 
                                                     <div class='bfd-dropfield'> 
                                                         <div class='bfd-dropfield-inner' id="images-drop">
                                                             <div class="mt-4 mb-4" id="images-input">
@@ -226,7 +232,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">
@@ -253,18 +259,18 @@
                                         <div class="card-body selecter-file">
                                             <div class="bs-row">
                                                 <div class="col-12">
-                                                    <!-- <button class="btn btn-file" id="file-btn">
+                                                    <button class="btn btn-file" id="file-btn">
                                                         <span id="file-label">Upload Files</span>
                                                         <input type="file" id="file"
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'paper')"/>
-                                                    </button>                                                                     -->
+                                                    </button>                                                                    
                                                     <button class="btn btn-action" id="file-remove"
                                                     onclick="removeFile('#file',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
                                                         Remove All
                                                     </button>
                                                 </div>
-                                                <div class="col-12"> 
+                                                <!-- <div class="col-12"> 
                                                     <div class='bfd-dropfield'> 
                                                         <div class='bfd-dropfield-inner' id="file-drop">
                                                             <div class="mt-4 mb-4" id="file-input">
@@ -280,7 +286,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="bs-row mb-2">
                                                 <span class="text-muted" style="font-size: 14px;">

@@ -104,7 +104,7 @@
                         1. ประเภทการสมัคร
                     </a>
                     <a id="tab-s2" href="javascript:register.setStep(2);" class="btn-form-step">
-                        2. ข้อมูลผลงาน
+                        2. ข้อมูลผลงานที่ส่งเข้าประกวด
                     </a>
                     <a id="tab-s3" href="javascript:register.setStep(3);" class="btn-form-step">
                         3. ข้อมูลหน่วยงานบริษัท
@@ -113,7 +113,7 @@
                         4. ข้อมูลผู้ประสานงาน
                     </a>
                     <a id="tab-s5" href="javascript:register.setStep(5);" class="btn-form-step">
-                        5. คุณสมบัติเบื้องต้น/เอกสารประกอบการสมัคร
+                        5. คุณสมบัติ/เอกสาร
                     </a>
                 </div>
 
@@ -128,7 +128,7 @@
                             </h3>
                         </div>
                         <div class="regis-form-data-col1" id="group-type">
-                            <h4>กรุณาเลือกประเภทที่สอดคล้องกับการดำเนินงานและกลุ่มลูกค้าของท่านมากที่สุด <span class="required">*</span></h4>
+                            <h4>กรุณาเลือกประเภทการสมัคร <span class="required">*</span></h4>
                         </div>
                         <div class="regis-form-data-col1" id="group-type-sub">
                         </div>
@@ -237,13 +237,19 @@
                                         </div>
                                         <div class="card-body selecter-file">
                                             <div class="bs-row">
-                                                <div class="col-12">                                                                 
+                                                <div class="col-12">     
+                                                    <button class="btn btn-file" style="font-size: 16px;" id="step1-images-btn">
+                                                        <span id="step1-images-label">Upload Files</span>
+                                                        <input type="file" id="step1-images"
+                                                        accept=".jpg,.jpeg,.png" multiple
+                                                        onchange="onFileHandle({id: register.id},'#'+this.id,'images')"/>
+                                                    </button>                                                              
                                                     <button class="btn btn-action" id="step1-images-remove"
                                                     onclick="removeFile('#step1-images',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
                                                 </div>
-                                                <div class="col-12"> 
+                                                <!-- <div class="col-12"> 
                                                     <div class='bfd-dropfield'> 
                                                         <div class='bfd-dropfield-inner' id="step1-images-drop">
                                                             <div class="mt-4 mb-4" id="step1-images-input">
@@ -260,7 +266,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">

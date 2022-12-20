@@ -163,6 +163,7 @@
                             คำตอบ
                             <textarea class="form-control" id="qReply" rows="12" readonly>
                             </textarea>
+                            <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert"></div>
                         </div>
 
                         <div class="regis-form-data-col2 attachfile">

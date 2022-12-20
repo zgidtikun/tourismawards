@@ -318,6 +318,11 @@ $routes->get('forgot-password', 'backend\VerifyPassword::forgotPassword');
 //     $routes->post('MarkTest/saveUpdate', 'MarkTest::saveUpdate');
 // });
 
+$routes->group('re-estimate', static function ($routes) {
+    $routes->get('by-type/(:num)/(:num)', 'EstimateContrller::reCalEstimateByType/$1/$2', ['filter' => 'api:backend']);
+    $routes->get('by-application/(:num)', 'EstimateContrller::reCalEstimateByApp/$1', ['filter' => 'api:backend']);
+});
+
 $routes->environment('development', static function ($routes) {
     $routes->get('set-session', 'LoginController::setSession');
     $routes->get('show-session', 'LoginController::showSession');

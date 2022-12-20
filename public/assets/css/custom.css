@@ -83,7 +83,7 @@ a.btn-regis.disabled {
 /* Absolute Center Spinner */
 .loading {
     position: fixed;
-    z-index: 9999;
+    z-index: 99999;
     height: 2em;
     width: 2em;
     overflow: show;
@@ -5534,6 +5534,8 @@ img.profile {
     text-align: center;
 }
 
+
+.btn-choice.disabled,
 .bfd-dropfield-inner.disabled {
     pointer-events: none;
     filter: none;

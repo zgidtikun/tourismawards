@@ -163,6 +163,7 @@
                             <span id="qResult">คำตอบ</span>
                             <textarea class="form-control" id="qReply" rows="12" readonly>
                             </textarea>
+                            <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert"></div>
                         </div>
 
                         <div class="regis-form-data-col2 attachfile" id="qImages">
@@ -236,13 +237,19 @@
                                             </div>
                                             <div class="card-body selecter-file">
                                                 <div class="bs-row">
-                                                    <div class="col-12">                                                                 
+                                                    <div class="col-12">
+                                                        <button class="btn btn-file" style="font-size: 16px;" id="etm-images-btn">
+                                                            <span id="images-label">Upload Files</span>
+                                                            <input type="file" id="etm-images"
+                                                            accept=".jpg,.jpeg,.png" multiple
+                                                            onchange="onFileHandle({cate: pointer.cate,seg: pointer.seg},'#'+this.id,'images')"/>
+                                                        </button>  
                                                         <button class="btn btn-action" id="etm-images-remove"
                                                         onclick="removeFile('#etm-images',{cate: pointer.cate,seg: pointer.seg,remove: 'all'})">
                                                             Remove All
                                                         </button>
                                                     </div>
-                                                    <div class="col-12"> 
+                                                    <!-- <div class="col-12"> 
                                                         <div class='bfd-dropfield'> 
                                                             <div class='bfd-dropfield-inner' id="etm-images-drop">
                                                                 <div class="mt-4 mb-4" id="etm-images-input">
@@ -259,7 +266,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="bs-row">
                                                     <span class="text-muted" style="font-size: 14px;">

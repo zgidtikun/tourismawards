@@ -260,12 +260,14 @@ class EstimateController extends BaseController
                 $inst_estind['score_psb'] = $input->score_sb;
                 $inst_estind['score_prs'] = $input->score_rs;
                 $inst_estind['score_pre'] = $input->score_tt;
+                $inst_estind['pre_send_date'] = date('Y-m-d H:i:s');
             }
             else {
                 $inst_estind['score_ote'] = $input->score_te;
                 $inst_estind['score_osb'] = $input->score_sb;
                 $inst_estind['score_ors'] = $input->score_rs;
                 $inst_estind['score_onsite'] = $input->score_tt;
+                $inst_estind['onsite_send_date'] = date('Y-m-d H:i:s');
             }
 
             if($existEstInd <= 0){
@@ -344,12 +346,14 @@ class EstimateController extends BaseController
                     $inst_avg['score_prescreen_sb'] = $avg_sb;
                     $inst_avg['score_prescreen_rs'] = $avg_rs;
                     $inst_avg['score_prescreen_tt'] = $avg_tt;
+                    $inst_avg['pre_send_date'] = date('Y-m-d H:i:s');
                 }
                 else {
                     $inst_avg['score_onsite_te'] = $avg_te;
                     $inst_avg['score_onsite_sb'] = $avg_sb;
                     $inst_avg['score_onsite_rs'] = $avg_rs;
                     $inst_avg['score_onsite_tt'] = $avg_tt;
+                    $inst_avg['onsite_send_date'] = date('Y-m-d H:i:s');
                 }
 
                 $existEstScr = $this->estScr->where('application_id',$input->appId)
@@ -551,5 +555,201 @@ class EstimateController extends BaseController
 
         $result = ['gold' => $gold, 'silver' => $silver];
         return $this->response->setJSON($result);
+    }
+
+    public function reCalEstimateByApp($appId)
+    {
+        $result = $this->reCalEstimate('app',$appId,'','');
+        return $this->response->setJSON($result);
+    }
+
+    public function reCalEstimateByType($typeId,$subId)
+    {
+        $result = $this->reCalEstimate('type','',$typeId,$subId);
+        return $this->response->setJSON($result);
+    }
+
+    private function reCalEstimate($by,$appId,$typeId,$subId)
+    {
+        try{
+            if(
+                ( $by == 'app' && $appId == '' )
+                || ($by == 'type' && $typeId == '' && $subId)
+            ){
+                return [
+                    'result' => 'error',
+                    'message' => 'Parameter ไม่ครบตามข้อกำหนด'
+                ];
+            }
+
+            $builder_1 = $this->db->table('estimate e')
+                ->join('question q','e.question_id = q.id')
+                ->select(
+                    "e.id, e.application_id, e.question_id, 
+                    IFNULL(e.score_pre_origin,'NULL') per_origin, 
+                    IFNULL(e.score_onsite_origin,'NULL') onsite_origin,
+                    e.status_pre, e.status_onsite,
+                    q.weight, q.pre_score, q.onside_score,
+                    e.estimate_by"
+                );
+            
+            if($by == 'type'){
+               $where = [
+                    'q.application_type_id' => $typeId,
+                    'q.application_type_sub_id' => $subId
+                ];
+            }
+            elseif($by == 'app'){
+                $where['e.application_id'] = $appId;
+            }
+
+            $builder_1 = $builder_1->where($where)
+                ->orderBy('e.application_id','ASC')
+                ->orderBy('e.estimate_by','ASC');
+
+            $count = $builder_1->countAllResults();
+            $builder_1 = $builder_1->get();
+            $arrayAppId = [];
+            $counter = 0;
+
+            if($count > 0){
+                $obj_es = new \App\Models\Estimate();
+
+                foreach($builder_1->getResult() as $val){
+                    
+                    $set = [];
+
+                    if(!empty($val->per_origin)){
+                        $score_pre = $val->per_origin * $val->weight;
+                        $tscore_pre = $score_pre / $val->pre_score;
+                        $set['score_pre'] = $score_pre;
+                        $set['tscore_pre'] = $tscore_pre;
+                    }
+
+                    if(!empty($val->onsite_origin)){
+                        $score_onsite = $val->onsite_origin * $val->weight;
+                        $tscore_onsite = $score_onsite / $val->onside_score;
+                        $set['score_onsite'] = $score_onsite;
+                        $set['tscore_onsite'] = $tscore_onsite;
+                    }
+
+                    if(!empty($set)){
+                        $obj_es->where('id',$val->id)
+                            ->set([
+                                'score_pre' => $score_pre,
+                                'tscore_pre' => $tscore_pre,
+                                'score_onsite' => $score_onsite,
+                                'tscore_onsite' => $tscore_onsite,
+                            ])
+                            ->update();
+                        
+                        if(
+                            $arrayAppId[$counter-1]['id'] != $val->application_id
+                            || ($arrayAppId[$counter-1]['id'] == $val->application_id
+                                && $arrayAppId[$counter-1]['est_by'] != $val->estimate_by)
+                        ){
+                            $arrayAppId[$counter++] = [
+                                'id' => $val->application_id, 
+                                'est_by' => $val->estimate_by
+                            ];
+                        }
+                    }
+                };
+
+                $arrayAppId = array_unique($arrayAppId);                
+                    
+                $obj_ass = new \App\Models\AssessmentGroup();
+                $assg_1 = $obj_ass->where('id',1)
+                    ->select('score_prescreen, score_onsite')
+                    ->first();
+
+                $assg_2 = $obj_ass->where('id',2)
+                    ->select('score_prescreen, score_onsite')
+                    ->first();
+
+                $assg_3 = $obj_ass->where('id',3)
+                    ->select('score_prescreen, score_onsite')
+                    ->first();
+
+                foreach($arrayAppId as $app){
+                    $builder_2 = $this->db->table('estimate wie')
+                        ->select('(COUNT(wie.id) >= COUNT(wiq.id)) ces',false)
+                        ->join('question wiq','wie.application_id = wiq.id')
+                        ->where([
+                            'wie.application_id' => $app['id'],
+                            'wie.estimate_by' => $app['est_by']
+                        ])
+                        ->get();
+
+                    foreach($builder_2 as $check){
+                        if($check->ces){
+                            $aid = $app['id'];
+
+                            $builder_3 = $this->db->query(
+                                "SELECT a.application_id, a.estimate_by,
+                                    IFNULL(b.score_pre,0) ass1_score_pre,
+                                    IFNULL(b.max_score_pre,0) ass1_max_score_pre,
+                                    IFNULL(b.score_onsite,0) ass1_score_onsite,
+                                    IFNULL(b.max_score_onsite,0) ass1_max_score_onsite,
+                                    IFNULL(c.score_pre,0) ass2_score_pre,
+                                    IFNULL(c.max_score_pre,0) ass2_max_score_pre,
+                                    IFNULL(c.score_onsite,0) ass2_score_onsite,
+                                    IFNULL(c.max_score_onsite,0) ass2_max_score_onsite,
+                                    IFNULL(d.score_pre,0) ass3_score_pre,
+                                    IFNULL(d.max_score_pre,0) ass3_max_score_pre,
+                                    IFNULL(d.score_onsite,0) ass3_score_onsite,
+                                    IFNULL(d.max_score_onsite,0) ass3_max_score_onsite
+                                FROM estimate a
+                                LEFT JOIN (
+                                    SELECT ea.application_id, ea.estimate_by,
+                                        SUM(ea.score_pre) score_pre, 
+                                        SUM(ea.score_onsite) score_onsite,
+                                        SUM(qa.pre_score) max_score_pre,
+                                        SUM(qa.onside_score) max_score_onsite
+                                    FROM estimate ea 
+                                    INNER JOIN question qa ON ea.question_id = qa.id
+                                    WHERE ea.application_id = $aid
+                                        AND qa.assessment_group_id = 1
+                                ) b ON a.application_id = b.application_id AND a.estimate_by = b.estimate_by
+                                LEFT JOIN (
+                                    SELECT eb.application_id, eb.estimate_by,
+                                        SUM(eb.score_pre) score_pre, 
+                                        SUM(eb.score_onsite) score_onsite,
+                                        SUM(qb.pre_score) max_score_pre,
+                                        SUM(qb.onside_score) max_score_onsite
+                                    FROM estimate eb 
+                                    INNER JOIN question qb ON eb.question_id = qb.id
+                                    WHERE eb.application_id = $aid
+                                        AND qb.assessment_group_id = 2
+                                ) c ON a.application_id = c.application_id AND a.estimate_by = c.estimate_by
+                                LEFT JOIN (
+                                    SELECT ec.application_id, ec.estimate_by,
+                                        SUM(ec.score_pre) score_pre, 
+                                        SUM(ec.score_onsite) score_onsite,
+                                        SUM(qc.pre_score) max_score_pre,
+                                        SUM(qc.onside_score) max_score_onsite
+                                    FROM estimate ec 
+                                    INNER JOIN question qc ON ec.question_id = qc.id
+                                    WHERE ec.application_id = $aid
+                                        AND qc.assessment_group_id = 3
+                                ) d ON a.application_id = d.application_id AND a.estimate_by = d.estimate_by
+                                WHERE a.application_id = $aid"
+                            );
+
+                            foreach($builder_3->getResult() as $val){
+                                $p_stescore = $p_ssbscore = $p_srsscore = $p_sscore = 0;
+                                $p_stescore = ($val->ass1_score_pre * $assg_1->score_prescreen) / $val->ass1_max_score_pre;
+                                $p_ssbscore = ($val->ass2_score_pre * $assg_2->score_prescreen) / $val->ass2_max_score_pre;
+                                $p_srsscore = ($val->ass3_score_pre * $assg_3->score_prescreen) / $val->ass3_max_score_pre;
+                                $p_sscore = $p_stescore + $p_ssbscore + $p_srsscore;
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        } catch(Exception $e){
+            return ['result' => 'error', 'message' => $e->getMessage()];
+        }
     }
 }

@@ -164,6 +164,7 @@ class ApplicationController extends BaseController
                 'step' => $this->input->getVar('step'),
                 'status' => 2,
                 'updated_by' => session()->get('id'),
+                'send_date' => date('Y-m-d H:i:s')
             ];
 
             foreach($maps as $map){

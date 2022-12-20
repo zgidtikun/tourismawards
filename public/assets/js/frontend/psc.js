@@ -130,22 +130,62 @@ const psc = {
         }
         
         return  setting;
+    }, 
+    waitDraft: function(sts){
+        if(!psc.expired && $.inArray(psc.status,['draft','reject']) !== -1){
+            if(sts == 'wait'){
+                $('#tab-0').addClass('disabled');
+                $('#tab-1').addClass('disabled');
+                $('#tab-2').addClass('disabled');
+                $('.btn-choice,.btn-regis').addClass('disabled');
+                $('#btn-back,#btn-next').prop('disabled',true);
+                $('.btn-file,.btn-action').prop('disabled',true);
+                $(MapData.input.reply.id).prop('readonly','readonly');
+            } else {
+                $('#tab-0').removeClass('disabled');
+                $('#tab-1').removeClass('disabled');
+                $('#tab-2').removeClass('disabled');
+                $('.btn-choice,.btn-regis').removeClass('disabled');
+                $('#btn-back,#btn-next').prop('disabled',false);
+                $('.btn-file,.btn-action').prop('disabled',false);
+                $(MapData.input.reply.id).prop('readonly','');
+            }
+        }
     },
     reply: function(cate,seg){
-        let setting = this.setApi('fixed',cate,seg);
-        
-        api(setting).then(function(response){
-            let reply = response;
+        return new Promise(function(resolve, reject){
+            psc.waitDraft('wait');
+            if(cate == -1){ cate = 0; }
+            if(seg == -1){ seg = 0; }
 
-            if(reply.result == 'error_login'){
-                alert.login();
+            if(psc.questions[cate].question[seg].change){
+
+                let setting = psc.setApi('fixed',cate,seg);
+                
+                api(setting).then(function(response){
+                    let reply = response;
+
+                    if(reply.result == 'error_login'){
+                        alert.login();
+                        resolve({ result: 'error' });
+                    } else {
+                        if(reply.result == 'success'){
+                            psc.questions[cate].question[seg].reply_id = reply.id;
+                            psc.questions[cate].question[seg].change = false;
+                            alert.toast({icon: reply.result, title: reply.message});
+                            psc.waitDraft('finish');
+                            resolve({ result: 'success' });
+                        } else {
+                            alert.toast({icon: reply.result, title: reply.message});    
+                            psc.waitDraft('finish');
+                            resolve({ result: 'error' });                    
+                        }
+                    }
+                });
+
             } else {
-                if(reply.result == 'success'){
-                    psc.questions[cate].question[seg].reply_id = reply.id;
-                    psc.questions[cate].question[seg].change = false;
-                }
-
-                alert.toast({icon: reply.result, title: reply.message});
+                psc.waitDraft('finish');
+                resolve({ result: 'success' });
             }
         });
     },
@@ -165,6 +205,7 @@ const psc = {
             alert.confirm(setAlert).then(function(alt){
                 if(alt.status){
                     loading('show');
+                    psc.waitDraft('wait');
                     let setting = psc.setApi('finish');
                     
                     api(setting).then(function(response){
@@ -177,12 +218,13 @@ const psc = {
                             if(finish.result == 'success'){
                                 let title = 'ส่งแบบประเมินเรียบร้อยแล้ว',
                                     message = 'เราจะแจ้งผลให้ทราบ<b>ช่วงประมาณกลางเดือนเมษายน 2566';
-
+                                    psc.waitDraft('finish');
                                 alert.show(finish.result,title,message).then(function(res){
                                     window.location.reload();
                                 });
 
                             } else {
+                                psc.waitDraft('finish');
                                 alert.show('error','ดำเนินการไม่สำเร็จ',finish.message);
                             }
                         }
@@ -205,136 +247,138 @@ const psc = {
         return check;
     },
     setNewQuestion: function(cate,seg){        
-        let point = this.getPointer(),
-            category = this.questions[cate],
-            question = this.questions[cate].question[seg],
-            qcontent = '';
+        let point = this.getPointer();
 
-        if(point.cate != cate){
-            $('.btn-form-step').removeClass('active');
-            $('#tab-'+cate).addClass('active');
-            this.setDropdown(category.question,cate,seg);
-        }
+        psc.reply(point.cate,point.seg).then(replyRes => {
+            psc.waitDraft('finish');
 
-        if(point.cate == -1){ point.cate = 0; }
-        if(point.seg == -1){ point.seg = 0; }
+            let category = psc.questions[cate],
+                question = psc.questions[cate].question[seg],
+                qcontent = '';
 
-        if(this.questions[point.cate].question[point.seg].change){
-            this.reply(point.cate,point.seg);
-        }
-
-        $('.hide-choice').hide();
-        $('body').removeClass('lockbody');
-
-        if(!empty(this.questions[point.cate].question[point.seg].reply)){
-            if(
-                !empty(this.questions[point.cate].question[point.seg].reply_sts)
-                && this.questions[point.cate].question[point.seg].reply_sts == 3
-            ) {
-                $(MapData.label.model.item+point.seg).addClass('request');
-            } else {
-                $(MapData.label.model.item+point.seg).addClass('complete');
+            if(point.cate != cate){
+                $('.btn-form-step').removeClass('active');
+                $('#tab-'+cate).addClass('active');
+                psc.setDropdown(category.question,cate,seg);
             }
-        } else {
-            $(MapData.label.model.item+point.seg).removeClass('complete');
-        }
-              
-        $('.sl').removeClass('active');
 
-        if(!empty(question.reply)){
+            if(point.cate == -1){ point.cate = 0; }
+            if(point.seg == -1){ point.seg = 0; }
+
+            $('.hide-choice').hide();
+            $('body').removeClass('lockbody');
+
+            if(!empty(psc.questions[point.cate].question[point.seg].reply)){
+                if(
+                    !empty(psc.questions[point.cate].question[point.seg].reply_sts)
+                    && Number(psc.questions[point.cate].question[point.seg].reply_sts) == 3
+                ) {
+                    $(MapData.label.model.item+point.seg).addClass('request');
+                } else {
+                    $(MapData.label.model.item+point.seg).addClass('complete');
+                }
+            } else {
+                $(MapData.label.model.item+point.seg).removeClass('complete');
+            }
+                    
+            $('.sl').removeClass('active');
+
+            if(!empty(question.reply)){
+                if(
+                    !empty(question.reply_sts)
+                    && Number(question.reply_sts) == 3
+                ){
+                    if(!$(MapData.label.model.item+seg).hasClass('request')){
+                        $(MapData.label.model.item+seg).addClass('request');
+                    }
+                } else {
+                    if(!$(MapData.label.model.item+seg).hasClass('complete')){
+                        $(MapData.label.model.item+seg).addClass('complete');
+                    }
+                }
+            } else {
+                $(MapData.label.model.item+seg).addClass('active');
+            }          
+            
+            psc.setPointer(cate,seg);
+
+            if(question.question.search('โปรดระบุ,') !== -1){
+                const qno = question.question.split(',');
+
+                $.each(qno,(qk,qv) => {
+                    if(qk != 0){
+                        qcontent += '<br>&nbsp;&nbsp;';
+                    }
+
+                    qcontent += qv;
+                });
+            } else {
+                qcontent = question.question;
+            }
+
+            $(MapData.label.title).html(category.group.name);
+            $(MapData.label.sum).html(category.question.length); 
+            $(MapData.label.num).html(question.no);
+            $(MapData.label.question).html(question.no+'. '+qcontent);
+            $(MapData.input.reply.id).val(question.reply);
+
+            countChar($('#reply'));
+
+            showFiles.tycoon('#file',question.paper);
+            showFiles.tycoon('#images',question.images);
+
+            if(!empty(question.remark)){
+                $(MapData.label.remark).html('หมายเหตุ : '+question.remark);
+                $(MapData.label.remark).show();
+            } else {
+                $(MapData.label.remark).hide();
+            }
+
             if(
                 !empty(question.reply_sts)
-                && question.reply_sts == 3
-            ){
-                if(!$(MapData.label.model.item+seg).hasClass('request')){
-                    $(MapData.label.model.item+seg).addClass('request');
-                }
+                && Number(question.reply_sts) == 3
+            ) {
+                let req = '';
+
+                $.each(question.request,function(rk,rv){
+                    if(!empty(rv.request_list)){
+                        req += '<li>'+rv.request_list+'</li>';
+                    }
+                });
+
+                $('#request-list').html(req);
+                $('#reject').removeClass('hide');            
+                $('.regis-form-data textarea').prop('disabled',false);
+                $('.attach-file').css('display','none');
+                $('.btn-main, .selecter-file, .bfd-dropfield').css('display','block');
             } else {
-                if(!$(MapData.label.model.item+seg).hasClass('complete')){
-                    $(MapData.label.model.item+seg).addClass('complete');
-                }
-            }
-        } else {
-            $(MapData.label.model.item+seg).addClass('active');
-        }          
-        
-        this.setPointer(cate,seg);
-
-        if(question.question.search('โปรดระบุ,') !== -1){
-            const qno = question.question.split(',');
-
-            $.each(qno,(qk,qv) => {
-                if(qk != 0){
-                   qcontent += '<br>&nbsp;&nbsp;';
+                if(psc.status == 'reject'){
+                    $('.regis-form-data textarea').prop('disabled',true);
+                    $('.attach-file').css('display','block');
+                    $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
                 }
 
-                qcontent += qv;
-            });
-        } else {
-            qcontent = question.question;
-        }
-
-        $(MapData.label.title).html(category.group.name);
-        $(MapData.label.sum).html(category.question.length); 
-        $(MapData.label.num).html(question.no);
-        $(MapData.label.question).html(question.no+'. '+qcontent);
-        $(MapData.input.reply.id).val(question.reply);
-
-        countChar($('#reply'));
-
-        showFiles.tycoon('#file',question.paper);
-        showFiles.tycoon('#images',question.images);
-
-        if(!empty(question.remark)){
-            $(MapData.label.remark).html('หมายเหตุ : '+question.remark);
-            $(MapData.label.remark).show();
-        } else {
-            $(MapData.label.remark).hide();
-        }
-
-        if(
-            !empty(question.reply_sts)
-            && question.reply_sts == 3
-        ) {
-            let req = '';
-
-            $.each(question.request,function(rk,rv){
-                if(!empty(rv.request_list)){
-                    req += '<li>'+rv.request_list+'</li>';
-                }
-            });
-
-            $('#request-list').html(req);
-            $('#reject').removeClass('hide');            
-            $('.regis-form-data textarea').prop('disabled',false);
-            $('.attach-file').css('display','none');
-            $('.btn-main, .selecter-file, .bfd-dropfield').css('display','block');
-        } else {
-            if(psc.status == 'reject'){
-                $('.regis-form-data textarea').prop('disabled',true);
-                $('.attach-file').css('display','block');
-                $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
+                $('#reject').addClass('hide');
             }
 
-            $('#reject').addClass('hide');
-        }
+            let back = seg != 0 ? seg-1 : seg,
+                next = seg != category.question.length-1 ? seg+1 : seg;
 
-        let back = seg != 0 ? seg-1 : seg,
-            next = seg != category.question.length-1 ? seg+1 : seg;
+            $('#btn-back').attr('onclick','psc.setNewQuestion('+cate+','+back+')');
+            $('#btn-next').attr('onclick','psc.setNewQuestion('+cate+','+next+')');
 
-        $('#btn-back').attr('onclick','psc.setNewQuestion('+cate+','+back+')');
-        $('#btn-next').attr('onclick','psc.setNewQuestion('+cate+','+next+')');
+            if(seg == 0){
+                $('#btn-back').hide();
+                $('#btn-next').show();
+            } else if(seg >= category.question.length-1){
+                $('#btn-back').show();
+                $('#btn-next').hide();
+            } else {
+                $('#btn-back').show();
+                $('#btn-next').show();
+            }
 
-        if(seg == 0){
-            $('#btn-back').hide();
-            $('#btn-next').show();
-        } else if(seg >= category.question.length-1){
-            $('#btn-back').show();
-            $('#btn-next').hide();
-        } else {
-            $('#btn-back').show();
-            $('#btn-next').show();
-        }
+        });
     },
     setDropdown: function(qt,cate,seg){
         let model = '';

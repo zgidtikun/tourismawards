@@ -97,11 +97,11 @@
                                        <?php
                                        if (session()->get('role') == 1) {
                                           $url = 'awards/application';
-                                          $content = 'ข้อมูลการประกวด';
+                                          $content = 'ข้อมูลใบสมัคร';
                                           $manual = base_url('download/tycoon_manual.pdf');
                                        } else {
                                           $url = 'boards';
-                                          $content = 'ระบบการจัดการ';
+                                          $content = 'การประเมิน';
                                           $manual = base_url('download/judge_manual.pdf');
                                        }
                                        ?>

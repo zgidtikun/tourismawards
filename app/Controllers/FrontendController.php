@@ -8,6 +8,12 @@ use Exception;
 
 class FrontendController extends BaseController
 {
+    public function __construct()
+    {
+        if(!isset($this->db))
+            $this->db = \Config\Database::connect();        
+    }
+
     public function index()
     {
         if(session()->get('isLoggedIn')){
@@ -248,7 +254,8 @@ class FrontendController extends BaseController
         $count_1 = $count_2 =  $count_3 = $count_4 = 0;
         $app_array = [];
 
-        $comm = $committees->where(
+        $comm_pre = $committees->where('assessment_round',1)
+            ->where(
                 '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
                 OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
                 OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')'
@@ -256,9 +263,21 @@ class FrontendController extends BaseController
             ->select('application_form_id app_id')
             ->distinct()
             ->findAll();
+
+        $comm_onsite = $committees->where('assessment_round',2)
+            ->where(
+                '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
+                OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
+                OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')'
+            )
+            ->select('application_form_id app_id')
+            ->distinct()
+            ->findAll();
+
+        $count_1 = $count_2 = $count_3 = $count_4 = 0;
         
-        if(!empty($comm)){
-            foreach($comm as $app){
+        if(!empty($comm_pre)){
+            foreach($comm_pre as $app){
                 array_push($app_array,$app->app_id);
             }
 
@@ -267,24 +286,71 @@ class FrontendController extends BaseController
                 ->select('application_id')
                 ->groupBy('application_id')
                 ->countAllResults();
+            
+            if($count_1 <= 0){
+                $count_1 = $this->db->table('application_form af')
+                    ->join('users_stage us', 'af.created_by = us.user_id')
+                    ->select('COUNT(us.id) cc')
+                    ->whereIn('af.id',$app_array)
+                    ->whereIn('us.status',[1,2,3,4,5])
+                    ->where('us.stage',1)
+                    ->countAllResults();
+            }
 
             $count_2 = $estimate->where('estimate_by',session()->get('id'))
                 ->whereIn('status_pre',[3,0])
                 ->select('application_id')
                 ->groupBy('application_id')
                 ->countAllResults();
+            
+            if($count_2 <= 0){
+                $count_2 = $this->db->table('application_form af')
+                    ->join('users_stage us', 'af.created_by = us.user_id')
+                    ->select('COUNT(us.id) cc')
+                    ->whereIn('af.id',$app_array)
+                    ->whereIn('us.status',[6,7])
+                    ->where('us.stage',1)
+                    ->countAllResults();
+            }
+        }
+        
+        if(!empty($comm_onsite)){
+            foreach($comm_onsite as $app){
+                array_push($app_array,$app->app_id);
+            }
 
             $count_3 = $estimate->where('estimate_by',session()->get('id'))
                 ->whereIn('status_onsite',[1,2])
+                ->orWhere('status_onsite IS NULL')
                 ->select('application_id')
                 ->groupBy('application_id')
                 ->countAllResults();
+            
+            // if($count_3 <= 0){
+            //     $count_3 = $this->db->table('application_form af')
+            //         ->join('users_stage us', 'af.created_by = us.user_id')
+            //         ->select('COUNT(us.id) cc')
+            //         ->whereIn('af.id',$app_array)
+            //         ->whereIn('us.status',[1,2,3,4,5])
+            //         ->where('us.stage',2)
+            //         ->countAllResults();
+            // }
 
             $count_4 = $estimate->where('estimate_by',session()->get('id'))
                 ->whereIn('status_onsite',[3,0])
                 ->select('application_id')
                 ->groupBy('application_id')
                 ->countAllResults();
+            
+            // if($count_4 <= 0){
+            //     $count_4 = $this->db->table('application_form af')
+            //         ->join('users_stage us', 'af.created_by = us.user_id')
+            //         ->select('COUNT(us.id) cc')
+            //         ->whereIn('af.id',$app_array)
+            //         ->whereIn('us.status',[6,7])
+            //         ->where('us.stage',2)
+            //         ->countAllResults();
+            // }
         }
         
         $result = [

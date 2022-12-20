@@ -26,7 +26,19 @@ class AnswerController extends BaseController
 
     public function preScreenIndex()
     {
-        $app = new \Config\App();
+        $app = new \Config\App();        
+
+        $myApp = $this->appForm->where('created_by',session()->get('id'))
+            ->select(
+                'application_type_id type_id,
+                application_type_sub_id sub_id,
+                status')
+            ->first();
+
+        if($myApp->status != 3){
+            return redirect()->to(base_url('awards/application'));
+        }
+
         $duedate = (object) [
             'expired_date' => $app->Pre_expired,
             'expired_str' => FormatTree($app->Pre_expired,'thailand'),
@@ -42,10 +54,6 @@ class AnswerController extends BaseController
 
         if(empty($stage) && $countAnswer <= 0){
             $myId = session()->get('id');
-
-            $myApp = $this->appForm->where('created_by',$myId)
-                ->select('application_type_id type_id,application_type_sub_id sub_id')
-                ->first();
 
             $myQuestion = $this->qt->where([
                 'application_type_id' => $myApp->type_id,
@@ -273,7 +281,10 @@ class AnswerController extends BaseController
                     }
 
                     $this->ans->where('reply_by', session()->get('id'))
-                        ->set([ 'status' => 2 ])
+                        ->set([ 
+                            'status' => 2 ,
+                            'send_date' => date('Y-m-d H:i:s')
+                        ])
                         ->update();
 
                     $cusstg = $this->usStg->where([

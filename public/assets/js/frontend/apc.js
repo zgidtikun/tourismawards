@@ -174,22 +174,22 @@ const register = {
 
                     if(register.status == 3){
                         $('#link-pre-screen').removeClass('disabled');
-                        let setting = {
-                            icon: 'success',
-                            title: 'ใบสมัครของท่านผ่านการอนุมัติ',
-                            text: 'โปรดกรอกแบบประเมินขั้นต้น (Pre-screen) ภายในระยะเวลาที่กำหนด',
-                            mode: 'default',
-                            button: {
-                                confirm: 'ไปตอบแบบประเมินขั้นต้น',
-                                cancel: 'ยกเลิก'
-                            }
-                        }
+                        // let setting = {
+                        //     icon: 'success',
+                        //     title: 'ใบสมัครของท่านผ่านการอนุมัติ',
+                        //     text: 'โปรดกรอกแบบประเมินขั้นต้น (Pre-screen) ภายในระยะเวลาที่กำหนด',
+                        //     mode: 'default',
+                        //     button: {
+                        //         confirm: 'กรุณาประเมินขั้นต้น',
+                        //         cancel: 'ปิด'
+                        //     }
+                        // }
 
-                        alert.confirm(setting).then(function(response){
-                            if(response.status){
-                                window.location.href = getBaseUrl()+'/awards/pre-screen';
-                            }
-                        });
+                        // alert.confirm(setting).then(function(response){
+                        //     if(response.status){
+                        //         window.location.href = getBaseUrl()+'/awards/pre-screen';
+                        //     }
+                        // });
                     }
                 }
             });
@@ -334,9 +334,17 @@ const register = {
                                 showFiles.tycoon(
                                     ref.input,register.formData[pointer[0]][pointer[1]]
                                 );
+                            } else {
+                                if($.inArray(Number(register.status),[2,3,0]) === -1 && !register.expired) {
+                                    clearBtnRemoveFile('by-input',ref.app,ref.input);
+                                }
                             }
                         }
                     });
+                } else {
+                    if($.inArray(Number(register.status),[2,3,0]) === -1 && !register.expired) {
+                        clearBtnRemoveFile('all','awards/application','');
+                    }
                 }
                 
                 resolve(response);
@@ -443,6 +451,7 @@ const register = {
         
         $.each(tabs,function(key,tab){
             let checkRequire = true;
+            let checkFileRequire = true;
 
             if(tab.step == step){
                 if($(tab.id).hasClass('complete')){
@@ -465,8 +474,12 @@ const register = {
                     }
                 }
             });
+
+            if(tab.step == 5){
+                checkFileRequire = checkRequireFiles('awards/application');
+            }
             
-            if(!checkRequire){
+            if(!checkRequire && !checkFileRequire){
                 if($(tab.id).hasClass('complete')){
                     $(tab.id).removeClass('complete');
                 }
@@ -565,7 +578,6 @@ const register = {
             $.each(mapFData,function(key,map){
                 if(map.require){    
                     if(empty(formData[map.variant])){
-                        console.log(formData[map.input])
                         $(map.input).addClass('is-invalid');
                         bool_input = false;
                     } else {
