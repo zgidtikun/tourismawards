@@ -129,7 +129,8 @@ height: formstepdate,
 </div>
 </div>
 </div>
-<table class="table boards" id="tbl-boards">
+
+<table class="display boards" id="tbl-boards" style="width: 100%;">
 <thead>
 <tr>
 <th class="text-center">ลำดับ</th>
@@ -168,7 +169,7 @@ height: formstepdate,
 <div class="col-12 text-base-main fw-semibold mb-2">สถานะ <span id="modal-badge" class="badge ml-1"></span></div>
 <div class="col-12 text-base-main fw-semibold">วันที่ประเมินล่าสุด</div>
 <div class="col-12 mb-4" id="modal-date"></div>
-<div class="col-12">
+<div class="col-12 editbtn">
 <button type="button" class="btn btn-sm btn-success" id="btn-score" onclick="boards.score('md')">
 <i class="bi bi-toggles"></i>
 </button>
