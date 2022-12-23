@@ -57,7 +57,7 @@ class Complete extends BaseController
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
 
         // Template
-        $data['title']  = "ดำเนินการเสร็จสมบูรณ์";
+        $data['title']  = "การประเมินที่เสร็จสมบูรณ์";
         $data['view']   = 'administrator/complete/index';
         $data['ci']     = $this;
 

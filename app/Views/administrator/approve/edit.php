@@ -100,11 +100,13 @@
                 <h4>สาขารางวัล <span class="required">*</span></h4>
                 <div id="option_application_type_sub">
                   <?php
+                  $descreption = '';
                   if (!empty($application_type_sub)) {
                     foreach ($application_type_sub as $key => $value) :
                       $checked = "";
                       if ($value->id == $result->application_type_sub_id) {
                         $checked = "checked";
+                        $descreption = $value->descreption;
                       }
                   ?>
                       <p>
@@ -125,7 +127,7 @@
                 <div class="comment yellow">
                   <i class="bi bi-exclamation-lg"></i>
                   <h4>นิยาม</h4>
-                  <p>กิจกรรมหรือสถานที่เที่ยวเที่ยวที่สร้างหรือพัฒนาขึ้น เพื่อเน้นการให้ความบันเทิงหรือความสนุกสนาน แก่นักท่องเที่ยว เช่น สวนสนุก สวนน้ำ การแสดงต่างๆ ตลาดน้ำ ตลาดย้อนยุค เป็นต้น</p>
+                  <p><?php echo $descreption ?></p>
                 </div>
               </div>
 
@@ -499,10 +501,15 @@
           </div>
         </div>
 
-        <div class="form-main-btn">
-          <a href="javascript:void(0)" class="btn-cancle">ยกเลิก</a>
-          <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
-        </div>
+        <?php if ($result->status == 0 || $result->status == 3) { ?>
+          ผู้อนุมัติ: <?= $result->approve_name ?> อัพเดทวันที่ <?= docDate($result->approve_time, 3) ?> <?= date('H:i', strtotime($result->approve_time)) ?> น.
+        <?php } else { ?>
+          <div class="form-main-btn">
+            <a href="javascript:void(0)" class="btn-cancle">ยกเลิก</a>
+            <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
+          </div>
+        <?php } ?>
+
       </form>
 
 
@@ -535,6 +542,16 @@
         req[0].classList.add("active");
       });
     });
+
+    if ('<?= $result->status == 0 ?>' || '<?= $result->status == 3 ?>') {
+      $('[name="status"]').prop('disabled', true);
+      $('#judge_comment').prop('readonly', true);
+    } else {
+      $('[name="status"]').prop('disabled', false);
+      $('#judge_comment').prop('readonly', false);
+    }
+
+
   });
 
   $('#btn_save').click(function(e) {

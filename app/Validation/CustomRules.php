@@ -45,7 +45,7 @@ class CustomRules
     }
 
     public function special_str($str){
-        return !preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $str) ? true : false;
+        return preg_match('/^[\x{0E00}-\x{0E7F}A-Za-z0-9\s]+$/u', $str) ? true : false;
     }
 
     public function unique_email(string $str, string $fields, array $data){

@@ -5,17 +5,27 @@
         return new Promise(function(resolve, reject) {
             grecaptcha.ready(function() {
                 grecaptcha.execute('<?=$appRecapcha->RECAPCHA_KEY?>', {}).then(function(token) {
-                    resolve({ rccToken: token })
+                    resolve({ rccToken: token });
                 });
             });  
         });      
     }
+
+    function setRecapchaToken(){
+        return new Promise(function(resolve, reject) {
+            recapchaToken().then(function(data){ 
+                
+                $('#recapcha_token').val(data.rccToken);
+                resolve({ status: true });
+            });
+        });
+    }
 </script>
 <!-- Excample call function gen recapcha token -->
-<script>
+<!-- <script>
     $(document).ready(function(){
         recapchaToken().then(function(data){                
             $('#recapcha_token').val(data.rccToken);
         });
     });
-</script>
+</script> -->

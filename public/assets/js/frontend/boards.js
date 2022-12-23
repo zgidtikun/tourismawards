@@ -197,31 +197,31 @@ const boards = {
                             let content;
                             switch(Number(boards.setShowStatus(row.status,row.request_status,row.show_status))){
                                 case 1:
-                                    content = '<span class="wait">';
+                                    content = '<span class="userstatus wait">';
                                     content += 'รอการประเมิน</span>';
                                 break;
                                 case 2:
-                                    content = '<span class="estimate">';
+                                    content = '<span class="userstatus estimate">';
                                     content += 'กำลังประเมิน</span>';
                                 break;
                                 case 3:
-                                    content = '<span class="request">';
+                                    content = '<span class="userstatus request">';
                                     content += 'ขอข้อมูลเพิ่มเติม</span>';
                                 break;
                                 case 4:
-                                    content = '<span class="estcon">';
+                                    content = '<span class="userstatus estcon">';
                                     content += 'ตรวจข้อมูลเพิ่มเติม</span>';
                                 break;
                                 case 5:
-                                    content = '<span class="norecall">';
+                                    content = '<span class="userstatus norecall">';
                                     content += 'ไม่มีการตอบรับ</span>';
                                 break;
                                 case 6:
-                                    content = '<span class="request">';
+                                    content = '<span class="userstatus pass">';
                                     content += 'ประเมินเรียบร้อย</span>';
                                 break;
                                 case 7:
-                                    content = '<span class="notpass">';
+                                    content = '<span class="userstatus notpass">';
                                     content += 'ไม่ผ่านประเมิน</span>';
                                 break;
                             }
@@ -256,18 +256,18 @@ const boards = {
                 columnDefs: [
                     {
                         targets: 0,
-                        className: 'no',
+                        className: 'text-center',
                         searchable: false,
                         orderable: false
                     },
-                    { targets: 1, className: 'landmark' },
-                    { targets: 2, className: 'type' },
-                    { targets: 3, className: 'section' },
-                    { targets: 4, className: 'status' },
-                    { targets: 5, className: 'date' },
+                    { targets: 1, className: '' },
+                    { targets: 2, className: 'text-center' },
+                    { targets: 3, className: 'text-center' },
+                    { targets: 4, className: 'text-center' },
+                    { targets: 5, className: 'text-center' },
                     { 
                         targets: 6, 
-                        className: 'edit',
+                        className: 'text-center edit',
                         searchable: false,
                         orderable: false
                     },
@@ -351,7 +351,10 @@ const boards = {
         $('#modal-date').html(ref.updated_at);
         $('#modal-detail').attr('data-id',ref.id);
 
-        const link = getBaseUrl()+'/boards/estimate/pre-screen/'+ref.id;
+        let link;
+        let stage = boards.getStage().stage;
+
+        link = getBaseUrl()+'/boards/estimate/'+stage+'/'+ref.id;
         $('#btn-estimate').attr('onclick',"window.location.href='"+link+"'");
 
         $('#modal-detail').modal('show');

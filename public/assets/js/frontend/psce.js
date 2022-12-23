@@ -1,6 +1,6 @@
 var appid, sp, tycoon, dataset, assign,
     pointer     = { cate: -1, seg: -1 }
-    onApi       = false;
+    haveRequest = false;
 
 const btnSave   = $('#btn-save');
 const btnBack   = $('#btn-back');
@@ -55,7 +55,8 @@ const init = () =>{
     api({ method: 'get', url: '/inner-api/boards/estimate/'+appid })
     .then((rs) => {
         tycoon = rs.tycoon;     
-        dataset = rs.data;       
+        dataset = rs.data;  
+        haveRequest = rs.request;
         
         let tmp = tycoon.t_name.split('(');
         tycoon.t_name = tmp[0].trim();
@@ -70,12 +71,8 @@ const init = () =>{
         $('#tyTSbu').html(tycoon.ts_name);    
         $('#tyEmail').html(tycoon.knitter_email);    
         $('#tyAttnEn').html(tycoon.attn_en);    
-        $('#tyUdat').html(tycoon.updated_at);    
+        $('#tyUdat').html(tycoon.send_date);    
         $('#tyTel').html(tycoon.knitter_tel);
-
-        $.each(assign,(k,v) => {
-            $('#tab-'+(v-1)).removeClass('disabled');
-        });
         
         loading('hide');
         setQuestion(assign[0]-1,0);
@@ -100,7 +97,7 @@ const setRequest = () => {
 
         if(rs.result == 'success'){
             title = 'ส่งคำขอข้อมูลเพิ่มเติมแล้ว';
-            msg = 'กรุณารอผู้ประกอบการตอบกลับ (ภายใน 5 วัน)<br>ท่านจึงจะสามารถกลับมาประเมินต่อได้';
+            msg = 'กรุณารอผู้ประกอบการตอบกลับ (ภายใน 3 วัน)<br>ท่านจึงจะสามารถกลับมาประเมินต่อได้';
         } else {
             title = 'ไม่สามารถส่งคำขอข้อมูลเพิ่มเติมได้';
             msg = rs.message;
@@ -108,6 +105,8 @@ const setRequest = () => {
 
         alert.show(rs.result,title,msg).then((al) => {
             if(rs.result == 'success'){
+                sp.status = 3;
+                haveRequest = true;
                 disabledForm();
             }
         });
@@ -143,6 +142,23 @@ const setFinish = () => {
 
         $.each(dataset[index].question,(qk,qv) => {
             if(!empty(qv.score_pre)){
+                arrayScore.push({
+                    appId: appid,
+                    stage: 1,
+                    assign: av,
+                    assign_total: dataset[index].group.score_prescreen,
+                    est_id: qv.est_id,
+                    ques_id: qv.id,
+                    estFiles: qv.estFiles,
+                    comment_pre: qv.comment_pre,
+                    note_pre: qv.note_pre,
+                    estimate_by: qv.estimate_by,
+                    score_pre: qv.score_pre,
+                    pre_score: qv.pre_score,
+                    pre_origin: qv.score_pre_origin,
+                    weight: qv.weight,
+                });
+
                 if(av == 1){ 
                     tescore += Number(qv.score_pre);
                     ttescore += Number(qv.pre_score);
@@ -158,10 +174,10 @@ const setFinish = () => {
             }
         });
     });
-    
-    const stescore = ((tescore * te) / ttescore).toFixed(2);
-    const ssbscore = ((sbscoe * sb) / tsbscoe).toFixed(2);
-    const srsscore = ((rsscore * rs) / trsscore).toFixed(2);
+
+    const stescore = tescore != 0 ? ((tescore * te) / ttescore).toFixed(2) : 0;
+    const ssbscore = sbscoe != 0 ? ((sbscoe * sb) / tsbscoe).toFixed(2) : 0;
+    const srsscore = rsscore != 0 ? ((rsscore * rs) / trsscore).toFixed(2) : 0;
     const sscore = (parseFloat(stescore) + parseFloat(ssbscore) + parseFloat(srsscore)).toFixed(2);
     
     alert.confirm({
@@ -191,7 +207,8 @@ const setFinish = () => {
                     score_te: stescore,
                     score_sb: ssbscore,
                     score_rs: srsscore,
-                    score_tt: sscore
+                    score_tt: sscore,
+                    sourcs: arrayScore
                 }
             }
 
@@ -209,6 +226,7 @@ const setFinish = () => {
                     alert.show('success', 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '').then(() => {
                         window.location.reload();
                     });
+                    checkComplete();
                     waitDraft('finish');
                 }
             });
@@ -311,8 +329,10 @@ const waitDraft = sts => {
     }
 }
 
-const setQuestion = (cate,seg) => {
+const setQuestion = (cate,seg) => {    
+    const regex = /<[^>]+>/gi;
     let point = getPointer(),
+        changeCate = false;
         qcontent = '';
         
     draft(point.cate,point.seg).then(draftRes => {
@@ -321,9 +341,10 @@ const setQuestion = (cate,seg) => {
         if(point.cate != cate){
             $('.btn-form-step').removeClass('active');
             $('#tab-'+cate).addClass('active');
+            changeCate = true;
             setDropdown(dataset[cate].question,cate,seg);
         }
-
+        
         if(point.cate == -1){ point.cate = cate; }
         if(point.seg == -1){ point.seg = seg; }
         
@@ -339,36 +360,53 @@ const setQuestion = (cate,seg) => {
             $('#sl-'+seg).addClass('active');
         }
 
-        if(
-            empty(dataset[point.cate].question[point.seg].request_status)
-            || $.inArray(Number(dataset[point.cate].question[point.seg].request_status),[0,1,2]) === -1
-        ){
+        if(!changeCate){
             if(
-                empty(dataset[point.cate].question[point.seg].score_pre)
+                dataset[point.cate].question[point.seg].request_status === null
+                || Number(dataset[point.cate].question[point.seg].request_status) === 3
             ){
-                $('#sl-'+point.seg).removeClass('complete');
+                if(
+                    empty(dataset[point.cate].question[point.seg].score_pre)
+                ){
+                    $('#sl-'+point.seg).removeClass('complete');
+                } else {
+                    $('#sl-'+point.seg).addClass('complete');
+                }
             } else {
-                $('#sl-'+point.seg).addClass('complete');
+                $('#sl-'+point.seg).removeClass('complete');
+                $('#sl-'+point.seg).addClass('request');
             }
-        } else {
-            $('#sl-'+point.seg).removeClass('complete');
-            $('#sl-'+point.seg).addClass('request');
         }
 
         setPointer(cate,seg);
 
-        if(question.question.search('โปรดระบุ,') !== -1){
-            const qno = question.question.split(',');
-
-            $.each(qno,(qk,qv) => {
-                if(qk != 0){
-                    qcontent += '<br>&nbsp;&nbsp;';
-                }
-
-                qcontent += qv;
-            });
-        } else {
+        if(regex.test(question.pre_eva)){
             qcontent = question.question;
+        } else {        
+            if(question.question.search('ระบุ,') !== -1){
+                const qno = question.question.split(',');
+                
+                $.each(qno,(qk,qv) => {
+                    if(qk != 0){
+                        qcontent += '<br>&nbsp;&nbsp;&nbsp;&nbsp;';
+                        qv = qv.trim();
+                        s2p = qv.substr(0,2);
+                        
+                        if(isNaN(s2p)){
+                            qcontent += '&bull;&nbsp;&nbsp;'+qv;
+                        }else{
+                            s2p = s2p.trim();
+                            qv = qv.substr(2).trim();
+                            // question.no+'.'+s2p+
+                            qcontent += '&bull;&nbsp;&nbsp;'+qv;
+                        }
+                    } else {
+                        qcontent += qv;
+                    }
+                });
+            } else {
+                qcontent = question.question;
+            }
         }
         
         qTitle.attr('data-id',question.reply_id);
@@ -378,7 +416,7 @@ const setQuestion = (cate,seg) => {
         qNum.html(question.no);
         mTNum.html(question.no);
         mNum.html(question.no);
-        hSubject.html(question.no+'. '+qcontent);
+        qSubject.html(question.no+'. '+qcontent);
         esCmm.val(question.comment_pre);
         esNote.val(question.note_pre);    
 
@@ -408,19 +446,26 @@ const setQuestion = (cate,seg) => {
             btnBack.show();
             btnNext.show();
         }
-        
-        qSubject.html(question.no+'. '+question.question);
+
         qReply.html(question.reply);
 
-        if(Number(question.pre_status) == 1){
+        if(Number(question.pre_status) == 1 && $.inArray(cate+1,assign) !== -1){
             $('.none-estimate').hide();
+            $('.none-assign').hide();
             $('.is-estimate').show();
             btnSave.attr('onclick','draft('+cate+','+seg+')');
             btnRequest.attr('onclick','draft('+cate+','+seg+')');
             btnSave.show();
             btnReset.show();
         } else {
-            $('.none-estimate').show();
+            if($.inArray(cate+1,assign) !== -1){
+                $('.none-assign').hide();
+                $('.none-estimate').show();
+            } else {
+                $('.none-assign').show();
+                $('.none-estimate').hide();
+            }
+
             $('.is-estimate').hide();
             btnSave.hide();    
             btnReset.hide();  
@@ -447,26 +492,30 @@ const setQuestion = (cate,seg) => {
 
         qAblum.html(ap);
 
-        const eva = question.pre_eva.split(',');
-        const sco = question.pre_scor.split(',');
-        let count = 1;
+        if(regex.test(question.pre_eva)){
+            ev = question.pre_eva;
+        } else {
+            const eva = question.pre_eva.split(',');
         
-        $.each(eva,(k,v) => {
-            if(!empty(v)){
-                let val, tmp = v.split('.');
-                
-                if(tmp.length > 1) { val = count+'. '+tmp[1].trim(); }
-                else { val = count+'. '+tmp[0].trim(); }
+            $.each(eva,(k,v) => {
+                if(!empty(v)){
+                    let val, tmp = v.split('.');
+                    
+                    if(tmp.length > 1) { val = tmp[0].trim()+'. '+tmp[1].trim(); }
+                    else { val = tmp[0].trim(); }
+    
+                    if(v != ''){
+                        ev += (
+                            '<span class="txt-yellow title-comment">'
+                            + val
+                            + '</span><br>'
+                        );
+                    }
+                }
+            });
+        }
 
-                ev += (
-                    '<span class="txt-yellow title-comment">'
-                        + val
-                    + '</span><br>'
-                );
-
-                count++;
-            }
-        });
+        const sco = question.pre_scor.split(',');
 
         sc += '<h4>เกณฑ์การให้คะแนนรอบ Pre-Screen</h4>';
         
@@ -475,8 +524,15 @@ const setQuestion = (cate,seg) => {
                 let tmp = v.split('='),
                     dis = ck = '';
                     
-                if($.inArray(Number(getStageStatus()),[3,6,7]) !== -1){
-                    dis = 'disabled';
+                if(
+                    $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
+                ){
+                    if(
+                        getIsFinish() == 'finish' 
+                        || (getIsFinish() == 'unfinish' && haveRequest)
+                    ){
+                        dis = 'disabled';
+                    }
                 }
 
                 if(!empty(question.score_pre)){
@@ -497,7 +553,7 @@ const setQuestion = (cate,seg) => {
         });
 
         qEva.html(ev);
-        qSco.html(sc);
+        qSco.html(sc);        
         disabledForm();
     });
 }
@@ -505,13 +561,14 @@ const setQuestion = (cate,seg) => {
 const setDropdown = (qt,cate,seg) => {
     const md = $('#selection-list');
     let modal = slt = '';
+    cate = cate == -1 ? 0 : cate;
     
     $.each(qt, function(k, v){
         let hr = 'href="javascript:setQuestion('+cate+','+k+');"',
             id = 'id="sl-'+k+'"',
             cp, cl;        
             
-        if(Number(v.pre_status) == 1){            
+        if(Number(v.pre_status) == 1 && $.inArray(cate+1,assign) !== -1){            
             if(
                 !empty(v.request_status)
                 && $.inArray(Number(v.request_status),[0,1,2]) !== -1
@@ -530,26 +587,48 @@ const setDropdown = (qt,cate,seg) => {
     });
 
     md.html(modal);
-    mSelect.html(slt);
+    mSelect.html(slt); 
+    checkComplete();
 }
 
 const checkComplete = () => {
     const cp = assign.length;
-    let ccp = 0;
+    let ccp = ccr = rcp = 0
+        isRequest = false;
 
     $.each(assign,(ak,av) => {
-        let check = true,
+        let checkEmptyScore = true,
+            checkRequest = false,
             index = av-1;
+        let countNoQuestion = 0;
+        let countFinish = 0;
+        let countRequest = 0;
        
         $.each(dataset[index].question,(qk,qv) => {
-            if(Number(qv.pre_status ) == 1){
+            if(Number(qv.pre_status) == 1){
+                countNoQuestion++;
                 if(empty(qv.score_pre)){
-                    check = false;
+                    checkEmptyScore = false;
+                } else {
+                    countFinish++;
+                }
+
+                if(qv.request_status === 0 || qv.request_status === '0'){
+                    checkRequest = true;
+                    countRequest++;
                 }
             }
         });
 
-        if(check){
+        if((Number(countFinish) + Number(countRequest)) >= Number(countNoQuestion)){
+            if(checkRequest){
+                isRequest = true;;
+            }
+
+            ccr++
+        }
+
+        if(checkEmptyScore){
             $('tap-'+index).addClass('complete');
             ccp++;
         } else {
@@ -557,28 +636,48 @@ const checkComplete = () => {
         }
     });
 
-    if(ccp < cp){
-        $('.btn-confirm-submit').prop('disabled',true);
+    if(ccr < cp){
+        // $('.btn-confirm-submit').prop('disabled',true);
+        $('#btn-send-request').prop('disabled',true);
+        $('#btn-send-request-modal').prop('disabled',true);
     } else {
-        $('.btn-confirm-submit').prop('disabled',false);
+        // $('.btn-confirm-submit').prop('disabled',false);
+        if(isRequest){
+            $('#btn-send-request').prop('disabled',false);
+            $('#btn-send-request-modal').prop('disabled',false);
+        } else {
+            $('#btn-send-request').prop('disabled',true);
+            $('#btn-send-request-modal').prop('disabled',true);
+        }
+    }
+
+    if(ccp < cp){
+        // $('.btn-confirm-submit').prop('disabled',true);
+        $('#btn-send-estimate').prop('disabled',true);
+    } else {
+        // $('.btn-confirm-submit').prop('disabled',false);
+        $('#btn-send-estimate').prop('disabled',false);
     }
 
     disabledForm();
 }
 
-const disabledForm = () => {
-    if(
-        $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
-        || getIsFinish() == 'finish'
-    ){
-        $('.btn-confirm-submit').hide();
-        esCmm.prop('readonly','readyonly');
-        qRequest.prop('readonly','readyonly');
-        esNote.prop('readonly','readyonly');
-        btnSave.hide();
-        btnReset.hide();
-        btnRequest.hide();
-        btnSMemo.hide();
+const disabledForm = () => {    
+    if($.inArray(Number(getStageStatus()),[3,6,7]) !== -1){
+        if(
+            getIsFinish() == 'finish' 
+            || (getIsFinish() == 'unfinish' && haveRequest)
+        ){
+            $('.btn-confirm-submit').hide();        
+            $('[name="score"]').prop('disabled','disabled');
+            esCmm.prop('readonly','readyonly');
+            qRequest.prop('readonly','readyonly');
+            esNote.prop('readonly','readyonly');
+            btnSave.hide();
+            btnReset.hide();
+            btnRequest.hide();
+            btnSMemo.hide();
+        }
     }
 }
 

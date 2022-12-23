@@ -64,7 +64,16 @@ class EstimateController extends BaseController
                     'estimate_by' => session()->get('id')
                 ])
                 ->set(['score_pre' => NULL])
-                ->update();
+                ->update();                    
+
+            save_log_activety([
+                'module' => 'estimate_pre_screen',
+                'action' => 'estimate_pre_screen_send_request',
+                'bank' => 'frontend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $this->input->getVar()
+            ]);
 
             set_noti(
                 (object) [
@@ -87,6 +96,18 @@ class EstimateController extends BaseController
                 
             $result = ['result' => 'success'];
         } catch(\Exception $e){
+            save_log_error([
+                'module' => 'estimate_send_request',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             $result = [
                 'result' => 'error',
                 'messsage' => $e->getMessage()
@@ -211,6 +232,18 @@ class EstimateController extends BaseController
                 ->set(['status' => 2])
                 ->update();
         } catch(Exception $e) {
+            save_log_error([
+                'module' => 'estimate_draft',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             $result = [
                 'result' => 'error',
                 'message' => $e->getMessage()
@@ -226,7 +259,18 @@ class EstimateController extends BaseController
             $sys = new \Config\App();         
             $answer = new \App\Models\Answer();
             $commit = new \App\Models\Committees();
-            $input = (object) $this->input->getVar();
+            $input = (object) $this->input->getVar();  
+            
+            $module = 'estimate_'.($input->stage == 1 ? 'pre_screen' : 'onsite');
+
+            save_log_activety([
+                'module' => $module,
+                'action' => $module.'_send_sys',
+                'bank' => 'frontend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $this->input->getVar()
+            ]);
 
             $form = $this->appForm->where('id',$input->appId)
                 ->select('created_by,IFNULL(attraction_name_th,attraction_name_en) place_name',false)
@@ -403,29 +447,29 @@ class EstimateController extends BaseController
                 
                 if($input->stage == 1){
                     if($pass){
-                        $message_u = 'แจ้งผลการประเมินขั้นต้น (Pre-screen) ของท่านเรียบร้อยแล้ว';
+                        // $message_u = 'แจ้งผลการประเมินขั้นต้น (Pre-screen) ของท่านเรียบร้อยแล้ว';
                         $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณามอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)';                       
                     } else {
-                        $message_u = 'ข้อมูลแบบประเมินขั้นต้น (Pre-screen) ของท่านไม่ผ่านเกณฑ์';
+                        // $message_u = 'ข้อมูลแบบประเมินขั้นต้น (Pre-screen) ของท่านไม่ผ่านเกณฑ์';
                         $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินขั้นต้น (Pre-screen) เข้าสู่ระบบ';
                     }
                 } else {
-                    $message_u = 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว';
+                    // $message_u = 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว';
                     $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินรอบลงพื้นที่เข้าสู่ระบบ';
                 }
 
-                set_noti(
-                    (object) [
-                        'user_id' => $form->created_by,
-                        'bank' => 'frontend'
-                    ],
-                    (object) [
-                        'message' => $message_u,
-                        'link' => base_url('awards/result'),
-                        'send_date' => date('Y-m-d H:i:s'),
-                        'send_by' => 'คณะกรรมการ'
-                    ]
-                );
+                // set_noti(
+                //     (object) [
+                //         'user_id' => $form->created_by,
+                //         'bank' => 'frontend'
+                //     ],
+                //     (object) [
+                //         'message' => $message_u,
+                //         'link' => base_url('awards/result'),
+                //         'send_date' => date('Y-m-d H:i:s'),
+                //         'send_by' => 'คณะกรรมการ'
+                //     ]
+                // );
 
                 set_multi_noti(
                     get_receive_admin(),
@@ -456,6 +500,18 @@ class EstimateController extends BaseController
 
             $result = ['result' => 'success'];
         } catch(Exception $e) {
+            save_log_error([
+                'module' => 'estimate_send_sys',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             $result = [
                 'result' => 'error',
                 'message' => $e->getMessage()
@@ -684,6 +740,7 @@ class EstimateController extends BaseController
                     foreach($builder_2 as $check){
                         if($check->ces){
                             $aid = $app['id'];
+                            $est_by = $app['est_by'];
 
                             $builder_3 = $this->db->query(
                                 "SELECT a.application_id, a.estimate_by,
@@ -742,6 +799,28 @@ class EstimateController extends BaseController
                                 $p_ssbscore = ($val->ass2_score_pre * $assg_2->score_prescreen) / $val->ass2_max_score_pre;
                                 $p_srsscore = ($val->ass3_score_pre * $assg_3->score_prescreen) / $val->ass3_max_score_pre;
                                 $p_sscore = $p_stescore + $p_ssbscore + $p_srsscore;
+
+                                $os_stescore = $os_ssbscore = $os_srsscore = $os_sscore = 0;
+                                $os_stescore = ($val->ass1_score_onsite * $assg_1->score_onsite) / $val->ass1_max_score_onsite;
+                                $os_ssbscore = ($val->ass2_score_onsite * $assg_2->score_onsite) / $val->ass2_score_onsite;
+                                $os_srsscore = ($val->ass3_score_onsite * $assg_3->score_onsite) / $val->ass3_max_score_onsite;
+                                $os_sscore = $os_stescore + $os_ssbscore + $os_srsscore;
+
+                                $this->estInd->where([
+                                    'application_id' => $aid,
+                                    'estimate_by' => $est_by
+                                ])
+                                ->set([
+                                    'score_pte' => $p_stescore,
+                                    'score_psb' => $p_ssbscore,
+                                    'score_prs' => $p_srsscore,
+                                    'score_pre' => $p_sscore,
+                                    'score_ote' => $os_stescore,
+                                    'score_osb' => $os_ssbscore,
+                                    'score_ors' => $os_srsscore,
+                                    'score_onsite' => $os_sscore
+                                ])
+                                ->update();
                                 
                             }
                         }

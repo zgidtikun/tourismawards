@@ -54,7 +54,7 @@ class Estimate extends BaseController
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
 
         // Template
-        $data['title']  = "มอบหมายกรรมการรอบ Pre-Screen";
+        $data['title']  = "มอบหมายกรรมการรอบประเมินขั้นต้น (Pre-Screen)";
         $data['view']   = 'administrator/estimate/index';
         $data['ci']     = $this;
 

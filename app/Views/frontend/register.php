@@ -193,13 +193,15 @@
                                     ข้าพเจ้าได้อ่านและตกลงยินยอมตามรายละเอียดข้อตกลงและความยินยอมข้างต้น
                                 </div>
                                 <div class="inp_form_col1 submit">
-                                    <button id="btn-regis" type="submit" disabled>ลงทะเบียน</button>
+                                    <button id="btn-regis" type="button" disabled
+                                    onclick="register()">ลงทะเบียน</button>
                                 </div>
                                 <?php    
                                     $attr = ['type' => 'hidden', 'id' => 'role', 'name' => 'role', 'value' => 1];
                                     echo form_input($attr);
 
-                                    $attr = ['type' => 'hidden', 'id' => 'recapcha_token', 'name' => 'recapcha_token'];
+                                    $attr = ['type' => 'hidden', 'id' => 'recapcha_token', 'name' => 'recapcha_token',
+                                    'value' => !empty($_signup->data->recapcha_token) ? $_signup->data->recapcha_token  : ''];
                                     echo form_input($attr);
                                 ?>
                             </div>
@@ -257,7 +259,10 @@
         else $('#'+id).removeClass('hide'); 
     }
 
-    var register = () => {         
-        $('#regis-form').submit();      
+    var register = () => {   
+        setRecapchaToken().then(data => { 
+            // $('#recapcha_token').val(data.rccToken);    
+            $('#regis-form').submit(); 
+        });
     }
 </script>

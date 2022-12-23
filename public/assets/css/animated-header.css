@@ -74,6 +74,7 @@ color: #FFF;
     margin: 15px 0;
     padding: 0;
     align-items: baseline;
+    float: right;
 }
 
 .login_list li {
@@ -83,6 +84,11 @@ color: #FFF;
     font-size: 16px;
     color: #FFF;
     position: relative;
+    flex: auto;
+}
+.userlogin.notify{
+margin-left: 0;
+flex: none;
 }
 
 .login_list li.userlogin{
@@ -101,13 +107,16 @@ border-left: 1px solid #FFF;
 padding-left: 20px;
 display: flex;
 align-items: center;
+flex: none;
 }
 
-.login_list li a{
-color: #FFF;
-display: flex;
-align-items: center;
+.login_list li a {
+    color: #FFF;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
 }
+
 .login_list li a img {
     margin-right: 10px;
     max-height: 16px;
@@ -161,6 +170,7 @@ height: 24px;
     line-height: 1;
     position: relative;
     font-size: 0.95em;
+    border-bottom: 3px solid #FFF;
 }
 .header-box-col.menu li.search a {
     flex: none;

@@ -1,3 +1,13 @@
+<style>
+    .regis-form-data-col1 h4#question ol {
+        margin-top: 0.5rem;
+        padding: 0;
+        padding-left: 40px;
+    }
+    .regis-form-data-col1 h4 {
+        margin-bottom: 1.5rem;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col12">

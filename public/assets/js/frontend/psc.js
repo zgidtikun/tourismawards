@@ -24,13 +24,13 @@ const psc = {
     init: function(expired,stage){
         loading('show');
         api({method: 'get', url: '/inner-api/question/get'}).then(function(response){
-            psc.expired = expired === 'true' ? true : false;               
+            psc.expired = expired;               
             psc.status = response.status;    
             psc.appId = response.app_id;    
             psc.questions = response.data;
-            psc.stage = stage;
+            psc.stage = stage;       
             
-            if(!psc.expired){
+            if(!psc.expired){ 
                 switch(psc.status){
                     case 'draft':   
                         $('#formstep-sts').addClass('date');
@@ -41,12 +41,15 @@ const psc = {
                     break;
                     case 'reject':
                         $('#formstep-sts').addClass('date');
-                        $('#formstep-sts').html('ตอบกลับภายใน '+stage.duedateStr);    
+                        $('#formstep-sts').html('ตอบกลับภายใน '+stage.duedateStr);  
                         $('.form-main-title').removeClass('hide');
-                        $('.label-action').removeClass('hide');                     
+                        $('.label-action').removeClass('hide');
+                        $('.attach-file').remove();                     
+                        // $('.form-main-title').removeClass('hide');
+                        // $('.label-action').removeClass('hide');                     
                         $('#formstatus-reject').removeClass('hide');
-                        $('.regis-form-data textarea').prop('disabled',true);
-                        $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
+                        // $('.regis-form-data textarea').prop('disabled',true);
+                        // $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
                     break;
                     case 'finish':
                     case 'estimate':
@@ -63,11 +66,11 @@ const psc = {
                         }
                     break;
                 }
-            } else {                   
+            } else {               
                 $('#formstatus-unpass').removeClass('hide');
                 $('#formstep-sts').addClass('notpass');
                 $('#formstep-sts').html('หมดเวลาการส่งแบบประเมินขั้นต้น');
-                $('.btn-main, .btn-action, .btn-file, .bfd-dropfield, file-list').remove();
+                $('.btn-main, .btn-action, .btn-file, .bfd-dropfield, .selecter-file, file-list').remove();
                 $('.regis-form-data textarea').prop('disabled',true);
             }
             
@@ -132,7 +135,7 @@ const psc = {
         return  setting;
     }, 
     waitDraft: function(sts){
-        if(!psc.expired && $.inArray(psc.status,['draft','reject']) !== -1){
+        if(psc.expired && $.inArray(psc.status,['draft','reject']) !== -1){
             if(sts == 'wait'){
                 $('#tab-0').addClass('disabled');
                 $('#tab-1').addClass('disabled');
@@ -222,7 +225,6 @@ const psc = {
                                 alert.show(finish.result,title,message).then(function(res){
                                     window.location.reload();
                                 });
-
                             } else {
                                 psc.waitDraft('finish');
                                 alert.show('error','ดำเนินการไม่สำเร็จ',finish.message);
@@ -246,8 +248,10 @@ const psc = {
 
         return check;
     },
-    setNewQuestion: function(cate,seg){        
-        let point = this.getPointer();
+    setNewQuestion: function(cate,seg){       
+        const regex = /<[^>]+>/gi;  
+        let point = this.getPointer(),
+            changeCate = false;
 
         psc.reply(point.cate,point.seg).then(replyRes => {
             psc.waitDraft('finish');
@@ -259,6 +263,7 @@ const psc = {
             if(point.cate != cate){
                 $('.btn-form-step').removeClass('active');
                 $('#tab-'+cate).addClass('active');
+                changeCate = true;
                 psc.setDropdown(category.question,cate,seg);
             }
 
@@ -267,25 +272,29 @@ const psc = {
 
             $('.hide-choice').hide();
             $('body').removeClass('lockbody');
-
-            if(!empty(psc.questions[point.cate].question[point.seg].reply)){
-                if(
-                    !empty(psc.questions[point.cate].question[point.seg].reply_sts)
-                    && Number(psc.questions[point.cate].question[point.seg].reply_sts) == 3
-                ) {
-                    $(MapData.label.model.item+point.seg).addClass('request');
+            
+            if(!changeCate){
+                if(!empty(psc.questions[point.cate].question[point.seg].reply)){
+                    if(
+                        $.inArray(Number(psc.stage.status),[3,5]) !== -1
+                        && !empty(psc.questions[point.cate].question[point.seg].request)
+                        && Number(psc.questions[point.cate].question[point.seg].reply_sts) == 3
+                    ) {
+                        $(MapData.label.model.item+point.seg).addClass('request');
+                    } else {
+                        $(MapData.label.model.item+point.seg).addClass('complete');
+                    }
                 } else {
-                    $(MapData.label.model.item+point.seg).addClass('complete');
+                    $(MapData.label.model.item+point.seg).removeClass('complete');
                 }
-            } else {
-                $(MapData.label.model.item+point.seg).removeClass('complete');
             }
                     
             $('.sl').removeClass('active');
 
             if(!empty(question.reply)){
                 if(
-                    !empty(question.reply_sts)
+                    $.inArray(Number(psc.stage.status),[3,5]) !== -1
+                    && !empty(question.request)
                     && Number(question.reply_sts) == 3
                 ){
                     if(!$(MapData.label.model.item+seg).hasClass('request')){
@@ -302,18 +311,33 @@ const psc = {
             
             psc.setPointer(cate,seg);
 
-            if(question.question.search('โปรดระบุ,') !== -1){
-                const qno = question.question.split(',');
-
-                $.each(qno,(qk,qv) => {
-                    if(qk != 0){
-                        qcontent += '<br>&nbsp;&nbsp;';
-                    }
-
-                    qcontent += qv;
-                });
-            } else {
+            if(regex.test(question.pre_eva)){
                 qcontent = question.question;
+            } else { 
+                if(question.question.search('ระบุ,') !== -1){
+                    const qno = question.question.split(',');
+
+                    $.each(qno,(qk,qv) => {
+                        if(qk != 0){
+                            qcontent += '<br>&nbsp;&nbsp;&nbsp;&nbsp;';
+                            qv = qv.trim();
+                            s2p = qv.substr(0,2);
+                            
+                            if(isNaN(s2p)){
+                                qcontent += '&bull;&nbsp;&nbsp;'+qv;
+                            }else{
+                                s2p = s2p.trim();
+                                qv = qv.substr(2).trim();
+                                // question.no+'.'+s2p+
+                                qcontent += '&bull;&nbsp;&nbsp;'+qv;
+                            }
+                        } else {
+                            qcontent += qv;
+                        }
+                    });
+                } else {
+                    qcontent = question.question;
+                }
             }
 
             $(MapData.label.title).html(category.group.name);
@@ -348,15 +372,15 @@ const psc = {
 
                 $('#request-list').html(req);
                 $('#reject').removeClass('hide');            
-                $('.regis-form-data textarea').prop('disabled',false);
-                $('.attach-file').css('display','none');
-                $('.btn-main, .selecter-file, .bfd-dropfield').css('display','block');
+                // $('.regis-form-data textarea').prop('disabled',false);
+                // $('.attach-file').css('display','none');
+                // $('.btn-main, .selecter-file, .bfd-dropfield').css('display','block');
             } else {
-                if(psc.status == 'reject'){
-                    $('.regis-form-data textarea').prop('disabled',true);
-                    $('.attach-file').css('display','block');
-                    $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
-                }
+                // if(psc.status == 'reject'){
+                //     $('.regis-form-data textarea').prop('disabled',true);
+                //     $('.attach-file').css('display','block');
+                //     $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
+                // }
 
                 $('#reject').addClass('hide');
             }
@@ -382,16 +406,16 @@ const psc = {
     },
     setDropdown: function(qt,cate,seg){
         let model = '';
-        
+
         $.each(qt, function(key, value){
             let hr = 'href="javascript:psc.setNewQuestion('+cate+','+key+');"',
                 id = 'id="sl-'+key+'"',
                 cp, cl;
             
-            if(this.stage !== 'reject'){
+            if($.inArray(Number(psc.stage.status),[3,5]) === -1){
                 cp = !empty(value.reply) && seg != key ? 'complete' : '';
             } else {
-                if(!empty(value.reply_sts) && Number(value.reply_sts) == 3 ){
+                if(!empty(value.request) && Number(value.reply_sts) == 3 ){
                     cp = 'request';
                 } else {
                     cp = 'complete';

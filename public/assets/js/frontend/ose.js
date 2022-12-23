@@ -80,12 +80,8 @@ const init = () =>{
         $('#tyTSbu').html(tycoon.ts_name);    
         $('#tyEmail').html(tycoon.knitter_email);    
         $('#tyAttnEn').html(tycoon.attn_en);    
-        $('#tyUdat').html(tycoon.updated_at);    
+        $('#tyUdat').html(tycoon.send_date);    
         $('#tyTel').html(tycoon.knitter_tel);
-        
-        $.each(assign,(k,v) => {
-            $('#tab-'+(v-1)).removeClass('disabled');
-        });
         
         loading('hide');
         setQuestion(assign[0]-1,0);
@@ -197,6 +193,8 @@ const setFinish = () => {
     tscore = mscore = cscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
+
+    let arrayScore = [];
     
     $.each(assign,(ak,av) => {
         
@@ -217,6 +215,23 @@ const setFinish = () => {
 
         $.each(dataset[index].question,(qk,qv) => {
             if(!empty(qv.score_onsite)){
+                arrayScore.push({
+                    appId: appid,
+                    stage: 1,
+                    assign: av,
+                    assign_total: dataset[index].group.score_onsite,
+                    est_id: qv.est_id,
+                    ques_id: qv.id,
+                    estFiles: qv.estFiles,
+                    comment_onsite: qv.comment_onsite,
+                    note_onsite: qv.note_onsite,
+                    estimate_by: qv.estimate_by,
+                    score_onsite: qv.score_onsite,
+                    onside_score: qv.onside_score,
+                    onsite_origin: qv.score_onsite_origin,
+                    weight: qv.weight,
+                });
+
                 if(av == 1){ 
                     tescore += Number(qv.score_onsite);
                     ttescore += Number(qv.onside_score);
@@ -233,9 +248,9 @@ const setFinish = () => {
         });
     });
     
-    const stescore = ((tescore * te) / ttescore).toFixed(2);
-    const ssbscore = ((sbscoe * sb) / tsbscoe).toFixed(2);
-    const srsscore = ((rsscore * rs) / trsscore).toFixed(2);
+    const stescore = tescore != 0 ? ((tescore * te) / ttescore).toFixed(2) : 0;
+    const ssbscore = sbscoe != 0 ? ((sbscoe * sb) / tsbscoe).toFixed(2) : 0;
+    const srsscore = rsscore != 0 ? ((rsscore * rs) / trsscore).toFixed(2) : 0;
     const sscore = (parseFloat(stescore) + parseFloat(ssbscore) + parseFloat(srsscore)).toFixed(2);
     
     alert.confirm({
@@ -296,7 +311,8 @@ const setFinish = () => {
     });
 }
 
-const setQuestion = (cate,seg) => {
+const setQuestion = (cate,seg) => {   
+    const regex = /<[^>]+>/gi;
     let point = getPointer(),
         qcontent = '';
         
@@ -337,18 +353,33 @@ const setQuestion = (cate,seg) => {
 
         setPointer(cate,seg);
 
-        if(question.question.search('โปรดระบุ,') !== -1){
-            const qno = question.question.split(',');
-
-            $.each(qno,(qk,qv) => {
-                if(qk != 0){
-                    qcontent += '<br>&nbsp;&nbsp;';
-                }
-
-                qcontent += qv;
-            });
-        } else {
+        if(regex.test(question.pre_eva)){
             qcontent = question.question;
+        } else {        
+            if(question.question.search('ระบุ,') !== -1){
+                const qno = question.question.split(',');
+                
+                $.each(qno,(qk,qv) => {
+                    if(qk != 0){
+                        qcontent += '<br>&nbsp;&nbsp;&nbsp;&nbsp;';
+                        qv = qv.trim();
+                        s2p = qv.substr(0,2);
+                        
+                        if(isNaN(s2p)){
+                            qcontent += '&bull;&nbsp;&nbsp;'+qv;
+                        }else{
+                            s2p = s2p.trim();
+                            qv = qv.substr(2).trim();
+                            // question.no+'.'+s2p+
+                            qcontent += '&bull;&nbsp;&nbsp;'+qv;
+                        }
+                    } else {
+                        qcontent += qv;
+                    }
+                });
+            } else {
+                qcontent = question.question;
+            }
         }
         
         qTitle.attr('data-id',question.reply_id);
@@ -358,7 +389,7 @@ const setQuestion = (cate,seg) => {
         qNum.html(question.no);
         mTNum.html(question.no);
         mNum.html(question.no);
-        hSubject.html(question.no+'. '+qcontent);
+        qSubject.html(question.no+'. '+qcontent);
         esCmm.val(question.comment_onsite);
         esNote.val(question.note_onsite);    
 
@@ -389,22 +420,26 @@ const setQuestion = (cate,seg) => {
             btnBack.show();
             btnNext.show();
         } 
-
-        // if(Number(question.pre_status) == 0){
-        //     $('#qResult, #qReply, #qImages, #qFiles').hide();
-        // } else {
-        //     $('#qResult, #qReply, #qImages, #qFiles').show();
-        // }
         
         qSubject.html(question.no+'. '+question.question);
         qReply.html(question.reply);    
 
-        if(Number(question.onside_status) == 1){
+        if(Number(question.onside_status) == 1 && $.inArray(cate+1,assign) !== -1){
             $('.none-estimate').hide();
-            $('.is-estimate').show();
+            $('.is-estimate').show();               
+            $('.none-assign').hide();         
+            btnSave.show();
+            btnReset.show();
         } else {
-            $('.none-estimate').show();
+            if($.inArray(cate+1,assign) !== -1){
+                $('.none-estimate').show();
+            } else {
+                $('.none-assign').show();
+            }
+
             $('.is-estimate').hide();   
+            btnSave.hide();    
+            btnReset.hide();  
             return;
         }   
 
@@ -430,26 +465,32 @@ const setQuestion = (cate,seg) => {
         showFiles.tycoon('#etm-file',question.estFiles.paper);
         showFiles.tycoon('#camera',question.estFiles.camera);
 
-        const eva = question.os_eva.split(',');
-        const sco = question.os_scor.split(',');
-        let count = 1;
+        const regex = /<[^>]+>/gi;
+
+        if(regex.test(str)){
+            ev = question.pre_eva;
+        } else {
+            const eva = question.pre_eva.split(',');
         
-        $.each(eva,(k,v) => {
-            if(!empty(v)){
-                let val, tmp = v.split('.');
-                
-                if(tmp.length > 1) { val = count+'. '+tmp[1].trim(); }
-                else { val = count+'. '+tmp[0].trim(); }
-
-                ev += (
-                    '<span class="txt-yellow title-comment">'
-                        + val
-                    + '</span><br>'
-                );
-
-                count++;
-            }
-        });
+            $.each(eva,(k,v) => {
+                if(!empty(v)){
+                    let val, tmp = v.split('.');
+                    
+                    if(tmp.length > 1) { val = tmp[0].trim()+'. '+tmp[1].trim(); }
+                    else { val = tmp[0].trim(); }
+    
+                    if(v != ''){
+                        ev += (
+                            '<span class="txt-yellow title-comment">'
+                            + val
+                            + '</span><br>'
+                        );
+                    }
+                }
+            });
+        }
+        
+        const sco = question.os_scor.split(',');
 
         sc += '<h4>เกณฑ์การให้คะแนนรอบ Pre-Screen</h4>';
         
@@ -497,7 +538,7 @@ const setDropdown = (qt,cate,seg) => {
             id = 'id="sl-'+k+'"',
             cp, cl;        
             
-        if(Number(v.onside_status) == 1){
+        if(Number(v.onside_status) == 1 && $.inArray(cate+1,assign) !== -1){
             cp = !empty(v.score_onsite) ? 'complete' : '';
         } else {
             cp = 'hold';

@@ -86,13 +86,16 @@
                 if (!empty($result)) :
                   foreach ($result as $key => $value) :
                     $status = '';
+                    $button = '<a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
                     if ($value->status == 2) {
                       $status = '<div class="userstatus trader">รอตรวจสอบ</div>';
                     } else if ($value->status == 4) {
                       $status = '<div class="userstatus chk">ขอข้อมูลเพิ่มเติม</div>';
                     } else if ($value->status == 3) {
+                      $button = '<a href="#" class="btn-edit" title="ดูข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
                       $status = '<div class="userstatus judge">อนุมัติ</div>';
                     } else if ($value->status == 0) {
+                      $button = '<a href="#" class="btn-edit" title="ดูข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
                       $status = '<div class="userstatus officer">ไม่อนุมัติ</div>';
                     }
                 ?>
@@ -103,10 +106,10 @@
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>
                       <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
                       <td class="text-center"><?= $status ?></td>
-                      <td class="text-center"><?= docDate($value->created_at, 3) ?></td>
+                      <td class="text-center"><?= docDate($value->send_date, 3) ?></td>
                       <td>
                         <div class="form-table-col edit">
-                          <a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
+                          <?= $button ?>
                           <!-- <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a> -->
                         </div>
                       </td>

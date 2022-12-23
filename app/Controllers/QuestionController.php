@@ -115,7 +115,7 @@ class QuestionController extends BaseController
 
     public function estimateQuestion($id)
     {        
-        $result = ['result' => 'success', 'tycoon'=> null, 'data' => []];
+        $result = ['result' => 'success', 'tycoon'=> null, 'data' => [], 'request' => false];
 
         $tycoon = $this->db->table('application_form af')
             ->join('application_type at','af.application_type_id = at.id')
@@ -125,12 +125,14 @@ class QuestionController extends BaseController
                 'af.code, at.name t_name, ats.name ts_name,
                 af.application_type_id type_id, af.application_type_sub_id sub_type_id,
                 af.knitter_name, af.attraction_name_th attn_th, af.attraction_name_en attn_en,
-                af.knitter_email, af.knitter_tel, af.updated_at, af.created_by'
+                af.knitter_email, af.knitter_tel, af.updated_at, af.created_by,
+                af.send_date'
             )
             ->get();
 
         foreach($tycoon->getResult() as $val){
             $result['tycoon']  = $val;
+            $result['tycoon']->send_date = FormatTree($val->send_date,'thailand');
             $userId = $val->created_by;
             $type_id = $val->type_id;
             $sub_type_id = $val->sub_type_id;
@@ -188,6 +190,10 @@ class QuestionController extends BaseController
                 $val->images = $val->paper = []; 
                 $val->estFiles = (object) ['paper' => [], 'images' => [], 'camera' => []];
                 $val->estimate = false;
+
+                if($val->request_status == 1){
+                    $result['request'] = true;
+                }
 
                 if(empty($val->reply_id)) $val->reply_id = '';
                 if(empty($val->reply)) $val->reply = '';

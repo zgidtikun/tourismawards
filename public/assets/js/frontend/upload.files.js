@@ -12,7 +12,7 @@ const onFileHandle = (setting, input, type) => {
             case 'estimate/onsite':
 
                 if (ref.app == 'awards/application') {
-                    total = Number(register.count[ref.pointer[1]]) + Number(handle.length);
+                    total = Number(register.count[ref.pointer[1]]) + Number(handle.length);                    
                 } else if (ref.app == 'awards/pre-screen') {
                     let length = psc.questions[setting.cate].question[setting.seg][ref.position].length;
                     total = Number(length) + Number(handle.length);
@@ -21,11 +21,11 @@ const onFileHandle = (setting, input, type) => {
                     total = Number(length) + Number(handle.length);
                 }
                 
-                if (total > ref.maxUpload) {
+                if (Number(total) > Number(ref.maxUpload)) {
                     alert.show('warning', 'ไม่สามารถอัพโหลดไฟล์ได้', 'คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน ' + ref.maxUpload + ' ไฟล์เท่านั้น');
                     return false
                 }
-
+                
                 $.each(handle, function(key, val) {
                     let mb = (val.size / (1024 * 1024)).toFixed(2);
 
@@ -106,7 +106,7 @@ const uploadFile = (setting, input, handleBy) => {
                     });
                     
                     $(input).val('');
-                    register.count[ref.pointer[1]] = countFile;
+                    register.count[ref.pointer[1]] += Number(countFile);
                     showFiles.tycoon(ref.input, register.formData[ref.pointer[0]][ref.pointer[1]]);
                 } else {
                     alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
@@ -149,7 +149,7 @@ const uploadFile = (setting, input, handleBy) => {
                     $(input).val('');
                     psc.questions[setting.cate].question[setting.seg][ref.position] = res.files;
                     showFiles.tycoon(ref.input, psc.questions[setting.cate].question[setting.seg][ref.position]);
-                    psc.waitDraft('finish');
+                    
                 } else {
                     psc.waitDraft('finish');
                     alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
@@ -184,7 +184,7 @@ const uploadFile = (setting, input, handleBy) => {
                     $(input).val('');
                     dataset[setting.cate].question[setting.seg].estFiles[ref.position] = res.files;
                     showFiles.tycoon(ref.input, dataset[setting.cate].question[setting.seg].estFiles[ref.position]);
-                    waitDraft('finish');
+                  
                 } else {
                     alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
                     waitDraft('finish');
@@ -219,11 +219,15 @@ const removeFile = (input, setting) => {
             api_setting.url = '/inner-api/app/remove/file';
         } else if (ref.app == 'awards/pre-screen') {
             pointer = psc.getPointer();
+            if(pointer.cate == -1){ pointer.cate = 0; }
+            if(pointer.seg == -1){ pointer.seg = 0; }
             setting.id = psc.questions[pointer.cate].question[pointer.seg].id;
             api_setting.url = '/inner-api/answer/remove/file';
             psc.waitDraft('wait');
         } else if (ref.app == 'estimate/onsite') {
             pointer = getPointer();
+            if(pointer.cate == -1){ pointer.cate = 0; }
+            if(pointer.seg == -1){ pointer.seg = 0; }
             setting.id = dataset[pointer.cate].question[pointer.seg].est_id;
             api_setting.url = '/inner-api/estimate/onsite/files/remove';
             waitDraft('wait');
@@ -262,8 +266,7 @@ const removeFile = (input, setting) => {
                 } else {
                     psc.questions[pointer.cate].question[pointer.seg][ref.position] = [];
                 }
-
-                psc.waitDraft('finish');
+                
                 showFiles.tycoon(input, psc.questions[pointer.cate].question[pointer.seg][ref.position]);
             } 
             else if (res.result == 'success' && ref.app == 'estimate/onsite') {
@@ -274,7 +277,7 @@ const removeFile = (input, setting) => {
                 }
 
                 showFiles.tycoon(input, dataset[pointer.cate].question[pointer.seg].estFiles[ref.position]);
-                waitDraft('finish');
+               
             } 
             else {
                 if(ref.app == 'awards/pre-screen'){
@@ -307,6 +310,8 @@ const downloadFile = (input) => {
         }
     } else if (ref.app == 'awards/pre-screen') {
         pointer = psc.getPointer();
+        if(pointer.cate == -1){ pointer.cate = 0; }
+        if(pointer.seg == -1){ pointer.seg = 0; }
 
         if(psc.questions[pointer.cate].question[pointer.seg].paper.length > 0){
             id = psc.questions[pointer.cate].question[pointer.seg].reply_id;
@@ -316,6 +321,8 @@ const downloadFile = (input) => {
         } 
     } else if (ref.app == 'estimate/onsite') {
         pointer = getPointer();
+        if(pointer.cate == -1){ pointer.cate = 0; }
+        if(pointer.seg == -1){ pointer.seg = 0; }
         
         if(dataset[pointer.cate].question[pointer.seg].estFiles[ref.position].length > 0){
             id = dataset[pointer.cate].question[pointer.seg].est_id;
@@ -366,8 +373,10 @@ const showFiles = {
             ) {
                 $(ref.show).html(html);
                 if(html == ''){
+                    setBtnUploadFile(ref.input)
                     clearBtnRemoveFile('by-input',ref.app,ref.input);
                 } else {
+                    setBtnUploadFile(ref.input)
                     clearBtnRemoveFile('show-input',ref.app,ref.input);
                 }
             } else if (ref.app == 'awards/pre-screen' && psc.status == 'reject') {
@@ -383,23 +392,29 @@ const showFiles = {
                 $(ref.show).html(hinput);
                 $(ref.ablum).html(hablum);
                 if(hinput == ''){
+                    setBtnUploadFile(ref.input)
                     clearBtnRemoveFile('by-input',ref.app,ref.input);
                 } else {
+                    setBtnUploadFile(ref.input)
                     clearBtnRemoveFile('show-input',ref.app,ref.input);
                 }
             } else {
                 $(ref.ablum).html(html);
-                if(html == ''){
+                if(html == ''){                    
+                    setBtnUploadFile(ref.input)
                     clearBtnRemoveFile('by-input',ref.app,ref.input);
                 } else {
+                    setBtnUploadFile(ref.input)
                     clearBtnRemoveFile('show-input',ref.app,ref.input);
                 }
             }
         } else {
             $(ref.show).html(html);
             if(html == ''){
+                setBtnUploadFile(ref.input)
                 clearBtnRemoveFile('by-input',ref.app,ref.input);
             } else {
+                setBtnUploadFile(ref.input)
                 clearBtnRemoveFile('show-input',ref.app,ref.input);
             }
         }
@@ -687,6 +702,42 @@ const clearBtnRemoveFile = (target,app,input) => {
         case 'show-input':
             ref = referance.find(el => el.input == input);
             $(ref.btnrm).show();
+        break;
+    }
+}
+
+const setBtnUploadFile = (input) => {
+    const ref = referance.find(el => el.input == input);
+    const btn = ref.btn;
+    const maxUpload = Number(ref.maxUpload);
+    let length;
+
+    switch(ref.app){
+        case 'awards/application':
+            if(Number(register.count[ref.pointer[1]]) >= maxUpload){
+                $(btn).hide();
+            } else{ $(btn).show(); }
+        break;
+        case 'awards/pre-screen':
+            pointer = psc.getPointer();            
+            if(pointer.cate == -1){ pointer.cate = 0; }
+            if(pointer.seg == -1){ pointer.seg = 0; }
+
+            length = psc.questions[pointer.cate].question[pointer.seg][ref.position].length;
+            if(length >= maxUpload){
+                $(btn).hide();
+            } else{ $(btn).show(); }
+            psc.waitDraft('finish');
+        break;
+        case 'estimate/onsite':
+            pointer = getPointer();
+            if(pointer.cate == -1){ pointer.cate = 0; }
+            if(pointer.seg == -1){ pointer.seg = 0; }
+            length = dataset[pointer.cate].question[pointer.seg].estFiles[ref.position].length;
+            if(length >= maxUpload){
+                $(btn).hide();
+            } else{ $(btn).show(); }
+            waitDraft('finish');
         break;
     }
 }

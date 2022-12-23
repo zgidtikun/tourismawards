@@ -2,7 +2,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายการแบบประเมินที่รอมอบหมายกรรมการรอบ Pre-Screen</h3>
+        <h3>รายการแบบประเมิน</h3>
       </div>
       <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
     </div>

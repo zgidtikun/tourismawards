@@ -163,7 +163,7 @@ class LoginController extends BaseController
 
     public function logout()
     {    
-        $url = session()->get('default') == 'frontend' ? 'login' : 'administrator/login';
+        $url = in_array(session()->get('role'),[1,3]) ? 'login' : 'administrator/login';
         $list = array('isLoggedIn','id','account','user','role','default');
         session()->remove($list);
         return redirect()->to(base_url($url));

@@ -30,7 +30,7 @@
           <div class="card card-login page_security_card">
             <div class="card-header text-center page_security_header page_login" style="padding: 15px;">
               <!-- <h3 class="mb-0">Matex</h3> -->
-              <img src="<?php echo base_url('backend/assets/images/logo-compact.png') ?>" alt="Tourismaward" style="width: 70%;">
+              <img src="<?php echo base_url('backend/assets/images/logo-compact.png?v=1') ?>" alt="Tourismaward" style="width: 70%;">
             </div>
             <div class="card-body pt-0">
               <form id="form_input" action="" method="post">

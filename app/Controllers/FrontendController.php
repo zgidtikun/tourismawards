@@ -249,116 +249,58 @@ class FrontendController extends BaseController
 
     public function sumStage()
     {
-        $estimate = new \App\Models\Estimate();
-        $committees = new \App\Models\Committees();
-        $count_1 = $count_2 =  $count_3 = $count_4 = 0;
-        $app_array = [];
-
-        $comm_pre = $committees->where('assessment_round',1)
+        $result = [];
+        
+        $subCommP = $this->db->table('committees')
+            ->select('application_form_id afid')
+            ->where('assessment_round',1)
             ->where(
                 '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
                 OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
-                OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')'
-            )
-            ->select('application_form_id app_id')
-            ->distinct()
-            ->findAll();
-
-        $comm_onsite = $committees->where('assessment_round',2)
+                OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')')
+            ->getCompiledSelect();
+        
+        $subCommO = $this->db->table('committees')
+            ->select('application_form_id afid')
+            ->where('assessment_round',2)
             ->where(
                 '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
                 OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
-                OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')'
-            )
-            ->select('application_form_id app_id')
-            ->distinct()
-            ->findAll();
-
-        $count_1 = $count_2 = $count_3 = $count_4 = 0;
+                OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')')
+            ->getCompiledSelect();
         
-        if(!empty($comm_pre)){
-            foreach($comm_pre as $app){
-                array_push($app_array,$app->app_id);
+        foreach(['pre_wait','pre_comp','inst_wait','inst_comp'] as $key=>$val){
+
+            if(in_array($key,[0,1])){
+                $subComm = $subCommP;
+            } else {
+                $subComm = $subCommO;
+            }
+                    
+            $builder = $this->db->table('application_form af')
+                ->select('af.id')
+                ->join('application_type at','af.application_type_id = at.id')
+                ->join('application_type_sub ats','af.application_type_sub_id = ats.id','LEFT')
+                ->join('users_stage us','af.created_by = us.user_id')
+                ->join('('.$subComm.') insc','insc.afid = af.id')
+                ->join('estimate_individual es','insc.afid = es.application_id','LEFT');
+            
+            if(in_array($key,[0,1])){
+                $builder = $builder->where('us.stage',1);
+            } else {
+                $builder = $builder->where('us.stage',2);
             }
 
-            $count_1 = $estimate->where('estimate_by',session()->get('id'))
-                ->whereIn('status_pre',[1,2])
-                ->select('application_id')
-                ->groupBy('application_id')
-                ->countAllResults();
-            
-            if($count_1 <= 0){
-                $count_1 = $this->db->table('application_form af')
-                    ->join('users_stage us', 'af.created_by = us.user_id')
-                    ->select('COUNT(us.id) cc')
-                    ->whereIn('af.id',$app_array)
-                    ->whereIn('us.status',[1,2,3,4,5])
-                    ->where('us.stage',1)
-                    ->countAllResults();
+            if(in_array($key,[0,2])) {
+                $builder = $builder->whereIn('us.status',[1,2,3,4,5]);
+            } else {
+                $builder = $builder->whereIn('us.status',[6,7]);
             }
 
-            $count_2 = $estimate->where('estimate_by',session()->get('id'))
-                ->whereIn('status_pre',[3,0])
-                ->select('application_id')
-                ->groupBy('application_id')
-                ->countAllResults();
-            
-            if($count_2 <= 0){
-                $count_2 = $this->db->table('application_form af')
-                    ->join('users_stage us', 'af.created_by = us.user_id')
-                    ->select('COUNT(us.id) cc')
-                    ->whereIn('af.id',$app_array)
-                    ->whereIn('us.status',[6,7])
-                    ->where('us.stage',1)
-                    ->countAllResults();
-            }
+            $builder = $builder->countAllResults();
+            $result[$val] = $builder;
+
         }
-        
-        if(!empty($comm_onsite)){
-            foreach($comm_onsite as $app){
-                array_push($app_array,$app->app_id);
-            }
-
-            $count_3 = $estimate->where('estimate_by',session()->get('id'))
-                ->whereIn('status_onsite',[1,2])
-                ->orWhere('status_onsite IS NULL')
-                ->select('application_id')
-                ->groupBy('application_id')
-                ->countAllResults();
-            
-            // if($count_3 <= 0){
-            //     $count_3 = $this->db->table('application_form af')
-            //         ->join('users_stage us', 'af.created_by = us.user_id')
-            //         ->select('COUNT(us.id) cc')
-            //         ->whereIn('af.id',$app_array)
-            //         ->whereIn('us.status',[1,2,3,4,5])
-            //         ->where('us.stage',2)
-            //         ->countAllResults();
-            // }
-
-            $count_4 = $estimate->where('estimate_by',session()->get('id'))
-                ->whereIn('status_onsite',[3,0])
-                ->select('application_id')
-                ->groupBy('application_id')
-                ->countAllResults();
-            
-            // if($count_4 <= 0){
-            //     $count_4 = $this->db->table('application_form af')
-            //         ->join('users_stage us', 'af.created_by = us.user_id')
-            //         ->select('COUNT(us.id) cc')
-            //         ->whereIn('af.id',$app_array)
-            //         ->whereIn('us.status',[6,7])
-            //         ->where('us.stage',2)
-            //         ->countAllResults();
-            // }
-        }
-        
-        $result = [
-            'pre_wait' => $count_1,
-            'pre_comp' => $count_2,
-            'inst_wait' => $count_3,
-            'inst_comp' => $count_4
-        ];
 
         return $this->response->setJSON($result);
     }

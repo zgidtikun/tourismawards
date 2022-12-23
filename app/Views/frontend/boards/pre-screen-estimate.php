@@ -1,3 +1,19 @@
+<style>
+    .regis-form-data-col1 ol {
+        padding-left: 25px;
+        font-size: 18px;
+        font-weight: normal;
+        color: #c6923a;
+    }
+    .regis-form-data-col1 h4#qSubject ol {
+        margin-top: 0.5rem;
+        padding: 0;
+        padding-left: 40px;
+    }
+    .regis-form-data-col1 h4 {
+        margin-bottom: 1.5rem;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col12">
@@ -12,11 +28,11 @@
                         ย้อนกลับ
                     </button>
                     <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold"
-                    onclick="setRequest()">
+                    id="btn-send-request" onclick="setRequest()">
                         ส่งคำขอข้อมูลทั้งหมด
                     </button>
                     <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold"
-                    onclick="setFinish()">
+                    id="btn-send-estimate" onclick="setFinish()">
                         ส่งผลประเมินเข้าระบบ
                     </button>
                 </div>
@@ -87,13 +103,13 @@
 
             <div class="formmainbox">
                 <div class="regis-form-step">
-                    <a href="javascript:setQuestion(0,0);" id="tab-0" class="btn-form-step disabled active">
+                    <a href="javascript:setQuestion(0,0);" id="tab-0" class="btn-form-step active">
                         1. Tourism Excellence
                     </a>
-                    <a href="javascript:setQuestion(1,0);" id="tab-1" class="btn-form-step disabled">
+                    <a href="javascript:setQuestion(1,0);" id="tab-1" class="btn-form-step">
                         2. Suporting Business & Marketing Factors
                     </a>
-                    <a href="javascript:setQuestion(2,0);" id="tab-2" class="btn-form-step disabled">
+                    <a href="javascript:setQuestion(2,0);" id="tab-2" class="btn-form-step">
                         3. Responsibility and Safety & Health
                     </a>
                 </div>
@@ -198,6 +214,15 @@
                                 <span style="font-size: 18px;" class="fw-semibold">
                                     <i class="bi bi-exclamation-diamond-fill mr-2"></i>
                                     ไม่มีการประเมินในรอบขั้นต้น Pre-screen
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="regis-form-data-col1 none-assign" style="display: none;">
+                            <div class="alert alert-danger" role="alert">
+                                <span style="font-size: 18px;" class="fw-semibold">
+                                    <i class="bi bi-exclamation-diamond-fill mr-2"></i>
+                                    คุณไม่ได้รับมอบหมายให้ประเมินในด้านนี้
                                 </span>
                             </div>
                         </div>
@@ -322,7 +347,7 @@ aria-hidden="true">
             </div>
             <div class="modal-footer border-0" style="display: block;">
                 <button class="btn btn-sm btn-confirm-submit float-start" disabled
-                onclick="setRequest()">
+                id="btn-send-request-modal" onclick="setRequest()">
                     ส่งคำขอข้อมูลทั้งหมด
                 </button>
                 <button type="button" style="width: 80px !important;" 

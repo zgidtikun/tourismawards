@@ -26,7 +26,8 @@ class AnswerController extends BaseController
 
     public function preScreenIndex()
     {
-        $app = new \Config\App();        
+        $app = new \Config\App();    
+        $current_date = date('Y-m-d');
 
         $myApp = $this->appForm->where('created_by',session()->get('id'))
             ->select(
@@ -42,7 +43,7 @@ class AnswerController extends BaseController
         $duedate = (object) [
             'expired_date' => $app->Pre_expired,
             'expired_str' => FormatTree($app->Pre_expired,'thailand'),
-            'expired_sts' => $app->Pre_expired <= date('Y-m-d') ? 'true' : 'false',
+            'expired_sts' => $current_date > $app->Pre_expired ? 'true' : 'false',
         ];
 
         $stage = $this->usStg->where(['user_id' => session()->get('id'), 'stage' => 1])
@@ -76,19 +77,21 @@ class AnswerController extends BaseController
             $stage->duedate_str = FormatTree($stage->duedate,'thailand');
 
         if(!empty($stage)){
-            if($stage->status == 3){
+            if(in_array($stage->status,[3,5])){
                 $duedate->expired_date = $stage->duedate;
                 $duedate->expired_str = FormatTree($stage->duedate,'thailand');
-                $duedate->expired_sts = $stage->duedate <= date('Y-m-d') ? 'true' : 'false';
+                $duedate->expired_sts = $current_date > $stage->duedate ? 'true' : 'false';
             }
 
-            if($duedate->expired_sts == 'true'){            
-                $this->usStg->where([
-                    'user_id' => session()->get('id'), 
-                    'stage' => 1
-                ])
-                ->set(['status' => 5])
-                ->update();
+            if($stage->status == 3){
+                if($duedate->expired_sts == 'true'){            
+                    $this->usStg->where([
+                        'user_id' => session()->get('id'), 
+                        'stage' => 1
+                    ])
+                    ->set(['status' => 5])
+                    ->update();
+                }
             }
         } else {
             $stage = (object)[
@@ -313,7 +316,16 @@ class AnswerController extends BaseController
                             'stage' => 1, 
                             'status' => 1
                         ]);
-                    }
+                    }                    
+
+                    save_log_activety([
+                        'module' => 'user_pre_screen',
+                        'action' => 'pre_screen_send_sys',
+                        'bank' => 'frontend',
+                        'user_id' => session()->get('id'),
+                        'datetime' => date('Y-m-d H:i:s'),
+                        'data' => $this->input->getVar('answer')
+                    ]);
 
                     $form = $this->appForm->where('id',$this->input->getVar('appId'))
                         ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
@@ -349,7 +361,22 @@ class AnswerController extends BaseController
             
             $result = ['result' => 'success', 'id' => $insId, 'message' => 'บันทึกคำตอบแล้ว'];
         } catch(\Exception $e){
-            $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
+            save_log_error([
+                'module' => 'user_reply_question',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
+            $result = [
+                'result' => 'error', 
+                'message' => 'System : '.$e->getMessage()
+            ];
         }
 
         return $this->response->setJSON($result);

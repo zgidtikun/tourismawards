@@ -71,8 +71,8 @@
 
             <div class="formstatus uncomplete hide" id="formstatus-uncomplete">
                 <img src="<?=base_url('/assets/images/uncomplete-regis-form.png')?>">
-                <h3>ขอข้อมูลเพิ่มเติม</h3>
-                <p>ข้อมูลของท่านอาจยังไม่สมบูรณ์ โปรดดูรายละเอียด เพื่อแก้ไขและส่งใบสมัครอีกครั้ง</p>
+                <h3 id="formstatus-uncomplete-title">ขอข้อมูลเพิ่มเติม</h3>
+                <p id="formstatus-uncomplete-message">ข้อมูลของท่านอาจยังไม่สมบูรณ์ โปรดดูรายละเอียด เพื่อแก้ไขและส่งใบสมัครอีกครั้ง</p>
             </div>
 
             <div class="formstatus uncomplete hide" id="formstatus-nopass">

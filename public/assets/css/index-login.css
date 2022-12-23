@@ -5,6 +5,16 @@
     border-radius: 0;
 }
 
+.btn-user i{
+margin-left: 10px;
+}
+
+.user-profile i {
+    margin-right: 5px;
+    top: 5px;
+    position: relative;
+}
+
 .noti-box {
     position: absolute;
     top: 30px;
@@ -266,7 +276,12 @@
     justify-content: center;
     border-radius: 5px;
     padding: 2px 20px;
-    margin-top: 5px;
+    margin-top: 10px;
+transition: all 0.3s;
+}
+.user-status a.userlogout:hover {
+    background-color: #f6676a;
+    color: #FFF;
 }
 
 .user-profile {
@@ -307,3 +322,5 @@
         margin: 0 auto;
     }
 }
+
+/*GD-02-V.15122565*/

@@ -53,8 +53,8 @@ class Validation extends BaseConfig
             ]
         ],
         'surname' => [
-            'rules' => 'required',
-            // 'rules' => 'required|special_str',
+            // 'rules' => 'required',
+            'rules' => 'required|special_str',
             'errors' => [
                 'required' => 'กรุณาระบุนามสกุล',
                 // 'special_str' => 'นามสกุลห้ามมีอักขระพิเศษ'

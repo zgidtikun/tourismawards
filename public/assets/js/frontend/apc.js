@@ -216,7 +216,24 @@ const register = {
                 register.formData.currentStep = app.current_step;
                 register.formData.step1.appType = app.application_type_id;
                 
-                if(!register.expired){
+                if(register.expired && $.inArray(Number(register.status),[1,4,0]) !== -1){
+                    $('#formstep-sts').addClass('notpass');
+                    $('#formstatus-uncomplete').removeClass('hide');
+
+                    if(Number(register.status) == 4){
+                        $('#formstep-sts').html('หมดเวลาตอบกลับการขอข้อมูลเพิ่มเติม');
+                        $('#formstatus-uncomplete-title').html('หมดเวลาตอบกลับการขอข้อมูลเพิ่มเติมใบสมัครแล้ว');
+                        $('#formstatus-uncomplete-message').hide();
+                    } else {
+                        $('#formstep-sts').html('หมดเวลาการส่งใบสมัครแล้ว');
+                        $('#formstatus-uncomplete-title').html('หมดเวลาการส่งใบสมัครแล้ว');
+                        $('#formstatus-uncomplete-message').hide();
+                    }
+
+                    $('.btn-action, .btn-file, .bfd-dropfield, .attach-file').remove();
+                    $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
+                    $('.btn-confirm-submit').hide();
+                } else {
                     switch(Number(register.status)){
                         case 1: 
                             $('#formstep-sts').addClass('date');
@@ -258,12 +275,6 @@ const register = {
                             $('.btn-confirm-submit').hide();
                         break;
                     }
-                } else {
-                    $('#formstep-sts').addClass('notpass');
-                    $('#formstep-sts').html('หมดเวลาการส่งใบสมัครแล้ว');
-                    $('.btn-action, .btn-file, .bfd-dropfield, .attach-file').remove();
-                    $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
-                    $('.btn-confirm-submit').hide();
                 }
 
                 $('#formstep-sts').removeClass('hide');

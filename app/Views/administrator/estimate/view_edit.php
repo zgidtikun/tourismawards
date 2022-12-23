@@ -58,7 +58,7 @@
           <div class="backendform-col3">
             <label data-tab="1">1. Tourism Excellence (Product/Service) <span class="required">*</span></label>
             <div class="editjudge-out">
-              <select class="js-example-basic-multiple" id="status_1" name="tourism[]" multiple>
+              <select class="js-example-basic-multiple" id="status_1" name="tourism[]" multiple disabled>
                 <?php
                 if (!empty($status_1)) {
                   foreach ($status_1 as $key => $value) {
@@ -82,7 +82,7 @@
           <div class="backendform-col3">
             <label data-tab="2">2. Supporting Business & Marketing Factors <span class="required">*</span></label>
             <div class="editjudge-out">
-              <select class="js-example-basic-multiple" id="status_2" name="supporting[]" multiple>
+              <select class="js-example-basic-multiple" id="status_2" name="supporting[]" multiple disabled>
                 <?php
                 if (!empty($status_2)) {
                   foreach ($status_2 as $key => $value) {
@@ -106,7 +106,7 @@
           <div class="backendform-col3">
             <label data-tab="3">3. Responsibility and Safety & Health Administration <span class="required">*</span></label>
             <div class="editjudge-out">
-              <select class="js-example-basic-multiple" id="status_3" name="responsibility[]" multiple>
+              <select class="js-example-basic-multiple" id="status_3" name="responsibility[]" multiple disabled>
                 <?php
                 if (!empty($status_3)) {
                   foreach ($status_3 as $key => $value) {

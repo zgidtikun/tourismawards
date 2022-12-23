@@ -48,17 +48,17 @@
             <!-- <li><a href="<?= base_url() ?>/administrator/PreScreen" data-type="process"><label>ใบสมัครที่ผ่านการอนุมัติ</label></a></li> -->
             <li>
               <a href="<?= base_url() ?>/administrator/estimate" data-type="process">
-                <label>เพิ่มกรรมการรอบ Pre-screen
+                <label>มอบหมายกรรมการรอบประเมินขั้นต้น (Pre-Screen)
                   <?php if (countNotification(2) != 0) : ?>
                     <span class="menu-list-amount"><?= countNotification(2) ?></span>
                   <?php endif; ?>
                 </label>
               </a>
             </li>
-            <li><a href="<?= base_url() ?>/administrator/estimate/prescreen" data-type="process"><label>การประเมินขั้นต้น</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/estimate/prescreen" data-type="process"><label>การประเมินขั้นต้น (Pre-Screen)</label></a></li>
             <li>
               <a href="<?= base_url() ?>/administrator/onsite" data-type="process">
-                <label>เพิ่มกรรมการรอบลงพื้นที่
+                <label>มอบหมายกรรมการรอบลงพื้นที่
                   <?php if (countNotification(3) != 0) : ?>
                     <span class="menu-list-amount"><?= countNotification(3) ?></span>
                   <?php endif; ?>
@@ -66,7 +66,7 @@
               </a>
             </li>
             <li><a href="<?= base_url() ?>/administrator/onsite/estimate" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
-            <li><a href="<?= base_url() ?>/administrator/complete" data-type="process"><label>ดำเนินการเสร็จสมบูรณ์</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/complete" data-type="process"><label>การประเมินที่เสร็จสมบูรณ์</label></a></li>
           </ul>
         </div>
       </div>

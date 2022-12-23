@@ -80,7 +80,7 @@ display: none;
 .row {
     display: flex;
     flex-wrap: wrap;
-    margin: 40px -10px;
+    margin: 40px -20px;
     padding: 0;
     width: auto;
     align-items: flex-start;
@@ -144,14 +144,15 @@ display: none;
     background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyNi40LjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAxMjggMTI4IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxMjggMTI4OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KCS5zdDB7ZmlsbDojRkZGRkZGO30NCjwvc3R5bGU+DQo8Zz4NCgk8cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjY0LDEwNi40IDAuNyw0My4xIDE0LjEsMjkuNiA2NCw3OS41IDExMy45LDI5LjYgMTI3LjMsNDMuMSAJIi8+DQo8L2c+DQo8L3N2Zz4NCg==)
 }
 .footermenutitle.active:before {
-    transform: rotate(180deg);
+    transform: scaleY(-1);
 }
 .footermenu_col:last-of-type .footermenutitle{
 border-bottom: 0;
+padding-bottom: 0;
 }
 .footermenu li {
     padding: 0 0 0 20px;
-    margin: 15px 0;
+    margin: 15px 0 10px 0;
     border-bottom: 0;
     color: #FFF;
 }
@@ -163,6 +164,7 @@ width: 50%;
     padding: 0 0 0 40px;
     margin: 0;
 }
+
 .award-list li {
     padding: 20px;
     margin: 0;
@@ -173,6 +175,10 @@ width: 50%;
 }
 .contact-list li {
     width: 50%;
+}
+.award-list li.mn-regis {
+    width: auto!important;
+    padding: 20px 0;
 }
 }
 
@@ -233,15 +239,9 @@ width: 50%;
 border-left: 0;
 }
 .container.footer .logo img{
-max-height: 50px;
+max-height: 64px;
 }
-.main-title-txt h2 {
-    font-size: 30px;
-    font-weight: bold;
-    color: #0d2c55;
-    margin: 10px 0;
-    line-height: 46px;
-}
+
 .main-title {
     text-align: center;
     margin-bottom: 20px;
@@ -255,6 +255,12 @@ max-height: 50px;
 }
 .news-list li {
     width: 50%;
+}
+.txt-banner {
+    padding: 40px 20px;
+}
+.contact-map {
+    padding-top: 56.25%;
 }
 }
 
@@ -441,6 +447,9 @@ margin-right: 20px;
 }
 .contact-form-col2 {
     width: 100%;
+}
+.container.awardwinner .award-section-col {
+    padding: 20px;
 }
 }
 

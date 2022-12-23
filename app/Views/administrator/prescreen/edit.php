@@ -100,11 +100,13 @@
                 <h4>สาขารางวัล <span class="required">*</span></h4>
                 <div id="option_application_type_sub">
                   <?php
+                  $descreption = '';
                   if (!empty($application_type_sub)) {
                     foreach ($application_type_sub as $key => $value) :
                       $checked = "";
                       if ($value->id == $result->application_type_sub_id) {
                         $checked = "checked";
+                        $descreption = $value->descreption;
                       }
                   ?>
                       <p>
@@ -125,7 +127,7 @@
                 <div class="comment yellow">
                   <i class="bi bi-exclamation-lg"></i>
                   <h4>นิยาม</h4>
-                  <p>กิจกรรมหรือสถานที่เที่ยวเที่ยวที่สร้างหรือพัฒนาขึ้น เพื่อเน้นการให้ความบันเทิงหรือความสนุกสนาน แก่นักท่องเที่ยว เช่น สวนสนุก สวนน้ำ การแสดงต่างๆ ตลาดน้ำ ตลาดย้อนยุค เป็นต้น</p>
+                  <p><?php echo $descreption ?></p>
                 </div>
               </div>
 

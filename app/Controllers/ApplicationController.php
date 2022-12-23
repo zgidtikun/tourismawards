@@ -138,6 +138,18 @@ class ApplicationController extends BaseController
             $result = ['result' => 'success', 'message' => 'บันทึกร่างแบบฟอร์มเรียบร้อยแล้ว'];
 
         } catch(\Exception $e){
+            save_log_error([
+                'module' => 'user_draft_application',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             $result = [
                 'result' => 'error', 
                 'message' => 'Line : '.$e->getLine().' : '.$e->getMessage()
@@ -174,8 +186,17 @@ class ApplicationController extends BaseController
             }
                 
             $this->appForm->update($app_id,$updd);
-            $user = new \App\Models\Users();
-            $user->update(session()->get('id'),['stage' => 2]);   
+            // $user = new \App\Models\Users();
+            // $user->update(session()->get('id'),['stage' => 2]);   
+
+            save_log_activety([
+                'module' => 'user_application',
+                'action' => 'application_send_sys',
+                'bank' => 'frontend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $this->input->getVar()
+            ]);
 
             $form = $this->appForm->where('id',$app_id)
                 ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
@@ -210,6 +231,18 @@ class ApplicationController extends BaseController
             $result = ['result' => 'success', 'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว'];
 
         } catch(\Exception $e){
+            save_log_error([
+                'module' => 'user_send_application',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             $result = [
                 'result' => 'error', 
                 'message' => 'Line : '.$e->getLine().' : '.$e->getMessage()
