@@ -398,7 +398,7 @@ class AnswerController extends BaseController
                         ],
                         (object) [
                             'message'=> $form->place_name.' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณามอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)',
-                            'link' => base_url('boards/estimate/pre-screen/'.get_app_id($this->myId)),
+                            'link' => '',
                             'send_date' => date('Y-m-d H:i:s'),
                             'send_by' => $form->place_name
                         ]);

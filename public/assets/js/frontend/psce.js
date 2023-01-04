@@ -195,10 +195,7 @@ const setFinish = () => {
     const ssbscore = sbscoe != 0 ? ((sbscoe * sb) / tsbscoe).toFixed(2) : 0;
     const srsscore = rsscore != 0 ? ((rsscore * rs) / trsscore).toFixed(2) : 0;
     const sscore = (parseFloat(stescore) + parseFloat(ssbscore) + parseFloat(srsscore)).toFixed(2);
-    console.log(`Tourism :: ${stescore} (${tescore},${te},${ttescore})`)
-    console.log(`Suporting :: ${ssbscore} (${sbscoe},${sb},${tsbscoe})`)
-    console.log(`Responsibility :: ${srsscore} (${rsscore},${rs},${trsscore})`)
-    console.log(`Total :: ${sscore}`)
+    
     let confirm_title = `ยืนยันการส่งผลประเมินเข้าระบบ`;
     confirm_title += `\r\nคะแนนที่ประเมินคือ <span class="txt-yellow">${sscore}</span> คะแนน`;
 
