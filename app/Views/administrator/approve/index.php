@@ -4,7 +4,7 @@
       <div class="backendcontent-title-txt">
         <h3>รายการใบสมัคร </h3>
       </div>
-      <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
+      <!-- <a href="javascript:" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
     </div>
 
     <form action="" method="get">
@@ -86,16 +86,16 @@
                 if (!empty($result)) :
                   foreach ($result as $key => $value) :
                     $status = '';
-                    $button = '<a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
+                    $button = '<a href="javascript:" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
                     if ($value->status == 2) {
                       $status = '<div class="userstatus trader">รอตรวจสอบ</div>';
                     } else if ($value->status == 4) {
                       $status = '<div class="userstatus chk">ขอข้อมูลเพิ่มเติม</div>';
                     } else if ($value->status == 3) {
-                      $button = '<a href="#" class="btn-edit" title="ดูข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
+                      $button = '<a href="javascript:" class="btn-edit" title="ดูข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
                       $status = '<div class="userstatus judge">อนุมัติ</div>';
                     } else if ($value->status == 0) {
-                      $button = '<a href="#" class="btn-edit" title="ดูข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
+                      $button = '<a href="javascript:" class="btn-edit" title="ดูข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
                       $status = '<div class="userstatus officer">ไม่อนุมัติ</div>';
                     }
                 ?>
@@ -110,7 +110,7 @@
                       <td>
                         <div class="form-table-col edit">
                           <?= $button ?>
-                          <!-- <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a> -->
+                          <!-- <a href="javascript:" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a> -->
                         </div>
                       </td>
                     </tr>
@@ -134,6 +134,7 @@
     var pgurl = BASE_URL_BACKEND + '/approve';
     active_page(pgurl);
 
+    $.fn.DataTable.ext.pager.numbers_length = 6;
     $("#example").dataTable().fnDestroy();
     $("#example").addClass("nowrap").dataTable({
       responsive: true,

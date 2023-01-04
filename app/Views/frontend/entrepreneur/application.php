@@ -1,3 +1,21 @@
+<style>
+    .btn-action.gold {
+        --bs-btn-color: #fff;
+        --bs-btn-bg: #C79534;
+        --bs-btn-border-color: #C79534;
+        --bs-btn-hover-color: #fff;
+        --bs-btn-hover-bg: #C79534;
+        --bs-btn-hover-border-color: #C79534;
+        --bs-btn-focus-shadow-rgb: 60, 153, 110;
+        --bs-btn-active-color: #fff;
+        --bs-btn-active-bg: #C79534;
+        --bs-btn-active-border-color: #C79534;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #C79534;
+        --bs-btn-disabled-bg: #ededed;
+        --bs-btn-disabled-border-color: #ededed;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col12">
@@ -78,7 +96,7 @@
             <div class="formstatus uncomplete hide" id="formstatus-nopass">
                 <img src="<?=base_url('/assets/images/uncomplete-regis-form.png')?>">
                 <h3>ไม่ผ่านอนุมัติ</h3>
-                <p>ท่าไม่ผ่านเกณฑ์การประกวด</p>
+                <p>ท่านไม่ผ่านเกณฑ์การประกวด</p>
             </div>
             
             <div class="formstatus-comoment hide">
@@ -94,7 +112,7 @@
                     <a href="javascript:register.saveDraft(register.formData.currentStep,'save')" 
                     class="btn-save" data-tab="1">บันทึก</a>
                     <a href="javascript:register.saveApp()" class="btn-regis disabled" 
-                    data-tab="2">ส่งใบสมัคร</a>
+                    data-tab="2" id="btnHFinish">ส่งใบสมัคร</a>
                 </div>
             </div>
 
@@ -140,6 +158,15 @@
                             </div>
                         </div>
                         <div class="regis-form-data-col1">
+                            <h4>กรุณาระบุ หากต้องการสมัครประเภทพิเศษ Low Carbon & Sustainability</h4>
+                            <p>
+                                <input type="radio" name="step1-lowcarbon" id="step1-lowcarbon-1" value="1">ต้องการ
+                            </p>
+                            <p>
+                                <input type="radio" name="step1-lowcarbon" id="step1-lowcarbon-2" value="2">ไม่ต้องการ
+                            </p>
+                        </div>
+                        <div class="regis-form-data-col1">
                            <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด <span class="required">*</span></h4>
                            ระบุคำตอบ <span class="required">*</span> 
                            <span class="text-muted">(จำนวนตัวอักษรคงเหลือ <span id="step1-desc-cc">1,000</span>/1,000)</span>
@@ -171,8 +198,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div class="bs-row" id="step1-detail-list">
-                                            </div>
+                                            <div class="bs-row" id="step1-detail-list"></div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
@@ -210,8 +236,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div class="bs-row" id="step1-paper-list">
-                                            </div>
+                                            <div class="bs-row" id="step1-paper-list"></div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
@@ -274,8 +299,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="card-body-muted c-lef selecter-file" id="step1-images-list">
-                                        </div>
+                                        <div class="card-body-muted c-lef selecter-file" id="step1-images-list"></div>
                                         <div class="card-body attach-file">
                                             <div class="ablumbox" id="step1-images-ablum">
                                                 
@@ -1363,9 +1387,10 @@
                             <button class="btn btn-action" id="btn-next" 
                             onclick="register.setStep(4)">
                                 ย้อนกลับ
-                            </button>                                                                                                             
-                            <button class="btn btn-confirm-submit"
-                            onclick="register.saveApp()">
+                            </button>    
+                            <!-- <button class="btn btn-confirm-submit" disabled -->                                                                                                         
+                            <button class="btn btn-action gold" disabled
+                            id="btnFFinish" onclick="register.saveApp()">
                                 ส่งใบสมัคร
                             </button>
                             

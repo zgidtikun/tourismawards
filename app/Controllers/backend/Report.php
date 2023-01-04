@@ -160,4 +160,28 @@ class Report extends BaseController
 
         return view('administrator/export/suggestion', $data);
     }
+
+    public function export1()
+    {
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, U.email AS user_email, U.mobile AS user_mobile')->join('users U', 'U.id = AP.created_by')->get()->getResultObject();
+
+        px($data);
+    }
+
+    public function logs($position = 'backend-approve')
+    {
+        $path = FCPATH . 'logs/' . $position . '/';
+        $filename = readFiles($path);
+
+        foreach ($filename as $key => $value) {
+            $f = fopen($value, 'r');
+            if ($f) {
+                echo $value . "<br>";
+                $contents = fread($f, filesize($value));
+                fclose($f);
+                echo nl2br($contents);
+            }
+            echo "<hr>";
+        }
+    }
 }

@@ -8,7 +8,7 @@ class Officer extends BaseController
 {
     public function __construct()
     {
-        helper(['semail', 'verify']);
+        helper(['semail', 'verify', 'log']);
     }
 
     public function index()
@@ -122,6 +122,28 @@ class Officer extends BaseController
             $data['users'] = $this->db->table('users')->where('id', $insert_id)->get()->getRowObject();
             $data['verify_code'] = vEncryption('users-' . $data['users']->verify_code);
             $this->sendMail($data);
+            
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            // @mkdir(FCPATH . 'logs/backend-users', 0777, true);
+            // $fp = fopen(FCPATH . 'logs/backend-users/users_id_' . $insert_id . '.txt', 'a+');
+            // fwrite($fp, "====================== Start Log User " . $insert_id . " ======================\n");
+            // fwrite($fp, "มีการเพิ่มคณะกรรมการ โดย " . session()->account ." \n");
+            // fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            // fclose($fp);
+
+            $setting = [
+                'users_id' => $insert_id,
+                'text'  => "มีการเพิ่มคณะกรรมการ โดย " . session()->account,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -180,6 +202,28 @@ class Officer extends BaseController
         // }
         $result = $this->db->table('users')->where('id', $post['insert_id'])->update($data);
         if ($result) {
+            
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            // @mkdir(FCPATH . 'logs/backend-users', 0777, true);
+            // $fp = fopen(FCPATH . 'logs/backend-users/users_id_' . $post['insert_id'] . '.txt', 'a+');
+            // fwrite($fp, "====================== Start Log User " . $post['insert_id'] . " ======================\n");
+            // fwrite($fp, "มีการแก้ไขคณะกรรมการ โดย " . session()->account ." \n");
+            // fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            // fclose($fp);
+
+            $setting = [
+                'users_id' => $post['insert_id'],
+                'text'  => "มีการแก้ไขคณะกรรมการ โดย " . session()->account,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
@@ -291,6 +335,28 @@ class Officer extends BaseController
             $data['users'] = $this->db->table('admin')->where('id', $insert_id)->get()->getRowObject();
             $data['verify_code'] = vEncryption('admin-' . $data['users']->verify_code);
             $this->sendMail($data);
+            
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            // @mkdir(FCPATH . 'logs/backend-admin', 0777, true);
+            // $fp = fopen(FCPATH . 'logs/backend-admin/admin_id_' . $insert_id . '.txt', 'a+');
+            // fwrite($fp, "====================== Start Log Admin " . $insert_id . " ======================\n");
+            // fwrite($fp, "มีการเพิ่มเจ้าหน้าที่ ททท. โดย " . session()->account ." \n");
+            // fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            // fclose($fp);
+
+            $setting = [
+                'admin_id' => $insert_id,
+                'text'  => "มีการเพิ่มเจ้าหน้าที่ ททท. โดย " . session()->account,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -347,6 +413,28 @@ class Officer extends BaseController
         // }
         $result = $this->db->table('admin')->where('id', $post['insert_id'])->update($data);
         if ($result) {
+            
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            // @mkdir(FCPATH . 'logs/backend-admin', 0777, true);
+            // $fp = fopen(FCPATH . 'logs/backend-admin/admin_id_' . $post['insert_id'] . '.txt', 'a+');
+            // fwrite($fp, "====================== Start Log Admin " . $post['insert_id'] . " ======================\n");
+            // fwrite($fp, "มีการแก้ไขเจ้าหน้าที่ ททท. โดย " . session()->account ." \n");
+            // fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            // fclose($fp);
+
+            $setting = [
+                'admin_id' => $post['insert_id'],
+                'text'  => "มีการแก้ไขเจ้าหน้าที่ ททท. โดย " . session()->account,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);

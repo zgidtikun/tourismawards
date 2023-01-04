@@ -3159,6 +3159,9 @@ textarea.form-control-lg {
     align-items: stretch;
     width: 100%;
 }
+.input-group i.bi.bi-calendar{
+color: #888;
+}
 
 .input-group>.form-control,
 .input-group>.form-select,
@@ -4129,6 +4132,7 @@ min-width: auto;
 }
 
 .card {
+    overflow: hidden;
     --bs-card-spacer-y: 1rem;
     --bs-card-spacer-x: 1rem;
     --bs-card-title-spacer-y: 0.5rem;
@@ -4312,6 +4316,9 @@ min-width: auto;
 #step1-images-list.selecter-file {
 display: flex;
 flex-wrap: wrap;
+}
+#step1-images-list.selecter-file:empty{
+display: none;
 }
 #step1-images-list.selecter-file .card.card-left{
 width: 50%;
@@ -5357,6 +5364,11 @@ img.profile {
 .selecter-file [id*="paper-list"]{
 display: flex;
 flex-wrap: wrap;
+margin: 10px 0;
+}
+.selecter-file [id*="detail-list"]:empty,
+.selecter-file [id*="paper-list"]:empty{
+display: none;
 }
 .selecter-file [id*="detail-list"] .col-12,
 .selecter-file [id*="paper-list"] .col-12{
@@ -5428,7 +5440,6 @@ padding: 0;
 
     .clear button {
         width: 100%;
-        margin: 0px 30px;
     }
 
     .images-modal-content {
@@ -5494,11 +5505,11 @@ padding: 0;
 }
 
 .card-body .ablumbox {
-    margin: -15px -15px;
+    margin: -10px;
 }
 
 .card-body .ablumbox .ablumbox-col {
-    padding: 2px;
+    padding: 10px;
 }
 
 .formstep .formstep-col a.disabled {
@@ -5536,8 +5547,6 @@ padding: 0;
 }
 
 .ablum-img:hover, .ablum-img:focus {
-    border: 5px solid #86b7fe;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .images-modal {
@@ -5692,10 +5701,9 @@ table.dataTable th[aria-label^="ชื่อแหล่งท่องเที
     text-align: left;
     min-width: 200px!important;
 }
-table.dataTable th[aria-label^="ประเภทแหล่งท่องเที่ยว"] ,
-table.dataTable th[aria-label^="สาขาที่ประกวด"]{
-  min-width: 200px !important;
-  width: 200px !important;
+table.dataTable th[aria-label^="ประเภทแหล่งท่องเที่ยว"], table.dataTable th[aria-label^="สาขาที่ประกวด"] {
+    min-width: 220px !important;
+    width: 220px !important;
 }
 table.dataTable th[aria-label^="สถานะ"] {
   min-width: 100px !important;
@@ -5776,6 +5784,136 @@ flex:auto;
 display: flex;
 margin: 0 -2px;
 }
+#images-list{
+display: flex;
+flex-wrap: wrap;
+}
+#images-list:empty{
+display: none;
+}
+#images-list .card.card-left{
+width: 50%;
+}
+#file-list {
+    margin-top: 20px;
+}
+#file-list .col-12{
+justify-content: space-between;
+}
+.card-body.selecter-file .bs-row.mb-2{
+    margin-bottom: 0!important;
+}
+#file-list .card-body-muted{
+padding: 16px 10px;
+}
+.selecter-file .bs-row .text-muted{
+padding: 0;
+}
+.card-body.attach-file {
+    min-height: 85px;
+}
+.btn.btn-outline-success {
+    border: 1px solid #bbb;
+    background-color: #e9ecef;
+    opacity: 1;
+}
+#step5-type3 .bs-row .col-sm-12 {
+    width: 100%!important;
+    padding: 0;
+}
+#step5-type3 .bs-row .col-sm-12 .card {
+  margin-top: 20px;
+  width: 100%;
+}
+#step5-type3 .bs-row .col-sm-12 .card .d-grid{
+padding: 0;
+}
+.btn.btn-primary {
+    max-width: 200px;
+    margin: 0 auto;
+}
+.regisform.modal-open .modal{
+top: 0;
+padding: 0 20px;
+}
+.regisform.modal-open .modal.show .modal-dialog {
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 auto;
+    max-height: 85vh;
+}
+.regisform.modal-open .modal.show .modal-dialog .modal-header{
+}
+.regisform.modal-open .modal.show .modal-dialog .modal-header .text-sm-center {
+    text-align: left!important;
+    width: auto;
+    flex: none;
+}
+.regisform.modal-open .modal.show .modal-dialog .modal-header .text-sm-center.text-end {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.regisform.modal-open .modal.show .modal-dialog .bs-row.choicebox {
+    width: auto!important;
+    margin: 0 -10px;
+    justify-content: space-between;
+    align-items: baseline;
+    flex: auto;
+}
+.regisform.modal-open .modal.show .modal-dialog .modal-body {
+padding-top: 0;
+}
+
+.regisform.modal-open .modal.show .modal-dialog .modal-body .fw-semibold {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.regisform.modal-open .modal-footer {
+    display: flex!important;
+    gap: 5px;
+    align-items: baseline;
+}
+.regisform.modal-open .modal-footer button.btn-confirm-submit {
+    margin: 0;
+    flex: none;
+}
+.regisform.modal-open .modal-footer button.btn-action, .regisform.modal-open .modal-footer button#btn-request {
+    width: 49%!important;
+    flex: auto;
+    margin: 0;
+}
+
+.swal2-image {
+  width: auto !important;
+  max-width: 100%;
+  margin: 0 auto !important;
+  max-height: 70vh;
+  padding: 20px;
+}
+.attachinp #sRequest{
+margin-left: 0!important;
+}
+.swal2-container.swal2-center > .swal2-popup {
+  max-height: 85vh;
+  padding: 20px !important;
+}
+.swal2-close {
+    position: absolute;
+    margin: 0px 10px 0 0 !important;
+    line-height: 1;
+    font-size: 30px!important;
+}
+.btn-danger:focus-visible{
+background-color: #dc3545;
+}
+.swal2-close:active,
+.swal2-close:focus {
+    box-shadow: none!important;
+}
 
 @media screen and (max-width:1200px){
 .dataTables_wrapper{
@@ -5798,6 +5936,18 @@ padding: 10px 0 20px 0!important;
 @media screen and (max-width:1024px){
 [id^="form-step"] .col-md-6 {
     width: 100%;
+}
+.regis-form-data .bs-row .col-sm-12 {
+    width: 100%!important;
+}
+.regis-form-data .bs-row .col-sm-12:last-of-type{
+margin-bottom: 0!important;
+}
+#step5-type3 .bs-row .col-sm-12 .card {
+  width: 100%;
+}
+.regisform.modal-open .modal.show .modal-dialog {
+    max-width: 100%;
 }
 }
 
@@ -5830,22 +5980,29 @@ margin: 5px 0!important;
     width: 100%;
     margin: 5px 0;
 }
-.form-main-btn .btn.btn-back{
-float: left;
-}
+
 #btn-send-request, #btn-send-estimate {
-    width: 49%!important;
+    width: 100%!important;
     max-height: none;
     margin: 5px 0;
 }
 #btn-send-request{
-float: left;
-clear: left;
 }
 #btn-send-estimate{
 float: right;
 }
 .form-main-title {
     margin: 0 0 20px 0;
+}
+#images-list .card.card-left {
+    width: 100%;
+
+}
+.regisform.modal-open .modal.show .modal-dialog .modal-header .text-sm-center.text-end span.ml-3 {
+    margin-left: 0!important;
+}
+.regisform.modal-open .modal-footer button.btn-confirm-submit {
+    margin: 0;
+    flex: auto;
 }
 }

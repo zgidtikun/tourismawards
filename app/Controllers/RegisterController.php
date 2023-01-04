@@ -77,9 +77,10 @@ class RegisterController extends BaseController
                         $status = false;
                         $error['insert'] = $result->error;
                     } else {
-                        $expire = date('YmdHis',strtotime('+1 days'));
+                        // $expire = date('YmdHis',strtotime('+1 days'));
                         $data->user_id = $result->id;
-                        $data->verify_token = vEncryption($data->user_id .'-'.$expire.'-'.$verify_code);
+                        // $data->verify_token = vEncryption($data->user_id .'-'.$expire.'-'.$verify_code);
+                        $data->verify_token = vEncryption($data->user_id .'-'.$verify_code);
                         helper('semail');
                         send_email_frontend($data,'register');
                         $status = true;

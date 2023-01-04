@@ -27,11 +27,11 @@
     <span class="fs-18 fw-semibold">แนบเอกสาร</h4>
       <hr>
       <div class="bs-row row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
           <span class="fs-18 fw-semibold">
             ใบอนุญาตประกอบการธุรกิจโรงแรม (ตาม พ.ร.บ. โรงแรม ปี พ.ศ. 2547) เป็นระยะเวลาไม่ต่ำกว่า 1 ปี นับถึงวันปิดรับสมัคร<span class="required">*</span>
           </span>
-          <div class="card" style="border: 1px solid #E5E6ED;">
+          <div class="card mt-1 col-md-6" style="border: 1px solid #E5E6ED;">
             <div class="card-body selecter-file">
               <h4>เอกสาร</h4>
               <?php
@@ -57,7 +57,7 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
           <div class="regis-form-data-col1">
             <h4>ต้องมีชื่อโรงแรมและจำนวนห้องพักตรงกับที่ระบุในใบอนุญาต <span class="required">*</span></h4>
             <p>
@@ -72,11 +72,11 @@
         </div>
       </div>
       <div class="bs-row row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
           <span class="fs-18 fw-semibold">สำเนาหนังสือให้ความเห็นชอบต่อรายงานการประเมินผลกระทบสิ่งแวดล้อม (EIA) ในกรณีที่มีจำนวนห้องพักตั้งแต่ 80 ห้องขึ้นไปหรือมีพื้นที่ใช้สอยตั้งแต่ 4,000 ตารางเมตรขึ้นไป หรือสำเนาหนังสือให้ความเห็นชอบต่อรายงานการประเมินผลกระทบสิ่งแวดล้อมเบื้องต้น (IEE)ในกรณีที่มีจำนวนห้องพักหรือพื้นที่ใช้สอยต่ำกว่าและอยู่ในพื้นที่ที่กฎหมายกำหนด
             <span class="required">*</span>
           </span>
-          <div class="card" style="border: 1px solid #E5E6ED;">
+          <div class="card mt-1 col-md-6" style="border: 1px solid #E5E6ED;">
             <div class="card-body selecter-file">
               <h4>เอกสาร</h4>
               <?php
@@ -101,7 +101,7 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
           <div class="regis-form-data-col1">
             <h4>กรณีมีส่วนต่อขยายของอาคารจะต้องแสดงรายงานการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน <span class="required">*</span></h4>
             <p>
@@ -116,13 +116,13 @@
         </div>
       </div>
       <div class="bs-row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
           <span class="fs-18 fw-semibold">
             สำเนาใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่งประเทศไทย, กรมการท่องเที่ยว,
             องค์การบริหารการพัฒนาพื้นที่พิเศษเพื่อการท่องเที่ยวอย่างยั่งยืน (องค์การมหาชน), TAT Academy ฯลฯ
             (ถ้ามี)
           </span>
-          <div class="card" style="border: 1px solid #E5E6ED;">
+          <div class="card mt-1 col-md-6" style="border: 1px solid #E5E6ED;">
             <div class="card-body selecter-file">
               <h4>เอกสาร</h4>
               <?php

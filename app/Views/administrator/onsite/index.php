@@ -4,7 +4,7 @@
       <div class="backendcontent-title-txt">
         <h3>รายการแบบประเมิน</h3>
       </div>
-      <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
+      <!-- <a href="javascript:" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
     </div>
 
     <form action="" method="get">
@@ -102,9 +102,9 @@
                       </td> -->
                       <td>
                         <div class="form-table-col edit">
-                          <a href="#" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
-                          <a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
-                          <!-- <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a> -->
+                          <a href="javascript:" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
+                          <a href="javascript:" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
+                          <!-- <a href="javascript:" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a> -->
                         </div>
                       </td>
                     </tr>
@@ -177,6 +177,7 @@
     var pgurl = BASE_URL_BACKEND + '/onsite';
     active_page(pgurl);
 
+    $.fn.DataTable.ext.pager.numbers_length = 6;
     $("#example").dataTable().fnDestroy();
     $("#example").addClass("nowrap").dataTable({
       responsive: true,

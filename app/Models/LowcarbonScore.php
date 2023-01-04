@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Question extends Model
+class LowcarbonScore extends Model
 {
-    protected $table      = 'question';
+    protected $table      = 'lowcarbon_score';
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
@@ -14,10 +14,8 @@ class Question extends Model
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['code', 'year', 'application_type_id', 'application_type_sub_id', 
-    'criteria_topic', 'question', 'evaluation_criteria', 'file', 'remark', 'image', 
-    'scoring_criteria', 'score', 'weight', 'note', 'topic_no', 'question_ordering',
-    'lowcarbon_status', 'pre_status', 'onside_status'];
+    protected $allowedFields = ['application_id', 'score_prescreen_tt', 
+    'score_onsite_tt', 'pre_send_date', 'onsite_send_date'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

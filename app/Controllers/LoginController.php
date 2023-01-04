@@ -119,8 +119,8 @@ class LoginController extends BaseController
         $where = array('username' => $requester->username);
         $account = $db->where($where)->first();
 
-        if($bank == 'frontend' && !$account)
-            $account = $this->instAdmin->where($where)->first();
+        //if($bank == 'frontend' && !$account)
+        //    $account = $this->instAdmin->where($where)->first();
        
         if($account){
             if($account->status == 0)

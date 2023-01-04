@@ -1,6 +1,7 @@
 var appid, sp, tycoon, dataset, assign,
     pointer     = { cate: -1, seg: -1 }
-    haveRequest = false;
+    haveRequest = false
+    lowcarbon   = false;
 
 const btnSave   = $('#btn-save');
 const btnBack   = $('#btn-back');
@@ -25,6 +26,7 @@ const esCmm     = $('#comment');
 const esNote    = $('#note');
 const qRequest  = $('#qRequest');
 const mSelect   = $('#mSelect');
+const sRequest   = $('#sRequest');
 
 const setPage = (id,stage,ass) => {
     appid = id;
@@ -49,14 +51,15 @@ const getIsFinish = () => {
     return sp.isFinish;
 }
 
-const init = () =>{
-    loading('show');
+const init = async() =>{
+    await loading('show');
 
     api({ method: 'get', url: '/inner-api/boards/estimate/'+appid })
-    .then((rs) => {
-        tycoon = rs.tycoon;     
-        dataset = rs.data;  
+    .then(async(rs) => {
+        tycoon      = rs.tycoon;     
+        dataset     = rs.data;  
         haveRequest = rs.request;
+        lowcarbon   = rs.lowcarbon
         
         let tmp = tycoon.t_name.split('(');
         tycoon.t_name = tmp[0].trim();
@@ -73,14 +76,19 @@ const init = () =>{
         $('#tyAttnEn').html(tycoon.attn_en);    
         $('#tyUdat').html(tycoon.send_date);    
         $('#tyTel').html(tycoon.knitter_tel);
+
+        if(lowcarbon){
+            $('#tab-3').show();
+        }
         
-        loading('hide');
+        loading('hide');        
         setQuestion(assign[0]-1,0);
         checkComplete();
     });
 }
 
-const setRequest = () => {
+const setRequest = async() => {    
+    await loading('show');
     const st = {
         method: 'post',
         url: '/inner-api/estimate/pre-screen/request',
@@ -90,6 +98,7 @@ const setRequest = () => {
     }
 
     api(st).then((rs) => {
+        loading('hide');
         let title, msg;
 
         $('#modal-add-paper').modal('hide');
@@ -121,8 +130,10 @@ const setFinish = () => {
     tscore = mscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
+    lcbscore = 0;
 
-    let arrayScore = [];
+    let arrayScore = [],
+        estimateLowCarbon = false;
     
     $.each(assign,(ak,av) => {        
         let index = av-1;
@@ -135,9 +146,12 @@ const setFinish = () => {
             sb = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
         }
-        else{
+        else if(av == 3){
             rs = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
+        }
+        else {
+            estimateLowCarbon = true; 
         }
 
         $.each(dataset[index].question,(qk,qv) => {
@@ -149,9 +163,6 @@ const setFinish = () => {
                     assign_total: dataset[index].group.score_prescreen,
                     est_id: qv.est_id,
                     ques_id: qv.id,
-                    estFiles: qv.estFiles,
-                    comment_pre: qv.comment_pre,
-                    note_pre: qv.note_pre,
                     estimate_by: qv.estimate_by,
                     score_pre: qv.score_pre,
                     pre_score: qv.pre_score,
@@ -160,17 +171,22 @@ const setFinish = () => {
                 });
 
                 if(av == 1){ 
-                    tescore += Number(qv.score_pre);
+                    tescore += Number(qv.score_pre_origin) *  Number(qv.weight);
+                    // tescore += Number(qv.score_pre);
                     ttescore += Number(qv.pre_score);
                 }
                 else if(av == 2){ 
-                    sbscoe += Number(qv.score_pre);
+                    sbscoe += Number(qv.score_pre_origin) *  Number(qv.weight);
+                    // sbscoe += Number(qv.score_pre);
                     tsbscoe += Number(qv.pre_score);
                 }
-                else{
-                    rsscore += Number(qv.score_pre);
+                else if(av == 3){
+                    rsscore += Number(qv.score_pre_origin) *  Number(qv.weight);
+                    // rsscore += Number(qv.score_pre);
                     trsscore += Number(qv.pre_score);
-                }                
+                } else {
+                    lcbscore += Number(qv.score_pre_origin);
+                }             
             }
         });
     });
@@ -179,41 +195,50 @@ const setFinish = () => {
     const ssbscore = sbscoe != 0 ? ((sbscoe * sb) / tsbscoe).toFixed(2) : 0;
     const srsscore = rsscore != 0 ? ((rsscore * rs) / trsscore).toFixed(2) : 0;
     const sscore = (parseFloat(stescore) + parseFloat(ssbscore) + parseFloat(srsscore)).toFixed(2);
-    
+    console.log(`Tourism :: ${stescore} (${tescore},${te},${ttescore})`)
+    console.log(`Suporting :: ${ssbscore} (${sbscoe},${sb},${tsbscoe})`)
+    console.log(`Responsibility :: ${srsscore} (${rsscore},${rs},${trsscore})`)
+    console.log(`Total :: ${sscore}`)
+    let confirm_title = `ยืนยันการส่งผลประเมินเข้าระบบ`;
+    confirm_title += `\r\nคะแนนที่ประเมินคือ <span class="txt-yellow">${sscore}</span> คะแนน`;
+
+    if(estimateLowCarbon && lowcarbon){
+        confirm_title += `\r\nคะแนน Low Carbon คือ <span class="txt-yellow">${lcbscore}</span> คะแนน`;
+    }
+
     alert.confirm({
         mode: 'confirm-main',
         icon: 'info',
-        title: 'ยืนยันการส่งผลประเมินเข้าระบบ'
-            + '<br>'
-            + 'คะแนนที่ประเมินคือ <span class="txt-yellow">'
-            + sscore
-            + '</span> คะแนน',
+        title: confirm_title,
         text: 'กรุณาตรวจสอบความถูกต้องก่อนส่งผลประเมินเข้าระบบ',
         button: {
             confirm: 'ส่งผลประเมินเข้าระบบ',
             cancel: 'ยกเลิก'
         }
     })
-    .then((rs) => {
+    .then(async(rs) => {
         if(rs.status){
-            loading('show');
+            await loading('show');
 
             const st = {
                 method: 'post',
                 url: '/inner-api/estimate/pre-screen/complete',
-                data: {
-                    appId: appid,
-                    stage: 1,
-                    score_te: stescore,
-                    score_sb: ssbscore,
-                    score_rs: srsscore,
-                    score_tt: sscore,
-                    sourcs: arrayScore
-                }
+                data: JSON.stringify({
+                    data:{
+                        appId: appid,
+                        stage: 1,
+                        lowcarbon: lowcarbon,
+                        score_te: stescore,
+                        score_sb: ssbscore,
+                        score_rs: srsscore,
+                        score_tt: sscore,
+                        score_lcb: lcbscore,
+                        sourcs: arrayScore
+                }})
             }
 
-            api(st).then((rs) => {
-                loading('hide');
+            api(st).then(async (rs) => {
+                await loading('hide');
 
                 if(rs.result == 'error_login'){
                     alert.login();
@@ -234,9 +259,61 @@ const setFinish = () => {
     });
 }
 
+const save = (cate,seg) => {
+    return new Promise(async (resolve, reject) => {
+        await waitDraft('wait');
+        if(cate == -1){ cate = 0; }
+        if(seg == -1){ seg = 0; }
+        
+        const question = dataset[cate].question[seg];
+
+        const st = {
+            method: 'post',
+            url: '/inner-api/estimate/pre-screen/draft',
+            data: {
+                target: 'pre-screen',
+                action: empty(question.est_id) ? 'create' : 'update',
+                application_id: appid,
+                question_id: question.id,
+                est_id: question.est_id,
+                answer_id: question.reply_id,
+                score: question.score_pre,
+                tscore: question.tscore_pre,
+                comment: question.comment_pre,
+                note: question.note_pre,
+                score_origin: question.score_pre_origin,
+                request_list: question.request_list,
+                request_date: question.request_date,
+                request_status: question.request_status,
+            }
+        };
+
+        api(st).then((rs) => {
+            if(rs.result == 'success'){
+                if(st.data.action == 'create'){
+                    dataset[cate].question[seg].est_id = rs.id;
+                }
+
+                dataset[cate].question[seg].estimate = false;
+                alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'}); 
+                waitDraft('finish');
+                resolve({ result: 'success' });       
+            }
+            else if(rs.result == 'error_login'){
+                alert.login();
+                resolve({ result: 'error' });
+            } else {
+                alert.toast({icon: rs.result, title: rs.message});      
+                waitDraft('finish');
+                resolve({ result: 'error' });  
+            }
+        });
+    });
+}
+
 const draft = (cate,seg) => {
-    return new Promise(function(resolve, reject){
-        waitDraft('wait');
+    return new Promise(async (resolve, reject) => {
+        await waitDraft('wait');
         if(cate == -1){ cate = 0; }
         if(seg == -1){ seg = 0; }
         
@@ -272,61 +349,65 @@ const draft = (cate,seg) => {
                     }
 
                     dataset[cate].question[seg].estimate = false;
-                    alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'});
-                    resolve({ result: 'success' });        
+                    alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'}); 
                     waitDraft('finish');
+                    resolve({ result: 'success' });       
                 }
                 else if(rs.result == 'error_login'){
                     alert.login();
                     resolve({ result: 'error' });
                 } else {
-                    alert.toast({icon: rs.result, title: rs.message});
-                    resolve({ result: 'error' });        
+                    alert.toast({icon: rs.result, title: rs.message});      
                     waitDraft('finish');
+                    resolve({ result: 'error' });  
                 }
             });
-        } else {
-            resolve({ result: 'success' });      
+        } else {  
             waitDraft('finish')
+            resolve({ result: 'success' });    
         }
     });
 }
 
 const waitDraft = sts => {
-    if(sts == 'wait'){
-        $('#tab-0').addClass('disabled');
-        $('#tab-1').addClass('disabled');
-        $('#tab-2').addClass('disabled');
-        $('.btn-choice').addClass('disabled');
-        $('.btn-confirm-submit').prop('disabled',true);
-        $('[name=score]').prop('disabled',true);
-        esCmm.prop('readonly','readyonly');
-        qRequest.prop('readonly','readyonly');
-        esNote.prop('readonly','readyonly');
-        btnBack.prop('disabled',true);
-        btnNext.prop('disabled',true);
-        btnSMemo.prop('disabled',true);
-        btnSave.prop('disabled',true);
-        btnReset.prop('disabled',true);
-        btnRequest.prop('disabled',true);
-    } else {
-        $('#tab-0').removeClass('disabled');
-        $('#tab-1').removeClass('disabled');
-        $('#tab-2').removeClass('disabled');
-        $('.btn-choice').removeClass('disabled');
-        $('.btn-confirm-submit').prop('disabled',false);
-        $('[name=score]').prop('disabled',false);
-        esCmm.prop('readonly','');
-        qRequest.prop('readonly','');
-        esNote.prop('readonly','');
-        btnBack.prop('disabled',false);
-        btnNext.prop('disabled',false);
-        btnSMemo.prop('disabled',false);
-        btnSave.prop('disabled',false);
-        btnReset.prop('disabled',false);
-        btnRequest.prop('disabled',false);             
-        checkComplete();
-    }
+    return new Promise(function(resolve, reject){
+        if(sts == 'wait'){
+            $('#tab-0').addClass('disabled');
+            $('#tab-1').addClass('disabled');
+            $('#tab-2').addClass('disabled');
+            $('.btn-choice').addClass('disabled');
+            $('.btn-confirm-submit').prop('disabled',true);
+            $('[name=score]').prop('disabled',true);
+            esCmm.prop('readonly','readyonly');
+            qRequest.prop('readonly','readyonly');
+            esNote.prop('readonly','readyonly');
+            btnBack.prop('disabled',true);
+            btnNext.prop('disabled',true);
+            btnSMemo.prop('disabled',true);
+            btnSave.prop('disabled',true);
+            btnReset.prop('disabled',true);
+            btnRequest.prop('disabled',true);
+            resolve({finish: true});
+        } else {
+            $('#tab-0').removeClass('disabled');
+            $('#tab-1').removeClass('disabled');
+            $('#tab-2').removeClass('disabled');
+            $('.btn-choice').removeClass('disabled');
+            $('.btn-confirm-submit').prop('disabled',false);
+            $('[name=score]').prop('disabled',false);
+            esCmm.prop('readonly','');
+            qRequest.prop('readonly','');
+            esNote.prop('readonly','');
+            btnBack.prop('disabled',false);
+            btnNext.prop('disabled',false);
+            btnSMemo.prop('disabled',false);
+            btnSave.prop('disabled',false);
+            btnReset.prop('disabled',false);
+            btnRequest.prop('disabled',false);             
+            checkComplete();
+            resolve({finish: true});
+        }
+    });
 }
 
 const setQuestion = (cate,seg) => {    
@@ -334,17 +415,19 @@ const setQuestion = (cate,seg) => {
     let point = getPointer(),
         changeCate = false;
         qcontent = '';
-        
-    draft(point.cate,point.seg).then(draftRes => {
-        setPointer(cate,seg);
 
-        if(point.cate != cate){
+    if(point.cate != cate){
+        changeCate = true;
+    }
+    
+    draft(point.cate,point.seg).then(draftRes => {
+        if(changeCate){
             $('.btn-form-step').removeClass('active');
             $('#tab-'+cate).addClass('active');
-            changeCate = true;
+            $('#tab-'+cate)[0].scrollIntoView();
             setDropdown(dataset[cate].question,cate,seg);
         }
-        
+
         if(point.cate == -1){ point.cate = cate; }
         if(point.seg == -1){ point.seg = seg; }
         
@@ -379,6 +462,19 @@ const setQuestion = (cate,seg) => {
         }
 
         setPointer(cate,seg);
+        sRequest.hide();
+        
+        if(!empty(question.request_status)){
+            if($.inArray(Number(question.request_status),[0,1,2]) !== -1){
+                if($.inArray(Number(question.request_status),[0,1]) !== -1){
+                    sRequest.html('คุณมีการขอข้อมูลเพิ่มเติมในข้อนี้');
+                } else {
+                    sRequest.html('คุณได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้แล้ว');
+                }
+
+                sRequest.show();
+            }
+        }
 
         if(regex.test(question.pre_eva)){
             qcontent = question.question;
@@ -407,10 +503,16 @@ const setQuestion = (cate,seg) => {
             } else {
                 qcontent = question.question;
             }
+        }     
+        
+        if(cate != 3){
+            qTitle.html(category.group.name);
+        } else {
+            qTitle.html(question.criteria_topic);
         }
         
+        console.log(question);
         qTitle.attr('data-id',question.reply_id);
-        qTitle.html(category.group.name);
         qSum.html(category.question.length);
         mSum.html(category.question.length);
         qNum.html(question.no);
@@ -428,6 +530,22 @@ const setQuestion = (cate,seg) => {
         }
 
         countChar($('#comment'))
+
+        const url = getBaseUrl();
+        let ap = '';
+
+        $.each(question.images,(k,v) => {
+            ap += (
+                '<div class="ablumbox-col">'
+                    + '<div class="ablum-mainimg">'
+                        + '<div class="ablum-mainimg-scale">'
+                            + '<img src="'+url+'/'+v.file_path+'" '
+                            + 'class="ablum-img" onclick="zoomImages(this)">'
+                        + '</div>'
+                    + '</div>'
+                + '</div>'
+            );
+        });
 
         let back = seg != 0 ? seg-1 : seg,
             next = seg != category.question.length-1 ? seg+1 : seg;
@@ -453,8 +571,8 @@ const setQuestion = (cate,seg) => {
             $('.none-estimate').hide();
             $('.none-assign').hide();
             $('.is-estimate').show();
-            btnSave.attr('onclick','draft('+cate+','+seg+')');
-            btnRequest.attr('onclick','draft('+cate+','+seg+')');
+            btnSave.attr('onclick','save('+cate+','+seg+')');
+            btnRequest.attr('onclick','save('+cate+','+seg+')');
             btnSave.show();
             btnReset.show();
         } else {
@@ -474,45 +592,16 @@ const setQuestion = (cate,seg) => {
 
         countChar1($('#qRequest'));
 
-        let ap = ev = sc = '';
-        const url = getBaseUrl();
-
-        $.each(question.images,(k,v) => {
-            ap += (
-                '<div class="ablumbox-col">'
-                    + '<div class="ablum-mainimg">'
-                        + '<div class="ablum-mainimg-scale">'
-                            + '<img src="'+url+'/'+v.file_path+'" '
-                            + 'class="ablum-img" onclick="zoomImages(this)">'
-                        + '</div>'
-                    + '</div>'
-                + '</div>'
-            );
-        });
+        let ev = sc = '';
 
         qAblum.html(ap);
 
         if(regex.test(question.pre_eva)){
             ev = question.pre_eva;
-        } else {
-            const eva = question.pre_eva.split(',');
-        
-            $.each(eva,(k,v) => {
-                if(!empty(v)){
-                    let val, tmp = v.split('.');
-                    
-                    if(tmp.length > 1) { val = tmp[0].trim()+'. '+tmp[1].trim(); }
-                    else { val = tmp[0].trim(); }
-    
-                    if(v != ''){
-                        ev += (
-                            '<span class="txt-yellow title-comment">'
-                            + val
-                            + '</span><br>'
-                        );
-                    }
-                }
-            });
+        } else {            
+            ev = '<span class="txt-yellow title-comment">'
+                    + question.pre_eva
+                '</span>';
         }
 
         const sco = question.pre_scor.split(',');
@@ -593,13 +682,14 @@ const setDropdown = (qt,cate,seg) => {
 
 const checkComplete = () => {
     const cp = assign.length;
-    let ccp = ccr = rcp = 0
-        isRequest = false;
+    let ccp = crq = rcp = 0,
+        isRequest = false,
+        isEmpty = false;
 
     $.each(assign,(ak,av) => {
         let checkEmptyScore = true,
-            checkRequest = false,
             index = av-1;
+
         let countNoQuestion = 0;
         let countFinish = 0;
         let countRequest = 0;
@@ -607,41 +697,64 @@ const checkComplete = () => {
         $.each(dataset[index].question,(qk,qv) => {
             if(Number(qv.pre_status) == 1){
                 countNoQuestion++;
+                let checkNotEmpty = false,
+                    checkRequest = false;
+
+                if(Number(qv.request_status) === 0 && qv.request_status !== null){
+                    checkRequest = true;
+                    isRequest = true;
+                }
+                
                 if(empty(qv.score_pre)){
                     checkEmptyScore = false;
+                    isEmpty = true;
                 } else {
-                    countFinish++;
+                    checkNotEmpty = true;
                 }
 
-                if(qv.request_status === 0 || qv.request_status === '0'){
-                    checkRequest = true;
-                    countRequest++;
+                if(checkNotEmpty || checkRequest){
+                    countFinish++;
                 }
             }
         });
-
-        if((Number(countFinish) + Number(countRequest)) >= Number(countNoQuestion)){
-            if(checkRequest){
-                isRequest = true;;
-            }
-
-            ccr++
+        
+        if(Number(countFinish) == Number(countNoQuestion)){            
+            ccp++;
         }
 
         if(checkEmptyScore){
             $('tap-'+index).addClass('complete');
-            ccp++;
         } else {
             $('tap-'+index).removeClass('complete');
         }
     });
 
-    if(ccr < cp){
-        // $('.btn-confirm-submit').prop('disabled',true);
+    let p = getPointer();    
+    if(p.cate == -1){ p.cate = 0; }
+    if(p.seg == -1){ p.seg = 0; }
+    const request_status = dataset[p.cate].question[p.seg].request_status;
+        
+    if(!empty(request_status)){
+        if($.inArray(Number(request_status),[0,1,2]) !== -1){
+            if($.inArray(Number(request_status),[0,1]) !== -1){
+                sRequest.html('คุณมีการขอข้อมูลเพิ่มเติมในข้อนี้');
+            } else {
+                sRequest.html('คุณได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้แล้ว');
+            }
+
+            sRequest.show();
+        } else {
+            sRequest.hide();
+        }
+    } else {
+        sRequest.hide();
+    }
+
+    if(ccp < cp){
         $('#btn-send-request').prop('disabled',true);
         $('#btn-send-request-modal').prop('disabled',true);
-    } else {
-        // $('.btn-confirm-submit').prop('disabled',false);
+        $('#btn-send-estimate').prop('disabled',true);
+    } else {    
         if(isRequest){
             $('#btn-send-request').prop('disabled',false);
             $('#btn-send-request-modal').prop('disabled',false);
@@ -649,16 +762,14 @@ const checkComplete = () => {
             $('#btn-send-request').prop('disabled',true);
             $('#btn-send-request-modal').prop('disabled',true);
         }
-    }
 
-    if(ccp < cp){
-        // $('.btn-confirm-submit').prop('disabled',true);
-        $('#btn-send-estimate').prop('disabled',true);
-    } else {
-        // $('.btn-confirm-submit').prop('disabled',false);
-        $('#btn-send-estimate').prop('disabled',false);
+        if(isEmpty){
+            $('#btn-send-estimate').prop('disabled',false);
+        } else {
+            $('#btn-send-estimate').prop('disabled',false);
+        }
     }
-
+    
     disabledForm();
 }
 
@@ -678,6 +789,17 @@ const disabledForm = () => {
             btnRequest.hide();
             btnSMemo.hide();
         }
+    } 
+    else if(getIsFinish() == 'finish') {
+        $('.btn-confirm-submit').hide();        
+        $('[name="score"]').prop('disabled','disabled');
+        esCmm.prop('readonly','readyonly');
+        qRequest.prop('readonly','readyonly');
+        esNote.prop('readonly','readyonly');
+        btnSave.hide();
+        btnReset.hide();
+        btnRequest.hide();
+        btnSMemo.hide();
     }
 }
 
@@ -698,33 +820,31 @@ const resetEstimate = (cate,seg) => {
 
     const point = getPointer();
     dataset[point.cate].question[point.seg].comment_pre = null;
+    dataset[point.cate].question[point.seg].score_pre_origin = null;
     dataset[point.cate].question[point.seg].score_pre = null;
     dataset[point.cate].question[point.seg].tscore_pre = null;
     dataset[point.cate].question[point.seg].estimate = true;
+    checkComplete();
 }
 
 const calScore = (ele) => {
     const point = getPointer();
     const question = dataset[point.cate].question[point.seg];
-    const maxscore = question.pre_score;
-    const weight = question.weight;
-    const selfscore = parseFloat(ele.value) * parseFloat(weight);
-    const totalscore = selfscore / maxscore;    
+    let selfscore, totalscore;
+
+    if(lowcarbon && Number(point.cate) == 3){
+        totalscore = selfscore = ele.value;
+    } else {
+        const maxscore = question.pre_score;
+        const weight = question.weight;
+        selfscore = parseFloat(ele.value) * parseFloat(weight);
+        totalscore = selfscore / maxscore;    
+    }
     
     dataset[point.cate].question[point.seg].score_pre_origin = ele.value;
     dataset[point.cate].question[point.seg].score_pre = selfscore;
     dataset[point.cate].question[point.seg].tscore_pre = totalscore;
     dataset[point.cate].question[point.seg].estimate = true;
-}
-
-const getCurrentDate = () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth()+1;
-    const day = date.getDate();
-    return year + '-' +
-        ( month < 10 ? '0' : '') + month + '-' +
-        ( day <10 ? '0' : '') + day;
 }
 
 const zoomImages = (el) => {
@@ -743,19 +863,19 @@ const zoomImages = (el) => {
     });
 }
 
-esCmm.keyup(() => {
+esCmm.on('keypu change',() => {
     const point = getPointer();
     dataset[point.cate].question[point.seg].comment_pre = esCmm.val();
     dataset[point.cate].question[point.seg].estimate = true;
 });
 
-esNote.keyup(() => {
+esNote.on('keypu change',() => {
     const point = getPointer();
     dataset[point.cate].question[point.seg].note_pre = esCmm.val();
     dataset[point.cate].question[point.seg].estimate = true;
 });
 
-qRequest.keyup(() => {
+qRequest.on('keypu change',() => {
     const point = getPointer();
 
     if(!empty(qRequest.val())){

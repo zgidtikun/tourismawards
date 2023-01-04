@@ -158,29 +158,40 @@ class Approve extends BaseController
         $post['approve_by'] = session()->id;
         $post['approve_name'] = session()->user;
         $post['approve_time'] = date('Y-m-d H:i:s');
+
+        if ($post['status'] == 4) {
+            $post['request_time'] = date('Y-m-d H:i:s');
+        }
         // px($post);
 
         $result = $this->db->table('application_form')->where('id', $id)->update($post);
         if ($result) {
             $result = $this->ApplicationForm->find($id);
             $users = $this->db->table('users')->where('id', $result->created_by)->get()->getRowObject();
-            $message = 'แจ้งผลการอนุมัติใบสมัคร';
+            $subject = '';
+            $message = '';
+
             if ($post['status'] == 4) {
-                $message = 'ใบสมัครของท่านมีการขอข้อมูลเพิ่มเติม';
+                $subject = 'ใบสมัครของท่านมีการขอข้อมูลเพิ่มเติม';
+                $message = 'ใบสมัครของท่านยังไม่สมบูรณ์ กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบข้อมูลเพิ่มเติม และส่งข้อมูลตอบกลับภายใน 3 วัน';
             } else if ($post['status'] == 3) {
-                $message = 'ใบสมัครของท่านได้รับการอนุมัติเรียบร้อยแล้ว';
+                $subject = 'ใบสมัครของท่านได้รับการอนุมัติเรียบร้อยแล้ว';
+                $message = 'ใบสมัครของท่านได้รับการอนุมัติแล้ว ท่านสามารถล็อกอินเข้าสู่เว็บไซต์เพื่อทำการกรอกข้อมูลแบบประเมินขั้นต้น (Pre-Screen) ให้แล้วเสร็จภายในวันที่ 30 เมษายน 2566';
             } else if ($post['status'] == 0) {
-                $message = 'ใบสมัครของท่านไม่ผ่านการอนุมัติ';
+                $subject = 'ใบสมัครของท่านไม่ผ่านการอนุมัติ';
+                $message = 'ขอขอบพระคุณผู้ประกอบการที่สนใจเข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 <br>';
+                $message .= 'ทางโครงการฯ ขอแจ้งว่าใบสมัครของท่านไม่ได้รับการอนุมัติ <br>';
+                $message .= 'หากมีคำถามเพิ่มเติม กรุณาติดต่อ support@tourismawards.tourismthailand.org';
             }
 
             $email_data = [
-                '_header' => $message,
-                '_content' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname . ' <br>' . $message
+                '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
+                '_content' => $message
             ];
 
             $requestEmail = [
                 'to' => $users->email,
-                'subject' => $message,
+                'subject' => $subject,
                 'message' => view('administrator/template_email', $email_data),
                 // 'from' => $from,
                 // 'cc' => [],
@@ -201,6 +212,23 @@ class Approve extends BaseController
                     'send_by' => session()->account,
                 ]
             );
+
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            @mkdir(FCPATH . 'logs/backend-approve', 0777, true);
+            $fp = fopen(FCPATH . 'logs/backend-approve/application_id_' . $id . '.txt', 'a+');
+
+            fwrite($fp, "====================== Start Log Application " . $id . " ======================\n");
+            if ($post['status'] == 4) {
+                fwrite($fp, "มีการขอข้อมูลเพิ่มเติม โดย " . session()->account." ");
+            } else if ($post['status'] == 3) {
+                fwrite($fp, "มีการอนุมัติใบสมัคร โดย " . session()->account." ");
+            } else if ($post['status'] == 0) {
+                fwrite($fp, "มีการ Reject ใบสมัคร โดย " . session()->account." ");
+            }
+
+            fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            fclose($fp);
+
 
             if ($post['status'] == 3) {
                 $result = $this->db->table('users')->where('id', $result->created_by)->update(['stage' => 2]);

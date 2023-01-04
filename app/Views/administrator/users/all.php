@@ -84,7 +84,7 @@
                 ?>
                     <tr>
                       <td class=""><?= $i++ ?></td>
-                      <td class="text-center">
+                      <td class="use_name">
                         <?php
                         if (!empty($value->profile) && $value->profile != "") {
                           $path = base_url() . "/" . $value->profile;
@@ -102,7 +102,7 @@
                       <td class="">
                         <div class="form-table-col edit">
                           <a href="<?= $url_edit . $value->id ?>" class="btn-edit"><i class="bi bi-pencil-square"></i></a>
-                          <!-- <a href="#" class="btn-delete"><i class="bi bi-trash-fill text-danger"></i></a> -->
+                          <!-- <a href="javascript:" class="btn-delete"><i class="bi bi-trash-fill text-danger"></i></a> -->
                         </div>
                       </td>
                     </tr>
@@ -137,7 +137,7 @@
                 ?>
                     <tr>
                       <td class=""><?= $i++ ?></td>
-                      <td class="text-center">
+                      <td class="use_name">
                         <?php
                         if (!empty($value->profile) && $value->profile != "") {
                           $path = base_url() . "/" . $value->profile;
@@ -155,7 +155,7 @@
                       <td class="">
                         <div class="form-table-col edit">
                           <a href="<?= $url_edit . $value->id ?>" class="btn-edit"><i class="bi bi-pencil-square"></i></a>
-                          <!-- <a href="#" class="btn-delete"><i class="bi bi-trash-fill text-danger"></i></a> -->
+                          <!-- <a href="javascript:" class="btn-delete"><i class="bi bi-trash-fill text-danger"></i></a> -->
                         </div>
                       </td>
                     </tr>
@@ -180,6 +180,7 @@
     var pgurl = BASE_URL_BACKEND + '/users/all';
     active_page(pgurl);
 
+    $.fn.DataTable.ext.pager.numbers_length = 6;
     $("#example").dataTable().fnDestroy();
     $("#example").addClass("nowrap").dataTable({
       responsive: true,
@@ -206,7 +207,10 @@
         responsivePriority: 10001,
         targets: 1
       }],
-      lengthMenu: [10, 25, 50, 100],
+      pageLength: 10,
+      numbersLength: 3,
+      // pagingType: 'numbers',
+      lengthMenu: [1, 10, 25, 50, 100],
       oLanguage: {
         sSearchPlaceholder: "ค้นหา",
         sLengthMenu: "แสดง _MENU_ รายการ",
@@ -217,6 +221,12 @@
         sZeroRecords: "ไม่มีข้อมูล",
         sProcessing: "Processing",
         semptyTable: "ไม่มีข้อมูล",
+        // oPaginate: {
+        //   sFirst: "First", // This is the link to the first page
+        //   sPrevious: "<<", // This is the link to the previous page
+        //   sNext: ">>", // This is the link to the next page
+        //   sLast: "Last" // This is the link to the last page
+        // }
       }
     });
 

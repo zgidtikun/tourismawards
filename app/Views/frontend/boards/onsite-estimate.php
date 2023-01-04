@@ -1,17 +1,31 @@
 <style>
-    .regis-form-data-col1 ol {
+    #qEva {
+        font-size: 18px;
+        font-weight: normal;
+        color: #c6923a;
+    }
+    #qSco {
+        margin-top: 1rem;
+    }
+    .regis-form-data-col1 ol{
         padding-left: 25px;
         font-size: 18px;
         font-weight: normal;
         color: #c6923a;
     }
+    .regis-form-data-col1 div#qRemark ol {
+        margin-top: 0;
+        padding-left: 40px;
+        color: #000;
+    }
     .regis-form-data-col1 h4#qSubject ol {
-        margin-top: 0.5rem;
+        /* margin-top: 0.5rem; */
         padding: 0;
         padding-left: 40px;
+        color: #000;
     }
     .regis-form-data-col1 h4 {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
 </style>
 <div class="container">
@@ -232,7 +246,7 @@
                                 </div>
                             </h3>
 
-                            <div class="regis-form-data-col1 mt-2" id="qSco">
+                            <div class="regis-form-data-col1" id="qSco">
                             </div>
 
                             <div class="regis-form-data-col1">
@@ -372,7 +386,8 @@
                                                     </div> -->
                                                 </div>
                                                 <div class="remove">
-                                                    <button class="btn btn-sm btn-danger" id="camera-remove">
+                                                    <button class="btn btn-sm btn-danger" id="camera-remove"
+                                                    onclick="removeFile('#camera',{cate: pointer.cate,seg: pointer.seg,remove: 'all'})">
                                                         Remove All
                                                     </button>
                                                 </div>

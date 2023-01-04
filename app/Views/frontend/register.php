@@ -260,9 +260,12 @@
     }
 
     var register = () => {   
+        <?php if(!empty($_recapcha) && $_recapcha) : ?>
         setRecapchaToken().then(data => { 
-            // $('#recapcha_token').val(data.rccToken);    
+        <?php endif; ?>
             $('#regis-form').submit(); 
+        <?php if(!empty($_recapcha) && $_recapcha) : ?>
         });
+        <?php endif; ?>
     }
 </script>

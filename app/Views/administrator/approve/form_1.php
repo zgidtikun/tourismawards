@@ -24,81 +24,246 @@
     <p><input type="radio" name="manage_by" id="manage_by_3" <?= ($result->manage_by == 3) ? 'checked' : ''; ?> disabled><label for="manage_by_3">ภาคเอกชน</label></p>
   </div>
 
-  <div class="regis-form-data-col2">
-    <h4 class="headertitile" data-tab="1" style="height: 50px;">ใบอนุญาตประกอบการธุรกิจโรงแรม (ตาม พ.ร.บ. โรงแรม ปี พ.ศ. 2547) เป็นระยะเวลาไม่ต่ำกว่า 1 ปี นับถึงวันปิดรับสมัคร</h4>
-    <div class="attachinp">
-      <h4>เอกสาร</h4>
-      <?php
-      if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
-        foreach (json_decode($result->pack_file) as $key => $value) {
-          if ($value->file_position == 'bussLicenseFiles') {
-      ?>
-            <div class="card card-body">
-              <div class="bs-row">
-                <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                  <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+  <?php if ($result->manage_by == 1 || $result->manage_by == null) : ?>
+    <div class="regis-form-data-col1">
+      <h4 class="headertitile" data-tab="1">หลักฐานการถือครองที่ดินที่กฎหมายรับรอง สัญญาเช่า หรือหนังสือยินยอมให้ใช้สถานที่</h4>
+      <div class="attachinp">
+        <h4>เอกสาร</h4>
+        <?php
+        if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+          foreach (json_decode($result->pack_file) as $key => $value) {
+            if ($value->file_position == 'landOwnerFiles') {
+        ?>
+              <div class="card card-body">
+                <div class="bs-row">
+                  <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                    <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                  </div>
                 </div>
               </div>
-            </div>
-      <?php
+        <?php
+            }
           }
+        } else {
+          echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
         }
-      } else {
-        echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
-      }
-      ?>
+        ?>
+      </div>
     </div>
-  </div>
 
-  <div class="regis-form-data-col2">
-    <h4 class="headertitile" data-tab="2" style="height: 50px;">สำเนาใบประกอบธุรกิจที่ถูกต้องตามกฎหมาย (ถ้ามี)</h4>
-    <div class="attachinp">
-      <h4>เอกสาร</h4>
-      <?php
-      if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
-        foreach (json_decode($result->pack_file) as $key => $value) {
-          if ($value->file_position == 'bussLicenseFiles') {
-      ?>
-            <div class="card card-body">
-              <div class="bs-row">
-                <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                  <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+    <div class="regis-form-data-col1">
+      <h4 class="headertitile" data-tab="1">ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง</h4>
+      <div class="attachinp">
+        <h4>เอกสาร</h4>
+        <?php
+        if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+          foreach (json_decode($result->pack_file) as $key => $value) {
+            if ($value->file_position == 'businessCertFiles') {
+        ?>
+              <div class="card card-body">
+                <div class="bs-row">
+                  <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                    <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                  </div>
                 </div>
               </div>
-            </div>
-      <?php
+        <?php
+            }
           }
+        } else {
+          echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
         }
-      } else {
-        echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
-      }
-      ?>
+        ?>
+      </div>
     </div>
-  </div>
 
-  <div class="regis-form-data-col2">
-    <h4>สำเนาใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่งประเทศไทย, กรมการท่องเที่ยว, องค์การบริหารการพัฒนาพื้นที่พิเศษเพื่อการท่องเที่ยวอย่างยั่งยืน (องค์การมหาชน), TAT Academy ฯลฯ (ถ้ามี)</h4>
-    <div class="attachinp">
-      <h4>เอกสาร</h4>
-      <?php
-      if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
-        foreach (json_decode($result->pack_file) as $key => $value) {
-          if ($value->file_position == 'bussLicenseFiles') {
-      ?>
-            <div class="card card-body">
-              <div class="bs-row">
-                <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                  <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+    <div class="regis-form-data-col1">
+      <h4 class="headertitile" data-tab="1">ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่งประเทศไทย, SHA, กรมการท่องเที่ยว, องค์การบริหารการพัฒนาพื้นที่พิเศษเพื่อการท่องเที่ยวอย่างยั่งยืน (องค์การมหาชน) ฯลฯ (ถ้ามี)</h4>
+      <div class="attachinp">
+        <h4>เอกสาร</h4>
+        <?php
+        if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+          foreach (json_decode($result->pack_file) as $key => $value) {
+            if ($value->file_position == 'otherCertFiles') {
+        ?>
+              <div class="card card-body">
+                <div class="bs-row">
+                  <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                    <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                  </div>
                 </div>
               </div>
-            </div>
-      <?php
+        <?php
+            }
           }
+        } else {
+          echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
         }
-      } else {
-        echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
-      }
-      ?>
+        ?>
+      </div>
     </div>
-  </div>
+  <?php endif; ?>
+
+
+  <?php if ($result->manage_by == 2) : ?>
+    <div class="regis-form-data-col1">
+      <h4 class="headertitile" data-tab="1">หลักฐานการถือครองที่ดินที่กฎหมายรับรอง สัญญาเช่า หรือหนังสือยินยอมให้ใช้สถานที่</h4>
+      <div class="attachinp">
+        <h4>เอกสาร</h4>
+        <?php
+        if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+          foreach (json_decode($result->pack_file) as $key => $value) {
+            if ($value->file_position == 'landOwnerFiles') {
+        ?>
+              <div class="card card-body">
+                <div class="bs-row">
+                  <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                    <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                  </div>
+                </div>
+              </div>
+        <?php
+            }
+          }
+        } else {
+          echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
+        }
+        ?>
+      </div>
+    </div>
+
+    <div class="regis-form-data-col1">
+      <h4 class="headertitile" data-tab="1">สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน</h4>
+      <div class="attachinp">
+        <h4>เอกสาร</h4>
+        <?php
+        if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+          foreach (json_decode($result->pack_file) as $key => $value) {
+            if ($value->file_position == 'businessCertFiles') {
+        ?>
+              <div class="card card-body">
+                <div class="bs-row">
+                  <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                    <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                  </div>
+                </div>
+              </div>
+        <?php
+            }
+          }
+        } else {
+          echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
+        }
+        ?>
+      </div>
+    </div>
+
+    <div class="regis-form-data-col1">
+      <h4 class="headertitile" data-tab="1">ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่งประเทศไทย, SHA, กรมการท่องเที่ยว, องค์การบริหารการพัฒนาพื้นที่พิเศษเพื่อการท่องเที่ยวอย่างยั่งยืน (องค์การมหาชน) ฯลฯ (ถ้ามี)</h4>
+      <div class="attachinp">
+        <h4>เอกสาร</h4>
+        <?php
+        if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+          foreach (json_decode($result->pack_file) as $key => $value) {
+            if ($value->file_position == 'otherCertFiles') {
+        ?>
+              <div class="card card-body">
+                <div class="bs-row">
+                  <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                    <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                  </div>
+                </div>
+              </div>
+        <?php
+            }
+          }
+        } else {
+          echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
+        }
+        ?>
+      </div>
+    </div>
+  <?php endif; ?>
+
+
+  <?php if ($result->manage_by == 3) : ?>
+    <div class="regis-form-data-col1">
+      <h4 class="headertitile" data-tab="1">หลักฐานการถือครองที่ดินที่กฎหมายรับรอง สัญญาเช่า หรือหนังสือยินยอมให้ใช้สถานที่</h4>
+      <div class="attachinp">
+        <h4>เอกสาร</h4>
+        <?php
+        if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+          foreach (json_decode($result->pack_file) as $key => $value) {
+            if ($value->file_position == 'landOwnerFiles') {
+        ?>
+              <div class="card card-body">
+                <div class="bs-row">
+                  <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                    <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                  </div>
+                </div>
+              </div>
+        <?php
+            }
+          }
+        } else {
+          echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
+        }
+        ?>
+      </div>
+    </div>
+
+    <div class="regis-form-data-col1">
+      <h4 class="headertitile" data-tab="1">สำเนาใบอนุญาตประกอบธุรกิจที่ถูกต้องตามกฎหมาย</h4>
+      <div class="attachinp">
+        <h4>เอกสาร</h4>
+        <?php
+        if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+          foreach (json_decode($result->pack_file) as $key => $value) {
+            if ($value->file_position == 'businessCertFiles') {
+        ?>
+              <div class="card card-body">
+                <div class="bs-row">
+                  <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                    <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                  </div>
+                </div>
+              </div>
+        <?php
+            }
+          }
+        } else {
+          echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
+        }
+        ?>
+      </div>
+    </div>
+
+    <div class="regis-form-data-col1">
+      <h4 class="headertitile" data-tab="1">ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่งประเทศไทย, SHA, กรมการท่องเที่ยว, องค์การบริหารการพัฒนาพื้นที่พิเศษเพื่อการท่องเที่ยวอย่างยั่งยืน (องค์การมหาชน) ฯลฯ (ถ้ามี)</h4>
+      <div class="attachinp">
+        <h4>เอกสาร</h4>
+        <?php
+        if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+          foreach (json_decode($result->pack_file) as $key => $value) {
+            if ($value->file_position == 'otherCertFiles') {
+        ?>
+              <div class="card card-body">
+                <div class="bs-row">
+                  <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                    <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                  </div>
+                </div>
+              </div>
+        <?php
+            }
+          }
+        } else {
+          echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
+        }
+        ?>
+      </div>
+    </div>
+  <?php endif; ?>
+
 </div>

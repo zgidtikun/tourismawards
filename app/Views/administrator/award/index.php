@@ -4,7 +4,7 @@
       <div class="backendcontent-title-txt">
         <h3>รางวัลยอดเยี่ยม </h3>
       </div>
-      <a href="#" class="btn-export" target="_blank">Export</a>
+      <a href="javascript:" class="btn-export" target="_blank">Export</a>
     </div>
 
     <div class="backendcontent-subrow">
@@ -56,7 +56,7 @@
                       <!-- <td class="text-center"><?= docDate($value->created_at, 3) ?></td> -->
                       <td>
                         <div class="form-table-col edit">
-                          <a href="#" class="btn-edit" title="ดูข้อมูล" onclick="view_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a>
+                          <a href="javascript:" class="btn-edit" title="ดูข้อมูล" onclick="view_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a>
                         </div>
                       </td>
                     </tr>
@@ -80,6 +80,7 @@
     var pgurl = BASE_URL_BACKEND + '/award/best';
     active_page(pgurl);
 
+    $.fn.DataTable.ext.pager.numbers_length = 6;
     $("#example").dataTable().fnDestroy();
     $("#example").addClass("nowrap").dataTable({
       responsive: true,

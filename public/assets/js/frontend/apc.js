@@ -7,6 +7,8 @@ const MapField = {
                 api: 'application_type_sub_id', id: '#step1-appTypeSub-', require: true },
             { input: '#step1-desc', variant: 'desc', api: 'highlights', require: true },
             { input: '#step1-link', variant: 'link', api: 'link', require: false },
+            { input: '[name=step1-lowcarbon]', variant: 'lowcarbon', 
+                api: 'require_lowcarbon', id: '#step1-lowcarbon-', require: false },
         ],
         s2: [
             { input: '#step2-siteNameTh', variant: 'siteNameTh', api: 'attraction_name_th', require: true },
@@ -80,7 +82,7 @@ const MapField = {
                 api: 'has_outlander', id: '#step5-t3-outlander-', require: false 
             },
             {
-                input: '#step5-t4-bussLicense', variant: 'bussLicenset4', type: 4, div: '#step5-type4', 
+                input: '#step5-t4-bussLicense', variant: 'bussLicenseT4', type: 4, div: '#step5-type4', 
                 api: 'buss_license', require: true 
             },
         ],
@@ -91,6 +93,7 @@ const register = {
     id: null,
     status: null,
     expired: false,
+    requestExpire: false,
     count: [],
     change: false,
     appType: { main: [], sub: [] },
@@ -102,9 +105,10 @@ const register = {
     currentDate: null,
     passYear: true,
     passYearCount: '',
-    init: function(expired){        
-        loading('show');
+    init:async function(expired){        
+        await loading('show');
         this.expired = expired == 'Expired' ? true : false;
+        this.currentDate = getCurrentDate();
         this.getAppType().then(function(appType){
             register.appType.main = appType.main;
             register.appType.sub = appType.sub;
@@ -216,7 +220,7 @@ const register = {
                 register.formData.currentStep = app.current_step;
                 register.formData.step1.appType = app.application_type_id;
                 
-                if(register.expired && $.inArray(Number(register.status),[1,4,0]) !== -1){
+                if(register.expired && $.inArray(Number(register.status),[1,0]) !== -1){
                     $('#formstep-sts').addClass('notpass');
                     $('#formstatus-uncomplete').removeClass('hide');
 
@@ -229,8 +233,8 @@ const register = {
                         $('#formstatus-uncomplete-title').html('หมดเวลาการส่งใบสมัครแล้ว');
                         $('#formstatus-uncomplete-message').hide();
                     }
-
-                    $('.btn-action, .btn-file, .bfd-dropfield, .attach-file').remove();
+                                        
+                    $('.btn-action, .selecter-file').remove();
                     $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
                     $('.btn-confirm-submit').hide();
                 } else {
@@ -257,13 +261,30 @@ const register = {
                             $('.btn-confirm-submit').hide();
                         break;
                         case 4: 
-                            $('#comoment').html(app.judge_comment);
-                            $('#formstep-sts').addClass('notpass');
-                            let sts_html = $('#formstep-sts').html();
-                            $('#formstep-sts').html('ตอบกลับ'+sts_html);
-                            $('.form-main-title, .formstatus-comoment').removeClass('hide');
-                            $('#formstatus-uncomplete').removeClass('hide');
-                            $('.attach-file').remove();
+                            let currentDateTime = getCurrentDateTime();
+                            const date1 = new Date(app.request_time);
+                            const date2 = new Date(currentDateTime);
+                            date1.setDate(date1.getDate() + 1);
+                            
+                            if(date2 <= date1){
+                                $('#comoment').html(app.judge_comment);
+                                $('#formstep-sts').addClass('notpass');
+                                let sts_html = $('#formstep-sts').html();
+                                $('#formstep-sts').html('ตอบกลับ ภายในวันที่ '+app.request_time_str);
+                                $('.form-main-title, .formstatus-comoment').removeClass('hide');
+                                $('#formstatus-uncomplete').removeClass('hide');
+                                $('.attach-file').remove();
+                            } else {
+                                $('#formstep-sts').addClass('notpass');
+                                $('#formstatus-uncomplete').removeClass('hide');
+                                $('#formstep-sts').html('หมดเวลาตอบกลับการขอข้อมูลเพิ่มเติม');
+                                $('#formstatus-uncomplete-title').html('หมดเวลาตอบกลับการขอข้อมูลเพิ่มเติมใบสมัครแล้ว');
+                                $('#formstatus-uncomplete-message').hide();
+                                $('.btn-action, .selecter-file').remove();
+                                $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
+                                $('.btn-confirm-submit').hide();
+                                register.expired = true;
+                            }
                         break;
                         case 0: 
                             $('#formstep-sts').addClass('notpass');
@@ -412,7 +433,7 @@ const register = {
         let sub = this.appType.sub.find(el => el.id == id);
         $('#form-define').html(sub.descreption);
     },
-    setStep: function(step){
+    checkComplete(){
         let tabs = [
             {step: 1, id: '#tab-s1', form: '#form-step-1'},            
             {step: 2, id: '#tab-s2', form: '#form-step-2'},
@@ -421,12 +442,71 @@ const register = {
             {step: 5, id: '#tab-s5', form: '#form-step-5'}
         ];
 
+        let checkComplete = true;
+        
+        $.each(tabs,function(key,tab){
+            let checkRequire = true;
+            let checkFileRequire = true;
+
+            if(tab.step == register.formData.currentStep){
+                if($(tab.id).hasClass('complete')){
+                    $(tab.id).removeClass('complete');
+                }
+
+                $(tab.id).addClass('active');
+                $(tab.form).removeClass('hide');
+            } else {
+                $(tab.id).removeClass('active');
+                $(tab.form).addClass('hide');
+            }
+
+            let maps = register.getMapField('step',tab.step);
+
+            $.each(maps,function(key,map){                
+                if(map.require){
+                    if(empty(register.formData['step'+tab.step][map.variant])){
+                        checkRequire = false;
+                    } else {
+                        $(map.input).removeClass('is-invalid');
+                    }
+                }
+            });
+
+            if(tab.step == 5){
+                checkFileRequire = checkRequireFiles('awards/application');
+            }
+
+            if(!checkRequire || !checkFileRequire){
+                checkComplete = false;
+                if($(tab.id).hasClass('complete')){
+                    $(tab.id).removeClass('complete');
+                }
+            } else {
+                if(!$(tab.id).hasClass('complete')){
+                    $(tab.id).addClass('complete');
+                }
+            }
+        });
+
+        if(checkComplete){
+            $('#btnHFinish').removeClass('disabled');
+            $('#btnHFinish').addClass('active');
+            $('#btnFFinish').prop('disabled',false);
+        } else {
+            $('#btnHFinish').addClass('disabled');
+            $('#btnHFinish').removeClass('active');
+            $('#btnFFinish').prop('disabled',true);
+        }
+
+    },
+    setStep: function(step){
+
         if(register.change){
-            this.saveDraft(this.formData.currentStep,'draft');
+            register.saveDraft(register.formData.currentStep,'draft');
             register.change = false;
         }
 
-        this.formData.currentStep = step;
+        register.formData.currentStep = step;
 
         if(step == 5){
             ;[1,2,3,4].forEach(index => {
@@ -452,56 +532,12 @@ const register = {
                     }
                 }
             });
-
-            $('.btn-regis').removeClass('disabled');
-            $('.btn-regis').addClass('active');
-        } else {
-            $('.btn-regis').addClass('disabled');
-            $('.btn-regis').removeClass('active');
         }
-        
-        $.each(tabs,function(key,tab){
-            let checkRequire = true;
-            let checkFileRequire = true;
 
-            if(tab.step == step){
-                if($(tab.id).hasClass('complete')){
-                    $(tab.id).removeClass('complete');
-                }
-
-                $(tab.id).addClass('active');
-                $(tab.form).removeClass('hide');
-            } else {
-                $(tab.id).removeClass('active');
-                $(tab.form).addClass('hide');
-            }
-
-            let maps = register.getMapField('step',tab.step);
-
-            $.each(maps,function(key,map){                
-                if(map.require){
-                    if(empty(register.formData['step'+tab.step][map.variant])){
-                        checkRequire = false;
-                    }
-                }
-            });
-
-            if(tab.step == 5){
-                checkFileRequire = checkRequireFiles('awards/application');
-            }
-            
-            if(!checkRequire && !checkFileRequire){
-                if($(tab.id).hasClass('complete')){
-                    $(tab.id).removeClass('complete');
-                }
-            } else {
-                if(!$(tab.id).hasClass('complete')){
-                    $(tab.id).addClass('complete');
-                }
-            }
-        });
+        register.checkComplete();
     },
-    saveDraft: function(step,mode){
+    saveDraft:async function(step,mode){        
+        await loading('show');
         let formData = new FormData(),
             mapFData = this.getMapField('step',step),
             dataStep = this.formData['step'+step],
@@ -521,6 +557,7 @@ const register = {
         setting.data = formData;
 
         api(setting).then(function(response){
+            loading('hide');
             let draft = response;
 
             if(draft.result == 'error_login'){
@@ -537,6 +574,7 @@ const register = {
                         message += 'และกดปุ่ม "ส่งใบสมัคร" เมื่อพร้อม และเมื่อส่งใบสมัครแล้ว';
                         message += 'ท่านจะไม่สามารถแก้ไขข้อมูลได้อีก ดังนั้น กรุณาตรวจสอบ';
                         message += 'ความถูกต้องของข้อมูลก่อนส่งใบสมัคร';
+                        $('*').removeClass('is-invalid');
                     } else {
                         title = 'ไม่สามารถบันทึกข้อมูลได้';
                         message = draft.message;
@@ -545,7 +583,9 @@ const register = {
                     alert.show(
                         draft.result,
                         draft.message
-                    );
+                    );                    
+
+                    register.checkComplete();
                 }
             }
         });
@@ -666,6 +706,8 @@ const register = {
                             alert.show(save.result,title,message).then(function(res){
                                 if(save.result == 'success'){ window.location.reload(); }
                             });
+
+                            register.checkComplete();
                         }
                     });
                 }
@@ -700,23 +742,82 @@ $('#step1-link').on('keyup', function(){
     register.formData.step1.link = $(this).val(); 
 });
 
+$('[name=step1-lowcarbon]').on('click', function(){ 
+    register.formData.step1.lowcarbon = $(this).val(); 
+    register.change = true;
+    console.log(register.formData.step1)
+});
+
 // Step 2
-$('#step2-siteNameTh').on('keyup', function(){ register.formData.step2.siteNameTh = $(this).val(); register.change = true;});
-$('#step2-siteNameEng').on('keyup', function(){ register.formData.step2.siteNameEng = $(this).val(); register.change = true;});
-$('#step2-address').on('keyup', function(){ register.formData.step2.address = $(this).val(); register.change = true;});
-$('#step2-road').on('keyup', function(){ register.formData.step2.road = $(this).val(); register.change = true;});
-$('#step2-province').on('keyup change', function(){ register.formData.step2.province = $(this).val(); register.change = true;});
-$('#step2-district').on('keyup change', function(){ register.formData.step2.district = $(this).val(); register.change = true;});
-$('#step2-subDistrict').on('keyup change', function(){ register.formData.step2.subDistrict = $(this).val(); register.change = true;});
-$('#step2-zipcode').on('keyup change', function(){ register.formData.step2.zipcode = $(this).val(); register.change = true;});
-$('#step2-fb').on('keyup', function(){ register.formData.step2.fb = $(this).val(); register.change = true;});
-$('#step2-ig').on('keyup', function(){ register.formData.step2.ig = $(this).val(); register.change = true;});
-$('#step2-lid').on('keyup', function(){ register.formData.step2.lid = $(this).val(); register.change = true;});
-$('#step2-other').on('keyup', function(){ register.formData.step2.other = $(this).val(); register.change = true;});
-$('#step2-gm').on('keyup', function(){ register.formData.step2.gm = $(this).val(); register.change = true;});
+$('#step2-siteNameTh').on('keyup', function(){ 
+    register.formData.step2.siteNameTh = $(this).val();
+     register.change = true;
+});
+
+$('#step2-siteNameEng').on('keyup', function(){ 
+    register.formData.step2.siteNameEng = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-address').on('keyup', function(){ 
+    register.formData.step2.address = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-road').on('keyup', function(){ 
+    register.formData.step2.road = $(this).val(); 
+    register.change = true;
+});
+$('#step2-province').on('keyup change', function(){ 
+    register.formData.step2.province = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-district').on('keyup change', function(){ 
+    register.formData.step2.district = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-subDistrict').on('keyup change', function(){ 
+    register.formData.step2.subDistrict = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-zipcode').on('keyup change', function(){ 
+    register.formData.step2.zipcode = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-fb').on('keyup', function(){ 
+    register.formData.step2.fb = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-ig').on('keyup', function(){ 
+    register.formData.step2.ig = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-lid').on('keyup', function(){ 
+    register.formData.step2.lid = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-other').on('keyup', function(){ 
+    register.formData.step2.other = $(this).val(); 
+    register.change = true;
+});
+
+$('#step2-gm').on('keyup', function(){ 
+    register.formData.step2.gm = $(this).val(); 
+    register.change = true;
+});
 
 // Step 3
-$('#step3-companyName').on('keyup', function(){ register.formData.step3.companyName = $(this).val(); register.change = true;});
+$('#step3-companyName').on('keyup', function(){ 
+    register.formData.step3.companyName = $(this).val(); 
+    register.change = true;
+});
 
 $('[name=step3-setAddress]').on('click', function(){
     let current = $(this).val() == 1 ? true : false;    
@@ -738,22 +839,76 @@ $('[name=step3-setAddress]').on('click', function(){
     $('#step3-zipcode').val(register.formData.step3.zipcode);
 });
 
-$('#step3-address').on('keyup', function(){ register.formData.step3.address = $(this).val(); register.change = true;});
-$('#step3-road').on('keyup', function(){ register.formData.step3.road = $(this).val(); register.change = true;});
-$('#step3-province').on('keyup, change', function(){ register.formData.step3.province = $(this).val(); register.change = true;});
-$('#step3-district').on('keyup, change', function(){ register.formData.step3.district = $(this).val(); register.change = true;});
-$('#step3-subDistrict').on('keyup, change', function(){ register.formData.step3.subDistrict = $(this).val(); register.change = true;});
-$('#step3-zipcode').on('keyup, change', function(){ register.formData.step3.zipcode = $(this).val(); register.change = true;});
-$('#step3-telephone').on('keyup', function(){ register.formData.step3.telephone = $(this).val(); register.change = true;});
-$('#step3-email').on('keyup', function(){ register.formData.step3.email = $(this).val(); register.change = true;});
-$('#step3-lid').on('keyup', function(){ register.formData.step3.lid = $(this).val(); register.change = true;});
+$('#step3-address').on('keyup', function(){ 
+    register.formData.step3.address = $(this).val(); 
+    register.change = true;
+});
+
+$('#step3-road').on('keyup', function(){ 
+    register.formData.step3.road = $(this).val(); 
+    register.change = true;
+});
+
+$('#step3-province').on('keyup, change', function(){ 
+    register.formData.step3.province = $(this).val(); 
+    register.change = true;
+});
+
+$('#step3-district').on('keyup, change', function(){ 
+    register.formData.step3.district = $(this).val(); 
+    register.change = true;
+});
+
+$('#step3-subDistrict').on('keyup, change', function(){ 
+    register.formData.step3.subDistrict = $(this).val(); 
+    register.change = true;
+});
+
+$('#step3-zipcode').on('keyup, change', function(){ 
+    register.formData.step3.zipcode = $(this).val(); 
+    register.change = true;
+});
+
+$('#step3-telephone').on('keyup', function(){ 
+    register.formData.step3.telephone = $(this).val(); 
+    register.change = true;
+});
+
+$('#step3-email').on('keyup', function(){ 
+    register.formData.step3.email = $(this).val(); 
+    register.change = true;
+});
+
+$('#step3-lid').on('keyup', function(){ 
+    register.formData.step3.lid = $(this).val(); 
+    register.change = true;
+});
 
 // Step 4
-$('#step4-name').on('keyup', function(){ register.formData.step4.name = $(this).val(); register.change = true;});
-$('#step4-position').on('keyup', function(){ register.formData.step4.position = $(this).val(); register.change = true;});
-$('#step4-telephone').on('keyup', function(){ register.formData.step4.telephone = $(this).val(); register.change = true;});
-$('#step4-email').on('keyup', function(){ register.formData.step4.email = $(this).val(); register.change = true;});
-$('#step4-lid').on('keyup', function(){ register.formData.step4.lid = $(this).val(); register.change = true;});
+$('#step4-name').on('keyup', function(){ 
+    register.formData.step4.name = $(this).val(); 
+    register.change = true;
+});
+
+$('#step4-position').on('keyup', function(){ 
+    register.formData.step4.position = $(this).val(); 
+    register.change = true;
+});
+
+$('#step4-telephone').on('keyup', function(){ 
+    register.formData.step4.telephone = $(this).val(); 
+    register.change = true;
+});
+
+$('#step4-email').on('keyup', function(){ 
+    register.formData.step4.email = $(this).val(); 
+    register.change = true;
+});
+
+$('#step4-lid').on('keyup', function(){ 
+    register.formData.step4.lid = $(this).val(); 
+    register.change = true;
+});
 
 // Step 5
 $('[name=step5-t1-manageBy]').on('click', function(){ 
@@ -774,14 +929,39 @@ $('[name=step5-t2-buildExt]').on('click', function(){
     register.formData.step5.buildExt = $(this).val(); 
     register.change = true;
 });
-$('#step5-t2-bussLicense').on('keyup', function(){ register.formData.step5.bussLicense = $(this).val(); register.change = true;});
-$('[name=step5-t2-bussCkRoom]').on('click', function(){ register.formData.step5.bussCkRoom = $(this).val(); register.change = true;});
-$('#step5-t3-bussLicense').on('keyup', function(){ register.formData.step5.bussLicenseT3 = $(this).val(); register.change = true;});
+
+$('#step5-t2-bussLicense').on('keyup', function(){ 
+    register.formData.step5.bussLicense = $(this).val(); 
+    register.change = true;
+});
+
+$('[name=step5-t2-bussCkRoom]').on('click', function(){ 
+    register.formData.step5.bussCkRoom = $(this).val(); 
+    register.change = true;
+});
+
+$('#step5-t3-bussLicense').on('keyup', function(){ 
+    register.formData.step5.bussLicenseT3 = $(this).val(); 
+    register.change = true;
+});
+
 $('[name=step5-t3-bussCites]').on('click', function(){ 
     register.formData.step5.bussCites = $(this).val(); 
     register.change = true;
 });
-$('[name=step5-t3-nominee]').on('click', function(){ register.formData.step5.nominee = $(this).val(); register.change = true;});
-$('[name=step5-t3-outlander]').on('click', function(){ register.formData.step5.outlander = $(this).val(); register.change = true;});
-$('#step5-t4-bussLicense').on('keyup', function(){ register.formData.step5.bussLicense = $(this).val(); register.change = true;});
+
+$('[name=step5-t3-nominee]').on('click', function(){ 
+    register.formData.step5.nominee = $(this).val(); 
+    register.change = true;
+});
+
+$('[name=step5-t3-outlander]').on('click', function(){ 
+    register.formData.step5.outlander = $(this).val(); 
+    register.change = true;
+});
+
+$('#step5-t4-bussLicense').on('keyup', function(){ 
+    register.formData.step5.bussLicenseT4 = $(this).val(); 
+    register.change = true;
+});
 

@@ -26,7 +26,7 @@
   <div class="bs-row">
     <h4>แนบเอกสาร</h4>
     <hr>
-    <div class="bs-row">
+    <div class="bs-row row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
         <span class="fs-18 fw-semibold">
           ต้องมีใบอนุญาตประกอบธุรกิจนำเที่ยวไม่น้อยกว่า 2 ปี จนถึงวันปิดรับสมัคร

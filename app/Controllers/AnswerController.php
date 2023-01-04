@@ -12,6 +12,13 @@ use App\Models\ApplicationForm;
 
 class AnswerController extends BaseController
 {
+    private $qt;
+    private $assg;
+    private $ans;
+    private $usStg;
+    private $appForm;
+    private $myId;
+
     public function __construct()
     {
         $this->qt = new Question();
@@ -19,6 +26,7 @@ class AnswerController extends BaseController
         $this->ans = new Answer();
         $this->usStg = new UsersStage();
         $this->appForm = new ApplicationForm();
+        $this->myId = session()->get('id');
 
         if(!isset($this->db))
             $this->db = \Config\Database::connect();
@@ -28,10 +36,21 @@ class AnswerController extends BaseController
     {
         $app = new \Config\App();    
         $current_date = date('Y-m-d');
+        $current_datetime = date('Y-m-d H:i:s');
+        
+        if(date('Y-m-d',strtotime($current_date)) < date('Y-m-d',strtotime($app->Pre_open))){
+            $data = [
+                'title' => 'Pre-screen',
+                'view' => 'frontend/expire/user-pre-screen-comming-soon',
+                'open_date' => FormatTree($app->Pre_open,'thailand')
+            ];
+            
+            return view('frontend/entrepreneur/_template',$data);
+        }
 
-        $myApp = $this->appForm->where('created_by',session()->get('id'))
+        $myApp = $this->appForm->where('created_by',$this->myId)
             ->select(
-                'application_type_id type_id,
+                'id app_id,application_type_id type_id,
                 application_type_sub_id sub_id,
                 status')
             ->first();
@@ -46,31 +65,56 @@ class AnswerController extends BaseController
             'expired_sts' => $current_date > $app->Pre_expired ? 'true' : 'false',
         ];
 
-        $stage = $this->usStg->where(['user_id' => session()->get('id'), 'stage' => 1])
+        $stage = $this->usStg->where(['user_id' => $this->myId, 'stage' => 1])
             ->select('status,duedate')
             ->first();
+        
+        $instApp = new \App\Controllers\ApplicationController();
+        $requireLowCarbon = $instApp->checkRequireLowCarbon($myApp->app_id);
 
-        $countAnswer = $this->ans->where('reply_by',session()->get('id'))
-            ->countAllResults();
+        $subQAns = $this->db->table('answer')
+            ->select('question_id')
+            ->where('reply_by',$this->myId)
+            ->getCompiledSelect();
 
-        if(empty($stage) && $countAnswer <= 0){
-            $myId = session()->get('id');
-
-            $myQuestion = $this->qt->where([
-                'application_type_id' => $myApp->type_id,
-                'application_type_sub_id' => $myApp->sub_id
-            ])
-            ->select('id')
-            ->findAll();
-
+        $queryQuestion = $this->db->table('question')
+        ->where([
+            'application_type_id' => $myApp->type_id,
+            'application_type_sub_id' => $myApp->sub_id
+        ])
+        ->where('id NOT IN ('.$subQAns.')')
+        ->select('id')
+        ->get();
+        
+        $myQuestion = $queryQuestion->getResult();
+        
+        if(!empty($myQuestion)){
             foreach($myQuestion as $mq){
                 $this->ans->insert([
                     'question_id' => $mq->id,
-                    'reply_by' =>$myId,
+                    'reply_by' => $this->myId,
                     'status' => 1
                 ]);
             }
+        }
 
+        if($requireLowCarbon){
+            $myLowcarbon =  $this->qt->where([
+                'assessment_group_id ' => 4
+            ])
+            ->where('id NOT IN ('.$subQAns.')')
+            ->select('id')
+            ->find();
+        
+            if(!empty($myLowcarbon)){
+                foreach($myLowcarbon as $mq){
+                    $this->ans->insert([
+                        'question_id' => $mq->id,
+                        'reply_by' => $this->myId,
+                        'status' => 1
+                    ]);
+                }
+            }
         }
 
         if(!empty($stage->duedate)) 
@@ -80,13 +124,13 @@ class AnswerController extends BaseController
             if(in_array($stage->status,[3,5])){
                 $duedate->expired_date = $stage->duedate;
                 $duedate->expired_str = FormatTree($stage->duedate,'thailand');
-                $duedate->expired_sts = $current_date > $stage->duedate ? 'true' : 'false';
+                $duedate->expired_sts = $current_datetime > $stage->duedate ? 'true' : 'false';
             }
 
             if($stage->status == 3){
                 if($duedate->expired_sts == 'true'){            
                     $this->usStg->where([
-                        'user_id' => session()->get('id'), 
+                        'user_id' => $this->myId, 
                         'stage' => 1
                     ])
                     ->set(['status' => 5])
@@ -112,7 +156,7 @@ class AnswerController extends BaseController
 
     public function getQuestionByAjax()
     {
-        $result = $this->getQuestion(session()->get('id'));
+        $result = $this->getQuestion($this->myId);
         return $this->response->setJSON($result);
     }
 
@@ -121,31 +165,38 @@ class AnswerController extends BaseController
         $instApp = new \App\Controllers\ApplicationController();
         $instEstimate = new \App\Models\Estimate();
         $app = $instApp->getRequireQuestion($id);
-        $group = $this->assg->findAll();
+        $requireLowCarbon = $instApp->checkRequireLowCarbon($app->app_id);
+
+        $group = $this->assg->whereIn(
+            'id', $requireLowCarbon ? [1,2,3,4] : [1,2,3]
+        )
+        ->findAll();
+
         $result = [
-            'status' => $this->getPrescreenStatus(session()->get('id')),
+            'status' => $this->getPrescreenStatus($this->myId),
             'app_id' => $app->app_id,
+            'lowcarbon' => $requireLowCarbon,
             'data' => []
         ];
+
+        $subquery = $this->db->table('answer')
+        ->where('reply_by',$this->myId)
+        ->getCompiledSelect();
         
-        foreach($group as $asse){
+        foreach($group as $key=>$asse){
             $counter = 0;
             $temp = ['group' => $asse, 'question' => []];
+            
+            $where = [];
+            $where['q.assessment_group_id'] = $asse->id;
 
-            $where = [
-                'q.assessment_group_id' => $asse->id,
-                'q.application_type_id' => $app->type_id
-            ];
+            if($asse->id != 4){
+                $where['q.application_type_id'] = $app->type_id;
 
-            if($app->type_id != 4){
-                $where['q.application_type_sub_id'] = $app->sub_type_id;
+                if($app->type_id != 4){
+                    $where['q.application_type_sub_id'] = $app->sub_type_id;
+                }
             }
-
-            // if(session()->get('role') == 1)
-            //     $where['q.pre_status'] = 1;
-
-            $subquery = $this->db->table('answer')->where('reply_by',session()->get('id'))
-                ->getCompiledSelect();
 
             $builder = $this->db->table('question q')
                 ->select('
@@ -155,17 +206,18 @@ class AnswerController extends BaseController
                 ')
                 ->join('('.$subquery.') a','q.id = a.question_id','LEFT')
                 ->where($where)
-                ->orderBy('id','ASC')
+                ->orderBy('q.topic_no ASC, q.question_ordering, q.id ASC') 
                 ->get();
-           
-            foreach($builder->getResult() as $val){   
+                
+            foreach($builder->getResult() as $val){  
                 $val->no = ++$counter;
                 $val->images = $val->paper = []; 
                 $val->request = [];
 
                 if($val->reply_sts == 3){
                     $val->request = $instEstimate->where('answer_id',$val->reply_id)
-                        ->select('request_list')
+                    ->whereIn('request_status',[1])    
+                    ->select('request_list')
                         ->findAll();
                 }
 
@@ -251,7 +303,7 @@ class AnswerController extends BaseController
                     $dtdb = [
                         'question_id' => $this->input->getVar('qid'),
                         'reply' => $this->input->getVar('reply'),
-                        'reply_by' => session()->get('id'),
+                        'reply_by' => $this->myId,
                         'status' => 1,
                     ]; 
 
@@ -273,7 +325,7 @@ class AnswerController extends BaseController
                             $this->ans->insert([
                                 'question_id' => $ans->qid,
                                 'reply' => $ans->reply,
-                                'reply_by' => session()->get('id'),
+                                'reply_by' => $this->myId,
                                 'status' => 2,
                             ]);
                         } else {
@@ -283,7 +335,7 @@ class AnswerController extends BaseController
                         }
                     }
 
-                    $this->ans->where('reply_by', session()->get('id'))
+                    $this->ans->where('reply_by', $this->myId)
                         ->set([ 
                             'status' => 2 ,
                             'send_date' => date('Y-m-d H:i:s')
@@ -291,7 +343,7 @@ class AnswerController extends BaseController
                         ->update();
 
                     $cusstg = $this->usStg->where([
-                        'user_id' => session()->get('id'), 
+                        'user_id' => $this->myId, 
                         'stage' => 1
                     ])
                     ->select('status')
@@ -300,19 +352,27 @@ class AnswerController extends BaseController
                     $isEstimateRequire = false;
                     
                     if(!empty($cusstg)){
-                        if($cusstg == 3){
+                        if($cusstg->status == 3){
                             $this->usStg->where([
-                                'user_id' => session()->get('id'), 
+                                'user_id' => $this->myId, 
                                 'stage' => 1
                             ])
                             ->set(['status' => 4])
                             ->update();
 
+                            $estimate = new \App\Models\Estimate();
+                            $estimate->where('application_id',$this->input->getVar('appId'))
+                                ->where('request_status',1)
+                                ->set('request_status',2)
+                                ->update();
+
+                            $judgeRequest = new \App\Controllers\EstimateRequestController();
+                            $judgeRequest->respond_request($this->myId);
                             $isEstimateRequire = true;
                         }
                     } else {
                         $this->usStg->insert([
-                            'user_id' => session()->get('id'), 
+                            'user_id' => $this->myId, 
                             'stage' => 1, 
                             'status' => 1
                         ]);
@@ -322,7 +382,7 @@ class AnswerController extends BaseController
                         'module' => 'user_pre_screen',
                         'action' => 'pre_screen_send_sys',
                         'bank' => 'frontend',
-                        'user_id' => session()->get('id'),
+                        'user_id' => $this->myId,
                         'datetime' => date('Y-m-d H:i:s'),
                         'data' => $this->input->getVar('answer')
                     ]);
@@ -338,7 +398,7 @@ class AnswerController extends BaseController
                         ],
                         (object) [
                             'message'=> $form->place_name.' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณามอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)',
-                            'link' => base_url('boards/estimate/pre-screen/'.get_app_id(session()->get('id'))),
+                            'link' => base_url('boards/estimate/pre-screen/'.get_app_id($this->myId)),
                             'send_date' => date('Y-m-d H:i:s'),
                             'send_by' => $form->place_name
                         ]);
@@ -375,6 +435,7 @@ class AnswerController extends BaseController
 
             $result = [
                 'result' => 'error', 
+                'line' => $e->getLine(),
                 'message' => 'System : '.$e->getMessage()
             ];
         }
@@ -389,7 +450,7 @@ class AnswerController extends BaseController
                 $question_id = $this->input->getVar('qid');
                 $answer_id = $this->input->getVar('aid');
                 $position = $this->input->getVar('position');
-                $path = $this->setFilePath(session()->get('id')).'pre-screen/'.$this->input->getVar('path');
+                $path = $this->setFilePath($this->myId).'pre-screen/'.$this->input->getVar('path');
                 $result = ['result' => 'success', 'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 'files' => []];
                 $files_up = [];
 
@@ -418,12 +479,12 @@ class AnswerController extends BaseController
                 if($this->input->getVar('action') == 'create'){
                     $dtdb = [
                         'question_id' => $question_id,
-                        'reply_by' => session()->get('id'),
+                        'reply_by' => $this->myId,
                         'pack_file' => json_encode($files_up),
                         'status' => 1,
                     ]; 
 
-                    $ins = $this->ans->insert($dtdb);
+                    $this->ans->insert($dtdb);
                     $insId = $this->ans->getInsertID();
                     $result['id'] = $insId;
 
@@ -437,7 +498,7 @@ class AnswerController extends BaseController
                         $files_up = array_merge($pack_file,$files_up);
                     }
 
-                    $upd = $this->ans->update($answer_id,['pack_file' => json_encode($files_up)]);
+                    $this->ans->update($answer_id,['pack_file' => json_encode($files_up)]);
                 }
 
                 $files_up = json_decode(json_encode($files_up),false);
@@ -520,7 +581,7 @@ class AnswerController extends BaseController
         $year = date('Y',strtotime($at->created_at));
         $month = date('m',strtotime($at->created_at));
         $day = date('d',strtotime($at->created_at));
-        $path = 'uploads/'.$year.'/'.$month.'/'.$day.'/'.session()->get('id').'/';
+        $path = 'uploads/'.$year.'/'.$month.'/'.$day.'/'.$this->myId.'/';
         return $path;
     }
 }

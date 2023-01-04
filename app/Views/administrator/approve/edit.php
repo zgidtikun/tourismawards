@@ -39,6 +39,10 @@
   </div>
 </div>
 
+<?php
+// pp($result);
+// pp(json_decode($result->pack_file));
+?>
 
 <a name="pageform"></a>
 <div class="backendcontent">
@@ -51,7 +55,7 @@
           1. ประเภทการสมัคร
         </a>
         <a id="2" href="javascript:void(0);" class="btn-form-step complete">
-          2. ข้อมูลผลงาน
+          2. ข้อมูลผลงานที่ส่งเข้าประกวด
         </a>
         <a id="3" href="javascript:void(0);" class="btn-form-step complete">
           3. ข้อมูลหน่วยงานบริษัท
@@ -60,7 +64,7 @@
           4. ข้อมูลผู้ประสานงาน
         </a>
         <a id="5" href="javascript:void(0);" class="btn-form-step complete">
-          5. คุณสมบัติเบื้องต้น/เอกสารประกอบการสมัคร
+          5. คุณสมบัติ/เอกสาร
         </a>
       </div>
       <div class="sections regis-form-data">
@@ -76,7 +80,7 @@
                 </h3>
               </div>
               <div class="regis-form-data-col1">
-                <h4>กรุณาเลือกประเภทที่สอดคล้องกับการดำเนินงานและกลุ่มลูกค้าของท่านมากที่สุด <span class="required">*</span></h4>
+                <h4>กรุณาเลือกประเภทการสมัคร <span class="required">*</span></h4>
 
                 <?php
                 if (!empty($application_type)) :
@@ -502,7 +506,9 @@
         </div>
 
         <?php if ($result->status == 0 || $result->status == 3) { ?>
-          ผู้อนุมัติ: <?= $result->approve_name ?> อัพเดทวันที่ <?= docDate($result->approve_time, 3) ?> <?= date('H:i', strtotime($result->approve_time)) ?> น.
+          <div class="text-end">
+            ผู้อนุมัติ: <?= $result->approve_name ?> อัพเดทวันที่ <?= docDate($result->approve_time, 3) ?> <?= date('H:i', strtotime($result->approve_time)) ?> น.
+          </div>
         <?php } else { ?>
           <div class="form-main-btn">
             <a href="javascript:void(0)" class="btn-cancle">ยกเลิก</a>

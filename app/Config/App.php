@@ -471,6 +471,7 @@ class App extends BaseConfig
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
     public $Register_expired = '2023-01-01'; // วันหมดเขต Register
     public $APPForm_expired = '2023-02-28'; // วันหมดเขตส่งใบสมัคร
+    public $Pre_open = '2021-03-05'; // วันเปิดแบบฟอร์มรอบ Pre-screen
     public $Pre_expired = '2023-03-05'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
     public $announcement_ons_date = '2024-01-01'; // วันที่ประกาศผล ลงพื้นที่
     public $announcement_pre_date = '2024-01-01'; // วันที่ประกาศผล prescreen

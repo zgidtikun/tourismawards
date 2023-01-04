@@ -274,6 +274,8 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     // Report (เฉพาะแอดมินที่เข้าได้)
     $routes->group('report', static function ($routes) {
         $routes->get('', 'Report::index', ['filter' => 'auth:4']);
+        $routes->get('logs/(:any)', 'Report::logs/$1', ['filter' => 'auth:4']);
+        $routes->get('export1', 'Report::export1', ['filter' => 'auth:4']);
         $routes->get('register', 'Report::register', ['filter' => 'api:4']);
         $routes->get('export/(:any)', 'Report::export/$1', ['filter' => 'auth:4']);
     });

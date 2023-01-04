@@ -31,7 +31,7 @@ function save_log_activety($setting){
             'module' => 'save_log_activety',
             'input_data' => $setting,
             'error_date' => date('Y-m-d H:i:s'),
-            'error_data' => [
+            'error_msg' => [
                 'error_file' => $e->getFile(),
                 'error_line' => $e->getLine(),
                 'error_code' => $e->getCode(),
@@ -70,11 +70,21 @@ function save_log_error($setting){
             $input_data = NULL;
         }
 
-        if(!empty($setting['error_data'])){
-            if(is_array($setting['error_data']) || is_object($setting['error_data'])){
-                $error_data = json_encode($setting['error_data'],JSON_UNESCAPED_UNICODE);
+        if(!empty($setting['error_msg'])) {
+            $error = $setting['error_msg'];
+        }
+        elseif(!empty($setting['error_data'])) {
+            $error = $setting['error_data'];
+        }
+        else {
+            $error = [];
+        }
+
+        if(!empty($error)){
+            if(is_array($error) || is_object($error)){
+                $error_data = json_encode($error,JSON_UNESCAPED_UNICODE);
             } else {
-                $error_data = $setting['error_data'];
+                $error_data = $error;
             }
         } else {
             $error_data = NULL;

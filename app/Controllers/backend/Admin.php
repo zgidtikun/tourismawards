@@ -9,7 +9,7 @@ class Admin extends BaseController
 {
     public function __construct()
     {
-        helper(['semail', 'verify']);
+        helper(['semail', 'verify', 'log']);
         $this->ApplicationType = new ApplicationType();
     }
 
@@ -34,7 +34,7 @@ class Admin extends BaseController
         // px($data['award_type']);
 
         // Template
-        $data['title']  = 'เพิ่มคณะกรรมการ';
+        $data['title']  = 'เพิ่มผู้ดูแลระบบ';
         $data['view']   = 'administrator/admin/edit';
         $data['ci']     = $this;
 
@@ -51,7 +51,7 @@ class Admin extends BaseController
         }
 
         // Template
-        $data['title']  = 'แก้ไขคณะกรรมการ';
+        $data['title']  = 'แก้ไขผู้ดูแลระบบ';
         $data['view']   = 'administrator/admin/edit';
         $data['ci']     = $this;
 
@@ -104,6 +104,28 @@ class Admin extends BaseController
             $data = [];
             $data['admin'] = $this->db->table('admin')->where('id', $insert_id)->get()->getRowObject();
             $this->sendMail($data);
+            
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            // @mkdir(FCPATH . 'logs/backend-admin', 0777, true);
+            // $fp = fopen(FCPATH . 'logs/backend-admin/admin_id_' . $insert_id . '.txt', 'a+');
+            // fwrite($fp, "====================== Start Log Admin " . $insert_id . " ======================\n");
+            // fwrite($fp, "มีการเพิ่มผู้ดูแลระบบ โดย " . session()->account ." \n");
+            // fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            // fclose($fp);
+
+            $setting = [
+                'admin_id' => $insert_id,
+                'text'  => "มีการเพิ่มผู้ดูแลระบบ โดย " . session()->account,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -155,6 +177,28 @@ class Admin extends BaseController
         // px($data);
         $result = $this->db->table('admin')->where('id', $post['insert_id'])->update($data);
         if ($result) {
+            
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            // @mkdir(FCPATH . 'logs/backend-admin', 0777, true);
+            // $fp = fopen(FCPATH . 'logs/backend-admin/admin_id_' . $post['insert_id'] . '.txt', 'a+');
+            // fwrite($fp, "====================== Start Log Admin " . $post['insert_id'] . " ======================\n");
+            // fwrite($fp, "มีการแก้ไขผู้ดูแลระบบ โดย " . session()->account ." \n");
+            // fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            // fclose($fp);
+
+            $setting = [
+                'admin_id' => $post['insert_id'],
+                'text'  => "มีการแก้ไขผู้ดูแลระบบ โดย " . session()->account,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'แก้ไขข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);

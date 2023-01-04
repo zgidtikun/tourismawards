@@ -115,7 +115,7 @@ const boards = {
         if(!$.fn.DataTable.isDataTable('#tbl-boards')){
             this.dtb = $('#tbl-boards').DataTable({
                 data: dt,
-                pageLength: 15,
+                pageLength: 10,
                 procressing: true,
                 info: true,
                 filter: true,
@@ -126,9 +126,9 @@ const boards = {
                         data: 'att_name',
                         render: function(data, type, row, meta){
                             const hr = 'href="javascript:boards.show('+row.id+');"';
-                            let content = '<a '+hr+'>';
+                            let content = '<a '+hr+'><span>';
                             content += '<i class="bi bi-arrow-right-square-fill text-success mr-2"></i>';
-                            content += data;
+                            content += data+ '</span>';
 
                             switch(Number(boards.setShowStatus(row.status,row.request_status,row.show_status))){
                                 case 1:

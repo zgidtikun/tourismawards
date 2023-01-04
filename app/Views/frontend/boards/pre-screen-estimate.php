@@ -1,17 +1,34 @@
 <style>
+    #qEva {
+        font-size: 18px;
+        font-weight: normal;
+        color: #c6923a;
+    }
     .regis-form-data-col1 ol {
         padding-left: 25px;
         font-size: 18px;
         font-weight: normal;
         color: #c6923a;
     }
+    .regis-form-data-col1 div#qRemark ol {
+        margin-top: 0;
+        padding-left: 40px;
+        color: #000;
+    }
     .regis-form-data-col1 h4#qSubject ol {
-        margin-top: 0.5rem;
+        /* margin-top: 0.5rem; */
         padding: 0;
         padding-left: 40px;
+        color: #000;
     }
     .regis-form-data-col1 h4 {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    #sRequest {
+        margin-top: 0.5rem;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
     }
 </style>
 <div class="container">
@@ -112,6 +129,10 @@
                     <a href="javascript:setQuestion(2,0);" id="tab-2" class="btn-form-step">
                         3. Responsibility and Safety & Health
                     </a>
+                    <a href="javascript:setQuestion(3,0);" id="tab-3" class="btn-form-step"
+                    style="display:none;">
+                        4. Low Carbon
+                    </a>
                 </div>
 
                 <div class="regis-form-data">
@@ -196,10 +217,12 @@
                                 <a href="javascript:downloadFile();" class="btn-download">ดาวน์โหลดไฟล์แนบ</a>
                             </div>
                             <div class="attachinp border-0 is-estimate">
-                                <a href="javascript:void(0)" class="btn-getdata active"
-                                >
+                                <a href="javascript:void(0)" class="btn-getdata active">
                                     ขอข้อมูลเพิ่มเติม
                                 </a>
+                                <div id="sRequest" class="alert alert-warning" style="display: none;" role="alert">
+                                    คุณมีการขอข้อมูลเพิ่มเติม
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -239,7 +262,7 @@
                             </h3>
                         </div>
 
-                        <div class="regis-form-data-col1 mt-2 is-estimate" id="qSco">
+                        <div class="regis-form-data-col1 is-estimate" id="qSco">
                         </div>
 
                         <div class="regis-form-data-col1 is-estimate">
@@ -363,6 +386,9 @@ aria-hidden="true">
 <div class="loading" id="loading-page"></div>
 
 <?php $app = new \Config\App(); ?>
+<link  href="<?= base_url('assets/js/frontend/datepicker/jquery-ui.css') ?>?v=<?= $app->script_v ?>" rel="stylesheet">
+<script src="<?= base_url('assets/js/frontend/datepicker/jquery-ui.js') ?>?v=<?= $app->script_v ?>"></script>
+
 <script src="<?= base_url('assets/js/frontend/bootstrap/bootstrap.bundle.min.js') ?>"></script>
 <script src="<?= base_url('assets/js/frontend/psce.js') ?>?v=<?= $app->script_v ?>" async></script>
 <script defer>

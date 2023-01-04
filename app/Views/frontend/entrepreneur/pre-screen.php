@@ -1,9 +1,14 @@
 <style>
     .regis-form-data-col1 h4#question ol {
-        margin-top: 0.5rem;
+        /* margin-top: 0.5rem; */
         padding: 0;
         padding-left: 40px;
     }
+    .regis-form-data-col1 div#remark ol {
+        margin-top: 0;
+        padding-left: 40px;
+        color: #000;
+    }       
     .regis-form-data-col1 h4 {
         margin-bottom: 1.5rem;
     }
@@ -112,6 +117,10 @@
                     onclick="psc.setNewQuestion(2,0)">
                         3. Responsibility and Safety &
                         Health
+                    </a>
+                    <a href="javascript:;" id="tab-3" class="btn-form-step"
+                    onclick="psc.setNewQuestion(3,0)" style="display:none;">
+                        4. Low Carbon
                     </a>
                 </div>
 
@@ -250,12 +259,9 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="card-body-muted c-lef selecter-file" id="images-list">
-                                        </div>
+                                        <div class="card-body-muted c-lef selecter-file" id="images-list"></div>
                                         <div class="card-body attach-file">
-                                            <div class="ablumbox" id="images-ablum">
-                                                
-                                            </div>
+                                            <div class="ablumbox" id="images-ablum"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -303,8 +309,7 @@
                                                     จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์
                                                 </span>
                                             </div>
-                                            <div class="bs-row" id="file-list">
-                                            </div>
+                                            <div class="bs-row" id="file-list"></div>
                                         </div>
                                         <div class="card-body attach-file">
                                             <div class="bs-row">
@@ -350,7 +355,7 @@
     </div>
 </div>
 
-<!-- <div class="loading" id="loading-page"></div> -->
+<div class="loading" id="loading-page"></div>
 
 <?php $app = new \Config\App(); ?>
 <script src="<?= base_url('assets/js/frontend/upload.files.js') ?>?v=<?= $app->script_v ?>"></script>

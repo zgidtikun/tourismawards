@@ -3,11 +3,15 @@
 <script>
     function recapchaToken(){
         return new Promise(function(resolve, reject) {
-            grecaptcha.ready(function() {
-                grecaptcha.execute('<?=$appRecapcha->RECAPCHA_KEY?>', {}).then(function(token) {
-                    resolve({ rccToken: token });
-                });
-            });  
+            <?php if($appRecapcha->RECAPCHA_CK): ?>
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('<?=$appRecapcha->RECAPCHA_KEY?>', {}).then(function(token) {
+                        resolve({ rccToken: token });
+                    });
+                }); 
+            <?php else :?>
+                resolve({ rccToken: null });
+            <?php endif;?>
         });      
     }
 

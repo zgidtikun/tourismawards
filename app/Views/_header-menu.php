@@ -160,7 +160,7 @@
                      </li>
                      <li><a href="javascript:void(0)" id="informationmenu">ข้อมูลการประกวดรางวัล</a>
                         <ul>
-                           <li><a href="<?= base_url('awards-infomation') ?>?p=Attraction">แหล่ง ท่องท่องเที่ยว 6 สาขา</a></li>
+                           <li><a href="<?= base_url('awards-infomation') ?>?p=Attraction">แหล่งท่องท่องเที่ยว 6 สาขา</a></li>
                            <li><a href="<?= base_url('awards-infomation') ?>?p=Accommodation">ที่พักนักท่องเที่ยว 4 สาขา</a></li>
                            <li><a href="<?= base_url('awards-infomation') ?>?p=HealthAndWellness">การท่องเที่ยวเชิงสุขภาพ 4 สาขา</a></li>
                            <li><a href="<?= base_url('awards-infomation') ?>?p=TourProgram">รายการนำเที่ยว</a></li>
@@ -177,7 +177,7 @@
                      </li>
                      <li><a href="javascript:void(0)" id="awardmenu">ผลงานที่ได้รับรางวัล</a>
                         <ul>
-                           <li><a href="<?= base_url('awards-winner') ?>">ครั้งที่ 14</a></li>
+                           <!-- <li><a href="<?= base_url('awards-winner') ?>">ครั้งที่ 14</a></li> -->
                            <li><a href="<?= base_url('awards-winner-13') ?>">ครั้งที่ 13</a></li>
                         </ul>
                      </li>

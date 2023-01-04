@@ -63,7 +63,7 @@ const onFileHandle = (setting, input, type) => {
     }
 };
 
-const uploadFile = (setting, input, handleBy) => {
+const uploadFile = async(setting, input, handleBy) => {
     let formData = new FormData(),
         ref = referance.find(el => el.input == input),
         handle = handleBy == 'input' ? $(input)[0].files : setting.files,
@@ -134,9 +134,9 @@ const uploadFile = (setting, input, handleBy) => {
             api_setting.method = 'action';
             api_setting.url = ref.api;
             api_setting.data = formData;
-            psc.waitDraft('wait');
+            await psc.waitDraft('wait');
 
-            api(api_setting).then(function(response) {
+            api(api_setting).then(async(response) => {
                 let res = response;
 
                 if (res.result == 'error_login') {
@@ -151,7 +151,7 @@ const uploadFile = (setting, input, handleBy) => {
                     showFiles.tycoon(ref.input, psc.questions[setting.cate].question[setting.seg][ref.position]);
                     
                 } else {
-                    psc.waitDraft('finish');
+                    await psc.waitDraft('finish');
                     alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
                 }
 
@@ -173,9 +173,9 @@ const uploadFile = (setting, input, handleBy) => {
             api_setting.method = 'action';
             api_setting.url = ref.api;
             api_setting.data = formData;
-            waitDraft('wait');
+            await waitDraft('wait');
 
-            api(api_setting).then(function(response) {
+            api(api_setting).then(async(response) => {
                 let res = response;
 
                 if (res.result == 'error_login') {
@@ -187,7 +187,7 @@ const uploadFile = (setting, input, handleBy) => {
                   
                 } else {
                     alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
-                    waitDraft('finish');
+                    await waitDraft('finish');
                 }
 
                 if (ref.path == 'paper' || ref.position == 'camera') {
@@ -204,7 +204,7 @@ const uploadFile = (setting, input, handleBy) => {
 
 }
 
-const removeFile = (input, setting) => {
+const removeFile = async(input, setting) => {
     let api_setting = {},
         pointer,
         ref = referance.find(el => el.input == input);
@@ -221,22 +221,22 @@ const removeFile = (input, setting) => {
             pointer = psc.getPointer();
             if(pointer.cate == -1){ pointer.cate = 0; }
             if(pointer.seg == -1){ pointer.seg = 0; }
-            setting.id = psc.questions[pointer.cate].question[pointer.seg].id;
+            setting.id = psc.questions[pointer.cate].question[pointer.seg].reply_id;
             api_setting.url = '/inner-api/answer/remove/file';
-            psc.waitDraft('wait');
+            await psc.waitDraft('wait');
         } else if (ref.app == 'estimate/onsite') {
             pointer = getPointer();
             if(pointer.cate == -1){ pointer.cate = 0; }
             if(pointer.seg == -1){ pointer.seg = 0; }
             setting.id = dataset[pointer.cate].question[pointer.seg].est_id;
             api_setting.url = '/inner-api/estimate/onsite/files/remove';
-            waitDraft('wait');
+            await waitDraft('wait');
         }
 
         setting.position = ref.position;
         api_setting.data = setting;
         
-        api(api_setting).then(function(response) {
+        api(api_setting).then(async(response) => {
             let res = response;
 
             if (res.result == 'error_login') {
@@ -281,10 +281,10 @@ const removeFile = (input, setting) => {
             } 
             else {
                 if(ref.app == 'awards/pre-screen'){
-                    psc.waitDraft('finish');
+                    await psc.waitDraft('finish');
                 }
                 else if(ref.app == 'estimate/onsite'){
-                    waitDraft('finish');
+                    await waitDraft('finish');
                 }
 
                 alert.show(res.result, 'ไม่สามารถลบไฟล์ได้', res.message);

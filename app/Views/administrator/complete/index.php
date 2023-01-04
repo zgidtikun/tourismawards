@@ -4,8 +4,8 @@
       <div class="backendcontent-title-txt">
         <h3>รายการแบบประเมิน</h3>
       </div>
-      <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
-      <!-- <a href="#" onclick="export_data()" class="btn-export"><i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i> Export</a> -->
+      <!-- <a href="javascript:" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
+      <!-- <a href="javascript:" onclick="export_data()" class="btn-export"><i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i> Export</a> -->
     </div>
 
     <form action="" method="get" id="search_form">
@@ -112,9 +112,9 @@
                       <td><?= $value->score_prescreen_tt + $value->score_onsite_tt ?></td>
                       <td>
                         <div class="form-table-col edit">
-                          <a href="#" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
-                          <!-- <a href="#" class="btn-edit" title="ดูข้อมูล" onclick="view_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a> -->
-                          <a href="#" class="btn-edit" title="ให้กรรมการประเมินใหม่" onclick="re_submit('<?= $value->created_by ?>')"><i class="bi bi-arrow-clockwise"></i></a>
+                          <a href="javascript:" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
+                          <!-- <a href="javascript:" class="btn-edit" title="ดูข้อมูล" onclick="view_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a> -->
+                          <a href="javascript:" class="btn-edit" title="ให้กรรมการประเมินใหม่" onclick="re_submit('<?= $value->created_by ?>')"><i class="bi bi-arrow-clockwise"></i></a>
                         </div>
                       </td>
                     </tr>
@@ -187,6 +187,7 @@
     var pgurl = BASE_URL_BACKEND + '/complete';
     active_page(pgurl);
 
+    $.fn.DataTable.ext.pager.numbers_length = 6;
     $("#example").dataTable().fnDestroy();
     $("#example").addClass("nowrap").dataTable({
       responsive: true,

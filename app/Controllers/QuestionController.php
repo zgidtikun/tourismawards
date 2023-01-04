@@ -7,8 +7,12 @@ use Exception;
 
 class QuestionController extends BaseController
 {   
+    private $myId;
+
     public function __construct()
     {
+        $this->myId = session()->get('id');
+
         if(!isset($this->db))
             $this->db = \Config\Database::connect();        
     }
@@ -29,7 +33,7 @@ class QuestionController extends BaseController
                     $subEstimateSelect
                 )
                 ->where([
-                    'estimate_by' => session()->get('id')
+                    'estimate_by' => $this->myId
                 ])
                 ->groupBy('application_id')
                 ->getCompiledSelect();
@@ -38,9 +42,14 @@ class QuestionController extends BaseController
                 ->select('application_form_id afid')
                 ->where('assessment_round',($round == 'pre-screen' ? 1 : 2))
                 ->where(
-                    '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
-                    OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
-                    OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')')
+                    '( admin_id_tourism LIKE \'%"'.$this->myId.'"%\'
+                    OR admin_id_supporting LIKE \'%"'.$this->myId.'"%\'
+                    OR admin_id_responsibility LIKE \'%"'.$this->myId.'"%\')')
+                ->getCompiledSelect();
+
+            $subEstInd = $this->db->table('estimate_individual')
+                ->select('application_id,score_pre, score_onsite')
+                ->where('estimate_by',$this->myId)
                 ->getCompiledSelect();
                       
             $builder = $this->db->table('application_form af')
@@ -58,7 +67,7 @@ class QuestionController extends BaseController
                 ->join('application_type_sub ats','af.application_type_sub_id = ats.id','LEFT')
                 ->join('users_stage us','af.created_by = us.user_id')
                 ->join('('.$subComm.') insc','insc.afid = af.id')
-                ->join('estimate_individual es','insc.afid = es.application_id','LEFT')
+                ->join('('.$subEstInd.') es','insc.afid = es.application_id','LEFT')
                 ->join('('.$subEstimate.') inse','af.id = inse.app_id','LEFT');
 
             if($round == 'pre-screen'){
@@ -70,35 +79,84 @@ class QuestionController extends BaseController
             if($status == 'wait'){
                 $builder = $builder->whereIn('us.status',[1,2,3,4,5]);
             } else {
-                $builder = $builder->whereIn('us.status',[6,7]);
+                $builder = $builder->whereIn('us.status',[1,2,4,5,6,7]);
             }
-            // $builder = $builder->getCompiledSelect();
-            // echo $builder;exit;
+            
             $builder = $builder->get();
             $list = [];
             $UsersStage = new \App\Models\UsersStage();
-            $current_date = date('Y-m-d');
+            $estimate = new \App\Models\Estimate();
+            $judgeRequest = new \App\Controllers\EstimateRequestController();
+            $ObjEst = new \App\Controllers\FrontendController();
+            $current_date = date('Y-m-d H:i:s');
             
             foreach($builder->getResult() as $val){
-                $val->no = 0;
+                $isFinish = $ObjEst->checkEstimateFinish(
+                    $val->id,
+                    $round == 'pre-screen' ? 1 : 2,
+                    $this->myId
+                );
 
-                if(!empty($val->updated_at))
-                    $val->updated_at = date('d-m-Y',strtotime($val->updated_at));
+                if(
+                    ($status == 'wait' && $isFinish == 'unfinish')
+                    || ($status == 'finish' && $isFinish == 'finish')
+                ){
+                    $val->no = 0;
 
-                array_push($list,$val);
+                    if(!empty($val->updated_at))
+                        $val->updated_at = date('d-m-Y',strtotime($val->updated_at));
 
-                if($val->status == 3){
-                    if($current_date > $val->duedate){
-                        $UsersStage->where('id',$val->stage_id)
-                            ->set(['status' => 5])
-                            ->update();
+                    array_push($list,$val);
 
-                        $val->status = 5;
+                    if($isFinish == 'unfinish'){
+                        if($val->status == 3){
+
+                            if($current_date > $val->duedate){
+                                
+                                $UsersStage->where('id',$val->stage_id)
+                                    ->set(['status' => 5])
+                                    ->update();
+
+                                $estimate->where([            
+                                    'application_id' => $val->id,
+                                    'estimate_by' => $this->myId,
+                                    'request_status' => 1
+                                ])
+                                ->set(['request_status' => 0])
+                                ->update();
+
+                                $val->status = 5;
+                                $val->request_status = 1;
+                            } else {
+                                $exprireReq = $judgeRequest->get_expire_request($val->id,$this->myId);
+                                if($exprireReq->expire_status){
+                                    if($exprireReq->request_status == 1){
+                                        $judgeRequest->set_expire_request($val->id,$this->myId);
+                                        $val->status = 5;
+                                        $val->request_status = 1;
+                                    }
+                                    else if($exprireReq->request_status == 4){
+                                        $val->status = 5;
+                                        $val->request_status = 1;
+                                    }
+                                }
+                                else if(!empty($exprireReq->request_status)){
+                                    if($exprireReq->request_status == 4){
+                                        $val->status = 5;
+                                        $val->request_status = 1;
+                                    }                                    
+                                }
+                            }
+
+                        }
+                    } else {
+                        // if(!in_array($val->status,[6,7]))
+                            $val->status = 6;
                     }
-                }
 
-                unset($val->duedate);
-                unset($val->stage_id);
+                    unset($val->duedate);
+                    unset($val->stage_id);
+                }
             }
             
             $result = ['result' => 'success', 'data' => $list];
@@ -115,7 +173,12 @@ class QuestionController extends BaseController
 
     public function estimateQuestion($id)
     {        
-        $result = ['result' => 'success', 'tycoon'=> null, 'data' => [], 'request' => false];
+        $result = [
+            'result' => 'success', 
+            'tycoon'=> null, 
+            'data' => [], 
+            'request' => false
+        ];
 
         $tycoon = $this->db->table('application_form af')
             ->join('application_type at','af.application_type_id = at.id')
@@ -126,7 +189,7 @@ class QuestionController extends BaseController
                 af.application_type_id type_id, af.application_type_sub_id sub_type_id,
                 af.knitter_name, af.attraction_name_th attn_th, af.attraction_name_en attn_en,
                 af.knitter_email, af.knitter_tel, af.updated_at, af.created_by,
-                af.send_date'
+                af.send_date, af.require_lowcarbon'
             )
             ->get();
 
@@ -136,29 +199,35 @@ class QuestionController extends BaseController
             $userId = $val->created_by;
             $type_id = $val->type_id;
             $sub_type_id = $val->sub_type_id;
+            $lowcarbon = $val->require_lowcarbon;
+            $result['lowcarbon'] = $lowcarbon == 1 ? true : false;
         }
             
         $assg = new AssessmentGroup();
-        $group = $assg->findAll();
+        $group = $assg->whereIn(
+            'id', $lowcarbon == 1 ? [1,2,3,4] : [1,2,3]
+        )->findAll();
 
         foreach($group as $asse){
             $counter = 0;
             $temp = ['group' => $asse, 'question' => []];
+            
+            $where = [];
+            $where['q.assessment_group_id'] = $asse->id;
 
-            $where = [
-                'q.assessment_group_id' => $asse->id,
-                'q.application_type_id' => $type_id
-            ];
+            if($asse->id != 4){
+                $where['q.application_type_id'] = $type_id;
 
-            if($type_id != 4){
-                $where['q.application_type_sub_id'] = $sub_type_id;
+                if($type_id != 4){
+                    $where['q.application_type_sub_id'] = $sub_type_id;
+                }
             }
 
             $sqans = $this->db->table('answer')->where('reply_by',$userId)
                 ->getCompiledSelect();
             
             $sqset = $this->db->table('estimate')
-                ->where('estimate_by',session()->get('id'))
+                ->where('estimate_by',$this->myId)
                 ->select('
                     id, question_id, score_pre, score_onsite, comment_pre, 
                     comment_onsite, note_pre, note_onsite, status_pre, status_onsite, 
@@ -173,6 +242,7 @@ class QuestionController extends BaseController
                     q.pre_evaluation_criteria pre_eva, q.pre_scoring_criteria pre_scor,
                     q.pre_score, q.onside_evaluation_criteria os_eva,
                     q.onside_scoring_criteria os_scor, q.onside_score, q.weight,
+                    q.topic_no, q.question_ordering, q.criteria_topic,
                     a.id reply_id, a.reply, a.pack_file,
                     b.id est_id, b.score_pre, b.score_onsite, b.comment_pre, 
                     b.comment_onsite, b.note_pre, b.note_onsite, b.status_pre, b.status_onsite, 
@@ -182,7 +252,7 @@ class QuestionController extends BaseController
                 ->join('('.$sqans.') a','q.id = a.question_id','LEFT')
                 ->join('('.$sqset.') b','q.id = b.question_id','LEFT')
                 ->where($where)
-                ->orderBy('id','ASC') 
+                ->orderBy('q.topic_no ASC, q.question_ordering ASC, q.id ASC') 
                 ->get();
         
             foreach($builder->getResult() as $val){   

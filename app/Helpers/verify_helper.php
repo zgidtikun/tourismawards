@@ -23,14 +23,15 @@ function vDecryption($code)
 function checkVerifyUser($code)
 {    
     $obj_user = new \App\Models\Users();
-    $code = vDecryption($code);    
-    $carray = explode('-',$code);
+    $codeDecrype = vDecryption($code);    
+    $carray = explode('-',$codeDecrype);
     $current_date = date('Ymdhis');
     
     $id = $carray[0];
-    $expire_date = $carray[1];
-    $vcode = $carray[2];
+    $expire_date = date('Ymdhis', strtotime('+1 year'));
 
+    $vcode = (count($carray)>2)? $carray[2]:$carray[1];
+    
     if($current_date <= $expire_date){
         $expire = false;
 
@@ -42,7 +43,10 @@ function checkVerifyUser($code)
             ->first();
 
         if(!empty($cresult)){
-            $obj_user->where('id',$id)
+            $obj_user->where([
+                    'id' => $id,
+                    'verify_status' => 0,
+                ])
                 ->set([
                     'status' => 1,
                     'stage' => 1,
@@ -55,9 +59,43 @@ function checkVerifyUser($code)
             $existPass = empty($cresult->password) ? true : false;
             $verified = true;
         } else {
-            $userId = '';
-            $existPass = false;
-            $verified = false;
+
+            $codeDecrype = vDecryption(urlencode($code));    
+            $carray = explode('-',$codeDecrype);
+            
+            $id = $carray[0];
+            $vcode = (count($carray)>2)? $carray[2]:$carray[1];
+
+            $cresult = $obj_user->where([
+                'id' => $id,
+                'verify_code' => $vcode
+            ])
+            ->select('password')
+            ->first();
+            
+            if(!empty($cresult)){
+                $obj_user->where([
+                        'id' => $id,
+                        'verify_status' => 0,
+                    ])
+                    ->set([
+                        'status' => 1,
+                        'stage' => 1,
+                        'verify_status' => 1,
+                        'verify_date' => date('Y-m-d H:i:s')
+                    ])
+                    ->update();
+                
+                $userId = $id;
+                $existPass = empty($cresult->password) ? true : false;
+                $verified = true;
+
+            } else {
+
+                $userId = '';
+                $existPass = false;
+                $verified = false;
+            }            
         }
     } else {
         $expire = true;

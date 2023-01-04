@@ -9,9 +9,13 @@ use App\Models\ApplicationTypeSub as AppTypeSub;
 
 class ApplicationController extends BaseController
 {
+    private $appForm;
+    private $appType;
+    private $appSub;
 
     private $mapDBFiled = [
-        '1' => ['application_type_id','application_type_sub_id','highlights','link'],
+        '1' => ['application_type_id','application_type_sub_id','highlights','link',
+            'require_lowcarbon'],
         '2' => ['attraction_name_th','attraction_name_en','address_no','address_road',
             'address_sub_district','address_district','address_province','address_zipcode',
             'facebook','instagram','line_id','other_social','google_map'],
@@ -79,8 +83,16 @@ class ApplicationController extends BaseController
         $detail = $this->appForm->where('created_by',$id)->first();
 
         if(!empty($detail)){
-            if(!empty($detail->pack_file))
+            if(!empty($detail->pack_file)){
                 $detail->pack_file = json_decode($detail->pack_file);
+            }
+            
+            if(!empty($detail->request_time)){
+                // $detail->request_time = date('Y-m-d ',strtotime($detail->request_time));
+                $request_time = date('Y-m-d',strtotime($detail->request_time.' + 1 day'));
+                $detail->request_time_str = FormatTree($request_time,'thailand');
+            }
+
             $result = array('result' => 'success', 'data' => $detail);
         } else {
             $instData = array(                
@@ -374,6 +386,16 @@ class ApplicationController extends BaseController
             ->where('created_by',$uid)
             ->first();
         return $require;
+    }
+
+    public function checkRequireLowCarbon($id)
+    {
+        $require = $this->appForm->where('id',$id)
+            ->select('require_lowcarbon')
+            ->first();
+            
+        $require = $require->require_lowcarbon;
+        return !empty($require) && $require == 1 ? true : false;
     }
 }
 

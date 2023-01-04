@@ -4,7 +4,7 @@
       <div class="backendcontent-title-txt">
         <h3>รายการใบสมัครที่รอผู้ประกอบการส่งแบบประเมินขั้นต้น (Pre-Screen) </h3>
       </div>
-      <!-- <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
+      <!-- <a href="javascript:" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
     </div>
 
     <form action="" method="get">
@@ -94,8 +94,8 @@
                       <td class="text-center"><?= docDate($value->created_at, 3) ?></td>
                       <td>
                         <div class="form-table-col edit">
-                          <a href="#" class="btn-edit" title="ดูข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a>
-                          <!-- <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a> -->
+                          <a href="javascript:" class="btn-edit" title="ดูข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a>
+                          <!-- <a href="javascript:" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a> -->
                         </div>
                       </td>
                     </tr>
@@ -120,6 +120,7 @@
     var pgurl = BASE_URL_BACKEND + '/prescreen';
     active_page(pgurl);
 
+    $.fn.DataTable.ext.pager.numbers_length = 6;
     $("#example").dataTable().fnDestroy();
     $("#example").addClass("nowrap").dataTable({
       responsive: true,

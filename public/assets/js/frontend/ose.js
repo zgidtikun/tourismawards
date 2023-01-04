@@ -47,8 +47,8 @@ const getIsFinish = () => {
     return sp.isFinish;
 }
 
-const init = () =>{
-    loading('show');
+const init = async() =>{
+    await loading('show');
 
     api({ method: 'get', url: '/inner-api/boards/estimate/'+appid })
     .then((rs) => {
@@ -89,9 +89,58 @@ const init = () =>{
     });
 }
 
+const save = (cate,seg) => {
+    return new Promise(async(resolve, reject) => {
+        await waitDraft('wait');
+        if(cate == -1){ cate = 0; }
+        if(seg == -1){ seg = 0; }
+
+        const question = dataset[cate].question[seg];
+
+        const st = {
+            method: 'post',
+            url: '/inner-api/estimate/onsite/draft',
+            data: {
+                target: 'onsite',
+                action: empty(question.est_id) ? 'create' : 'update',
+                application_id: appid,
+                question_id: question.id,
+                est_id: question.est_id,
+                answer_id: question.reply_id,
+                score_origin: question.score_onsite_origin,
+                score: question.score_onsite,
+                tscore: question.tscore_onsite,
+                comment: question.comment_onsite,
+                note: question.note_onsite,
+            }
+        };
+        
+        api(st).then((rs) => {
+            if(rs.result == 'success'){
+                if(st.data.action == 'create'){
+                    dataset[cate].question[seg].est_id = rs.id;
+                }
+
+                dataset[cate].question[seg].estimate = false;
+                alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'});    
+                waitDraft('finish');
+                resolve({ result: 'success' });    
+            }
+            else if(rs.result == 'error_login'){
+                alert.login();
+                resolve({ result: 'error' });
+            } else {
+                alert.toast({icon: rs.result, title: rs.message});      
+                waitDraft('finish');
+                resolve({ result: 'error' });  
+            }
+        });
+    });
+}
+
 const draft = (cate,seg) => {
-    return new Promise(function(resolve, reject){
-        waitDraft('wait');
+    return new Promise(async(resolve, reject) => {
+        await waitDraft('wait');
         if(cate == -1){ cate = 0; }
         if(seg == -1){ seg = 0; }
 
@@ -124,65 +173,70 @@ const draft = (cate,seg) => {
                     }
 
                     dataset[cate].question[seg].estimate = false;
-                    alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'});
-                    resolve({ result: 'success' });        
+                    alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'});    
                     waitDraft('finish');
+                    resolve({ result: 'success' });    
                 }
                 else if(rs.result == 'error_login'){
                     alert.login();
                     resolve({ result: 'error' });
                 } else {
-                    alert.toast({icon: rs.result, title: rs.message});
-                    resolve({ result: 'error' });        
+                    alert.toast({icon: rs.result, title: rs.message});      
                     waitDraft('finish');
+                    resolve({ result: 'error' });  
                 }
             });
-        } else {
-            resolve({ result: 'success' });                  
+        } else {                 
             waitDraft('finish')
+            resolve({ result: 'success' }); 
         }
     });
 }
 
 const waitDraft = sts => {
-    
-    if(
-        $.inArray(Number(getStageStatus()),[3,6,7]) === -1
-        && getIsFinish() != 'finish'
-    ){
-        if(sts == 'wait'){
-            $('#tab-0').addClass('disabled');
-            $('#tab-1').addClass('disabled');
-            $('#tab-2').addClass('disabled');
-            $('#camera-remove').prop('disabled',true);
-            $('.btn-choice').addClass('disabled');
-            $('.btn-confirm-submit, .btn-file, .btn-action').prop('disabled',true);
-            $('[name=score]').prop('disabled',true);
-            esCmm.prop('readonly','readyonly');
-            esNote.prop('readonly','readyonly');
-            btnBack.prop('disabled',true);
-            btnNext.prop('disabled',true);
-            btnSMemo.prop('disabled',true);
-            btnSave.prop('disabled',true);
-            btnReset.prop('disabled',true);
+    return new Promise(function(resolve, reject){
+        if(
+            $.inArray(Number(getStageStatus()),[3,6,7]) === -1
+            && getIsFinish() != 'finish'
+        ){
+            if(sts == 'wait'){
+                $('#tab-0').addClass('disabled');
+                $('#tab-1').addClass('disabled');
+                $('#tab-2').addClass('disabled');
+                $('#camera-remove').prop('disabled',true);
+                $('.btn-choice').addClass('disabled');
+                $('.btn-confirm-submit, .btn-file, .btn-action').prop('disabled',true);
+                $('[name=score]').prop('disabled',true);
+                esCmm.prop('readonly','readyonly');
+                esNote.prop('readonly','readyonly');
+                btnBack.prop('disabled',true);
+                btnNext.prop('disabled',true);
+                btnSMemo.prop('disabled',true);
+                btnSave.prop('disabled',true);
+                btnReset.prop('disabled',true);
+                resolve({finish: true});
+            } else {
+                $('#tab-0').removeClass('disabled');
+                $('#tab-1').removeClass('disabled');
+                $('#tab-2').removeClass('disabled');
+                $('#camera-remove').prop('disabled',false);
+                $('.btn-choice').removeClass('disabled');
+                $('.btn-confirm-submit, .btn-file, .btn-action').prop('disabled',false);
+                $('[name=score]').prop('disabled',false);
+                esCmm.prop('readonly','');
+                esNote.prop('readonly','');
+                btnBack.prop('disabled',false);
+                btnNext.prop('disabled',false);
+                btnSMemo.prop('disabled',false);
+                btnSave.prop('disabled',false);
+                btnReset.prop('disabled',false);        
+                checkComplete();
+                resolve({finish: true});
+            }
         } else {
-            $('#tab-0').removeClass('disabled');
-            $('#tab-1').removeClass('disabled');
-            $('#tab-2').removeClass('disabled');
-            $('#camera-remove').prop('disabled',false);
-            $('.btn-choice').removeClass('disabled');
-            $('.btn-confirm-submit, .btn-file, .btn-action').prop('disabled',false);
-            $('[name=score]').prop('disabled',false);
-            esCmm.prop('readonly','');
-            esNote.prop('readonly','');
-            btnBack.prop('disabled',false);
-            btnNext.prop('disabled',false);
-            btnSMemo.prop('disabled',false);
-            btnSave.prop('disabled',false);
-            btnReset.prop('disabled',false);        
-            checkComplete();
+            resolve({finish: true});
         }
-    }
+    });
 }
 
 const setFinish = () => {
@@ -217,7 +271,7 @@ const setFinish = () => {
             if(!empty(qv.score_onsite)){
                 arrayScore.push({
                     appId: appid,
-                    stage: 1,
+                    stage: 2,
                     assign: av,
                     assign_total: dataset[index].group.score_onsite,
                     est_id: qv.est_id,
@@ -233,14 +287,17 @@ const setFinish = () => {
                 });
 
                 if(av == 1){ 
+                    // tescore += Number(qv.score_onsite_origin) *  Number(qv.weight);
                     tescore += Number(qv.score_onsite);
                     ttescore += Number(qv.onside_score);
                 }
                 else if(av == 2){ 
+                    // sbscoe += Number(qv.score_onsite_origin) *  Number(qv.weight);
                     sbscoe += Number(qv.score_onsite);
                     tsbscoe += Number(qv.onside_score);
                 }
                 else{
+                    // rsscore += Number(qv.score_onsite_origin) *  Number(qv.weight);
                     rsscore += Number(qv.score_onsite);
                     trsscore += Number(qv.onside_score);
                 }
@@ -272,21 +329,23 @@ const setFinish = () => {
             cancel: 'ยกเลิก'
         }
     })
-    .then((rs) => {
+    .then(async(rs) => {
         if(rs.status){
-            loading('show');
+            await loading('show');
 
             const st = {
                 method: 'post',
                 url: '/inner-api/estimate/onsite/complete',
-                data: {
-                    appId: appid,
-                    stage: 2,
-                    score_te: stescore,
-                    score_sb: ssbscore,
-                    score_rs: srsscore,
-                    score_tt: sscore
-                }
+                data:  JSON.stringify({
+                    data:{
+                        appId: appid,
+                        stage: 2,
+                        score_te: stescore,
+                        score_sb: ssbscore,
+                        score_rs: srsscore,
+                        score_tt: sscore,
+                        sourcs: arrayScore
+                }})
             }
 
             api(st).then((rs) => {
@@ -314,16 +373,18 @@ const setFinish = () => {
 const setQuestion = (cate,seg) => {   
     const regex = /<[^>]+>/gi;
     let point = getPointer(),
+        changeCate = false;
         qcontent = '';
-        
-    draft(point.cate,point.seg).then(draftRes => {
-        
-        waitDraft('finish');
-        setPointer(cate,seg);
 
-        if(point.cate != cate){
+    if(point.cate != cate){
+        changeCate = true;
+    }
+        
+    draft(point.cate,point.seg).then((draftRes) => {
+        if(changeCate){
             $('.btn-form-step').removeClass('active');
             $('#tab-'+cate).addClass('active');
+            $('#tab-'+cate)[0].scrollIntoView();
             setDropdown(dataset[cate].question,cate,seg);
         }
 
@@ -336,24 +397,32 @@ const setQuestion = (cate,seg) => {
         $('.hide-choice').hide();
         $('body').removeClass('lockbody');
 
-        $('.sl').removeClass('active');
-
-        if(!$('#sl-'+seg).hasClass('complete')){
-            $('#sl-'+seg).addClass('active');
+        if(!changeCate){
+            if(
+                empty(dataset[point.cate].question[point.seg].score_onsite)
+            ){
+                $('#sl-'+point.seg).removeClass('active');
+                $('#sl-'+point.seg).removeClass('complete');
+            } else {
+                $('#sl-'+point.seg).removeClass('active');
+                $('#sl-'+point.seg).addClass('complete');
+            }
         }
-        
+
         if(
-            !empty(dataset[point.cate].question[point.seg].score_onsite)
+            !empty(question.score_onsite)
         ){
-            $('#sl-'+point.seg).addClass('complete');
+            $('#sl-'+seg).removeClass('active');
+            $('#sl-'+seg).addClass('complete');
         } 
         else {
-            $('#sl-'+point.seg).removeClass('complete');
+            $('#sl-'+seg).removeClass('complete');
+            $('#sl-'+seg).addClass('active');
         }
 
         setPointer(cate,seg);
 
-        if(regex.test(question.pre_eva)){
+        if(regex.test(question.question)){
             qcontent = question.question;
         } else {        
             if(question.question.search('ระบุ,') !== -1){
@@ -381,7 +450,7 @@ const setQuestion = (cate,seg) => {
                 qcontent = question.question;
             }
         }
-        
+        console.log(question);
         qTitle.attr('data-id',question.reply_id);
         qTitle.html(category.group.name);
         qSum.html(category.question.length);
@@ -400,6 +469,22 @@ const setQuestion = (cate,seg) => {
             qRemark.hide();
         }
 
+        const url = getBaseUrl();
+        let ap = '';
+
+        $.each(question.images,(k,v) => {
+            ap += (
+                '<div class="ablumbox-col">'
+                    + '<div class="ablum-mainimg">'
+                        + '<div class="ablum-mainimg-scale">'
+                            + '<img src="'+url+'/'+v.file_path+'" '
+                            + 'class="ablum-img" onclick="zoomImages(this)">'
+                        + '</div>'
+                    + '</div>'
+                + '</div>'
+            );
+        });
+
         countChar($('#comment'))
 
         let back = seg != 0 ? seg-1 : seg,
@@ -407,7 +492,7 @@ const setQuestion = (cate,seg) => {
 
         btnBack.attr('onclick','setQuestion('+cate+','+back+')');
         btnNext.attr('onclick','setQuestion('+cate+','+next+')');
-        btnSave.attr('onclick','draft('+cate+','+seg+')');
+        btnSave.attr('onclick','save('+cate+','+seg+')');
         btnSMemo.attr('onclick','draft('+cate+','+seg+')');
 
         if(seg == 0){
@@ -443,21 +528,7 @@ const setQuestion = (cate,seg) => {
             return;
         }   
 
-        let ap = ev = sc = '';
-        const url = getBaseUrl();
-
-        $.each(question.images,(k,v) => {
-            ap += (
-                '<div class="ablumbox-col">'
-                    + '<div class="ablum-mainimg">'
-                        + '<div class="ablum-mainimg-scale">'
-                            + '<img src="'+url+'/'+v.file_path+'" '
-                            + 'class="ablum-img" onclick="zoomImages(this)">'
-                        + '</div>'
-                    + '</div>'
-                + '</div>'
-            );
-        });
+        let ev = sc = '';
 
         qAblum.html(ap);
         
@@ -465,34 +536,17 @@ const setQuestion = (cate,seg) => {
         showFiles.tycoon('#etm-file',question.estFiles.paper);
         showFiles.tycoon('#camera',question.estFiles.camera);
 
-        const regex = /<[^>]+>/gi;
-
-        if(regex.test(str)){
-            ev = question.pre_eva;
+        if(regex.test(question.os_eva)){
+            ev = question.os_eva;
         } else {
-            const eva = question.pre_eva.split(',');
-        
-            $.each(eva,(k,v) => {
-                if(!empty(v)){
-                    let val, tmp = v.split('.');
-                    
-                    if(tmp.length > 1) { val = tmp[0].trim()+'. '+tmp[1].trim(); }
-                    else { val = tmp[0].trim(); }
-    
-                    if(v != ''){
-                        ev += (
-                            '<span class="txt-yellow title-comment">'
-                            + val
-                            + '</span><br>'
-                        );
-                    }
-                }
-            });
+            ev = '<span class="txt-yellow title-comment">'
+                    + question.os_eva
+                '</span>';
         }
         
         const sco = question.os_scor.split(',');
 
-        sc += '<h4>เกณฑ์การให้คะแนนรอบ Pre-Screen</h4>';
+        sc += '<h4>เกณฑ์การให้คะแนนรอบ ลงพื้นที่</h4>';
         
         $.each(sco,(k,v) => {
             if(!empty(v)){
@@ -525,7 +579,7 @@ const setQuestion = (cate,seg) => {
 
         qEva.html(ev);
         qSco.html(sc);
-        disabledForm();
+        checkComplete();
     });
 }
 
@@ -633,9 +687,11 @@ const resetEstimate = (cate,seg) => {
 
     const point = getPointer();
     dataset[point.cate].question[point.seg].comment_onsite = null;
+    dataset[point.cate].question[point.seg].score_onsite_origin = null;
     dataset[point.cate].question[point.seg].score_onsite = null;
     dataset[point.cate].question[point.seg].tscore_onsite = null;
     dataset[point.cate].question[point.seg].estimate = true;
+    checkComplete();
 }
 
 const calScore = (ele) => {
@@ -659,23 +715,14 @@ const calScore = (ele) => {
     dataset[point.cate].question[point.seg].estimate = true;
 }
 
-const getCurrentDate = () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth()+1;
-    const day = date.getDate();
-    return year + '-' +
-        ( month < 10 ? '0' : '') + month + '-' +
-        ( day <10 ? '0' : '') + day;
-}
-
-esCmm.keyup(() => {
+esCmm.on('keypu change',() => {
     const point = getPointer();
     dataset[point.cate].question[point.seg].comment_onsite = esCmm.val();
     dataset[point.cate].question[point.seg].estimate = true;
+    countChar($('#comment'));
 });
 
-esNote.keyup(() => {
+esNote.on('keypu change',() => {
     const point = getPointer();
     dataset[point.cate].question[point.seg].note_onsite = esCmm.val();
     dataset[point.cate].question[point.seg].estimate = true;

@@ -30,7 +30,7 @@ function px($array)
 function pp_sql()
 {
     $db = \Config\Database::connect();
-    echo $db->getLastQuery().';';
+    echo $db->getLastQuery() . ';';
     echo '<br>';
 }
 
@@ -431,4 +431,20 @@ function mainAddress($addressUse)
     }
 
     return implode(' ', $addr);
+}
+
+function readFiles($dir)
+{
+    $file_name = [];
+    if (is_dir($dir)) {
+        if ($dh = opendir($dir)) {
+            while (($file = readdir($dh)) !== false) {
+                if ($file != '.' && $file != '..') {
+                    $file_name[] = $dir.$file;
+                }
+            }
+            closedir($dh);
+        }
+    }
+    return $file_name;
 }

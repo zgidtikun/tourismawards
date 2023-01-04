@@ -2,7 +2,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>ข้อมูลใบสมัคร</h3>
+        <h3>รายการแบบประเมินที่รอเพิ่มกรรมการรอบการประเมินขั้นต้น (Pre-Screen)</h3>
       </div>
     </div>
 
@@ -221,7 +221,7 @@
                 ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_1">1,000</span>/1,000)</span>
               </div>
               <div>
-                <textarea rows="6" id="reply_1" onkeyup="countChar(this, 'charNum_1')"></textarea>
+                <textarea rows="6" id="reply_1" onkeyup="countChar(this, 'charNum_1')" readonly></textarea>
               </div>
             </div>
 
@@ -243,11 +243,17 @@
                 </div>
               </div>
             </div>
+
+            <?php if ($question[1][0]->remark != "") : ?>
+              <div class="regis-form-data-col attachfile">
+                <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_1"><?= $question[1][0]->remark ?></span></div>
+              </div>
+            <?php endif; ?>
           </div>
 
           <div class="regis-form-data-row">
             <div class="regis-form-data-col1 continue">
-              <button type="button" class="btn-next" id="btn_back_1" onclick="btn_back(this, 1)" no="<?= count($question[1]) ?>" style="display: none;">ย้อนกลับ</button>
+              <button type="button" class="btn-next" id="btn_back_1" onclick="btn_back(this, 1)" no="<?= count($question[1]) ?>">ย้อนกลับ</button>
               <button type="button" class="btn-next" id="btn_next_1" onclick="btn_next(this, 1)" no="1">ถัดไป</button>
             </div>
 
@@ -316,7 +322,7 @@
                 ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_2">1,000</span>/1,000)</span>
               </div>
               <div>
-                <textarea rows="6" id="reply_2" onkeyup="countChar(this, 'charNum_2')"></textarea>
+                <textarea rows="6" id="reply_2" onkeyup="countChar(this, 'charNum_2')" readonly></textarea>
               </div>
             </div>
 
@@ -338,11 +344,17 @@
                 </div>
               </div>
             </div>
+
+            <?php if ($question[2][0]->remark != "") : ?>
+              <div class="regis-form-data-col attachfile">
+                <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_2"><?= $question[2][0]->remark ?></span></div>
+              </div>
+            <?php endif; ?>
           </div>
 
           <div class="regis-form-data-row">
             <div class="regis-form-data-col1 continue">
-              <button type="button" class="btn-next" id="btn_back_2" onclick="btn_back(this, 2)" no="<?= count($question[2]) ?>" style="display: none;">ย้อนกลับ</button>
+              <button type="button" class="btn-next" id="btn_back_2" onclick="btn_back(this, 2)" no="<?= count($question[2]) ?>">ย้อนกลับ</button>
               <button type="button" class="btn-next" id="btn_next_2" onclick="btn_next(this, 2)" no="1">ถัดไป</button>
             </div>
 
@@ -411,7 +423,7 @@
                 ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_3">1,000</span>/1,000)</span>
               </div>
               <div>
-                <textarea rows="6" id="reply_3" onkeyup="countChar(this, 'charNum_3')"></textarea>
+                <textarea rows="6" id="reply_3" onkeyup="countChar(this, 'charNum_3')" readonly></textarea>
               </div>
             </div>
 
@@ -433,11 +445,18 @@
                 </div>
               </div>
             </div>
+
+            <?php if ($question[3][0]->remark != "") : ?>
+              <div class="regis-form-data-col attachfile">
+                <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_3"><?= $question[3][0]->remark ?></span></div>
+              </div>
+            <?php endif; ?>
+
           </div>
 
           <div class="regis-form-data-row">
             <div class="regis-form-data-col1 continue">
-              <button type="button" class="btn-next" id="btn_back_3" onclick="btn_back(this, 3)" no="<?= count($question[3]) ?>" style="display: none;">ย้อนกลับ</button>
+              <button type="button" class="btn-next" id="btn_back_3" onclick="btn_back(this, 3)" no="<?= count($question[3]) ?>">ย้อนกลับ</button>
               <button type="button" class="btn-next" id="btn_next_3" onclick="btn_next(this, 3)" no="1">ถัดไป</button>
             </div>
 
@@ -497,14 +516,14 @@
       var insert_id = $('#insert_id').val();
       if (insert_id == 0 || insert_id == "") {
         var res = main_save(BASE_URL_BACKEND + '/estimate/saveInsert', '#input_form');
-        res_swal(res, 0, function () {
+        res_swal(res, 0, function() {
           if (res.type == 'success') {
             window.location.href = BASE_URL_BACKEND + '/estimate/prescreen';
           }
         });
       } else {
         var res = main_save(BASE_URL_BACKEND + '/estimate/saveUpdate', '#input_form');
-        res_swal(res, 0, function () {
+        res_swal(res, 0, function() {
           if (res.type == 'success') {
             window.location.href = BASE_URL_BACKEND + '/estimate/prescreen';
           }
@@ -573,26 +592,6 @@
     }
   };
 
-  function change_no(elm, tab, id) {
-    var question = JSON.parse($('#data_question').val());
-    // if (tab == 1) {
-    $('.select_no_' + tab).removeClass('active');
-    $(elm).addClass('active');
-    var no = Number(id) + Number(1);
-    $(question).filter(function(index) {
-      if (question[tab][id].question.indexOf("โปรดระบุ,")) {
-        var text = question[tab][id].question.split(',');
-        $('#question_name_' + tab).html(no + '. ' + text.join("<br>&nbsp;&nbsp;"));
-      } else {
-        $('#question_name_' + tab).html(no + '. ' + question[tab][id].question);
-      }
-      $('#question_no_' + tab).html(no);
-      $('#btn_next_' + tab).attr('no', no);
-      add_aws(question[tab][id].id, tab);
-    });
-    // }
-  }
-
   function add_aws(id, tab) {
     var data = {
       id: id,
@@ -629,35 +628,45 @@
     $('#ablumbox_' + tab).html(ablumbox);
   }
 
+  function change_no(elm, tab, id) {
+    var question = JSON.parse($('#data_question').val());
+    $('.select_no_' + tab).removeClass('active');
+    $(elm).addClass('active');
+    var no = Number(id) + Number(1);
+    $(question).filter(function(index) {
+      $('#question_name_' + tab).html(no + '. ' + question[tab][id].question);
+      $('#remark_text_' + tab).html(question[tab][id].remark);
+      $('#question_no_' + tab).html(no);
+      $('#btn_next_' + tab).attr('no', no);
+      $('#btn_back_' + tab).attr('no', no);
+      add_aws(question[tab][id].id, tab);
+    });
+  }
+
   function btn_back(elm, tab) {
     var id = $(elm).attr('no');
     var no = Number(id) - Number(1);
     $('#select_no_' + tab + '_' + no).click();
-    $('#btn_back_' + tab).attr('no', no);
-    if (no == 1) {
-      $('#btn_back_' + tab).hide();
-      $('#btn_next_' + tab).show();
-      $('#btn_back_' + tab).attr('no', 4);
+    if (no <= 1) {
+      $('#btn_back_' + tab).attr('no', 1);
       $('#btn_next_' + tab).attr('no', 1);
     } else {
-      $('#btn_back_' + tab).show();
-      $('#btn_next_' + tab).hide();
+      $('#btn_back_' + tab).attr('no', no);
+      $('#btn_next_' + tab).attr('no', no);
     }
   }
 
   function btn_next(elm, tab) {
     var id = $(elm).attr('no');
     var no = Number(id) + Number(1);
-    var question_count = $('#question_count' + tab).text();
+    var question_count = $('#question_count_' + tab).text();
     $('#select_no_' + tab + '_' + no).click();
-    $('#btn_next_' + tab).attr('no', no);
-    if (no == question_count) {
-      $('#btn_next_' + tab).hide();
-      $('#btn_back_' + tab).show();
-      $('#btn_next_' + tab).attr('no', 1);
+    if (no >= question_count) {
+      $('#btn_back_' + tab).attr('no', question_count);
+      $('#btn_next_' + tab).attr('no', question_count);
     } else {
-      $('#btn_next_' + tab).show();
-      $('#btn_back_' + tab).hide();
+      $('#btn_next_' + tab).attr('no', no);
+      $('#btn_back_' + tab).attr('no', no);
     }
   }
 </script>

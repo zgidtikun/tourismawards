@@ -12,7 +12,7 @@ class Estimate extends BaseController
 {
     public function __construct()
     {
-        helper(['semail', 'verify']);
+        helper(['semail', 'verify', 'log']);
 
         $this->ApplicationForm = new ApplicationForm;
         $this->ApplicationType = new ApplicationType;
@@ -78,8 +78,9 @@ class Estimate extends BaseController
         $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 1)->get()->getRowObject();
 
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
-        $data['question'] = $this->db->table('question')->where('application_type_sub_id', $data['result']->application_type_sub_id)->where('pre_status', 1)->get()->getResultObject();
+        $data['question'] = $this->db->table('question')->where('application_type_sub_id', $data['result']->application_type_sub_id)->where('pre_status', 1)->orderBy('topic_no', 'asc')->orderBy('question_ordering', 'asc')->orderBy('id', 'asc')->get()->getResultObject();
 
+        // pp_sql();
         // px($data['question']);
         $question = [];
         if (!empty($data['question'])) {
@@ -122,6 +123,37 @@ class Estimate extends BaseController
         $result = $this->db->table('committees')->insert($data);
         $insert_id = $this->db->insertID();
         if ($result) {
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            @mkdir(FCPATH . 'logs/backend-estimate', 0777, true);
+            $fp = fopen(FCPATH . 'logs/backend-estimate/application_id_' . $post['application_form_id'] . '.txt', 'a+');
+
+            fwrite($fp, "====================== Start Log Application " . $post['application_form_id'] . " ======================\n");
+            fwrite($fp, "มีการมอบหมายกรรมการรอบประเมินขั้นต้น (Pre-Screen) โดย " . session()->account . " มีกรรมการทั้งหมด " . count($count) . " คน \n");
+            fwrite($fp, "ด้าน Tourism " . count($post['tourism']) . "คน ID : " . implode(',', $post['tourism']) . " \n");
+            fwrite($fp, "ด้าน Supporting " . count($post['supporting']) . "คน ID : " . implode(',', $post['supporting']) . " \n");
+            fwrite($fp, "ด้าน Responsibility " . count($post['responsibility']) . "คน ID : " . implode(',', $post['responsibility']) . " \n");
+
+            fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            fclose($fp);
+
+            $text = "มีการมอบหมายกรรมการรอบประเมินขั้นต้น (Pre-Screen) โดย " . session()->account . " มีกรรมการทั้งหมด " . count($count) . " คน \n";
+            $text .= "ด้าน Tourism " . count($post['tourism']) . "คน ID : " . implode(',', $post['tourism']) . " \n";
+            $text .= "ด้าน Supporting " . count($post['supporting']) . "คน ID : " . implode(',', $post['supporting']) . " \n";
+            $text .= "ด้าน Responsibility " . count($post['responsibility']) . "คน ID : " . implode(',', $post['responsibility']) . " \n";
+
+            $setting = [
+                'application_form_id' => $post['application_form_id'],
+                'text'  => $text,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
             $this->sendMail($insert_id);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
@@ -152,6 +184,38 @@ class Estimate extends BaseController
 
         $result = $this->db->table('committees')->where('id', $post['insert_id'])->update($data);
         if ($result) {
+            
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            @mkdir(FCPATH . 'logs/backend-estimate', 0777, true);
+            $fp = fopen(FCPATH . 'logs/backend-estimate/application_id_' . $post['application_form_id'] . '.txt', 'a+');
+
+            fwrite($fp, "====================== Start Log Application " . $post['application_form_id'] . " ======================\n");
+            fwrite($fp, "มีการแก้ไขมอบหมายกรรมการรอบประเมินขั้นต้น (Pre-Screen) โดย " . session()->account . " มีกรรมการทั้งหมด " . count($count) . " คน \n");
+            fwrite($fp, "ด้าน Tourism " . count($post['tourism']) . "คน ID : " . implode(',', $post['tourism']) . " \n");
+            fwrite($fp, "ด้าน Supporting " . count($post['supporting']) . "คน ID : " . implode(',', $post['supporting']) . " \n");
+            fwrite($fp, "ด้าน Responsibility " . count($post['responsibility']) . "คน ID : " . implode(',', $post['responsibility']) . " \n");
+
+            fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            fclose($fp);
+
+            $text = "มีการแก้ไขมอบหมายกรรมการรอบประเมินขั้นต้น (Pre-Screen) โดย " . session()->account . " มีกรรมการทั้งหมด " . count($count) . " คน \n";
+            $text .= "ด้าน Tourism " . count($post['tourism']) . "คน ID : " . implode(',', $post['tourism']) . " \n";
+            $text .= "ด้าน Supporting " . count($post['supporting']) . "คน ID : " . implode(',', $post['supporting']) . " \n";
+            $text .= "ด้าน Responsibility " . count($post['responsibility']) . "คน ID : " . implode(',', $post['responsibility']) . " \n";
+
+            $setting = [
+                'application_form_id' => $post['application_form_id'],
+                'text'  => $text,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -219,8 +283,9 @@ class Estimate extends BaseController
         $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 1)->get()->getRowObject();
 
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
-        $data['question'] = $this->db->table('question')->where('application_type_sub_id', $data['result']->application_type_sub_id)->where('pre_status', 1)->get()->getResultObject();
+        $data['question'] = $this->db->table('question')->where('application_type_sub_id', $data['result']->application_type_sub_id)->where('pre_status', 1)->orderBy('topic_no', 'asc')->orderBy('question_ordering', 'asc')->orderBy('id', 'asc')->get()->getResultObject();
 
+        // pp_sql();
         // px($data['question']);
         $question = [];
         if (!empty($data['question'])) {
@@ -249,7 +314,7 @@ class Estimate extends BaseController
             foreach (json_decode($result->admin_id_tourism) as $key => $value) {
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน '.$result->attraction_name_th.' ด้าน Tourism Excellence กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
                 $email_data = [
                     '_header' => $message,
                     '_content' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname . ' <br>' . $message
@@ -278,7 +343,6 @@ class Estimate extends BaseController
                         'send_by' => session()->account,
                     ]
                 );
-
             }
         }
 
@@ -286,7 +350,7 @@ class Estimate extends BaseController
             foreach (json_decode($result->admin_id_supporting) as $key => $value) {
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน '.$result->attraction_name_th.' ด้าน Supporting Business & Marketing Factors กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
                 $email_data = [
                     '_header' => $message,
                     '_content' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname . ' <br>' . $message
@@ -315,7 +379,6 @@ class Estimate extends BaseController
                         'send_by' => session()->account,
                     ]
                 );
-
             }
         }
 
@@ -323,7 +386,7 @@ class Estimate extends BaseController
             foreach (json_decode($result->admin_id_responsibility) as $key => $value) {
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน '.$result->attraction_name_th.' กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
                 $email_data = [
                     '_header' => $message,
                     '_content' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname . ' <br>' . $message
@@ -352,7 +415,6 @@ class Estimate extends BaseController
                         'send_by' => session()->account,
                     ]
                 );
-
             }
         }
     }

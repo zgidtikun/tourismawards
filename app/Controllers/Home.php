@@ -11,13 +11,20 @@ class Home extends BaseController
     {        
         $_app = new \Config\App();
         $this->recapcha = $_app->RECAPCHA_CK;
+
+        if(!isset($this->db))
+            $this->db = \Config\Database::connect();    
     }
+
     public function index()
     {
         $obj_user = new \App\Models\Users();
         $obj_news = new \App\Models\News();
+        $data_judge = [];
+        $data_news = [];
         
-        $judge = $obj_user->where([
+        $judges = $this->db->table('users')
+        ->where([
             'role_id' => 3,
             'status' => 1,
             'status_delete' => 1
@@ -26,28 +33,36 @@ class Home extends BaseController
             'CONCAT(name,\' \',surname) fullname, profile, position'
         , false)
         ->limit(5)
-        ->findAll();        
+        ->get();        
 
-        foreach($judge as $val){
-            if(empty($val->pofile))
-                $val->profile = 'assets/images/unknown_user.jpg';
+        foreach($judges->getResult() as $val){
+            $judge = $val;
+
+            if(empty($judge->pofile)){
+                $judge->profile = 'assets/images/unknown_user.jpg';
+            }
+
+            array_push($data_judge,$judge);
         }
 
-        $news  = $obj_news->where('publish_end >=',"'".date('Y-m-d H:i:s')."'")
+        $news = $this->db->table('news')
+            ->where('publish_end >=',"'".date('Y-m-d H:i:s')."'")
             ->select('id, title, description, image_cover, created_by, publish_start')
             ->orderBy('id','desc')
             ->limit(4)
-            ->findAll();
+            ->get();
             
-        foreach($news as $new){
+        foreach($news->getResult() as $val){
+            $new = $val;
             $new->publish_start = docDate($new->publish_start,3,'thailand');
+            array_push($data_news,$new);
         }
 
         $data = [
             'title' => 'Thailand Tourism Awards',
             '_banner' => true,
-            'judge' => json_decode(json_encode($judge),true),
-            'news' => json_decode(json_encode($news),true),
+            'judge' => json_decode(json_encode($data_judge),true),
+            'news' => json_decode(json_encode($data_news),true),
             'view' => 'index'
         ];
         return view('template-app',$data);
@@ -57,13 +72,19 @@ class Home extends BaseController
     {
         helper('verify');
         $verified = checkVerifyUser($_GET['c']);
+
+        /* Clear current session anyway when click verify link and verified success */
+        if($verified->result === true){
+            $list = array('isLoggedIn','id','account','user','role','default');
+            session()->remove($list);
+        }
         
         return view('template-frontend',array(
             'title' => 'Verify User',
             '_id' => $verified->id,
             '_verified' => $verified->result,
             '_password' => $verified->pass,
-            '_expire' => $verified->expire,
+            // '_expire' => $verified->expire,
             'view' => 'frontend/verify-user'
         ));
     }
@@ -327,7 +348,7 @@ class Home extends BaseController
                 '_content' => 'คุณ xxxxxxxxxx xxxxxxxxxxxx ได้ลงทะเบียนเข้าาประกวดรางวัล'
                     . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2556 (Thailand Tourism Awards 2023) '
                     . 'ด้วยอีเมล xxxxxxxxxxx โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ '
-                    . '<b><a href="#">'
+                    . '<b><a href="javascript:">'
                     . 'Verify</a></b>'
             ]);
     }

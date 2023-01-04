@@ -12,7 +12,7 @@ class Onsite extends BaseController
 {
     public function __construct()
     {
-        helper(['semail', 'verify']);
+        helper(['semail', 'verify', 'log']);
 
         $this->ApplicationForm = new ApplicationForm;
         $this->ApplicationType = new ApplicationType;
@@ -80,7 +80,7 @@ class Onsite extends BaseController
         $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 2)->get()->getRowObject();
 
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
-        $data['question'] = $this->db->table('question')->where('application_type_sub_id', $data['result']->application_type_sub_id)->where('onside_status', 1)->get()->getResultObject();
+        $data['question'] = $this->db->table('question')->where('application_type_sub_id', $data['result']->application_type_sub_id)->where('onside_status', 1)->orderBy('topic_no', 'asc')->orderBy('question_ordering', 'asc')->orderBy('id', 'asc')->get()->getResultObject();
 
         // px($data['question']);
         $question = [];
@@ -123,6 +123,38 @@ class Onsite extends BaseController
         $result = $this->db->table('committees')->insert($data);
         $insert_id = $this->db->insertID();
         if ($result) {
+
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            @mkdir(FCPATH . 'logs/backend-onsite', 0777, true);
+            $fp = fopen(FCPATH . 'logs/backend-onsite/application_id_' . $post['application_form_id'] . '.txt', 'a+');
+
+            fwrite($fp, "====================== Start Log Application " . $post['application_form_id'] . " ======================\n");
+            fwrite($fp, "มีการมอบหมายกรรมการรอบลงพื้นที่ โดย " . session()->account . " มีกรรมการทั้งหมด " . count($count) . " คน \n");
+            fwrite($fp, "ด้าน Tourism " . count($post['tourism']) . "คน ID : " . implode(',', $post['tourism']) . " \n");
+            fwrite($fp, "ด้าน Supporting " . count($post['supporting']) . "คน ID : " . implode(',', $post['supporting']) . " \n");
+            fwrite($fp, "ด้าน Responsibility " . count($post['responsibility']) . "คน ID : " . implode(',', $post['responsibility']) . " \n");
+
+            fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            fclose($fp);
+
+            $text = "มีการมอบหมายกรรมการรอบลงพื้นที่ โดย " . session()->account . " มีกรรมการทั้งหมด " . count($count) . " คน \n";
+            $text .= "ด้าน Tourism " . count($post['tourism']) . "คน ID : " . implode(',', $post['tourism']) . " \n";
+            $text .= "ด้าน Supporting " . count($post['supporting']) . "คน ID : " . implode(',', $post['supporting']) . " \n";
+            $text .= "ด้าน Responsibility " . count($post['responsibility']) . "คน ID : " . implode(',', $post['responsibility']) . " \n";
+
+            $setting = [
+                'application_form_id' => $post['application_form_id'],
+                'text'  => $text,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
             $this->sendMail($insert_id);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
@@ -154,6 +186,39 @@ class Onsite extends BaseController
 
         $result = $this->db->table('committees')->where('id', $post['insert_id'])->update($data);
         if ($result) {
+
+            // เก็บข้อมูลการเปลี่ยนแปลง
+            @mkdir(FCPATH . 'logs/backend-estimate', 0777, true);
+            $fp = fopen(FCPATH . 'logs/backend-estimate/application_id_' . $post['application_form_id'] . '.txt', 'a+');
+
+            fwrite($fp, "====================== Start Log Application " . $post['application_form_id'] . " ======================\n");
+            fwrite($fp, "มีการแก้ไขมอบหมายกรรมการรอบลงพื้นที่ โดย " . session()->account . " มีกรรมการทั้งหมด " . count($count) . " คน \n");
+            fwrite($fp, "ด้าน Tourism " . count($post['tourism']) . "คน ID : " . implode(',', $post['tourism']) . " \n");
+            fwrite($fp, "ด้าน Supporting " . count($post['supporting']) . "คน ID : " . implode(',', $post['supporting']) . " \n");
+            fwrite($fp, "ด้าน Responsibility " . count($post['responsibility']) . "คน ID : " . implode(',', $post['responsibility']) . " \n");
+
+            fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+            fclose($fp);
+
+            $text = "มีการแก้ไขมอบหมายกรรมการรอบลงพื้นที่ โดย " . session()->account . " มีกรรมการทั้งหมด " . count($count) . " คน \n";
+            $text .= "ด้าน Tourism " . count($post['tourism']) . "คน ID : " . implode(',', $post['tourism']) . " \n";
+            $text .= "ด้าน Supporting " . count($post['supporting']) . "คน ID : " . implode(',', $post['supporting']) . " \n";
+            $text .= "ด้าน Responsibility " . count($post['responsibility']) . "คน ID : " . implode(',', $post['responsibility']) . " \n";
+
+            $setting = [
+                'application_form_id' => $post['application_form_id'],
+                'text'  => $text,
+            ];
+            save_log_activety([
+                'module' => '',
+                'action' => '',
+                'bank' => 'backend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => json_encode($setting),
+            ]);
+
+
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'บันทึกข้อมูลสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'บันทึกข้อมูลไม่สำเร็จ']);
@@ -225,7 +290,7 @@ class Onsite extends BaseController
         $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 2)->get()->getRowObject();
 
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
-        $data['question'] = $this->db->table('question')->where('application_type_sub_id', $data['result']->application_type_sub_id)->where('onside_status', 1)->get()->getResultObject();
+        $data['question'] = $this->db->table('question')->where('application_type_sub_id', $data['result']->application_type_sub_id)->where('onside_status', 1)->orderBy('topic_no', 'asc')->orderBy('question_ordering', 'asc')->orderBy('id', 'asc')->get()->getResultObject();
 
         // px($data['question']);
         $question = [];

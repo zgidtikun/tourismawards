@@ -63,7 +63,8 @@
                 <div class="branch_title" data-tab="1">ประเภทแหล่งท่องเที่ยว</div>
                 <!-- <div class="branch_txt" data-tab="1">
                 </div> -->
-                <a href="<?=base_url('awards-winner/attraction')?>" class="btn-yellow">
+                <!-- <a href="<?=base_url('awards-winner/attraction')?>" class="btn-yellow"> -->
+                <a href="<?= base_url('awards-infomation') ?>?p=Attraction" class="btn-yellow">
                     ENTER AWARD
                 </a>
             </div>
@@ -81,7 +82,8 @@
                 <div class="branch_title" data-tab="2">ประเภทที่พักนักท่องเที่ยว</div>
                 <!-- <div class="branch_txt" data-tab="2">
                 </div> -->
-                <a href="<?=base_url('awards-winner/accommodation')?>" class="btn-yellow">
+                <!-- <a href="<?=base_url('awards-winner/accommodation')?>" class="btn-yellow"> -->
+                <a href="<?= base_url('awards-infomation') ?>?p=Accommodation" class="btn-yellow">
                     ENTER AWARD
                 </a>
             </div>
@@ -99,7 +101,8 @@
                 <div class="branch_title" data-tab="3">ประเภทการท่องเที่ยวเชิงสุขภาพ</div>
                 <!-- <div class="branch_txt" data-tab="3">
                 </div> -->
-                <a href="<?=base_url('awards-winner/health-and-wellness-tourism')?>" class="btn-yellow">
+                <!-- <a href="<?=base_url('awards-winner/health-and-wellness-tourism')?>" class="btn-yellow"> -->
+                <a href="<?= base_url('awards-infomation') ?>?p=HealthAndWellness" class="btn-yellow">
                     ENTER AWARD
                 </a>
             </div>
@@ -116,7 +119,8 @@
                 <div class="branch_title" data-tab="4">ประเภทรายการนำเที่ยว</div>
                 <!-- <div class="branch_txt" data-tab="4"> 
                 </div> -->
-                <a href="<?=base_url('awards-winner/tourism-program')?>" class="btn-yellow">
+                <!-- <a href="<?=base_url('awards-winner/tourism-program')?>" class="btn-yellow"> -->
+                <a href="<?= base_url('awards-infomation') ?>?p=TourProgram" class="btn-yellow">
                     ENTER AWARD
                 </a>
             </div>
@@ -357,7 +361,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                 </div>
 
                 <div class="award-section">
-                    <div class="award-section-col" onclick="toAwardsWinner('attraction')">
+                    <div class="award-section-col" onclick="//toAwardsWinner('attraction')">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
                                 <img src="<?= base_url('assets/images/award_01.jpg') ?>" 
@@ -369,7 +373,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                         </div>
                     </div>
 
-                    <div class="award-section-col" onclick="toAwardsWinner('accommodation')">
+                    <div class="award-section-col" onclick="//toAwardsWinner('accommodation')">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
                                 <img src="<?= base_url('assets/images/award_02.jpg') ?>" 
@@ -381,7 +385,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                         </div>
                     </div>
 
-                    <div class="award-section-col" onclick="toAwardsWinner('health-and-wellness-tourism')">
+                    <div class="award-section-col" onclick="//toAwardsWinner('health-and-wellness-tourism')">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
                                 <img src="<?= base_url('assets/images/award_03.jpg') ?>" 
@@ -393,7 +397,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                         </div>
                     </div>
 
-                    <div class="award-section-col" onclick="toAwardsWinner('tourism-program')">
+                    <div class="award-section-col" onclick="//toAwardsWinner('tourism-program')">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
                                 <img src="<?= base_url('assets/images/award_04.jpg') ?>" 

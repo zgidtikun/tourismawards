@@ -2,14 +2,16 @@ const getBaseUrl = () => {
     return window.location.origin
 }
 
-const loading = async(action) => {
-    if(action == 'show'){
-        if(!$('#loading-page').hasClass('loading'))
+const loading = (action) => {
+    return new Promise(function(resolve, reject){
+        if(action == 'show'){
             $('#loading-page').addClass('loading');
-    } else {
-        if($('#loading-page').hasClass('loading'))
+            resolve({finish: true});
+        } else {
             $('#loading-page').removeClass('loading');
-    }
+            resolve({finish: true});
+        }
+    });
 }
 
 const empty = (data) =>{
@@ -91,6 +93,57 @@ const convertYearThToEn = (date) => {
     }
 
     return (Number(arrayDate[0]) - 543)+'/'+arrayDate[1]+'/'+arrayDate[2];
+}
+
+const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let date = today.getDate();
+
+    if (month < 10) {
+    month = `0${month}`;
+    }
+
+    if (date < 10) {
+    date = `0${date}`;
+    }
+
+    const currentDate = `${year}-${month}-${date}`;
+    return currentDate;
+}
+
+const getCurrentDateTime = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth() + 1;  // January is 0
+    let date = today.getDate();
+    let hour = today.getHours();
+    let minute = today.getMinutes();
+    let second = today.getSeconds();
+
+    if (month < 10) {
+        month = `0${month}`;
+    }
+
+    if (date < 10) {
+        date = `0${date}`;
+    }
+
+    if (hour < 10) {
+        hour = `0${hour}`;
+    }
+
+    if (minute < 10) {
+        minute = `0${minute}`;
+    }
+
+    if (second < 10) {
+        second = `0${second}`;
+    }
+
+    const currentDateTime = `${year}-${month}-${date} ${hour}:${minute}:${second}`;
+    return currentDateTime;
 }
 
 const calcDate = (date1, date2) => {

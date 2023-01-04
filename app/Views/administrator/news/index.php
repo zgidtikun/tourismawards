@@ -4,7 +4,7 @@
       <div class="backendcontent-title-txt">
         <h3>รายการข่าวประชาสัมพันธ์ </h3>
       </div>
-      <a href="#" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a>
+      <a href="javascript:" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a>
     </div>
 
     <form action="" method="get">
@@ -52,7 +52,7 @@
                     <textarea class="description" style="display: none;"><?= $value->description ?></textarea>
                   </td>
                   <td class="text-start"><?= $value->title ?></td>
-                  <!-- <td class="text-center"><?= $category[$value->category_id] ?></td> -->
+                  <!-- <td class="text-center"><?php /*echo $category[$value->category_id]*/ ?></td> -->
                   <td class="text-center">
                     <?= ($value->status) ? '<div class="userstatus judge">เผยแพร่แล้ว</div>' : '<div class="userstatus officer">ไม่เผยแพร่</div>'; ?>
                   </td>
@@ -60,9 +60,9 @@
                   <td class="text-center">
 
                     <div class="form-table-col edit">
-                      <a href="#" class="btn-edit" title="ดูรายละเอียด" onclick="view_item(this)"><i class="bi bi-eye text-success"></i></a>
-                      <a href="#" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a>
+                      <a href="javascript:" class="btn-edit" title="ดูรายละเอียด" onclick="view_item(this)"><i class="bi bi-eye text-success"></i></a>
+                      <a href="javascript:" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
+                      <a href="javascript:" class="btn-delete" title="ลบข้อมูล" onclick="delete_item('<?= $value->id ?>')"><i class="bi bi-trash-fill text-danger"></i></a>
                     </div>
 
                     <!-- <i class="fa fa-eye text-success mr-2" data-toggle="tooltip" title="ดูรายละเอียด" onclick="view_item(this)"></i>

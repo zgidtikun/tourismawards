@@ -16,21 +16,29 @@ const psc = {
     status: null,
     expired: false,
     stage: null,
+    lowcarbon: false,
     pointer: {
         category: -1,
         segment: -1,
     },
     questions: null,
-    init: function(expired,stage){
-        loading('show');
+    init:async function(expired,stage){
+        await loading('show');
         api({method: 'get', url: '/inner-api/question/get'}).then(function(response){
             psc.expired = expired;               
             psc.status = response.status;    
             psc.appId = response.app_id;    
+            psc.lowcarbon = response.lowcarbon;
             psc.questions = response.data;
-            psc.stage = stage;       
+            psc.stage = stage;    
             
-            if(!psc.expired){ 
+            if(psc.expired && $inArray(psc.status,['draft','reject']) !== -1){ 
+                $('#formstatus-unpass').removeClass('hide');
+                $('#formstep-sts').addClass('notpass');
+                $('#formstep-sts').html('หมดเวลาการส่งแบบประเมินขั้นต้น');
+                $('.btn-main, .btn-action, .btn-file, .bfd-dropfield, .selecter-file, file-list').remove();
+                $('.regis-form-data textarea').prop('disabled',true);
+            } else {    
                 switch(psc.status){
                     case 'draft':   
                         $('#formstep-sts').addClass('date');
@@ -65,13 +73,11 @@ const psc = {
                             $('.formstep-col.estimate > a').addClass('inactive');
                         }
                     break;
-                }
-            } else {               
-                $('#formstatus-unpass').removeClass('hide');
-                $('#formstep-sts').addClass('notpass');
-                $('#formstep-sts').html('หมดเวลาการส่งแบบประเมินขั้นต้น');
-                $('.btn-main, .btn-action, .btn-file, .bfd-dropfield, .selecter-file, file-list').remove();
-                $('.regis-form-data textarea').prop('disabled',true);
+                }           
+            }
+
+            if(psc.lowcarbon){
+                $('#tab-3').show();
             }
             
             $.each(psc.questions,function(ckey,cval){
@@ -139,7 +145,12 @@ const psc = {
             if(sts == 'wait'){
                 $('#tab-0').addClass('disabled');
                 $('#tab-1').addClass('disabled');
-                $('#tab-2').addClass('disabled');
+                $('#tab-2').addClass('disabled');                
+
+                if(psc.lowcarbon){
+                    $('#tab-3').addClass('disabled');
+                }
+
                 $('.btn-choice,.btn-regis').addClass('disabled');
                 $('#btn-back,#btn-next').prop('disabled',true);
                 $('.btn-file,.btn-action').prop('disabled',true);
@@ -147,7 +158,12 @@ const psc = {
             } else {
                 $('#tab-0').removeClass('disabled');
                 $('#tab-1').removeClass('disabled');
-                $('#tab-2').removeClass('disabled');
+                $('#tab-2').removeClass('disabled');              
+
+                if(psc.lowcarbon){
+                    $('#tab-3').removeClass('disabled');
+                }
+
                 $('.btn-choice,.btn-regis').removeClass('disabled');
                 $('#btn-back,#btn-next').prop('disabled',false);
                 $('.btn-file,.btn-action').prop('disabled',false);
@@ -156,8 +172,8 @@ const psc = {
         }
     },
     reply: function(cate,seg){
-        return new Promise(function(resolve, reject){
-            psc.waitDraft('wait');
+        return new Promise(async function(resolve, reject){
+            await psc.waitDraft('wait');
             if(cate == -1){ cate = 0; }
             if(seg == -1){ seg = 0; }
 
@@ -205,10 +221,10 @@ const psc = {
                 mode: 'confirm-main'
             };
 
-            alert.confirm(setAlert).then(function(alt){
+            alert.confirm(setAlert).then(async function(alt){
                 if(alt.status){
-                    loading('show');
-                    psc.waitDraft('wait');
+                    await loading('show');
+                    
                     let setting = psc.setApi('finish');
                     
                     api(setting).then(function(response){
@@ -221,12 +237,11 @@ const psc = {
                             if(finish.result == 'success'){
                                 let title = 'ส่งแบบประเมินเรียบร้อยแล้ว',
                                     message = 'เราจะแจ้งผลให้ทราบ<b>ช่วงประมาณกลางเดือนเมษายน 2566';
-                                    psc.waitDraft('finish');
+                                
                                 alert.show(finish.result,title,message).then(function(res){
                                     window.location.reload();
                                 });
                             } else {
-                                psc.waitDraft('finish');
                                 alert.show('error','ดำเนินการไม่สำเร็จ',finish.message);
                             }
                         }

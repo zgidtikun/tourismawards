@@ -249,6 +249,7 @@ class FrontendController extends BaseController
 
     public function sumStage()
     {
+        $ObjEst = new \App\Controllers\FrontendController();
         $result = [];
         
         $subCommP = $this->db->table('committees')
@@ -267,9 +268,15 @@ class FrontendController extends BaseController
                 '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
                 OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
                 OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')')
+            ->getCompiledSelect();        
+
+        $subEstInd = $this->db->table('estimate_individual')
+            ->select('application_id,score_pre, score_onsite')
+            ->where('estimate_by',session()->get('id'))
             ->getCompiledSelect();
         
-        foreach(['pre_wait','pre_comp','inst_wait','inst_comp'] as $key=>$val){
+        foreach(['pre_wait','pre_comp','inst_wait','inst_comp'] as $key=>$val){            
+            $count = 0;
 
             if(in_array($key,[0,1])){
                 $subComm = $subCommP;
@@ -283,7 +290,7 @@ class FrontendController extends BaseController
                 ->join('application_type_sub ats','af.application_type_sub_id = ats.id','LEFT')
                 ->join('users_stage us','af.created_by = us.user_id')
                 ->join('('.$subComm.') insc','insc.afid = af.id')
-                ->join('estimate_individual es','insc.afid = es.application_id','LEFT');
+                ->join('('.$subEstInd.') es','insc.afid = es.application_id','LEFT');
             
             if(in_array($key,[0,1])){
                 $builder = $builder->where('us.stage',1);
@@ -294,11 +301,32 @@ class FrontendController extends BaseController
             if(in_array($key,[0,2])) {
                 $builder = $builder->whereIn('us.status',[1,2,3,4,5]);
             } else {
-                $builder = $builder->whereIn('us.status',[6,7]);
+                $builder = $builder->whereIn('us.status',[1,2,4,5,6,7]);
             }
 
-            $builder = $builder->countAllResults();
-            $result[$val] = $builder;
+            $builder = $builder
+                ->get();
+
+            foreach($builder->getResult() as $est){
+                
+                $isFinish = $ObjEst->checkEstimateFinish(
+                    $est->id,
+                    in_array($val,['pre_wait','pre_comp']) ? 1 : 2,
+                    session()->get('id')
+                );
+
+                if(
+                    (in_array($val,['pre_wait','inst_wait']) && $isFinish == 'unfinish')
+                    || (in_array($val,['pre_comp','inst_comp']) && $isFinish == 'finish')
+                ){
+                    $count++;
+                }
+            }
+
+            // $builder = $builder->countAllResults();
+            // $result[$val] = $builder;
+            $result[$val] = $count;
+
 
         }
 
@@ -341,6 +369,25 @@ class FrontendController extends BaseController
         } else {
             $assign = $this->getGroupEstimate($id,session()->get('id'),1);
             $isFinish = $this->checkEstimateFinish($id,1,session()->get('id'));
+
+            if($stage->status == 3){
+                $judgeRequest = new \App\Controllers\EstimateRequestController();
+                $exprireReq = $judgeRequest->get_expire_request($id,session()->get('id'));
+                if($exprireReq->expire_status){
+                    if($exprireReq->request_status == 1){
+                        $judgeRequest->set_expire_request($id,session()->get('id'));
+                        $stage->status = 5;
+                    }
+                    else if($exprireReq->request_status == 4){
+                        $stage->status = 5;
+                    }
+                }
+                else if(!empty($exprireReq->request_status)){
+                    if($exprireReq->request_status == 4){
+                        $stage->status = 5;
+                    }
+                }
+            }
             
             $data = [
                 'title' => 'ประเมินรอบ Pre-screen',
@@ -405,7 +452,7 @@ class FrontendController extends BaseController
         return view('frontend/entrepreneur/_template',$data);
     }
 
-    private function checkEstimateFinish($id,$stage,$userId)
+    public function checkEstimateFinish($id,$stage,$userId)
     {
         $obj = new \App\Models\EstimateIndividual();
         $ind = $obj->select('score_pre, score_onsite')
@@ -454,6 +501,14 @@ class FrontendController extends BaseController
             ->like('admin_id_responsibility','%"'.$id.'"%')
             ->first();
 
+        $builder_l = $comm->select('admin_id_lowcarbon')
+            ->where([
+                'assessment_round' => $round,
+                'application_form_id' => $appId
+            ])
+            ->like('admin_id_lowcarbon','%"'.$id.'"%')
+            ->first();
+
         if(!empty($builder_t->admin_id_tourism)){
             $tourism = json_decode($builder_t->admin_id_tourism,true);
             if(!empty($tourism)){
@@ -467,10 +522,18 @@ class FrontendController extends BaseController
                 $assessment_group[] = 2;
             }
         }
+
         if(!empty($builder_r->admin_id_responsibility)){
             $respons = json_decode($builder_r->admin_id_responsibility,true);
             if(!empty($respons)){
                 $assessment_group[] = 3;
+            }
+        }
+        
+        if(!empty($builder_l->admin_id_lowcarbon)){
+            $respons = json_decode($builder_l->admin_id_lowcarbon,true);
+            if(!empty($respons)){
+                $assessment_group[] = 4;
             }
         }
 

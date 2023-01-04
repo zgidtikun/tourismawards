@@ -130,4 +130,43 @@
   .note-image-btn {
     margin-top: -23px;
   }
+
+  /* คำถาม */
+  .regis-form-data-col1 ol {
+    padding-left: 25px;
+    font-size: 18px;
+    font-weight: normal;
+    color: #c6923a;
+  }
+
+  .regis-form-data-col1 div#qRemark ol {
+    margin-top: 0;
+    padding-left: 40px;
+    color: #000;
+  }
+
+  .regis-form-data-col1 h4#question_name_1 ol {
+    /* margin-top: 0.5rem; */
+    padding: 0;
+    padding-left: 40px;
+    color: #000;
+  }
+
+  .regis-form-data-col1 h4#question_name_2 ol {
+    /* margin-top: 0.5rem; */
+    padding: 0;
+    padding-left: 40px;
+    color: #000;
+  }
+
+  .regis-form-data-col1 h4#question_name_3 ol {
+    /* margin-top: 0.5rem; */
+    padding: 0;
+    padding-left: 40px;
+    color: #000;
+  }
+
+  .regis-form-data-col1 h4 {
+    margin-bottom: 1rem;
+  }
 </style>
