@@ -28,7 +28,6 @@ const setPage = (id,stage,ass) => {
     appid = id;
     sp = stage;
     assign = ass;
-    console.log(sp)
     init();
 }
 

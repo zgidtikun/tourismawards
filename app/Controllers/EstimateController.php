@@ -563,8 +563,10 @@ class EstimateController extends BaseController
             $avg_rs = $sumScr->score_rs / $cJudge->respons; 
         }
         
-        if($sumScr->score_lc > 0){ 
-            $avg_lc = $sumScr->score_lc / $cJudge->lowcarbon;
+        if($stage == 1){ 
+            if($$sumScr->score_lc > 0){ 
+                $avg_lc = $sumScr->score_lc / $cJudge->lowcarbon;
+            }
         }
 
         $avg_tt = $avg_te + $avg_sb + $avg_rs;
