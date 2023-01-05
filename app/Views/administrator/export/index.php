@@ -15,6 +15,7 @@
       <li><a href="<?= base_url('administrator/report/export/onsite_average'); ?>" class="btn-export" target="_blank"><i class="bi bi-box-arrow-in-down"></i> สรุปคะแนนรอบลงพื้นที่ (ค่าเฉลี่ย)</a></li>
       <li><a href="<?= base_url('administrator/report/export/summary_scores'); ?>" class="btn-export" target="_blank"><i class="bi bi-box-arrow-in-down"></i> สรุปคะแนนทั้งหมด</a></li>
       <li><a href="<?= base_url('administrator/report/export/suggestion'); ?>" class="btn-export" target="_blank"><i class="bi bi-box-arrow-in-down"></i> ข้อเสนอแนะกรรมการ</a></li>
+      <li><a href="<?= base_url('administrator/report/export/lowcarbon'); ?>" class="btn-export" target="_blank"><i class="bi bi-box-arrow-in-down"></i> Low Carbon</a></li>
     </ul>
 
   </div>

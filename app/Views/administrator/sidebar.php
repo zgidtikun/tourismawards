@@ -1,4 +1,4 @@
-<div class="backendmenu-box">
+<div class="backendmenu-box" style="display:none">
   <div class="hidemenu">
     <a href="javascript:" class="btn-sidemenu"></a>
   </div>
@@ -131,6 +131,7 @@
     var screen_w = $(window).width();
     var screen_h = $(window).height();
 
+    $('.backendmenu-box').css({"display":"block"});
     $('.backendmenu-box').addClass('hide');
 
     if (screen_w <= 1024) {

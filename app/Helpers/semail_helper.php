@@ -279,7 +279,7 @@ class semail {
                         . 'กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบการขอข้อมูล และส่งข้อมูลตอบกลับภายใน 3 วัน</p>'
                     ]);
     
-                    $_subject = 'แจ้งการขอข้อมูลเเพิ่มเติมในขั้นตอนการประเมินเบื่องต้น';
+                    $_subject = 'แจ้งการขอข้อมูลเพิ่มเติมในขั้นตอนการประเมินเบื้องต้น';
                     $_to = $user->email;
                     $_from = $email_sys;
                     $_cc = [];
@@ -419,10 +419,15 @@ class semail {
         $obj_user = new \App\Models\Users();
         
         $data = $obj_comm->where('users_id',$id)
-            ->select('admin_id_tourism, admin_id_supporting, admin_id_responsibility')
+            ->select('
+                admin_id_tourism, 
+                admin_id_supporting, 
+                admin_id_responsibility,
+                admin_id_lowcarbon'
+            )
             ->first();
 
-        $judge = $tourism = $support = $respons = [];
+        $judge = $tourism = $support = $lowcarbon = $respons = [];
     
         if(!empty($data->admin_id_tourism)){
             $tourism = json_decode($data->admin_id_tourism,true);
@@ -437,6 +442,11 @@ class semail {
         if(!empty($data->admin_id_responsibility)){
             $respons = json_decode($data->admin_id_responsibility,true);
             $judge = array_unique(array_merge($judge,$respons));
+        }
+    
+        if(!empty($data->admin_id_lowcarbon)){
+            $lowcarbon = json_decode($data->admin_id_lowcarbon,true);
+            $judge = array_unique(array_merge($judge,$lowcarbon));
         }
 
         $result = $obj_user->whereIn('id',$judge)

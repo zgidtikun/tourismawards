@@ -28,6 +28,7 @@ const setPage = (id,stage,ass) => {
     appid = id;
     sp = stage;
     assign = ass;
+    console.log(sp)
     init();
 }
 
@@ -543,9 +544,10 @@ const setQuestion = (cate,seg) => {
                     + question.os_eva
                 '</span>';
         }
-        
-        const sco = question.os_scor.split(',');
 
+        qEva.html(ev);        
+        const sco = question.os_scor.split(',');
+        
         sc += '<h4>เกณฑ์การให้คะแนนรอบ ลงพื้นที่</h4>';
         
         $.each(sco,(k,v) => {
@@ -576,8 +578,6 @@ const setQuestion = (cate,seg) => {
                 );
             }
         });
-
-        qEva.html(ev);
         qSco.html(sc);
         checkComplete();
     });

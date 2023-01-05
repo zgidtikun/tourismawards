@@ -80,7 +80,7 @@ textarea {
     border: 1px solid #E0E0E0;
     appearance: none;
     -webkit-appearance: none;
-    font-family: 'TATSana-Chon';
+    font-family: 'TATSana-Chon' ;
     background-color: #FFF;
     border-radius: 5px;
     font-size: 18px;
@@ -1837,6 +1837,9 @@ table.dataTable.display tbody td img {
     background-color: #222;
     float: left;
 }
+table.dataTable.display tbody td img:hover{
+cursor: pointer;
+}
 
 table.dataTable.stripe>tbody>tr.odd>*,
 table.dataTable.display>tbody>tr.odd>* {
@@ -2204,6 +2207,8 @@ background-color: #e0e0e0;
 .choicebox {
     display: flex;
     align-items: center;
+    flex: none;
+    padding-left: 20px;
 }
 
 .choicebox-col {
@@ -2643,6 +2648,17 @@ width: 100%!important;
 flex-wrap: nowrap!important;
 margin: 20px 0 0 0!important;
 }
+.swal2-container.swal2-center > .swal2-popup button.swal2-close {
+  min-width: auto !important;
+  font-size: 30px;
+}
+input#publish_start,input#publish_end{
+padding: 5px;
+margin-bottom: 10px;
+}
+.note-editable{
+font-family: 'TATSana-Chon' ;
+}
 
 @media screen and (max-width:1600px) {
 .regis-form-step {
@@ -3062,12 +3078,24 @@ flex-wrap: wrap;
     max-width: 100%;
     width: 100%;
 }
-.backendform .form-main-btn {
-    padding: 10px 0 0 0;
-    margin: 0 -5px;
+.backend .form-main-btn {
+    padding: 20px 10px 0 10px;
+    margin: 0;
     width: auto;
     max-width: none;
+    gap: 5px;
 }
+.backend #input_form .form-main-btn {
+    padding: 20px 0 0 0;
+}
+.backend .backendform .form-main-btn {
+  padding: 20px 0 0 0;
+  margin: 0 -5px;
+  width: auto;
+  max-width: none;
+  gap: 5px;
+}
+
     .form-main-btn [class^="btn-"] {
         margin-left: 0;
         width: 48%;
@@ -3173,7 +3201,7 @@ flex-wrap: wrap;
     [class^="backendform-col"] {
     width: 100%;
     padding: 0 10px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
     [class^="backendform-col"].subject {
         width: 100%;
@@ -3273,6 +3301,18 @@ flex-wrap: wrap;
     width: 100%;
     min-width: auto;
     max-width: none;
+}
+.backend .backendform .regis-form-data-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  width: auto;
+  max-width: 1000px;
+  justify-content: space-between;
+}
+.backend .backendcontent .backendform .regis-form-data-row [class^="btn-"] {
+  width: 49%;
+  margin: 10px 0 0 0;
 }
 .continue button.btn-next {
     max-width: none;
@@ -3384,6 +3424,7 @@ margin: 10px 0 0 0;
         align-items: center;
         width: 100%;
         margin-top: 20px;
+        padding-left: 0;
     }
     .choicebox-col {
         flex: none;

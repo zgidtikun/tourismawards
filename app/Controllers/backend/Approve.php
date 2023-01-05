@@ -12,6 +12,12 @@ use App\Models\ApplicationTypeSub;
 
 class Approve extends BaseController
 {
+    private $Users;
+    private $UsersStage;
+    private $ApplicationForm;
+    private $ApplicationType;
+    private $ApplicationTypeSub;
+    
     public function __construct()
     {
         helper(['semail', 'verify']);
@@ -219,11 +225,11 @@ class Approve extends BaseController
 
             fwrite($fp, "====================== Start Log Application " . $id . " ======================\n");
             if ($post['status'] == 4) {
-                fwrite($fp, "มีการขอข้อมูลเพิ่มเติม โดย " . session()->account." ");
+                fwrite($fp, "มีการขอข้อมูลเพิ่มเติม โดย " . session()->account . " ");
             } else if ($post['status'] == 3) {
-                fwrite($fp, "มีการอนุมัติใบสมัคร โดย " . session()->account." ");
+                fwrite($fp, "มีการอนุมัติใบสมัคร โดย " . session()->account . " ");
             } else if ($post['status'] == 0) {
-                fwrite($fp, "มีการ Reject ใบสมัคร โดย " . session()->account." ");
+                fwrite($fp, "มีการ Reject ใบสมัคร โดย " . session()->account . " ");
             }
 
             fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");

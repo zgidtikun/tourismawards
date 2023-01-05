@@ -65,6 +65,7 @@ class MarkTest extends BaseController
         $where = [];
         // $where['weight'] = 0;
         // $where['onside_score'] = 0;
+        $where['lowcarbon_status'] = 1;
         // $where = "assessment_group_id = 3 AND application_type_id = 1 AND application_type_sub_id = 5";
         $data['fields'] = $this->db->getFieldNames('question');
         $data['result'] = $this->db->table('question')->orderBy('id', 'desc')->where($where)->get()->getResultObject();
@@ -101,6 +102,7 @@ class MarkTest extends BaseController
     public function saveInsert()
     {
         $post = $this->input->getVar();
+        // px($post);
         $table = $post['table'];
         unset($post['table']);
         $result = $this->db->table($table)->insert($post);

@@ -86,7 +86,7 @@ if (!empty($result)) {
   $j = 1;
   foreach ($result as $key => $value) {
 
-    if ($value['tourism']) {
+    if (!empty($value['tourism'])) {
       $data = [
         $j++,
         $value['code'],
@@ -96,7 +96,7 @@ if (!empty($result)) {
         $value['address_province'],
         'Tourism Excellence (Product/Service)',
         $value['tourism'][1]->score_pre,
-        $value['tourism'][2]->score_pre,
+        @$value['tourism'][2]->score_pre,
         '',
         $value['tourism'][1]->pre_score_total,
         $value['tourism'][1]->weight,
@@ -110,7 +110,7 @@ if (!empty($result)) {
       $i++;
     }
 
-    if ($value['supporting']) {
+    if (!empty($value['supporting'])) {
       $data = [
         $j++,
         $value['code'],
@@ -120,7 +120,7 @@ if (!empty($result)) {
         $value['address_province'],
         'Supporting Business & Marketing Factors',
         $value['supporting'][1]->score_pre,
-        $value['supporting'][2]->score_pre,
+        @$value['supporting'][2]->score_pre,
         '',
         $value['supporting'][1]->pre_score_total,
         $value['supporting'][1]->weight,
@@ -134,7 +134,7 @@ if (!empty($result)) {
       $i++;
     }
 
-    if ($value['responsibility']) {
+    if (!empty($value['responsibility'])) {
       $data = [
         $j++,
         $value['code'],
@@ -144,7 +144,7 @@ if (!empty($result)) {
         $value['address_province'],
         'Responsibility and Safety & Health Administration',
         $value['responsibility'][1]->score_pre,
-        $value['responsibility'][2]->score_pre,
+        @$value['responsibility'][2]->score_pre,
         '',
         $value['responsibility'][1]->pre_score_total,
         $value['responsibility'][1]->weight,

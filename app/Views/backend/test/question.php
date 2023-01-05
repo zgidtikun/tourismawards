@@ -92,13 +92,14 @@
         </button>
       </div>
       <div class="modal-body">
+        <button type="button" class="btn btn-warning" onclick="copy_item(this)"><i class="fas fa-copy"></i> คัดลอก</button>
 
         <form id="form_input">
           <input type="hidden" name="table" id="table">
           <div class="row">
             <?php
             foreach ($fields as $key => $value) :
-              $key_arr = range(7, 13);
+              $key_arr = range(18, 19);
             ?>
               <div class="col-6">
                 <div class="form-group">
@@ -156,7 +157,7 @@
     $.each(res, function(index, value) {
       $('#' + index).val(value);
     });
-    
+
     // $('#id').val("");
     $('#exampleModal').modal('show');
   }
@@ -164,13 +165,15 @@
   function insert_item(elm) {
     $('#form_input')[0].reset();
 
-    $('#assessment_group_id').val(3);
-    $('#application_type_id').val(1);
-    $('#application_type_sub_id').val(1);
+    $('#assessment_group_id').val(4);
+    $('#application_type_id').val(0);
+    $('#application_type_sub_id').val(0);
 
-    $('#pre_status').val(1);
-    $('#onside_status').val(1);
-    $('#criteria_topic').val('ด้านความปลอดภัย');
+    $('#weight').val(0);
+    $('#pre_status').val(0);
+    $('#onside_status').val(0);
+    $('#lowcarbon_status').val(1);
+    $('#criteria_topic').val('การจัดซื้อ จัดจ้างและการบริหารการใช้วัสดุและสินค้าคงคลัง');
 
     $('#exampleModal').modal('show');
   }
@@ -189,5 +192,13 @@
       table: 'question',
     });
     res_swal(res, 0);
+  }
+
+  function copy_item(elm) {
+    
+    $('#id').val(0);
+    $('#question').val('');
+    $('#topic_no').val(4);
+    $('#question_ordering').val('');
   }
 </script>

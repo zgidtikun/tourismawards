@@ -80,6 +80,14 @@
     });
 
     function validated() {
+      if ($('#password').length >= 6) {
+        Swal.fire(
+          'ผิดพลาด!',
+          'กรุณาระบุรหัสผ่าน',
+          'error'
+        )
+        return false;
+      }
       if ($('#password').val() == "") {
         Swal.fire(
           'ผิดพลาด!',

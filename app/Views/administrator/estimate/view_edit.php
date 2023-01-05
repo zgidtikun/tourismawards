@@ -126,6 +126,37 @@
               </select>
             </div>
           </div>
+
+          <?php
+          if (!empty($result->require_lowcarbon) && $result->require_lowcarbon == 1) {
+          ?>
+            <div class="backendform-col3">
+              <label data-tab="4">4. Low Carbon <span class="required">*</span></label>
+              <div class="editjudge-out">
+                <select class="js-example-basic-multiple" id="status_4" name="lowcarbon[]" multiple disabled>
+                  <?php
+                  if (!empty($status_4)) {
+                    foreach ($status_4 as $key => $value) {
+                      $selected = "";
+                      if (!empty($committees->admin_id_lowcarbon)) {
+                        $admin_id = json_decode($committees->admin_id_lowcarbon);
+                        if (in_array($value->id, $admin_id)) {
+                          $selected = "selected";
+                        }
+                      }
+                  ?>
+                      <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
+                  <?php
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
+            </div>
+          <?php
+          }
+          ?>
+
         </div>
 
         <div class="text-end">
@@ -134,7 +165,7 @@
           <?php endif; ?>
         </div>
 
-        <!-- <div class="form-main-btn">
+        <!-- <div class="regis-form-data-row">
     <a href="javascript: history.back(1)" class="btn-cancle">ยกเลิก</a>
     <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
   </div> -->
@@ -156,7 +187,7 @@
           $active = "active";
         }
       ?>
-        <a id="<?= $i ?>" href="javascript:void(0);" class="btn-form-step <?= $active ?>"><?= $value->name ?></a>
+        <a id="<?= $i ?>" href="javascript:void(0);" class="btn-form-step <?= $active ?>"><?= ($key + 1) ?>. <?= $value->name ?></a>
       <?php
         $i++;
       }
@@ -166,306 +197,409 @@
     <div class="sections regis-form-data">
 
       <div class="content content1 active">
-        <div class="regis-form-data">
-          <div class="regis-form-data-row">
-            <div class="regis-form-data-col1 title">
-              <h3>
-                <picture>
-                  <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
-                  <img src="<?= base_url() ?>/assets/images/formicon-type.png">
-                </picture>
-                Tourism Excellence<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_1"><?= count($question[1]) ?></span> ข้อ</span>
-              </h3>
+        <?php if (!empty($question[1])) : ?>
+          <div class="regis-form-data">
+            <div class="regis-form-data-row">
+              <div class="regis-form-data-col1 title">
+                <h3>
+                  <picture>
+                    <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
+                    <img src="<?= base_url() ?>/assets/images/formicon-type.png">
+                  </picture>
+                  Tourism Excellence<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_1"><?= count($question[1]) ?></span> ข้อ</span>
+                </h3>
 
-              <div class="choicebox">
-                <div class="choicebox-col select-choice">
-                  คำถามข้อที่ <span id="question_no_1">1</span>
-                </div>
-                <div class="choicebox-col">
-                  <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
-                </div>
-              </div>
-
-              <div class="hide-choice" style="display: none;">
-                <div class="hide-choice-overlay"></div>
-                <div class="hide-choice-box">
-                  <div class="hide-choice-title">
-                    รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                <div class="choicebox">
+                  <div class="choicebox-col select-choice">
+                    คำถามข้อที่ <span id="question_no_1">1</span>
                   </div>
-                  <div class="hide-choice-content">
-                    <ul>
-                      <?php foreach ($question[1] as $key => $value) : ?>
-                        <li><a href="javascript:void(0)" onclick="change_no(this, 1, '<?= $key ?>')" class="select_no_1" id="select_no_1_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
-                      <?php endforeach; ?>
-                    </ul>
+                  <div class="choicebox-col">
+                    <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
                   </div>
                 </div>
-                <script>
-                  jQuery(document).ready(function() {
-                    $('.btn-choice').click(function() {
-                      $('.hide-choice').show();
-                      $('body').addClass('lockbody');
+
+                <div class="hide-choice" style="display: none;">
+                  <div class="hide-choice-overlay"></div>
+                  <div class="hide-choice-box">
+                    <div class="hide-choice-title">
+                      รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                    </div>
+                    <div class="hide-choice-content">
+                      <ul>
+                        <?php foreach ($question[1] as $key => $value) : ?>
+                          <li><a href="javascript:void(0)" onclick="change_no(this, 1, '<?= $key ?>')" class="select_no_1" id="select_no_1_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
+                        <?php endforeach; ?>
+                      </ul>
+                    </div>
+                  </div>
+                  <script>
+                    jQuery(document).ready(function() {
+                      $('.btn-choice').click(function() {
+                        $('.hide-choice').show();
+                        $('body').addClass('lockbody');
+                      });
+                      $('.btn-choice-close').click(function() {
+                        $('.hide-choice').hide();
+                        $('body').removeClass('lockbody');
+                      });
+                      $('.hide-choice-overlay').click(function() {
+                        $('.hide-choice').hide();
+                        $('body').removeClass('lockbody');
+                      });
                     });
-                    $('.btn-choice-close').click(function() {
-                      $('.hide-choice').hide();
-                      $('body').removeClass('lockbody');
-                    });
-                    $('.hide-choice-overlay').click(function() {
-                      $('.hide-choice').hide();
-                      $('body').removeClass('lockbody');
-                    });
-                  });
-                </script>
+                  </script>
+                </div>
+
               </div>
 
-            </div>
-
-            <div class="regis-form-data-col1 inputfield">
-              <h4 id="question_name_1">1. <?= $question[1][0]->question ?></h4>
-              <div style="margin-bottom: 10px;">
-                ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_1">1,000</span>/1,000)</span>
-              </div>
-              <div>
-                <textarea rows="6" id="reply_1" onkeyup="countChar(this, 'charNum_1')" readonly></textarea>
-              </div>
-            </div>
-
-            <div class="regis-form-data-col2 attachfile">
-              <div class="attachinp">
-                <h4>แนบรูปภาพ</h4>
-
-                <div class="ablumbox" id="ablumbox_1">
-                  <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+              <div class="regis-form-data-col1 inputfield">
+                <h4 id="question_name_1">1. <?= $question[1][0]->question ?></h4>
+                <div style="margin-bottom: 10px;">
+                  ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_1">1,000</span>/1,000)</span>
+                </div>
+                <div>
+                  <textarea rows="6" id="reply_1" onkeyup="countChar(this, 'charNum_1')" readonly></textarea>
                 </div>
               </div>
-            </div>
 
-            <div class="regis-form-data-col2 attachfile">
-              <div class="attachinp">
-                <h4>แนบไฟล์เอกสาร</h4>
-                <div class="ablumbox" id="paper_1">
-                  <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+              <div class="regis-form-data-col2 attachfile">
+                <div class="attachinp">
+                  <h4>แนบรูปภาพ</h4>
+
+                  <div class="ablumbox" id="ablumbox_1">
+                    <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <?php if ($question[1][0]->remark != "") : ?>
-              <div class="regis-form-data-col attachfile">
+              <div class="regis-form-data-col2 attachfile">
+                <div class="attachinp">
+                  <h4>แนบไฟล์เอกสาร</h4>
+                  <div class="ablumbox" id="paper_1">
+                    <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="regis-form-data-col attachfile remark_text_1">
                 <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_1"><?= $question[1][0]->remark ?></span></div>
               </div>
-            <?php endif; ?>
-          </div>
-
-          <div class="regis-form-data-row">
-            <div class="regis-form-data-col1 continue">
-              <button type="button" class="btn-next" id="btn_back_1" onclick="btn_back(this, 1)" no="1">ย้อนกลับ</button>
-              <button type="button" class="btn-next" id="btn_next_1" onclick="btn_next(this, 1)" no="1">ถัดไป</button>
             </div>
 
+            <div class="regis-form-data-row">
+              <div class="regis-form-data-col1 continue">
+                <button type="button" class="btn-next" id="btn_back_1" onclick="btn_back(this, 1)" no="<?= count($question[1]) ?>">ย้อนกลับ</button>
+                <button type="button" class="btn-next" id="btn_next_1" onclick="btn_next(this, 1)" no="1">ถัดไป</button>
+              </div>
+
+            </div>
           </div>
-        </div>
+        <?php endif; ?>
       </div>
 
       <div class="content content2">
-        <div class="regis-form-data">
-          <div class="regis-form-data-row">
-            <div class="regis-form-data-col1 title">
-              <h3>
-                <picture>
-                  <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
-                  <img src="<?= base_url() ?>/assets/images/formicon-type.png">
-                </picture>
-                Supporting Business & Marketing Factors<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_2"><?= count($question[2]) ?></span> ข้อ</span>
-              </h3>
+        <?php if (!empty($question[2])) : ?>
+          <div class="regis-form-data">
+            <div class="regis-form-data-row">
+              <div class="regis-form-data-col1 title">
+                <h3>
+                  <picture>
+                    <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
+                    <img src="<?= base_url() ?>/assets/images/formicon-type.png">
+                  </picture>
+                  Supporting Business & Marketing Factors<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_2"><?= count($question[2]) ?></span> ข้อ</span>
+                </h3>
 
-              <div class="choicebox">
-                <div class="choicebox-col select-choice">
-                  คำถามข้อที่ <span id="question_no_2">1</span>
-                </div>
-                <div class="choicebox-col">
-                  <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
-                </div>
-              </div>
-
-              <div class="hide-choice" style="display: none;">
-                <div class="hide-choice-overlay"></div>
-                <div class="hide-choice-box">
-                  <div class="hide-choice-title">
-                    รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                <div class="choicebox">
+                  <div class="choicebox-col select-choice">
+                    คำถามข้อที่ <span id="question_no_2">1</span>
                   </div>
-                  <div class="hide-choice-content">
-                    <ul>
-                      <?php foreach ($question[2] as $key => $value) : ?>
-                        <li><a href="javascript:void(0)" onclick="change_no(this, 2, '<?= $key ?>')" class="select_no_2" id="select_no_2_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
-                      <?php endforeach; ?>
-                    </ul>
+                  <div class="choicebox-col">
+                    <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
                   </div>
                 </div>
-                <script>
-                  jQuery(document).ready(function() {
-                    $('.btn-choice').click(function() {
-                      $('.hide-choice').show();
-                      $('body').addClass('lockbody');
+
+                <div class="hide-choice" style="display: none;">
+                  <div class="hide-choice-overlay"></div>
+                  <div class="hide-choice-box">
+                    <div class="hide-choice-title">
+                      รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                    </div>
+                    <div class="hide-choice-content">
+                      <ul>
+                        <?php foreach ($question[2] as $key => $value) : ?>
+                          <li><a href="javascript:void(0)" onclick="change_no(this, 2, '<?= $key ?>')" class="select_no_2" id="select_no_2_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
+                        <?php endforeach; ?>
+                      </ul>
+                    </div>
+                  </div>
+                  <script>
+                    jQuery(document).ready(function() {
+                      $('.btn-choice').click(function() {
+                        $('.hide-choice').show();
+                        $('body').addClass('lockbody');
+                      });
+                      $('.btn-choice-close').click(function() {
+                        $('.hide-choice').hide();
+                        $('body').removeClass('lockbody');
+                      });
+                      $('.hide-choice-overlay').click(function() {
+                        $('.hide-choice').hide();
+                        $('body').removeClass('lockbody');
+                      });
                     });
-                    $('.btn-choice-close').click(function() {
-                      $('.hide-choice').hide();
-                      $('body').removeClass('lockbody');
-                    });
-                    $('.hide-choice-overlay').click(function() {
-                      $('.hide-choice').hide();
-                      $('body').removeClass('lockbody');
-                    });
-                  });
-                </script>
+                  </script>
+                </div>
+
               </div>
 
-            </div>
-
-            <div class="regis-form-data-col1 inputfield">
-              <h4 id="question_name_2">1. <?= $question[2][0]->question ?></h4>
-              <div style="margin-bottom: 10px;">
-                ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_2">1,000</span>/1,000)</span>
-              </div>
-              <div>
-                <textarea rows="6" id="reply_2" onkeyup="countChar(this, 'charNum_2')" readonly></textarea>
-              </div>
-            </div>
-
-            <div class="regis-form-data-col2 attachfile">
-              <div class="attachinp">
-                <h4>แนบรูปภาพ</h4>
-
-                <div class="ablumbox" id="ablumbox_2">
-                  <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+              <div class="regis-form-data-col1 inputfield">
+                <h4 id="question_name_2">1. <?= $question[2][0]->question ?></h4>
+                <div style="margin-bottom: 10px;">
+                  ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_2">1,000</span>/1,000)</span>
+                </div>
+                <div>
+                  <textarea rows="6" id="reply_2" onkeyup="countChar(this, 'charNum_2')" readonly></textarea>
                 </div>
               </div>
-            </div>
 
-            <div class="regis-form-data-col2 attachfile">
-              <div class="attachinp">
-                <h4>แนบไฟล์เอกสาร</h4>
-                <div class="ablumbox" id="paper_2">
-                  <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+              <div class="regis-form-data-col2 attachfile">
+                <div class="attachinp">
+                  <h4>แนบรูปภาพ</h4>
+
+                  <div class="ablumbox" id="ablumbox_2">
+                    <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <?php if ($question[2][0]->remark != "") : ?>
-              <div class="regis-form-data-col attachfile">
+              <div class="regis-form-data-col2 attachfile">
+                <div class="attachinp">
+                  <h4>แนบไฟล์เอกสาร</h4>
+                  <div class="ablumbox" id="paper_2">
+                    <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="regis-form-data-col attachfile remark_text_2">
                 <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_2"><?= $question[2][0]->remark ?></span></div>
               </div>
-            <?php endif; ?>
-          </div>
-
-          <div class="regis-form-data-row">
-            <div class="regis-form-data-col1 continue">
-              <button type="button" class="btn-next" id="btn_back_2" onclick="btn_back(this, 2)" no="<?= count($question[2]) ?>">ย้อนกลับ</button>
-              <button type="button" class="btn-next" id="btn_next_2" onclick="btn_next(this, 2)" no="1">ถัดไป</button>
             </div>
 
+            <div class="regis-form-data-row">
+              <div class="regis-form-data-col1 continue">
+                <button type="button" class="btn-next" id="btn_back_2" onclick="btn_back(this, 2)" no="<?= count($question[2]) ?>">ย้อนกลับ</button>
+                <button type="button" class="btn-next" id="btn_next_2" onclick="btn_next(this, 2)" no="1">ถัดไป</button>
+              </div>
+
+            </div>
           </div>
-        </div>
+        <?php endif; ?>
       </div>
 
       <div class="content content3">
-        <div class="regis-form-data">
-          <div class="regis-form-data-row">
-            <div class="regis-form-data-col1 title">
-              <h3>
-                <picture>
-                  <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
-                  <img src="<?= base_url() ?>/assets/images/formicon-type.png">
-                </picture>
-                Responsibility and Safety & Health Administration<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_3"><?= count($question[3]) ?></span> ข้อ</span>
-              </h3>
+        <?php if (!empty($question[3])) : ?>
+          <div class="regis-form-data">
+            <div class="regis-form-data-row">
+              <div class="regis-form-data-col1 title">
+                <h3>
+                  <picture>
+                    <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
+                    <img src="<?= base_url() ?>/assets/images/formicon-type.png">
+                  </picture>
+                  Responsibility and Safety & Health Administration<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_3"><?= count($question[3]) ?></span> ข้อ</span>
+                </h3>
 
-              <div class="choicebox">
-                <div class="choicebox-col select-choice">
-                  คำถามข้อที่ <span id="question_no_3">1</span>
-                </div>
-                <div class="choicebox-col">
-                  <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
-                </div>
-              </div>
-
-              <div class="hide-choice" style="display: none;">
-                <div class="hide-choice-overlay"></div>
-                <div class="hide-choice-box">
-                  <div class="hide-choice-title">
-                    รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                <div class="choicebox">
+                  <div class="choicebox-col select-choice">
+                    คำถามข้อที่ <span id="question_no_3">1</span>
                   </div>
-                  <div class="hide-choice-content">
-                    <ul>
-                      <?php foreach ($question[3] as $key => $value) : ?>
-                        <li><a href="javascript:void(0)" onclick="change_no(this, 3, '<?= $key ?>')" class="select_no_3" id="select_no_3_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
-                      <?php endforeach; ?>
-                    </ul>
+                  <div class="choicebox-col">
+                    <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
                   </div>
                 </div>
-                <script>
-                  jQuery(document).ready(function() {
-                    $('.btn-choice').click(function() {
-                      $('.hide-choice').show();
-                      $('body').addClass('lockbody');
+
+                <div class="hide-choice" style="display: none;">
+                  <div class="hide-choice-overlay"></div>
+                  <div class="hide-choice-box">
+                    <div class="hide-choice-title">
+                      รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                    </div>
+                    <div class="hide-choice-content">
+                      <ul>
+                        <?php foreach ($question[3] as $key => $value) : ?>
+                          <li><a href="javascript:void(0)" onclick="change_no(this, 3, '<?= $key ?>')" class="select_no_3" id="select_no_3_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
+                        <?php endforeach; ?>
+                      </ul>
+                    </div>
+                  </div>
+                  <script>
+                    jQuery(document).ready(function() {
+                      $('.btn-choice').click(function() {
+                        $('.hide-choice').show();
+                        $('body').addClass('lockbody');
+                      });
+                      $('.btn-choice-close').click(function() {
+                        $('.hide-choice').hide();
+                        $('body').removeClass('lockbody');
+                      });
+                      $('.hide-choice-overlay').click(function() {
+                        $('.hide-choice').hide();
+                        $('body').removeClass('lockbody');
+                      });
                     });
-                    $('.btn-choice-close').click(function() {
-                      $('.hide-choice').hide();
-                      $('body').removeClass('lockbody');
-                    });
-                    $('.hide-choice-overlay').click(function() {
-                      $('.hide-choice').hide();
-                      $('body').removeClass('lockbody');
-                    });
-                  });
-                </script>
+                  </script>
+                </div>
+
               </div>
 
-            </div>
-
-            <div class="regis-form-data-col1 inputfield">
-              <h4 id="question_name_3">1. <?= $question[3][0]->question ?></h4>
-              <div style="margin-bottom: 10px;">
-                ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_3">1,000</span>/1,000)</span>
-              </div>
-              <div>
-                <textarea rows="6" id="reply_3" onkeyup="countChar(this, 'charNum_3')" readonly></textarea>
-              </div>
-            </div>
-
-            <div class="regis-form-data-col2 attachfile">
-              <div class="attachinp">
-                <h4>แนบรูปภาพ</h4>
-
-                <div class="ablumbox" id="ablumbox_3">
-                  <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+              <div class="regis-form-data-col1 inputfield">
+                <h4 id="question_name_3">1. <?= $question[3][0]->question ?></h4>
+                <div style="margin-bottom: 10px;">
+                  ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_3">1,000</span>/1,000)</span>
+                </div>
+                <div>
+                  <textarea rows="6" id="reply_3" onkeyup="countChar(this, 'charNum_3')" readonly></textarea>
                 </div>
               </div>
-            </div>
 
-            <div class="regis-form-data-col2 attachfile">
-              <div class="attachinp">
-                <h4>แนบไฟล์เอกสาร</h4>
-                <div class="ablumbox" id="paper_3">
-                  <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+              <div class="regis-form-data-col2 attachfile">
+                <div class="attachinp">
+                  <h4>แนบรูปภาพ</h4>
+
+                  <div class="ablumbox" id="ablumbox_3">
+                    <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <?php if ($question[3][0]->remark != "") : ?>
-              <div class="regis-form-data-col attachfile">
+              <div class="regis-form-data-col2 attachfile">
+                <div class="attachinp">
+                  <h4>แนบไฟล์เอกสาร</h4>
+                  <div class="ablumbox" id="paper_3">
+                    <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="regis-form-data-col attachfile remark_text_3">
                 <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_3"><?= $question[3][0]->remark ?></span></div>
               </div>
-            <?php endif; ?>
-          </div>
 
-          <div class="regis-form-data-row">
-            <div class="regis-form-data-col1 continue">
-              <button type="button" class="btn-next" id="btn_back_3" onclick="btn_back(this, 3)" no="<?= count($question[3]) ?>">ย้อนกลับ</button>
-              <button type="button" class="btn-next" id="btn_next_3" onclick="btn_next(this, 3)" no="1">ถัดไป</button>
+            </div>
+
+            <div class="regis-form-data-row">
+              <div class="regis-form-data-col1 continue">
+                <button type="button" class="btn-next" id="btn_back_3" onclick="btn_back(this, 3)" no="<?= count($question[3]) ?>">ย้อนกลับ</button>
+                <button type="button" class="btn-next" id="btn_next_3" onclick="btn_next(this, 3)" no="1">ถัดไป</button>
+              </div>
+
             </div>
           </div>
+        <?php endif; ?>
+      </div>
 
-        </div>
+      <div class="content content4">
+        <?php if (!empty($question[4]) && $question[4] != "") : ?>
+          <div class="regis-form-data">
+            <div class="regis-form-data-row">
+              <div class="regis-form-data-col1 title">
+                <h3>
+                  <picture>
+                    <source srcset="<?= base_url() ?>/assets/images/formicon-type.svg">
+                    <img src="<?= base_url() ?>/assets/images/formicon-type.png">
+                  </picture>
+                  Low Carbon<br><span class="txt-yellow title-comment">คำถามทั้งหมด <span id="question_count_4"><?= count($question[4]) ?></span> ข้อ</span>
+                </h3>
+
+                <div class="choicebox">
+                  <div class="choicebox-col select-choice">
+                    คำถามข้อที่ <span id="question_no_4">1</span>
+                  </div>
+                  <div class="choicebox-col">
+                    <a href="javascript:void(0)" class="btn-choice"><i class="bi bi-toggles"></i></a>
+                  </div>
+                </div>
+
+                <div class="hide-choice" style="display: none;">
+                  <div class="hide-choice-overlay"></div>
+                  <div class="hide-choice-box">
+                    <div class="hide-choice-title">
+                      รายการคำถาม <a href="javascript:void(0)" class="btn-choice-close"><i class="bi bi-x"></i></a>
+                    </div>
+                    <div class="hide-choice-content">
+                      <ul>
+                        <?php foreach ($question[4] as $key => $value) : ?>
+                          <li><a href="javascript:void(0)" onclick="change_no(this, 4, '<?= $key ?>')" class="select_no_4" id="select_no_4_<?= $key + 1 ?>"> ข้อที่ <?= $key + 1 ?> </a></li>
+                        <?php endforeach; ?>
+                      </ul>
+                    </div>
+                  </div>
+                  <script>
+                    jQuery(document).ready(function() {
+                      $('.btn-choice').click(function() {
+                        $('.hide-choice').show();
+                        $('body').addClass('lockbody');
+                      });
+                      $('.btn-choice-close').click(function() {
+                        $('.hide-choice').hide();
+                        $('body').removeClass('lockbody');
+                      });
+                      $('.hide-choice-overlay').click(function() {
+                        $('.hide-choice').hide();
+                        $('body').removeClass('lockbody');
+                      });
+                    });
+                  </script>
+                </div>
+
+              </div>
+
+              <div class="regis-form-data-col1 inputfield">
+                <h4 id="question_name_4">1. <?= $question[3][0]->question ?></h4>
+                <div style="margin-bottom: 10px;">
+                  ระบุคำตอบ<span class="required"> *</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum_4">1,000</span>/1,000)</span>
+                </div>
+                <div>
+                  <textarea rows="6" id="reply_4" onkeyup="countChar(this, 'charNum_4')" readonly></textarea>
+                </div>
+              </div>
+
+              <div class="regis-form-data-col2 attachfile">
+                <div class="attachinp">
+                  <h4>แนบรูปภาพ</h4>
+
+                  <div class="ablumbox" id="ablumbox_4">
+                    <h5 class="text-danger"><i>ไม่ได้แนบรูปภาพ</i></h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="regis-form-data-col2 attachfile">
+                <div class="attachinp">
+                  <h4>แนบไฟล์เอกสาร</h4>
+                  <div class="ablumbox" id="paper_4">
+                    <h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="regis-form-data-col attachfile remark_text_4" style="display: none;">
+                <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_4"><?= $question[4][0]->remark ?></span></div>
+              </div>
+
+            </div>
+
+            <div class="regis-form-data-row">
+              <div class="regis-form-data-col1 continue">
+                <button type="button" class="btn-next" id="btn_back_4" onclick="btn_back(this, 4)" no="<?= count($question[4]) ?>">ย้อนกลับ</button>
+                <button type="button" class="btn-next" id="btn_next_4" onclick="btn_next(this, 4)" no="1">ถัดไป</button>
+              </div>
+
+            </div>
+          </div>
+        <?php endif; ?>
       </div>
 
     </div>
@@ -479,13 +613,17 @@
   $(function() {
     var question = JSON.parse($('#data_question').val());
     // cc(question)
-    add_aws('<?= $question[1][0]->id ?>', 1);
-    add_aws('<?= $question[2][0]->id ?>', 2);
-    add_aws('<?= $question[3][0]->id ?>', 3);
+    add_aws(question[1][0].id, 1);
+    add_aws(question[2][0].id, 2);
+    add_aws(question[3][0].id, 3);
+    if (question[4] != null) {
+      add_aws(question[4][0].id, 4);
+    }
 
     $('.select_no_1').eq(0).addClass('active');
     $('.select_no_3').eq(0).addClass('active');
     $('.select_no_3').eq(0).addClass('active');
+    $('.select_no_4').eq(0).addClass('active');
 
     var pgurl = BASE_URL_BACKEND + '/estimate/prescreen';
     active_page(pgurl);
@@ -530,6 +668,10 @@
       created_by: $('#created_by').val()
     }
     var res = main_post(BASE_URL_BACKEND + '/estimate/getAnswer', data);
+    if (res == null) {
+      return false;
+    }
+
     $('#reply_' + tab).val(res.reply).keyup();
 
     var ablumbox = '';
@@ -567,7 +709,13 @@
     var no = Number(id) + Number(1);
     $(question).filter(function(index) {
       $('#question_name_' + tab).html(no + '. ' + question[tab][id].question);
-      $('#remark_text_' + tab).html(question[tab][id].remark);
+      if (question[tab][id].remark != "") {
+        $('.remark_text_' + tab).show();
+        $('#remark_text_' + tab).html(question[tab][id].remark);
+      } else {
+        $('.remark_text_' + tab).hide();
+      }
+
       $('#question_no_' + tab).html(no);
       $('#btn_next_' + tab).attr('no', no);
       $('#btn_back_' + tab).attr('no', no);

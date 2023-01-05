@@ -217,7 +217,7 @@
         var res = main_save(BASE_URL_BACKEND + '/news/saveInsert', '#input_form');
         res_swal(res, 0, function() {
           if (res.type == 'success') {
-            window.location.href = '<?= base_url('backend/news') ?>';
+            window.location.href = BASE_URL_BACKEND + '/news';
           }
         });
       } else {

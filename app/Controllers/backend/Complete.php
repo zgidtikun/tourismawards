@@ -10,6 +10,10 @@ use App\Models\ApplicationTypeSub;
 
 class Complete extends BaseController
 {
+    private $ApplicationForm;
+    private $ApplicationType;
+    private $ApplicationTypeSub;
+    
     public function __construct()
     {
         $this->ApplicationForm = new ApplicationForm;
@@ -113,7 +117,7 @@ class Complete extends BaseController
 
                 $requestEmail = [
                     'to' => $users->email,
-                    'subject' => $message,
+                    'subject' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     'message' => view('administrator/template_email', $email_data),
                     // 'from' => $from,
                     // 'cc' => [],
@@ -149,7 +153,7 @@ class Complete extends BaseController
 
                 $requestEmail = [
                     'to' => $users->email,
-                    'subject' => $message,
+                    'subject' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     'message' => view('administrator/template_email', $email_data),
                     // 'from' => $from,
                     // 'cc' => [],
@@ -185,7 +189,7 @@ class Complete extends BaseController
 
                 $requestEmail = [
                     'to' => $users->email,
-                    'subject' => $message,
+                    'subject' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     'message' => view('administrator/template_email', $email_data),
                     // 'from' => $from,
                     // 'cc' => [],

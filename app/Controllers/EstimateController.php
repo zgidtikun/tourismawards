@@ -312,19 +312,10 @@ class EstimateController extends BaseController
             if(!$resultIndividuel->result){
                 $resultIndividuel->result = 'error';
                 return $this->response->setJSON($resultIndividuel);
-            } 
-
-            if($input->stage == 1 && $this->lowcarbon){
-                $individuelLowcarbon = $reEstimate['lowcarbon'];
-                unset($reEstimate['lowcarbon']);
-                $this->setIndividuelLowcarbon($input,$individuelLowcarbon);
-            }           
+            }         
 
             if($this->checkFinishEsitmate($input->appId,$input->stage)){
                 $resultEstimate = $this->setFinishEstimate($input->appId,$input->stage);
-                if($input->stage == 1 && $this->lowcarbon){
-                    $this->setFinishLowcarbon($input->appId,$input->stage);
-                }
             }
 
             $this->sendEstimateResult((object)[
@@ -447,13 +438,10 @@ class EstimateController extends BaseController
                     'score_te' => $stescore,
                     'score_sb' => $ssbscore,
                     'score_rs' => $srsscore,
-                    'score_tt' => $sscore
+                    'score_tt' => $sscore,
+                    'lowcarbon' => $slcscore
                 ]
             ];
-
-            if($list->stage == 1 && $this->lowcarbon){
-                $result['lowcarbon'] = $slcscore;
-            }
 
             return $result;
         } catch(Exception $e) {
@@ -487,6 +475,8 @@ class EstimateController extends BaseController
                 $inst_estind['score_prs'] = $score->score_rs;
                 $inst_estind['score_pre'] = $score->score_tt;
                 $inst_estind['pre_send_date'] = $current_datetime;
+                $inst_estind['lowcarbon_status'] = $this->lowcarbon ? 1 : 2;
+                $inst_estind['lowcarbon_score'] = $this->lowcarbon ? $score->lowcarbon : 0;
             }
             else {
                 $inst_estind['score_ote'] = $score->score_te;
@@ -536,65 +526,47 @@ class EstimateController extends BaseController
         }
     }
 
-    private function setIndividuelLowcarbon($estimate,$score)
-    {
-        $eIndividuel = new \App\Models\LowcarbonIndividual();
-        $current_datetime = date('Y-m-d H:i:s');
-        
-        if($estimate->stage == 1){
-            $inst_estind['score_pre'] = $score;
-            $inst_estind['pre_send_date'] = $current_datetime;
-        } else {
-            $inst_estind['score_onsite'] = $score;
-            $inst_estind['onsite_send_date'] = $current_datetime;
-
-        }
-
-        $existEstInd = $eIndividuel->where([
-            'application_id' => $estimate->appId,
-            'estimate_by' => $this->myId
-        ])
-        ->countAllResults();
-
-        if($existEstInd < 1){
-            $inst_estind['application_id'] = $estimate->appId;
-            $inst_estind['estimate_by'] = $this->myId;
-            $result = $eIndividuel->insert($inst_estind);
-        } else {
-            $result = $eIndividuel->where([
-                'application_id' => $estimate->appId,
-                'estimate_by' => $this->myId
-            ])
-            ->set($inst_estind)
-            ->update();
-        }
-
-        return (object) ['result' => $result];
-    }
-
     private function setFinishEstimate($id,$stage)
     {
         $app = new \Config\App();
         $users = new \App\Models\Users();          
         $answer = new \App\Models\Answer();
-        $cJudge = $this->countJudgeEstimate($id,$stage,'main');
+        $appForm = new  \App\Controllers\ApplicationController();
+        $haveLowcarbon = $appForm->checkRequireLowCarbon($id);
+        $cJudge = $this->countJudgeEstimate($id,$stage);
         $current_datetime = date('Y-m-d H:i:s');
 
         if($stage == 1){
             $select_sum = 'SUM(score_pte) score_te, SUM(score_psb) score_sb,
-                SUM(score_prs) score_rs, SUM(score_pre) score_tt';
+                SUM(score_prs) score_rs, SUM(score_pre) score_tt, 
+                SUM(lowcarbon_score) score_lc';
         } else {
             $select_sum = 'SUM(score_ote) score_te, SUM(score_osb) score_sb,
                 SUM(score_ors) score_rs, SUM(score_onsite) score_tt';
         }
 
         $sumScr = $this->estInd->where('application_id',$id)
-            ->select($select_sum)
-            ->first();
+        ->select($select_sum)
+        ->first();
 
-        $avg_te = $sumScr->score_te / $cJudge->tourism;
-        $avg_sb = $sumScr->score_sb / $cJudge->support;
-        $avg_rs = $sumScr->score_rs / $cJudge->respons;
+        $avg_te = $avg_sb = $avg_rs = $avg_lc = 0;
+        
+        if($sumScr->score_te > 0){
+            $avg_te = $sumScr->score_te / $cJudge->tourism;
+        }
+        
+        if($sumScr->score_te > 0){
+            $avg_sb = $sumScr->score_sb / $cJudge->support;
+        }
+        
+        if($sumScr->score_rs > 0){
+            $avg_rs = $sumScr->score_rs / $cJudge->respons; 
+        }
+        
+        if($sumScr->score_lc > 0){ 
+            $avg_lc = $sumScr->score_lc / $cJudge->lowcarbon;
+        }
+
         $avg_tt = $avg_te + $avg_sb + $avg_rs;
 
         if($stage == 1) {
@@ -603,6 +575,8 @@ class EstimateController extends BaseController
             $inst_avg['score_prescreen_rs'] = $avg_rs;
             $inst_avg['score_prescreen_tt'] = $avg_tt;
             $inst_avg['pre_send_date'] = $current_datetime;
+            $inst_avg['lowcarbon_status'] = $haveLowcarbon ? 1 : 2;
+            $inst_avg['lowcarbon_score'] = $haveLowcarbon ? $avg_lc : 0;
         }
         else {
             $inst_avg['score_onsite_te'] = $avg_te;
@@ -668,50 +642,12 @@ class EstimateController extends BaseController
         return $pass;
     }
 
-    private function setFinishLowcarbon($id,$stage)
-    {
-        $eIndividuel = new \App\Models\LowcarbonIndividual();
-        $eScore = new \App\Models\LowcarbonScore();
-        $cJudge = $this->countJudgeEstimate($id,$stage,'lowcarbon');
-        $current_datetime = date('Y-m-d H:i:s');
-
-        $sumScr = $eIndividuel->where('application_id',$id)
-        ->select($stage == 1 ? 'SUM(score_pre) score_tt' : 'SUM(score_onsite) score_tt')
-        ->first();
-
-        $avg_tt = $sumScr->score_tt / $cJudge->lowcarbon;
-
-        if($stage == 1) {
-            $inst_avg['score_prescreen_tt'] = $avg_tt;
-            $inst_avg['pre_send_date'] = $current_datetime;
-        }
-        else {
-            $inst_avg['score_onsite_tt'] = $avg_tt;
-            $inst_avg['onsite_send_date'] = $current_datetime;
-        }
-
-        $existEstScr = $eScore->where('application_id',$id)
-            ->countAllResults();
-
-        if($existEstScr < 1){
-            $inst_avg['application_id'] = $id;
-            $eScore->insert($inst_avg);
-        } else {
-            $eScore->where('application_id',$id)
-                ->set($inst_avg)
-                ->update();
-        }
-    }
-
-    private function countJudgeEstimate($id,$stage,$by)
+    private function countJudgeEstimate($id,$stage)
     {       
-        if($by == 'main'){
-            $select = 'admin_id_tourism tourism,
-                admin_id_supporting support,
-                admin_id_responsibility respons';
-        } else {
-            $select = 'admin_id_lowcarbon lowcarbon';
-        }
+        $select = 'admin_id_tourism tourism,
+            admin_id_supporting support,
+            admin_id_responsibility respons, 
+            admin_id_lowcarbon lowcarbon';
         
         $cJudge = $this->commit->where([
             'application_form_id' => $id,
@@ -719,60 +655,65 @@ class EstimateController extends BaseController
         ])
         ->select($select)
         ->first(); 
-            
-        if($by == 'main'){
-            $ctourism = $csupport = $crespons = 1;
-            
-            if(!empty($cJudge->tourism)){
-                $tourism = json_decode($cJudge->tourism,true);
-                $ctourism = !empty($tourism) ? count($tourism) : 1;
-            }
 
-            if(!empty($cJudge->support)){
-                $support = json_decode($cJudge->support,true);
-                $csupport = !empty($support) ? count($support) : 1;
-            }
-
-            if(!empty($cJudge->respons)){
-                $respons = json_decode($cJudge->respons,true);
-                $crespons = !empty($respons) ? count($respons) : 1;
-            }
-
-            return (object) [
-                'tourism' => $ctourism,
-                'support' => $csupport,
-                'respons' => $crespons
-            ];
-        } else {
-            $clowcarbon = 1;
-
-            if(!empty($cJudge->lowcarbon)){
-                $lowcarbon = json_decode($cJudge->lowcarbon,true);
-                $clowcarbon = !empty($lowcarbon) ? count($lowcarbon) : 1;
-            }
-
-            return (object) [
-                'lowcarbon' => $clowcarbon
-            ];
+        $ctourism = $csupport = $crespons = $clowcarbon = 1;
+        
+        if(!empty($cJudge->tourism)){
+            $tourism = json_decode($cJudge->tourism,true);
+            $ctourism = !empty($tourism) ? count($tourism) : 1;
         }
+
+        if(!empty($cJudge->support)){
+            $support = json_decode($cJudge->support,true);
+            $csupport = !empty($support) ? count($support) : 1;
+        }
+
+        if(!empty($cJudge->respons)){
+            $respons = json_decode($cJudge->respons,true);
+            $crespons = !empty($respons) ? count($respons) : 1;
+        }
+
+        if(!empty($cJudge->lowcarbon)){
+            $lowcarbon = json_decode($cJudge->lowcarbon,true);
+            $clowcarbon = !empty($lowcarbon) ? count($lowcarbon) : 1;
+        }
+
+        return (object) [
+            'tourism' => $ctourism,
+            'support' => $csupport,
+            'respons' => $crespons,
+            'lowcarbon' => $clowcarbon
+        ];
     }
 
     private function checkFinishEsitmate($id,$stage)
     {
-        $where_est ='application_id = '.$id;
-
-        if($stage == 1){
-            $where_est .= ' AND score_pre IS NOT NULL';
-        }
-        else {
-            $where_est .= ' AND score_onsite IS NOT NULL';
-        }     
-
         $count_adm = $this->commit->where('application_form_id',$id)
             ->select('admin_count')->first();
-            
-        $count_est = $this->estInd->where($where_est, NULL, FALSE)
+        
+        if($stage == 1){
+            $count_est = $this->estInd->where(
+                "application_id = $id 
+                    AND CASE 
+                        WHEN lowcarbon_status = 1 
+                            AND score_pre IS NOT NULL 
+                            AND lowcarbon_score IS NOT NULL
+                                THEN TRUE
+                        WHEN lowcarbon_status = 2 
+                            AND score_pre IS NOT NULL 
+                            THEN TRUE 
+                        ELSE FALSE 
+                    END                    
+                ", NULL, FALSE
+            )
             ->countAllResults();
+        } else {            
+            $count_est = $this->estInd->where(
+                "application_id = $id 
+                AND score_onsite IS NOT NULL", NULL, FALSE
+            )
+            ->countAllResults();
+        }
 
         if($count_est >= $count_adm->admin_count)
             return true;
@@ -922,6 +863,10 @@ class EstimateController extends BaseController
     private function reCalEstimate($by,$appId,$typeId,$subId)
     {
         try{
+            $application = $this->appForm->select(
+                'id app_id, require_lowcarbon, created_'
+            );
+
         } catch(Exception $e){
             return ['result' => 'error', 'message' => $e->getMessage()];
         }

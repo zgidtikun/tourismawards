@@ -31,7 +31,8 @@ const psc = {
             psc.lowcarbon = response.lowcarbon;
             psc.questions = response.data;
             psc.stage = stage;    
-            
+            console.log(stage)
+            console.log(response)
             if(psc.expired && $inArray(psc.status,['draft','reject']) !== -1){ 
                 $('#formstatus-unpass').removeClass('hide');
                 $('#formstep-sts').addClass('notpass');
@@ -427,7 +428,7 @@ const psc = {
                 id = 'id="sl-'+key+'"',
                 cp, cl;
             
-            if($.inArray(Number(psc.stage.status),[3,5]) === -1){
+            if($.inArray(Number(psc.stage.status),[3,5]) === -1 && psc.status != 'reject'){
                 cp = !empty(value.reply) && seg != key ? 'complete' : '';
             } else {
                 if(!empty(value.request) && Number(value.reply_sts) == 3 ){

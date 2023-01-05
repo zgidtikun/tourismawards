@@ -44,7 +44,8 @@ class QuestionController extends BaseController
                 ->where(
                     '( admin_id_tourism LIKE \'%"'.$this->myId.'"%\'
                     OR admin_id_supporting LIKE \'%"'.$this->myId.'"%\'
-                    OR admin_id_responsibility LIKE \'%"'.$this->myId.'"%\')')
+                    OR admin_id_responsibility LIKE \'%"'.$this->myId.'"%\'
+                    OR admin_id_lowcarbon LIKE \'%"'.$this->myId.'"%\')')
                 ->getCompiledSelect();
 
             $subEstInd = $this->db->table('estimate_individual')

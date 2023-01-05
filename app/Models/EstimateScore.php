@@ -16,7 +16,8 @@ class EstimateScore extends Model
 
     protected $allowedFields = ['application_id', 'score_prescreen_te', 'score_prescreen_sb', 
     'score_prescreen_rs', 'score_prescreen_tt', 'score_onsite_te', 'score_onsite_sb', 
-    'score_onsite_rs', 'score_onsite_tt', 'pre_send_date', 'onsite_send_date'];
+    'score_onsite_rs', 'score_onsite_tt', 'pre_send_date', 'onsite_send_date',
+    'lowcarbon_status', 'lowcarbon_score'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

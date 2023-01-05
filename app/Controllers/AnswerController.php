@@ -257,9 +257,9 @@ class AnswerController extends BaseController
             ->where('status',3)
             ->countAllResults();
 
-        $estimate = $this->ans->select('status')
-            ->where('reply_by',$id)
-            ->where('status',4)
+        $estimate = $this->usStg->select('stauts')
+            ->where('user_id',$id)
+            ->whereIn('status',[6,7])
             ->countAllResults();
         
         if($draft > 0) return 'draft';

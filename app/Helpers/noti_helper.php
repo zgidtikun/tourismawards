@@ -40,10 +40,15 @@ function get_receive_noti($id)
 {
     $obj = new \App\Models\Committees();
     $data = $obj->where('users_id',$id)
-        ->select('admin_id_tourism, admin_id_supporting, admin_id_responsibility')
+        ->select(
+            'admin_id_tourism, 
+            admin_id_supporting, 
+            admin_id_responsibility,
+            admin_id_lowcarbon'
+        )
         ->first();
 
-    $result = $tourism = $support = $respons = [];
+    $result = $tourism = $support = $lowcarbon = $respons = [];
 
     if(!empty($data->admin_id_tourism)){
         $tourism = json_decode($data->admin_id_tourism,true);
@@ -58,6 +63,11 @@ function get_receive_noti($id)
     if(!empty($data->admin_id_responsibility)){
         $respons = json_decode($data->admin_id_responsibility,true);
         $result = array_unique(array_merge($result,$respons));
+    }
+
+    if(!empty($data->admin_id_lowcarbon)){
+        $lowcarbon = json_decode($data->admin_id_lowcarbon,true);
+        $result = array_unique(array_merge($result,$lowcarbon));
     }
     
     $result = json_decode(json_encode($result),false);

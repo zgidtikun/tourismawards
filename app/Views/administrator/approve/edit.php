@@ -136,6 +136,26 @@
               </div>
 
               <div class="regis-form-data-col1">
+                <h4>กรุณาระบุ หากต้องการสมัครประเภทพิเศษ Low Carbon & Sustainability</h4>
+                <div id="option_application_type_sub">
+                  <?php
+                  $checked = "";
+                  if ($result->require_lowcarbon == 1) {
+                    $checked = "checked";
+                  }
+                  ?>
+                  <p>
+                    <input type="radio" id="require_lowcarbon_1" name="require_lowcarbon" value="1" <?= ($result->require_lowcarbon == 1) ? 'checked' : ''; ?> disabled>
+                    <label for="require_lowcarbon_1"> ต้องการ</label>
+                  </p>
+                  <p>
+                    <input type="radio" id="require_lowcarbon_2" name="require_lowcarbon" value="2" <?= ($result->require_lowcarbon != 1) ? 'checked' : ''; ?> disabled>
+                    <label for="require_lowcarbon_2"> ไม่ต้องการ</label>
+                  </p>
+                </div>
+              </div>
+
+              <div class="regis-form-data-col1">
                 <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด<span class="required">*</span></h4>
                 ระบุคำตอบ<span class="required">*</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
                 <textarea rows="6" id="field" onkeyup="countChar(this)" readonly><?= $result->highlights ?></textarea>

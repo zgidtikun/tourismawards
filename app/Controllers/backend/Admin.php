@@ -3,14 +3,13 @@
 namespace App\Controllers\Backend;
 
 use App\Controllers\BaseController;
-use App\Models\ApplicationType;
 
 class Admin extends BaseController
 {
+
     public function __construct()
     {
         helper(['semail', 'verify', 'log']);
-        $this->ApplicationType = new ApplicationType();
     }
 
     public function index()
@@ -230,10 +229,8 @@ class Admin extends BaseController
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }
         $email_data = [
-            '_header' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
-            '_content' => 'คุณ ' . $data['admin']->name . ' ' . $data['admin']->surname . ' ได้รับการเพิ่มให้เป็นผู้ดูแลระบบ (Admin) '
-                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
-                . 'ด้วยอีเมล ' . $data['admin']->email . ' '
+            '_header' => 'เรียนคุณ ' . $data['admin']->name . ' ' . $data['admin']->surname,
+            '_content' => 'คุณได้รับการเพิ่มให้เป็นผู้ดูแลระบบ (Admin) อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) ด้วยอีเมล ' . $data['admin']->email . ' '
                 . $text
         ];
         $requestEmail = [

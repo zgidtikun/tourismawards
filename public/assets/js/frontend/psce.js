@@ -199,7 +199,7 @@ const setFinish = () => {
     let confirm_title = `ยืนยันการส่งผลประเมินเข้าระบบ`;
     confirm_title += `\r\nคะแนนที่ประเมินคือ <span class="txt-yellow">${sscore}</span> คะแนน`;
 
-    if(estimateLowCarbon && lowcarbon){
+    if(estimateLowCarbon && estimateLowCarbon){
         confirm_title += `\r\nคะแนน Low Carbon คือ <span class="txt-yellow">${lcbscore}</span> คะแนน`;
     }
 
@@ -224,7 +224,7 @@ const setFinish = () => {
                     data:{
                         appId: appid,
                         stage: 1,
-                        lowcarbon: lowcarbon,
+                        lowcarbon: estimateLowCarbon,
                         score_te: stescore,
                         score_sb: ssbscore,
                         score_rs: srsscore,

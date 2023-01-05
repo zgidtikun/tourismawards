@@ -108,13 +108,13 @@
 
       </form>
 
-
-    </div>
-
-    <div class="form-main-btn">
+<div class="form-main-btn">
       <a href="javascript:void(0)" class="btn-cancle" onclick="window.location.href = BASE_URL_BACKEND + '/users'">ยกเลิก</a>
       <a href="javascript:void(0)" class="btn-save" data-tab="1" id="btn_save">บันทึก</a>
     </div>
+    </div>
+
+    
 
   </div>
 </div>

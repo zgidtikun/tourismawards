@@ -16,7 +16,8 @@ class EstimateIndividual extends Model
 
     protected $allowedFields = ['application_id', 'estimate_by', 'score_pte', 
     'score_psb', 'score_prs', 'score_pre', 'score_ote', 'score_osb', 'score_ors', 
-    'score_onsite', 'pre_send_date', 'onsite_send_date'];
+    'score_onsite', 'pre_send_date', 'onsite_send_date',
+    'lowcarbon_status', 'lowcarbon_score'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

@@ -155,7 +155,7 @@
           $active = "active";
         }
       ?>
-        <a id="<?= $i ?>" href="javascript:void(0);" class="btn-form-step <?= $active ?>"><?= $value->name ?></a>
+        <a id="<?= $i ?>" href="javascript:void(0);" class="btn-form-step <?= $active ?>"><?= ($key + 1) ?>. <?= $value->name ?></a>
       <?php
         $i++;
       }
@@ -478,9 +478,9 @@
   $(function() {
     var question = JSON.parse($('#data_question').val());
     // cc(question)
-    add_aws('<?= $question[1][0]->id ?>', 1);
-    add_aws('<?= $question[2][0]->id ?>', 2);
-    add_aws('<?= $question[3][0]->id ?>', 3);
+    add_aws(question[1][0].id, 1);
+    add_aws(question[2][0].id, 2);
+    add_aws(question[3][0].id, 3);
 
     $('.select_no_1').eq(0).addClass('active');
     $('.select_no_3').eq(0).addClass('active');

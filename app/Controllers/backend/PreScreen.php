@@ -12,6 +12,12 @@ use App\Models\ApplicationTypeSub;
 
 class PreScreen extends BaseController
 {
+    private $Users;
+    private $UsersStage;
+    private $ApplicationForm;
+    private $ApplicationType;
+    private $ApplicationTypeSub;
+
     public function __construct()
     {
         $this->Users = new Users;

@@ -8,8 +8,11 @@ use Exception;
 
 class FrontendController extends BaseController
 {
+    private $myId;
     public function __construct()
     {
+        $this->myId = session()->get('id');
+
         if(!isset($this->db))
             $this->db = \Config\Database::connect();        
     }
@@ -43,7 +46,7 @@ class FrontendController extends BaseController
     public function profile()
     {
         $users = new \App\Models\Users();
-        $user = $users->where('id',session()->get('id'))->first();
+        $user = $users->where('id',$this->myId)->first();
         
         if(!empty($user->profile))
             $user->profile = base_url($user->profile);
@@ -57,7 +60,7 @@ class FrontendController extends BaseController
                 ->join('application_type t','a.application_type_id = t.id')
                 ->join('application_type_sub ts','a.application_type_sub_id = ts.id','LEFT')
                 ->select('a.status, a.attraction_name_th attr, t.name t_name, ts.name ts_name')
-                ->where('created_by',session()->get('id'))
+                ->where('created_by',$this->myId)
                 ->get();
             
             foreach($builder->getResult() as $val) $app_f = $val;
@@ -111,9 +114,9 @@ class FrontendController extends BaseController
     {
         $app = new \Config\App();
         $stage = new \App\Models\UsersStage();
-        $prescreen = $stage->where(['user_id' => session()->get('id'), 'stage' => 1])
+        $prescreen = $stage->where(['user_id' => $this->myId, 'stage' => 1])
             ->select('status')->first();
-        $onsite = $stage->where(['user_id' => session()->get('id'), 'stage' => 2])
+        $onsite = $stage->where(['user_id' => $this->myId, 'stage' => 2])
             ->select('status')->first();
 
         if(
@@ -174,7 +177,7 @@ class FrontendController extends BaseController
                     $data->result->img = base_url('assets/images/logo.png');    
 
                     $award_obj = new \App\Models\AwardResult();
-                    $award = $award_obj->where('user_id',session()->get('id'))
+                    $award = $award_obj->where('user_id',$this->myId)
                         ->select('award_type type')->first();
 
                     if($award && $award->type !== 0){
@@ -256,23 +259,25 @@ class FrontendController extends BaseController
             ->select('application_form_id afid')
             ->where('assessment_round',1)
             ->where(
-                '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
-                OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
-                OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')')
+                '( admin_id_tourism LIKE \'%"'.$this->myId.'"%\'
+                OR admin_id_supporting LIKE \'%"'.$this->myId.'"%\'
+                OR admin_id_responsibility LIKE \'%"'.$this->myId.'"%\'
+                OR admin_id_lowcarbon LIKE \'%"'.$this->myId.'"%\')')
             ->getCompiledSelect();
         
         $subCommO = $this->db->table('committees')
             ->select('application_form_id afid')
             ->where('assessment_round',2)
             ->where(
-                '( admin_id_tourism LIKE \'%"'.session()->get('id').'"%\'
-                OR admin_id_supporting LIKE \'%"'.session()->get('id').'"%\'
-                OR admin_id_responsibility LIKE \'%"'.session()->get('id').'"%\')')
+                '( admin_id_tourism LIKE \'%"'.$this->myId.'"%\'
+                OR admin_id_supporting LIKE \'%"'.$this->myId.'"%\'
+                OR admin_id_responsibility LIKE \'%"'.$this->myId.'"%\'
+                OR admin_id_lowcarbon LIKE \'%"'.$this->myId.'"%\')')
             ->getCompiledSelect();        
 
         $subEstInd = $this->db->table('estimate_individual')
             ->select('application_id,score_pre, score_onsite')
-            ->where('estimate_by',session()->get('id'))
+            ->where('estimate_by',$this->myId)
             ->getCompiledSelect();
         
         foreach(['pre_wait','pre_comp','inst_wait','inst_comp'] as $key=>$val){            
@@ -312,7 +317,7 @@ class FrontendController extends BaseController
                 $isFinish = $ObjEst->checkEstimateFinish(
                     $est->id,
                     in_array($val,['pre_wait','pre_comp']) ? 1 : 2,
-                    session()->get('id')
+                    $this->myId
                 );
 
                 if(
@@ -367,15 +372,15 @@ class FrontendController extends BaseController
                 'stage' => 1
             ];
         } else {
-            $assign = $this->getGroupEstimate($id,session()->get('id'),1);
-            $isFinish = $this->checkEstimateFinish($id,1,session()->get('id'));
+            $assign = $this->getGroupEstimate($id,$this->myId,1);
+            $isFinish = $this->checkEstimateFinish($id,1,$this->myId);
 
             if($stage->status == 3){
                 $judgeRequest = new \App\Controllers\EstimateRequestController();
-                $exprireReq = $judgeRequest->get_expire_request($id,session()->get('id'));
+                $exprireReq = $judgeRequest->get_expire_request($id,$this->myId);
                 if($exprireReq->expire_status){
                     if($exprireReq->request_status == 1){
-                        $judgeRequest->set_expire_request($id,session()->get('id'));
+                        $judgeRequest->set_expire_request($id,$this->myId);
                         $stage->status = 5;
                     }
                     else if($exprireReq->request_status == 4){
@@ -416,8 +421,8 @@ class FrontendController extends BaseController
                 'stage' => 2
             ];
         } else {
-            $assign = $this->getGroupEstimate($id,session()->get('id'),2);
-            $isFinish = $this->checkEstimateFinish($id,2,session()->get('id'));
+            $assign = $this->getGroupEstimate($id,$this->myId,2);
+            $isFinish = $this->checkEstimateFinish($id,2,$this->myId);
 
             $obj_es = new EstimateScore();
             $score = $obj_es->where('application_id',$id)
@@ -428,7 +433,7 @@ class FrontendController extends BaseController
                 $obj_est = new Estimate();
                 $cRequest = $obj_est->where([
                         'application_id' => $id,
-                        'estimate_by' => session()->get('id'),
+                        'estimate_by' => $this->myId,
                         'request_status' => 1
                     ])
                     ->countAllResults();
@@ -454,22 +459,40 @@ class FrontendController extends BaseController
 
     public function checkEstimateFinish($id,$stage,$userId)
     {
-        $obj = new \App\Models\EstimateIndividual();
-        $ind = $obj->select('score_pre, score_onsite')
-            ->where([
-                'application_id' => $id,
-                'estimate_by' => $userId
-            ])
-            ->first();
+        $obj_ei = new \App\Models\EstimateIndividual();
 
-        if(
-            (!empty($ind->score_pre) && $stage == 1)
-            || (!empty($ind->score_onsite) && $stage == 2)
-        ){
-            return 'finish';
+        $is_finish = 'unfinish';
+        $select = 'score_pre, score_onsite, lowcarbon_status, lowcarbon_score';
+        $where = [
+            'application_id' => $id,
+            'estimate_by' => $userId
+        ];
+
+        $ind = $obj_ei->select($select)->where($where)->first();
+
+        if($stage == 1){
+            if($ind->lowcarbon_status == 1){
+                if(!empty($ind->score_pre) && !empty($ind->lowcarbon_score)){
+                    $is_finish = 'finish';
+                } else {
+                    $is_finish = 'unfinish';
+                }
+            } else {
+                if(!empty($ind->score_pre)){
+                    $is_finish = 'finish';
+                } else {
+                    $is_finish = 'unfinish';
+                }
+            }
         } else {
-            return 'unfinish';
+            if(!empty($ind->score_onsite)){
+                $is_finish = 'finish';
+            } else {
+                $is_finish = 'unfinish';
+            }
         }
+
+        return $is_finish;
     }
 
     private function getGroupEstimate($appId,$id,$round = null)

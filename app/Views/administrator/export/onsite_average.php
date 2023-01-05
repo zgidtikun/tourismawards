@@ -86,7 +86,7 @@ if (!empty($result)) {
   $j = 1;
   foreach ($result as $key => $value) {
 
-    if ($value['tourism']) {
+    if (!empty($value['tourism'])) {
       $data = [
         $j++,
         $value['code'],
@@ -110,7 +110,7 @@ if (!empty($result)) {
       $i++;
     }
 
-    if ($value['supporting']) {
+    if (!empty($value['supporting'])) {
       $data = [
         $j++,
         $value['code'],
@@ -134,7 +134,7 @@ if (!empty($result)) {
       $i++;
     }
 
-    if ($value['responsibility']) {
+    if (!empty($value['responsibility'])) {
       $data = [
         $j++,
         $value['code'],
