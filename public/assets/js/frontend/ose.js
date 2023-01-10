@@ -117,11 +117,15 @@ const save = (cate,seg) => {
         
         api(st).then((rs) => {
             if(rs.result == 'success'){
-                if(st.data.action == 'create'){
-                    dataset[cate].question[seg].est_id = rs.id;
-                }
-
+                dataset[cate].question[seg].est_id = rs.id;
+                dataset[cate].question[seg].estimate_by = rs.by;
                 dataset[cate].question[seg].estimate = false;
+
+                if(!empty(dataset[cate].question[seg].score_onsite)){
+                    $('#sl-'+seg).removeClass('active');
+                    $('#sl-'+seg).addClass('complete');
+                }
+                
                 alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'});    
                 waitDraft('finish');
                 resolve({ result: 'success' });    
@@ -168,11 +172,15 @@ const draft = (cate,seg) => {
             
             api(st).then((rs) => {
                 if(rs.result == 'success'){
-                    if(st.data.action == 'create'){
-                        dataset[cate].question[seg].est_id = rs.id;
-                    }
-
+                    dataset[cate].question[seg].est_id = rs.id;
+                    dataset[cate].question[seg].estimate_by = rs.by;
                     dataset[cate].question[seg].estimate = false;
+
+                    if(!empty(dataset[cate].question[seg].score_onsite)){
+                        $('#sl-'+seg).removeClass('active');
+                        $('#sl-'+seg).addClass('complete');
+                    }
+                    
                     alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'});    
                     waitDraft('finish');
                     resolve({ result: 'success' });    
@@ -268,37 +276,20 @@ const setFinish = () => {
         }
 
         $.each(dataset[index].question,(qk,qv) => {
-            if(!empty(qv.score_onsite)){
-                arrayScore.push({
-                    appId: appid,
-                    stage: 2,
-                    assign: av,
-                    assign_total: dataset[index].group.score_onsite,
-                    est_id: qv.est_id,
-                    ques_id: qv.id,
-                    estFiles: qv.estFiles,
-                    comment_onsite: qv.comment_onsite,
-                    note_onsite: qv.note_onsite,
-                    estimate_by: qv.estimate_by,
-                    score_onsite: qv.score_onsite,
-                    onside_score: qv.onside_score,
-                    onsite_origin: qv.score_onsite_origin,
-                    weight: qv.weight,
-                });
-
+            if(!empty(qv.score_onsite) && Number(qv.onside_status) == 1){
                 if(av == 1){ 
-                    // tescore += Number(qv.score_onsite_origin) *  Number(qv.weight);
-                    tescore += Number(qv.score_onsite);
+                    tescore += Number(qv.score_onsite_origin) *  Number(qv.weight);
+                    // tescore += Number(qv.score_onsite);
                     ttescore += Number(qv.onside_score);
                 }
                 else if(av == 2){ 
-                    // sbscoe += Number(qv.score_onsite_origin) *  Number(qv.weight);
-                    sbscoe += Number(qv.score_onsite);
+                    sbscoe += Number(qv.score_onsite_origin) *  Number(qv.weight);
+                    // sbscoe += Number(qv.score_onsite);
                     tsbscoe += Number(qv.onside_score);
                 }
                 else{
-                    // rsscore += Number(qv.score_onsite_origin) *  Number(qv.weight);
-                    rsscore += Number(qv.score_onsite);
+                    rsscore += Number(qv.score_onsite_origin) *  Number(qv.weight);
+                    // rsscore += Number(qv.score_onsite);
                     trsscore += Number(qv.onside_score);
                 }
             }
@@ -318,10 +309,6 @@ const setFinish = () => {
             + 'คะแนนที่ประเมินคือ <span class="txt-yellow">'
             + sscore
             + '</span> คะแนน'
-            // + '<br>'
-            // + 'คะแนนการจัดการคาร์บอนต่ำคือ <span class="txt-yellow">'
-            // + cscore
-            // + '</span> คะแนน'
             ,
         text: 'กรุณาตรวจสอบความถูกต้องก่อนส่งผลประเมินเข้าระบบ',
         button: {
@@ -340,11 +327,7 @@ const setFinish = () => {
                     data:{
                         appId: appid,
                         stage: 2,
-                        score_te: stescore,
-                        score_sb: ssbscore,
-                        score_rs: srsscore,
-                        score_tt: sscore,
-                        sourcs: arrayScore
+                        lowcarbon: false
                 }})
             }
 
@@ -622,9 +605,9 @@ const checkComplete = () => {
         });
 
         if(check){
-            $('tap-'+index).addClass('complete');
+            $('#tab-'+index).addClass('complete');
         } else {
-            $('tap-'+index).removeClass('complete');
+            $('#tab-'+index).removeClass('complete');
             ccp = false;
         }
     });

@@ -173,7 +173,6 @@
 
 <script>
   $(function() {
-
     var pgurl = BASE_URL_BACKEND + '/onsite';
     active_page(pgurl);
 
@@ -250,7 +249,7 @@
 
   function view_score(id) {
     var res = main_post(BASE_URL_BACKEND + '/onsite/getScore/' + id);
-    // cc(res)
+    cc(res)
     if (res != null) {
       $('#pre_tourism').html(res.score_prescreen_te);
       $('#pre_supporting').html(res.score_prescreen_sb);

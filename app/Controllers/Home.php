@@ -181,6 +181,15 @@ class Home extends BaseController
             );
             return $this->response->setJSON($result);
         } 
+
+        $valid = $this->validation->run($this->input->getVar(),'contactus');
+
+        if(!$valid){
+            return $this->response->setJSON([
+                'result' => 'error',
+                'message' => 'กรุณาตรวจสอบข้อมูลของคุณอีกครั้ง'
+            ]);
+        }
         
         helper('semail');
         $result = send_email_frontend($this->input->getVar(),'contact');        
@@ -204,6 +213,7 @@ class Home extends BaseController
                 'status' => 1,
                 'status_delete' => 1
             ])
+            ->where('award_type IS NOT NULL',NULL,false)
             ->select(
                 'CONCAT(name,\' \',surname) fullname, profile, 
                 award_type, position'

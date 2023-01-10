@@ -435,8 +435,9 @@ class AnswerController extends BaseController
 
             $result = [
                 'result' => 'error', 
-                'line' => $e->getLine(),
-                'message' => 'System : '.$e->getMessage()
+                'message' => ''
+                // 'line' => $e->getLine(),
+                // 'message' => 'System : '.$e->getMessage()
             ];
         }
 
@@ -513,7 +514,23 @@ class AnswerController extends BaseController
                 $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์ในการอัพโหลด'];
             }
         } catch(\Exception $e){
-            $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
+            save_log_error([
+                'module' => 'user_pre_screen_upload_files',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
+            $result = [
+                'result' => 'error', 
+                'message' => ''
+                // 'message' => 'System : '.$e->getMessage()
+            ];
         }
 
         return $this->response->setJSON($result);
@@ -568,7 +585,23 @@ class AnswerController extends BaseController
                 $result = ['result' => 'success', 'message' => ''];
             }
         } catch(\Exception $e){
-            $result = ['result' => 'error', 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()];
+            save_log_error([
+                'module' => 'user_pre_screen_remove_files',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
+            $result = [
+                'result' => 'error', 
+                'message' => ''
+                // 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()
+            ];
         }
 
         return $this->response->setJSON($result);

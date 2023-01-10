@@ -65,4 +65,17 @@ class CustomRules
            
         return $exist;
     }
+
+    public function safe_input($str){
+        $input = $str;
+        $safe = true;
+
+        $safe_input = htmlspecialchars($input);      
+
+        if($safe_input !== $input){
+            $safe = false;
+        }
+
+        return $safe;
+    }
 }

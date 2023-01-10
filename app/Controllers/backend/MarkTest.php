@@ -23,6 +23,7 @@ class MarkTest extends BaseController
 
     public function index()
     {
+        px($_COOKIE);
         $data = 'user-' . genVerifyCode();
         pp(vEncryption('user-' . genVerifyCode()));
         pp(vDecryption(vEncryption($data)));

@@ -40,12 +40,12 @@
                         <a href="<?=base_url('awards/pre-screen')?>" id="link-pre-screen" class="disabled">
                             <div class="formstep-title">2. กรอกแบบประเมินขั้นต้น (Pre-Screen)</div>                                                
                         </a>
-                        <div class="formstep-status" data-tab="2"></div>
+                        <div class="formstep-status" data-tab="2" id="formstep-pre"></div>
                         <div class="formstep-icon"><span><i class="bi bi-three-dots"></i></span></div>
                     </div>
                     <div class="formstep-col estimate">
                         <div class="formstep-title">3. สรุปผลการประเมิน</div>
-                        <div class="formstep-status" data-tab="3"></div>
+                        <div class="formstep-status" data-tab="3" id="formstep-result"></div>
                         <div class="formstep-icon"><span><i class="bi bi-three-dots"></i></span></div>
                     </div>
                     <script>
@@ -274,24 +274,6 @@
                                                         Remove All
                                                     </button>
                                                 </div>
-                                                <!-- <div class="col-12"> 
-                                                    <div class='bfd-dropfield'> 
-                                                        <div class='bfd-dropfield-inner' id="step1-images-drop">
-                                                            <div class="mt-4 mb-4" id="step1-images-input">
-                                                                <span class="fw-semibold">Drop File Here</span><br>
-                                                                <button class="btn btn-file" style="font-size: 16px;" id="step1-images-btn">
-                                                                    <span id="step1-images-label">Upload Files</span>
-                                                                    <input type="file" id="step1-images"
-                                                                    accept=".jpg,.jpeg,.png" multiple
-                                                                    onchange="onFileHandle({id: register.id},'#'+this.id,'images')"/>
-                                                                </button>   
-                                                            </div>
-                                                            <div class="mt-4 mb-4 hide" id="step1-images-progress">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">

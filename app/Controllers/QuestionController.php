@@ -162,10 +162,23 @@ class QuestionController extends BaseController
             
             $result = ['result' => 'success', 'data' => $list];
         } catch(Exception $e){
+            save_log_error([
+                'module' => 'estimate_get_list',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             $result = [
                 'result' => 'error',
-                'message' => $e->getMessage(),
+                'message' => '',
                 'data' => []
+                // 'message' => $e->getMessage(),
             ];
         }
 
@@ -228,6 +241,7 @@ class QuestionController extends BaseController
                 ->getCompiledSelect();
             
             $sqset = $this->db->table('estimate')
+                ->where('application_id',$id)
                 ->where('estimate_by',$this->myId)
                 ->select('
                     id, question_id, score_pre, score_onsite, comment_pre, 

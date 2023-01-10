@@ -243,11 +243,9 @@
               </div>
             </div>
 
-            <?php if ($question[1][0]->remark != "") : ?>
-              <div class="regis-form-data-col attachfile">
-                <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_1"><?= $question[1][0]->remark ?></span></div>
-              </div>
-            <?php endif; ?>
+            <div class="regis-form-data-col attachfile remark_text_1">
+              <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_1"><?= $question[1][0]->remark ?></span></div>
+            </div>
           </div>
 
           <div class="regis-form-data-row">
@@ -344,11 +342,9 @@
               </div>
             </div>
 
-            <?php if ($question[2][0]->remark != "") : ?>
-              <div class="regis-form-data-col attachfile">
-                <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_2"><?= $question[2][0]->remark ?></span></div>
-              </div>
-            <?php endif; ?>
+            <div class="regis-form-data-col attachfile remark_text_2">
+              <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_2"><?= $question[2][0]->remark ?></span></div>
+            </div>
           </div>
 
           <div class="regis-form-data-row">
@@ -445,11 +441,9 @@
               </div>
             </div>
 
-            <?php if ($question[3][0]->remark != "") : ?>
-              <div class="regis-form-data-col attachfile">
-                <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_3"><?= $question[3][0]->remark ?></span></div>
-              </div>
-            <?php endif; ?>
+            <div class="regis-form-data-col attachfile remark_text_3">
+              <div id="qRemark" class="alert alert-info fs-18 mt-3" role="alert">หมายเหตุ : <span id="remark_text_3"><?= $question[3][0]->remark ?></span></div>
+            </div>
           </div>
 
           <div class="regis-form-data-row">
@@ -505,7 +499,7 @@
     });
 
     $('.js-example-basic-multiple').select2({
-      maximumSelectionLength: 2
+      // maximumSelectionLength: 2
     });
   });
 
@@ -633,7 +627,13 @@
     var no = Number(id) + Number(1);
     $(question).filter(function(index) {
       $('#question_name_' + tab).html(no + '. ' + question[tab][id].question);
-      $('#remark_text_' + tab).html(question[tab][id].remark);
+      if (question[tab][id].remark != "") {
+        $('.remark_text_' + tab).show();
+        $('#remark_text_' + tab).html(question[tab][id].remark);
+      } else {
+        $('.remark_text_' + tab).hide();
+      }
+      
       $('#question_no_' + tab).html(no);
       $('#btn_next_' + tab).attr('no', no);
       $('#btn_back_' + tab).attr('no', no);

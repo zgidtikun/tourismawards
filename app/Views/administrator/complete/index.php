@@ -114,7 +114,7 @@
                         <div class="form-table-col edit">
                           <a href="javascript:" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
                           <!-- <a href="javascript:" class="btn-edit" title="ดูข้อมูล" onclick="view_item('<?= $value->id ?>')"><i class="bi bi-eye-fill"></i></a> -->
-                          <a href="javascript:" class="btn-edit" title="ให้กรรมการประเมินใหม่" onclick="re_submit('<?= $value->created_by ?>')"><i class="bi bi-arrow-clockwise"></i></a>
+                          <a href="javascript:" class="btn-edit" title="ให้กรรมการประเมินใหม่" onclick="re_submit(<?= $value->created_by ?>, <?= $value->id ?>)"><i class="bi bi-arrow-clockwise"></i></a>
                         </div>
                       </td>
                     </tr>
@@ -275,14 +275,15 @@
     $('body').addClass('lockbody');
   }
 
-  function re_submit(id) {
+  function re_submit(user_id, app_id) {
     var option = {
       title: "Warning!",
       text: "คุณต้องการยืนยันการตอบกลับเอกสารเพื่อให้กรรมการประเมินรอบลงพื้นที่ใหม่หรือไม่?",
     }
     swal_confirm(option).done(function() {
       var res = main_post(BASE_URL_BACKEND + '/complete/reSubmit', {
-        id: id
+        app_id: app_id,
+        user_id: user_id
       });
       res_swal(res, 1);
     })

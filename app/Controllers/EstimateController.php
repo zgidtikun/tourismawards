@@ -133,7 +133,8 @@ class EstimateController extends BaseController
 
             $result = [
                 'result' => 'error',
-                'messsage' => $e->getMessage()
+                'message' => ''
+                // 'messsage' => $e->getMessage()
             ];
         }
 
@@ -229,7 +230,8 @@ class EstimateController extends BaseController
 
                     $result = [
                         'result' => 'success',
-                        'id' => $instId
+                        'id' => $instId,
+                        'by' => $this->myId
                     ];
 
                     break;
@@ -240,7 +242,11 @@ class EstimateController extends BaseController
                         ])
                         ->set($data)
                         ->update();
-                    $result = ['result' => 'success'];
+                    $result = [
+                        'result' => 'success',
+                        'id' => $input->est_id,
+                        'by' => $this->myId
+                    ];
                     break;
             }
 
@@ -268,8 +274,9 @@ class EstimateController extends BaseController
             ]);
 
             $result = [
-                'result' => 'error',
-                'message' => $e->getMessage()
+                'result' => 'error', 
+                'message' => ''
+                // 'message' => $e->getMessage()
             ];
         }
 
@@ -282,7 +289,7 @@ class EstimateController extends BaseController
             
             $input = $this->input->getJsonVar('data',false);    
             $this->lowcarbon = $input->stage == 1 ? $input->lowcarbon : false; 
-            $module = 'estimate_'.($input->stage == 1 ? 'pre_screen' : 'onsite');
+            $module = 'estimate_'.($input->stage == 1 ? 'pre_screen' : 'onsite');            
             
             save_log_activety([
                 'module' => $module,
@@ -292,8 +299,9 @@ class EstimateController extends BaseController
                 'datetime' => date('Y-m-d H:i:s'),
                 'data' => $input
             ]);
-            
-            $reEstimate = $this->reupdateEstimate($input->sourcs);
+
+            $dataEstimate = $this->getJudgeEstimate($input->appId,$this->myId,$input->stage);
+            $reEstimate = $this->reupdateEstimate($dataEstimate);
 
             if(!$reEstimate['result']){
                 $reEstimate['result'] = 'error';
@@ -316,13 +324,13 @@ class EstimateController extends BaseController
 
             if($this->checkFinishEsitmate($input->appId,$input->stage)){
                 $resultEstimate = $this->setFinishEstimate($input->appId,$input->stage);
-            }
 
-            $this->sendEstimateResult((object)[
-                'app_id' => $input->appId,
-                'stage' => $input->stage,
-                'pass' => $resultEstimate,
-            ]);
+                $this->sendEstimateResult((object)[
+                    'app_id' => $input->appId,
+                    'stage' => $input->stage,
+                    'pass' => $resultEstimate,
+                ]);
+            }
 
             $result = ['result' => 'success'];
         } catch(Exception $e) {
@@ -340,11 +348,47 @@ class EstimateController extends BaseController
 
             $result = [
                 'result' => 'error',
-                'message' => $e->getMessage()
+                'message' => ''
+                // 'message' => $e->getMessage()
             ];
         }
 
         return $this->response->setJSON($result);
+    }
+
+    private function getJudgeEstimate($appId,$judgeId,$stage)
+    {
+        if($stage == 1) {
+            $where['b.pre_status'] = 1;
+            $select = 'a.score_pre_origin score_origin, 
+            b.pre_score max_score, 
+            c.score_prescreen assign_total';
+        } else {
+            $where['b.onside_status'] = 1;
+            $select = 'a.score_onsite_origin score_origin, 
+            b.onside_score max_score,
+            c.score_onsite assign_total';
+        }
+
+        $where['a.application_id'] = $appId;
+        $where['a.estimate_by'] = $judgeId;
+
+        $builder = $this->db->table('estimate a')
+        ->join('question b','a.question_id = b.id')
+        ->join('assessment_group c', 'b.assessment_group_id = c.id')
+        ->select(
+            "a.id est_id, a.estimate_by,
+            $stage stage,
+            a.question_id ques_id, 
+            b.assessment_group_id assign,
+            b.lowcarbon_status, b.weight,
+            $select"
+        )
+        ->where($where)
+        ->get();
+
+        $result = $builder->getResult();
+        return $result;
     }
 
     private function reupdateEstimate($estimate)
@@ -356,54 +400,41 @@ class EstimateController extends BaseController
             $te = $sb = $rs = 0;
 
             foreach($estimate as $list){
-                if($list->stage == 1){
-                    $score = $list->pre_origin;
-                    $tscore = $list->pre_score;
-                } else {
-                    $score = $list->onsite_origin;
-                    $tscore = $list->onside_score;
-                }
+                $escore = $cscore = 0;
 
-                if($list->assign == 4 && $this->lowcarbon){
-                    $escore = $score;
-                    $cscore = $score;
-                } else {
-                    $escore = $score * $list->weight;
-                    $cscore = $score / $tscore;
+                if($list->assign != 4 && $list->score_origin > 0){
+                    $escore = $list->score_origin * $list->weight;
+                    $cscore = $escore / $list->max_score;
                 }
 
                 if($list->assign == 1){
                     $te = $list->assign_total;
-                    $ttescore += $tscore;
+                    $ttescore += $list->max_score;
                     $tescore += $escore;
                 }
                 elseif($list->assign == 2){
                     $sb = $list->assign_total;
-                    $tsbscoe += $tscore;
+                    $tsbscoe += $list->max_score;
                     $sbscoe += $escore;
                 }
                 elseif($list->assign == 3){
-                    $rs = $list->assign_total;
-                    $trsscore += $tscore;
-                    $rsscore += $escore;                
+                    $rs = $list->assign_total;      
+                    $trsscore += $list->max_score;
+                    $rsscore += $escore;     
                 } 
                 elseif($list->assign == 4){
                     if($this->lowcarbon){
-                        $tlcscore += $tscore;
-                        $lcscore += $escore; 
+                        $tlcscore += $list->score_origin;
+                        $lcscore += $list->score_origin; 
                     }
                 }
 
-                $update = [];
-
                 if($list->stage == 1){
-                    $update['score_pre_origin'] = $score;
                     $update['score_pre'] = $escore;
                     $update['tscore_pre'] = $cscore;
                     $update['status_pre'] = 3;
                     $update['request_status'] = 3;
                 } else {                
-                    $update['score_onsite_origin'] = $score;
                     $update['score_onsite'] = $escore;
                     $update['tscore_onsite'] = $cscore;
                     $update['status_onsite'] = 3;
@@ -459,7 +490,8 @@ class EstimateController extends BaseController
 
             return [
                 'result' => false,
-                'message' => $e->getMessage()
+                'message' => ''
+                // 'message' => $e->getMessage()
             ];
         }
     }
@@ -521,7 +553,8 @@ class EstimateController extends BaseController
 
             return (object) [
                 'result' => false,
-                'message' => $e->getMessage()
+                'message' => ''
+                // 'message' => $e->getMessage()
             ];
         }
     }
@@ -564,7 +597,7 @@ class EstimateController extends BaseController
         }
         
         if($stage == 1){ 
-            if($$sumScr->score_lc > 0){ 
+            if($sumScr->score_lc > 0){ 
                 $avg_lc = $sumScr->score_lc / $cJudge->lowcarbon;
             }
         }
@@ -690,7 +723,10 @@ class EstimateController extends BaseController
 
     private function checkFinishEsitmate($id,$stage)
     {
-        $count_adm = $this->commit->where('application_form_id',$id)
+        $count_adm = $this->commit->where([
+                'application_form_id' => $id,
+                'assessment_round' => $stage
+            ])
             ->select('admin_count')->first();
         
         if($stage == 1){
@@ -865,12 +901,121 @@ class EstimateController extends BaseController
     private function reCalEstimate($by,$appId,$typeId,$subId)
     {
         try{
-            $application = $this->appForm->select(
-                'id app_id, require_lowcarbon, created_'
-            );
+            if($by == 'app') {
+                $where_app['id'] = $appId;
+            } else {
+                $where_app['application_type_id'] = $typeId;
+                $where_app['application_type_sub_id'] = $subId;
+            }
 
+            $application = $this->appForm->select(
+                'id app_id, require_lowcarbon lowcarbon, 
+                created_by tycoon_id, application_type_id type_id,
+                application_type_sub_id sub_id'
+            )
+            ->where($where_app)
+            ->findAll();
+
+            $eRequest = new \App\Controllers\EstimateRequestController();
+
+            foreach($application as $app){
+                $this->lowcarbon = $app->lowcarbon == 1 ? true : false;
+                $stageApp = $this->getAppUserStage($app->tycoon_id);
+                $numStage = 0;
+                
+                foreach($stageApp as $stage){
+                    $numStage++;
+
+                    if($stage->status != -1){                           
+                        $judgeId = get_receive_noti($app->tycoon_id,$numStage);
+
+                        foreach($judgeId as $jid){
+                            $this->myId = $jid;
+                            $dataEstimate = $this->getJudgeEstimate($app->app_id,$jid,$numStage);
+                            $reEstimate = $this->reupdateEstimate($dataEstimate);
+                            $isFinish = $this->checkJudgeEstimateFinish($app->app_id,$jid,$numStage);
+
+                            if($isFinish){
+                                $eRequest->complete_request($app->app_id,$jid);
+                                $this->setIndividuel(
+                                    (object)[
+                                        'appId' => $app->app_id,
+                                        'stage' => $numStage
+                                    ],
+                                    $reEstimate['individuel']
+                                );
+                            }
+                        }
+
+                        if($this->checkFinishEsitmate($app->app_id,$numStage)){
+                            $this->setFinishEstimate($app->app_id,$numStage);
+                        }
+
+                    }
+
+                }
+            }
+
+            return ['result' => 'success', 'message' => ''];
         } catch(Exception $e){
+            save_log_error([
+                'module' => 'estimate_recal_all',
+                'input_data' => '',
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             return ['result' => 'error', 'message' => $e->getMessage()];
         }
+    }
+
+    private function checkJudgeEstimateFinish($appId,$judgeId,$stage)
+    {        
+        if($stage == 1){
+            $count_est = $this->estInd->where(
+                "application_id = $appId 
+                    AND estimate_by = $judgeId
+                    AND CASE 
+                        WHEN lowcarbon_status = 1 
+                            AND score_pre IS NOT NULL 
+                            AND lowcarbon_score IS NOT NULL
+                                THEN TRUE
+                        WHEN lowcarbon_status = 2 
+                            AND score_pre IS NOT NULL 
+                            THEN TRUE 
+                        ELSE FALSE 
+                    END                    
+                ", NULL, FALSE
+            )
+            ->countAllResults();
+        } else {            
+            $count_est = $this->estInd->where(
+                "application_id = $appId 
+                AND estimate_by = $judgeId
+                AND score_onsite IS NOT NULL", NULL, FALSE
+            )
+            ->countAllResults();
+        }
+
+        return $count_est > 0 ? true : false;
+    }
+
+    private function getAppUserStage($userId)
+    {
+        $stage1 = $this->stage->select('status')
+        ->where([ 'user_id' => $userId, 'stage' => 1 ])->first();
+
+        $stage2 = $this->stage->select('status')
+        ->where([ 'user_id' => $userId, 'stage' => 2 ])->first();
+
+        return (object) [
+            (object)['status' => !empty($stage1) ? $stage1->status : -1],
+            (object)['status' => !empty($stage2) ? $stage2->status : -1],
+        ];
     }
 }

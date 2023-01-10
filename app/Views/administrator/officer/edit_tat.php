@@ -100,21 +100,21 @@
 
         <div class="backendform-row">
           <div class="backendform-col subject">
-            เบอร์ติดต่อ <span class="required">*</span>
+            เบอร์ติดต่อ
           </div>
           <div class="backendform-col inpfield">
-            <input type="text" name="mobile" id="mobile" class="form-control" value="<?= @$result->mobile ?>" placeholder="" required>
+            <input type="text" name="mobile" id="mobile" class="form-control" value="<?= @$result->mobile ?>" placeholder="">
           </div>
         </div>
 
-        <div class="backendform-row">
+        <!-- <div class="backendform-row">
           <div class="backendform-col subject">
             ตำแหน่งงาน <span class="required">*</span>
           </div>
           <div class="backendform-col inpfield">
             <input type="text" name="position" id="position" class="form-control" value="<?= @$result->position ?>" placeholder="" required>
           </div>
-        </div>
+        </div> -->
 
         <div class="backendform-row">
           <div class="backendform-col subject">
@@ -205,7 +205,7 @@
 
   function validated_email() {
     var email = $('#email').val();
-    var res = main_post(BASE_URL_BACKEND + '/Admin/checkData', {
+    var res = main_post(BASE_URL_BACKEND + '/admin/checkData', {
       email: email
     });
     return res;

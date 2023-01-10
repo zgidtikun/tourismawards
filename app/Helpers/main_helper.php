@@ -65,11 +65,24 @@ function roleName($id)
     return $result->user_groups;
 }
 
-function adminName($id)
+function adminName($id = "")
 {
+    if ($id == "") {
+        return "";
+    }
     $db = \Config\Database::connect();
     $result = $db->table('admin')->where('id', $id)->get()->getRowObject();
-    return $result->name;
+    return $result->name . " ". $result->surname;
+}
+
+function usersName($id = "")
+{
+    if ($id == "") {
+        return "";
+    }
+    $db = \Config\Database::connect();
+    $result = $db->table('users')->where('id', $id)->get()->getRowObject();
+    return $result->name . " ". $result->surname;
 }
 
 function applicationType($id)

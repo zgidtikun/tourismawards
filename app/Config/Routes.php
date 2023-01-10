@@ -288,6 +288,14 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
         $routes->get('certificate', 'Award::index', ['filter' => 'auth:4']);
     });
 
+    // LowCarbon (เฉพาะแอดมินที่เข้าได้)
+    $routes->group('lowcarbon', static function ($routes) {
+        $routes->get('', 'LowCarbon::index', ['filter' => 'auth:4']);
+        $routes->get('edit/(:any)', 'LowCarbon::edit/$1', ['filter' => 'auth:4']);
+        $routes->get('print/(:any)', 'LowCarbon::print/$1', ['filter' => 'auth:4']);
+        $routes->post('changeScore', 'LowCarbon::changeScore', ['filter' => 'api:4']);
+    });
+
     // MarkTest is Controller for Test Only
     $routes->get('MarkTest', 'MarkTest::index');
     $routes->get('MarkTest/Mail', 'MarkTest::Mail');
@@ -321,8 +329,8 @@ $routes->get('forgot-password', 'backend\VerifyPassword::forgotPassword');
 // });
 
 $routes->group('re-estimate', static function ($routes) {
-    $routes->get('by-type/(:num)/(:num)', 'EstimateContrller::reCalEstimateByType/$1/$2', ['filter' => 'api:backend']);
-    $routes->get('by-application/(:num)', 'EstimateContrller::reCalEstimateByApp/$1', ['filter' => 'api:backend']);
+    $routes->get('by-type/(:num)/(:num)', 'EstimateController::reCalEstimateByType/$1/$2', ['filter' => 'api:backend']);
+    $routes->get('by-application/(:num)', 'EstimateController::reCalEstimateByApp/$1', ['filter' => 'api:backend']);
 });
 
 $routes->environment('development', static function ($routes) {

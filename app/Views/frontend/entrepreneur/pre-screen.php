@@ -234,24 +234,6 @@
                                                         Remove All
                                                     </button>
                                                 </div>
-                                                <!-- <div class="col-12"> 
-                                                    <div class='bfd-dropfield'> 
-                                                        <div class='bfd-dropfield-inner' id="images-drop">
-                                                            <div class="mt-4 mb-4" id="images-input">
-                                                                <span class="fw-semibold">Drop File Here</span><br>
-                                                                <button class="btn btn-file" style="font-size: 16px;" id="images-btn">
-                                                                    <span id="images-label">Upload Files</span>
-                                                                    <input type="file" id="images"
-                                                                    accept=".jpg,.jpeg,.png" multiple
-                                                                    onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'images')"/>
-                                                                </button>   
-                                                            </div>
-                                                            <div class="mt-4 mb-4 hide" id="images-progress">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                             <div class="bs-row">
                                                 <span class="text-muted" style="font-size: 14px;">
@@ -286,23 +268,6 @@
                                                         Remove All
                                                     </button>
                                                 </div>
-                                                <!-- <div class="col-12"> 
-                                                    <div class='bfd-dropfield'> 
-                                                        <div class='bfd-dropfield-inner' id="file-drop">
-                                                            <div class="mt-4 mb-4" id="file-input">
-                                                                <span class="fw-semibold">Drop File Here</span><br>
-                                                                <button class="btn btn-file" style="font-size: 16px;" id="file-btn">
-                                                                    <span id="file-label">Upload Files</span>
-                                                                    <input type="file" id="file"
-                                                                    accept=".pdf" multiple
-                                                                    onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'paper')"/>
-                                                                </button>   
-                                                            </div>
-                                                            <div class="mt-4 mb-4 hide" id="file-progress">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                             <div class="bs-row mb-2">
                                                 <span class="text-muted" style="font-size: 14px;">

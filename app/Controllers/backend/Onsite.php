@@ -80,7 +80,6 @@ class Onsite extends BaseController
         $data['status_1'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"1"', 'both')->get()->getResultObject();
         $data['status_2'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"2"', 'both')->get()->getResultObject();
         $data['status_3'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"3"', 'both')->get()->getResultObject();
-        $data['status_4'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"4"', 'both')->get()->getResultObject();
 
         $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 2)->get()->getRowObject();
 
@@ -127,7 +126,7 @@ class Onsite extends BaseController
 
         $committees = $this->db->table('committees')->where(['users_id' => session()->id, 'application_form_id' => $post['application_form_id'], 'assessment_round' => 2])->get()->getRowObject();
         if (!empty($committees)) {
-            echo json_encode(['type' => 'success', 'title' => 'ผิดพลาด', 'text' => 'มีการเพิ่มกรรมการรอบลงพื้นที่เรียบร้อยแล้ว']);
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'มีการเพิ่มกรรมการรอบลงพื้นที่เรียบร้อยแล้ว']);
             exit;
         }
 
@@ -297,7 +296,6 @@ class Onsite extends BaseController
         $data['status_1'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"1"', 'both')->get()->getResultObject();
         $data['status_2'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"2"', 'both')->get()->getResultObject();
         $data['status_3'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"3"', 'both')->get()->getResultObject();
-        $data['status_4'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"4"', 'both')->get()->getResultObject();
 
         $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 2)->get()->getRowObject();
 

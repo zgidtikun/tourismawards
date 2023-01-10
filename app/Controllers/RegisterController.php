@@ -13,11 +13,7 @@ class RegisterController extends BaseController
     {   
         $_app = new \Config\App();
         $this->recapcha = $_app->RECAPCHA_CK;
-        $this->user = new UserController(); 
-        $this->encrypter = (object) [
-            'key' => md5('ThailandTourismAwards2023'),
-            'driver' => 'OpenSSL'
-        ];
+        $this->user = new UserController();
     }
 
     public function forgetpass()
@@ -78,8 +74,8 @@ class RegisterController extends BaseController
                         $error['insert'] = $result->error;
                     } else {
                         // $expire = date('YmdHis',strtotime('+1 days'));
-                        $data->user_id = $result->id;
                         // $data->verify_token = vEncryption($data->user_id .'-'.$expire.'-'.$verify_code);
+                        $data->user_id = $result->id;
                         $data->verify_token = vEncryption($data->user_id .'-'.$verify_code);
                         helper('semail');
                         send_email_frontend($data,'register');
@@ -176,6 +172,7 @@ class RegisterController extends BaseController
                 );
                 return $this->response->setJSON($result);
             }
+            
             if(!empty($this->input->getVar('id'))){
                 $where = ['id' => $this->input->getVar('id')];
             } else {
@@ -193,7 +190,12 @@ class RegisterController extends BaseController
                 return $this->response->setJSON(['resullt' => 'error', 'อีเมลของคุณไม่ถูกต้อง']);
             }
         } catch(Exception $e){
-            return $this->response->setJSON(['result' => 'error', 'message' => $e->getMessage()]);
+
+            return $this->response->setJSON([
+                'result' => 'error', 
+                'message' => ''
+                // 'message' => $e->getMessage()
+            ]);
         }
     }
 

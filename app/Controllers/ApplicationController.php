@@ -12,6 +12,7 @@ class ApplicationController extends BaseController
     private $appForm;
     private $appType;
     private $appSub;
+    private $myId;
 
     private $mapDBFiled = [
         '1' => ['application_type_id','application_type_sub_id','highlights','link',
@@ -33,6 +34,7 @@ class ApplicationController extends BaseController
         $this->appForm = new AppForm();
         $this->appType = new AppType();
         $this->appSub = new AppTypeSub();
+        $this->myId = session()->get('id');
 
         if(!isset($this->db))
             $this->db = \Config\Database::connect();
@@ -41,6 +43,7 @@ class ApplicationController extends BaseController
     public function formIndex()
     {
         $app = new \Config\App();
+
         $duedate = (object) [
             'expired_date' => $app->APPForm_expired,
             'expired_str' => 'ภายในวันที่ '.FormatTree($app->APPForm_expired,'thailand'),
@@ -74,13 +77,14 @@ class ApplicationController extends BaseController
 
     public function getApplicationByAjax()
     {        
-        $data = $this->getApplication(session()->get('id'));
+        $data = $this->getApplication($this->myId);
         return $this->response->setJSON($data);
     }
 
     public function getApplication($id)
     {
         $detail = $this->appForm->where('created_by',$id)->first();
+        $pre_status = 'none';
 
         if(!empty($detail)){
             if(!empty($detail->pack_file)){
@@ -93,7 +97,16 @@ class ApplicationController extends BaseController
                 $detail->request_time_str = FormatTree($request_time,'thailand');
             }
 
-            $result = array('result' => 'success', 'data' => $detail);
+            if($detail->status == 3){     
+                $answer = new \App\Controllers\AnswerController();
+                $pre_status = $answer->getPrescreenStatus($this->myId);
+            }
+
+            $result = array(
+                'result' => 'success', 
+                'pre_status' => $pre_status, 
+                'data' => $detail
+            );
         } else {
             $instData = array(                
                 'application_type_id' => 1,
@@ -102,13 +115,14 @@ class ApplicationController extends BaseController
                 'updated_by' => $id
             ); 
 
-            $inst = $this->appForm->insert($instData);
+            $this->appForm->insert($instData);
             $instId = $this->appForm->getInsertID();
             $formCode = date('Ym').'-'.str_pad($instId, 4, '0', STR_PAD_LEFT);
             $this->appForm->update($instId,['code' => $formCode]);
 
             $result = array(
                 'result' => 'success',
+                'pre_status' => $pre_status,
                 'data' => (object) array(
                     'id' => $instId,
                     'application_type_id' => 1,
@@ -137,7 +151,7 @@ class ApplicationController extends BaseController
 
             $updd = [
                 'step' => $step, 
-                'updated_by' => session()->get('id'),
+                'updated_by' => $this->myId,
             ];
 
             foreach($maps as $map){
@@ -164,7 +178,8 @@ class ApplicationController extends BaseController
 
             $result = [
                 'result' => 'error', 
-                'message' => 'Line : '.$e->getLine().' : '.$e->getMessage()
+                'message' => ''
+                // 'message' => 'Line : '.$e->getLine().' : '.$e->getMessage()
             ];
         }
 
@@ -187,7 +202,7 @@ class ApplicationController extends BaseController
             $updd = [
                 'step' => $this->input->getVar('step'),
                 'status' => 2,
-                'updated_by' => session()->get('id'),
+                'updated_by' => $this->myId,
                 'send_date' => date('Y-m-d H:i:s')
             ];
 
@@ -199,13 +214,13 @@ class ApplicationController extends BaseController
                 
             $this->appForm->update($app_id,$updd);
             // $user = new \App\Models\Users();
-            // $user->update(session()->get('id'),['stage' => 2]);   
+            // $user->update($this->myId,['stage' => 2]);   
 
             save_log_activety([
                 'module' => 'user_application',
                 'action' => 'application_send_sys',
                 'bank' => 'frontend',
-                'user_id' => session()->get('id'),
+                'user_id' => $this->myId,
                 'datetime' => date('Y-m-d H:i:s'),
                 'data' => $this->input->getVar()
             ]);
@@ -257,7 +272,8 @@ class ApplicationController extends BaseController
 
             $result = [
                 'result' => 'error', 
-                'message' => 'Line : '.$e->getLine().' : '.$e->getMessage()
+                'message' => ''
+                // 'message' => 'Line : '.$e->getLine().' : '.$e->getMessage()
             ];
         }
 
@@ -314,7 +330,23 @@ class ApplicationController extends BaseController
                 $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์ในการอัพโหลด'];
             }
         } catch(\Exception $e){
-            $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
+            save_log_error([
+                'module' => 'user_application_upload_files',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
+            $result = [
+                'result' => 'error', 
+                'message' => ''
+                // 'message' => 'System : '.$e->getMessage()
+            ];
         }
 
         return $this->response->setJSON($result);
@@ -326,7 +358,7 @@ class ApplicationController extends BaseController
         $year = date('Y',strtotime($at->created_at));
         $month = date('m',strtotime($at->created_at));
         $day = date('d',strtotime($at->created_at));
-        $path = 'uploads/'.$year.'/'.$month.'/'.$day.'/'.session()->get('id').'/';
+        $path = 'uploads/'.$year.'/'.$month.'/'.$day.'/'.$this->myId.'/';
         return $path;
     }
 
@@ -372,7 +404,23 @@ class ApplicationController extends BaseController
                 $result = ['result' => 'success', 'message' => ''];
             }
         } catch(\Exception $e){
-            $result = ['result' => 'error', 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()];
+            save_log_error([
+                'module' => 'user_application_remove_files',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
+            $result = [
+                'result' => 'error', 
+                'message' => ''
+                // 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()
+            ];
         }
 
         return $this->response->setJSON($result);

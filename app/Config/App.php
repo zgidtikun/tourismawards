@@ -469,7 +469,7 @@ class App extends BaseConfig
     public $RECAPCHA_CK = false;
     public $RECAPCHA_KEY = '6LdC6vghAAAAANJyaGCqYGZ1eY6YrKgRb40B8Ay4';
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
-    public $Register_expired = '2023-01-01'; // วันหมดเขต Register
+    public $Register_expired = '2024-01-01'; // วันหมดเขต Register
     public $APPForm_expired = '2023-02-28'; // วันหมดเขตส่งใบสมัคร
     public $Pre_open = '2021-03-05'; // วันเปิดแบบฟอร์มรอบ Pre-screen
     public $Pre_expired = '2023-03-05'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
@@ -481,7 +481,7 @@ class App extends BaseConfig
     public $JudgingCriteriaPre = 18;
     public $JudgingCriteriaOnst = 57;
     public $JudgingCriteriaScore;
-    public $script_v = 199;
+    public $script_v = 999;
 
     public function __construct()
     {

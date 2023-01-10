@@ -112,7 +112,7 @@ class Estimate extends BaseController
     public function saveInsert()
     {
         $post = $this->input->getVar();
-        px($post);
+        // px($post);
         $count = array_merge($post['tourism'], $post['supporting']);
         $count = array_merge($count, $post['responsibility']);
         $count = array_merge($count, $post['lowcarbon']);

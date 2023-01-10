@@ -66,16 +66,6 @@ class LoginController extends BaseController
 
         if(@$auth->result == 'error')
             return $this->response->setJSON($auth);
-        
-        if($this->input->getVar('memorize')){
-            set_cookie("memorizeUser",true,time()+ 3600);
-            set_cookie("username",$this->input->getVar("username"),time()+ 3600);
-            set_cookie("password",$this->input->getVar("password"),time()+ 3600);
-        } else {
-            set_cookie("memorizeUser",false);
-            set_cookie("username","");
-            set_cookie("password","");
-        }
 
         $setting = (object) array(
             'id' => $auth->id,
@@ -171,110 +161,6 @@ class LoginController extends BaseController
 
     public function setSession(){
         if(getenv('CI_ENVIRONMENT') != 'production'){
-            helper(['semail']);
-            switch($_GET['ac']){
-                case 'register':
-                    helper('verify');
-                    $id = 29;
-                    $expire = date('YmdHis',strtotime('+3 days'));
-                    $token = 'd9298660f7e8014d3d7717f6';
-                    $verify_token = vEncryption($id .'-'.$expire.'-'.$token);
-                    $result = send_email_frontend((object)[
-                        'name' => 'กิตติคุณ สุขสำราญ',
-                        'surname' => 'กิตติคุณ สุขสำราญ',
-                        'email' => 's.gidtikun@gmail.com',
-                        'verify_token' => $verify_token
-                    ],'register');
-                break;
-                case 'app':
-                    $result = send_email_frontend((object)[
-                        'app_id' => 1,
-                        'tycon' => 'กิตติคุณ สุขสำราญ',
-                        'email' => 's.gidtikun@gmail.com',
-                    ],'app');
-                break;
-                case 'reset-pass':
-                    helper(['verify']);
-                    $result = send_email_frontend((object)[
-                        'name' => 'กิตติคุณ',
-                        'surname' => 'สุขสำราญ',
-                        'email' => 's.gidtikun@gmail.com',
-                        'id' => 29,
-                    ],'reset-pass');
-                break;
-                case 'answer-complete':
-                    helper(['noti']);
-                    $result = send_email_frontend((object)[
-                        'tycon' => 'กิตติคุณ สุขสำราญ',
-                        'email' => 's.gidtikun@gmail.com',
-                        'user' => get_receive_noti(1)
-                    ],'answer-complete');
-                break;
-                case 'estimate-request':
-                    $result = send_email_frontend((object)[
-                        'id' => 1
-                    ],'estimate-request');
-                break;
-                case 'estimate-complete':
-                    $result = send_email_frontend((object)[
-                        'id' => 1,
-                        'stage' => 1
-                    ],'estimate-complete');
-                break;
-            }
-            dx($result);
-            // $code = '1-'.genVerifyCode();
-            // $enc = vEncryption($code);
-            // $dec = vDecryption($enc);
-            // echo $code.'<br>'.$enc.'<br>'.$dec;
-            // session()->set(array(
-            //     'isLoggedIn' => true,
-            //     'role' => 'user'
-            // ));
-
-            // $result = set_multi_noti(
-            //     get_receive_admin(),
-            //     (object) [
-            //         'bank' => 'backend'
-            //     ],
-            //     (object) [
-            //         'message' => 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว',
-            //         'link' => base_url('awards/result'),
-            //         'send_date' => date('Y-m-d H:i:s'),
-            //         'send_by' => 'ททท'
-            //     ]
-            // );
-            
-            // session()->set(array(
-            //     'isLoggedIn' => true,
-            //     'role' => 'user'
-            // ));
-            // $result = set_multi_noti(
-            //     get_receive_noti(1),
-            //     (object) [
-            //         'bank' => 'frontend'
-            //     ],
-            //     (object) [
-            //         'message' => 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว',
-            //         'link' => base_url('awards/result'),
-            //         'send_date' => date('Y-m-d H:i:s'),
-            //         'send_by' => 'กิตติคุณ สุขสำราญ'
-            //     ]
-            // );
-            
-            // $result = set_noti(
-            //     (object) [
-            //         'user_id' => 1,
-            //         'bank' => 'frontend'
-            //     ],
-            //     (object) [
-            //         'message' => 'แจ้งผลการประเมินรอบลงพื้นที่ของท่านเรียบร้อยแล้ว',
-            //         'link' => base_url('awards/result'),
-            //         'send_date' => date('Y-m-d H:i:s'),
-            //         'send_by' => 'Amin01'
-            //         // 'send_by' => session()->get('account')
-            //     ]
-            // );
         }
         else return $this->response->redirect(base_url('403'));
     }

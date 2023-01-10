@@ -274,9 +274,9 @@
       $('#pre_supporting').html(res.score_prescreen_sb);
       $('#pre_reponsibility').html(res.score_prescreen_rs);
 
-      // $('#onsite_tourism').html(res.score_onsite_te);
-      // $('#onsite_supporting').html(res.score_onsite_sb);
-      // $('#onsite_reponsibility').html(res.score_onsite_rs);
+      $('#onsite_tourism').html(res.score_onsite_te);
+      $('#onsite_supporting').html(res.score_onsite_sb);
+      $('#onsite_reponsibility').html(res.score_onsite_rs);
 
       var total_tourism = Number(DF2C(res.score_prescreen_te)) + Number(DF2C(res.score_onsite_te));
       var total_supporting = Number(DF2C(res.score_prescreen_sb)) + Number(DF2C(res.score_onsite_sb));

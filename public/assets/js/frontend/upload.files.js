@@ -67,18 +67,11 @@ const uploadFile = async(setting, input, handleBy) => {
     let formData = new FormData(),
         ref = referance.find(el => el.input == input),
         handle = handleBy == 'input' ? $(input)[0].files : setting.files,
-        api_setting = {},
-        label_html;
+        api_setting = {};
 
-    if (ref.path == 'paper' || ref.position == 'camera') {
-        label_html = $(ref.label).html();
-        $(ref.label).html(setSpinner('Uploading...'));
-        $(ref.btn).prop('disabled', true);
-    } else {
-        $(ref.label.input).addClass('hide');
-        $(ref.label.progress).removeClass('hide');
-        $(ref.label.progress).html(setSpinner('Uploading...'));
-    }
+    let label_html = $(ref.label).html();
+    $(ref.label).html(setSpinner('Uploading...'));
+    $(ref.btn).prop('disabled', true);
 
     $.each(handle, function(key, file) {
         formData.append('files[]', file);
@@ -111,15 +104,9 @@ const uploadFile = async(setting, input, handleBy) => {
                 } else {
                     alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
                 }
-
-                if (ref.path == 'paper') {
-                    $(ref.label).html(label_html);
-                    $(ref.btn).prop('disabled', false);
-                } else {
-                    $(ref.label.input).removeClass('hide');
-                    $(ref.label.progress).addClass('hide');
-                    $(ref.label.progress).html('');
-                }
+                
+                $(ref.label).html(label_html);
+                $(ref.btn).prop('disabled', false);
             });
             break;
         case 'awards/pre-screen':
@@ -154,15 +141,9 @@ const uploadFile = async(setting, input, handleBy) => {
                     await psc.waitDraft('finish');
                     alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
                 }
-
-                if (ref.path == 'paper') {
-                    $(ref.label).html(label_html);
-                    $(ref.btn).prop('disabled', false);
-                } else {
-                    $(ref.label.input).removeClass('hide');
-                    $(ref.label.progress).addClass('hide');
-                    $(ref.label.progress).html('');
-                }
+                
+                $(ref.label).html(label_html);
+                $(ref.btn).prop('disabled', false);
             });
             break;
         case 'estimate/onsite':
@@ -190,14 +171,8 @@ const uploadFile = async(setting, input, handleBy) => {
                     await waitDraft('finish');
                 }
 
-                if (ref.path == 'paper' || ref.position == 'camera') {
-                    $(ref.label).html(label_html);
-                    $(ref.btn).prop('disabled', false);
-                } else {
-                    $(ref.label.input).removeClass('hide');
-                    $(ref.label.progress).addClass('hide');
-                    $(ref.label.progress).html('');
-                }
+                $(ref.label).html(label_html);
+                $(ref.btn).prop('disabled', false);
             });
             break;
     }
@@ -563,126 +538,6 @@ const showFiles = {
 
     },
 }
-
-// let dropAreaImg, dropAreaFile;
-
-// if ($('#step1-images-drop').length > 0) {
-//     dropAreaImg = document.getElementById('step1-images-drop');
-// } else if ($('#images-drop').length > 0) {
-//     dropAreaImg = document.getElementById('images-drop');
-// } else if ($('#etm-images-drop').length > 0) {
-//     dropAreaImg = document.getElementById('etm-images-drop');
-// }
-
-// if ($('#file-drop').length > 0) {
-//     dropAreaFile = document.getElementById('file-drop');
-// }
-
-// const preventDefaults = (e) => {
-//     e.preventDefault();
-//     e.stopPropagation();
-// }
-
-// const imagesFileDrop = (e) => {
-//     let dt = e.dataTransfer,
-//         files = dt.files
-//     id = '#' + e.target.id;
-//     handleDrop(id, files);
-// }
-
-// const handleDrop = (id, files) => {
-//     let temp = [],
-//         check = true,
-//         error, appId, total, pointer, setting,
-//         ref = referance.find(el => el.area == id || el.input == id);
-
-//     if (ref.app == 'awards/application') {
-//         total = Number(register.count[ref.pointer[1]]) + Number([...files].length);
-//     } else if (ref.app == 'awards/pre-screen') {
-//         pointer = psc.getPointer();
-//         let length = psc.questions[pointer.cate].question[pointer.seg][ref.position].length;
-//         total = Number(length) + Number([...files].length);
-//     } else if (ref.app ==  'estimate/onsite') {
-//         pointer = getPointer();
-//         let length = dataset[pointer.cate].question[pointer.seg].estFiles[ref.position].length;
-//         total = Number(length) + Number([...files].length)
-
-//     }
-
-//     if (total > ref.maxUpload) {
-//         alert.show(
-//             'warning', 
-//             ref.pointer[1] == 'images' ?  'ไม่สามารถอัพโหลดรูปได้' : 'ไม่สามารถอัพโหลดเอกสารได้', 
-//             'คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน ' + ref.maxUpload + ' ไฟล์เท่านั้น'
-//         );
-//     }
-
-//     const acceptType = ref.pointer[1] == 'images' ? accept.images : accept.paper;
-
-//     $.each([...files], function(key, file) {
-//         if ($.inArray(file.type, acceptType) !== '1') {
-//             let mb = (file.size / (1024 * 1024)).toFixed(2);
-
-//             if (mb > ref.maxSize) {
-//                 check = false;
-//                 error = 'outSize';
-//             } else {
-//                 temp.push(file);
-//             }
-//         } else {
-//             check = false;
-//             error = 'outType';
-//             return false;
-//         }
-//     });
-
-//     if (!check) {
-//         let error_title, error_text;
-//         error_title = ref.pointer[1] == 'images' ?  'ไม่สามารถอัพโหลดรูปได้' : 'ไม่สามารถอัพโหลดเอกสารได้';
-
-//         if (error == 'outType') {
-//             error_text = (
-//                 'กรุณาเลือกเป็นไฟล์ '
-//                 + ref.pointer[1] == 'images' ? '.jpg, jpeg, png' : '.pdf'
-//                 + ' เท่านั้น'
-//             );
-//         } else if (error == 'outSize') {
-//             error_text = 'กรุณาเลือกขนาดไฟล์ไม่เกิน ' + ref.maxSize + ' MiB.'
-//         }
-
-//         alert.show('warning', error_title, error_text);
-//         return false;
-//     }
-
-//     if (ref.app == 'awards/application') {
-//         setting = { id: register.id, files: temp };
-//     } else if ($.inArray(ref.app,['awards/pre-screen','estimate/onsite']) !==  -1) {
-//         setting = pointer;
-//         setting.files = temp;
-//     }
-
-//     uploadFile(setting, ref.input, 'drop');
-// }
-
-// ;
-
-// ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-//     if(dropAreaImg !== undefined && dropAreaImg !== 'undefined'){
-//         dropAreaImg.addEventListener(eventName, preventDefaults, false);
-//     }
-
-//     if(dropAreaFile !== undefined && dropAreaFile !== 'undefined'){
-//         dropAreaFile.addEventListener(eventName, preventDefaults, false);
-//     }
-// });
-
-// if(dropAreaImg !== undefined && dropAreaImg !== 'undefined'){
-//     dropAreaImg.addEventListener('drop', imagesFileDrop, false);
-// }
-
-// if(dropAreaFile !== undefined && dropAreaFile !== 'undefined'){
-//     dropAreaFile.addEventListener('drop', imagesFileDrop, false);
-// }
 
 const clearBtnRemoveFile = (target,app,input) => {
     let ref;

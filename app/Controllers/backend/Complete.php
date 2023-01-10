@@ -88,10 +88,11 @@ class Complete extends BaseController
 
     public function reSubmit()
     {
-        $id = $this->input->getVar('id');
-        $result = $this->db->table('users_stage')->where('user_id', $id)->where('stage', 2)->update(['status' => 2]);
+        $post = $this->input->getVar();
+        $result = $this->db->table('users_stage')->where('user_id', $post['user_id'])->where('stage', 2)->update(['status' => 2]);
+        $result = $this->db->table('estimate_individual')->where('application_id', $post['app_id'])->update(['score_onsite' => NULL]);
         if ($result) {
-            $this->sendMail($id);
+            $this->sendMail($post['user_id']);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'ทำการดีดกลับเอกสารการประเมินสำเร็จ']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการดีดกลับเอกสารการประเมินไม่สำเร็จ']);
@@ -103,7 +104,7 @@ class Complete extends BaseController
         $app = new \Config\App();
 
         // ส่ง E-Mail
-        $result = $this->db->table('committees CM')->select('CM.*, AF.attraction_name_th')->join('application_form AF', 'AF.id = CM.application_form_id')->where('CM.$id', $users_id)->where('assessment_round', 2)->get()->getRowObject();
+        $result = $this->db->table('committees CM')->select('CM.*, AF.attraction_name_th')->join('application_form AF', 'AF.id = CM.application_form_id')->where('CM.users_id', $users_id)->where('assessment_round', 2)->get()->getRowObject();
 
         if (!empty(json_decode($result->admin_id_tourism))) {
             foreach (json_decode($result->admin_id_tourism) as $key => $value) {

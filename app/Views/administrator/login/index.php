@@ -44,19 +44,8 @@
                   <div class="invalid-feedback" id="invalid-username"></div>
                 </div>
                 <div class="form-group mb-4">
-                  <input type="password" id="password" class="form-control border-dark" placeholder="รหัสผ่าน" value="<?php if (isset($_COOKIE["password"])) {
-                                                                                                                        echo $_COOKIE["password"];
-                                                                                                                      } ?>">
+                  <input type="password" id="password" class="form-control border-dark" placeholder="รหัสผ่าน" value="">
                   <div class="invalid-feedback" id="invalid-password"></div>
-                </div>
-                <div class="form-group ml-3 mb-5">
-                  <div class="icheck-orange">
-                    <input type="checkbox" id="remember" name="remember" <?php
-                                                                          if (isset($_COOKIE["memorizeUser"]) && $_COOKIE["memorizeUser"]) {
-                                                                            echo 'checked';
-                                                                          }  ?>>
-                    <label for="remember">จดจำการเข้าสู่ระบบ</label>
-                  </div>
                 </div>
                 <button class="btn btn-lg border-white gradient-4 gradient-4-hover gradient-4-shadow w-100 waves-effect mb-2" type="button" onclick="signin.authen()">เข้าสู่ระบบ</button>
                 <div class="form-group ml-3">
@@ -104,7 +93,6 @@
             data: {
               username: $('#username').val(),
               password: $('#password').val(),
-              memorize: $('#remember').is(':checked'),
               recapcha_token: signin.token
             },
             dataType: 'json',

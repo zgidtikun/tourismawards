@@ -45,59 +45,96 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     public $signup = [
         'name' => [
-            'rules' => 'required',
-            // 'rules' => 'required|special_str',
+            'rules' => 'required|special_str|safe_input',
             'errors' => [
                 'required' => 'กรุณาระบุชื่อ',
-                // 'special_str' => 'ชื่อห้ามมีอักขระพิเศษ'
+                'special_str' => 'ชื่อห้ามมีอักขระพิเศษ',
+                'safe_input' => 'Programming Found!',
             ]
         ],
         'surname' => [
-            // 'rules' => 'required',
-            'rules' => 'required|special_str',
+            'rules' => 'required|special_str|safe_input',
             'errors' => [
                 'required' => 'กรุณาระบุนามสกุล',
-                // 'special_str' => 'นามสกุลห้ามมีอักขระพิเศษ'
+                'special_str' => 'นามสกุลห้ามมีอักขระพิเศษ',
+                'safe_input' => 'Programming Found!',
             ]
         ],
         'telephone' => [
-            'rules' => 'required|max_length[10]',
+            'rules' => 'required|max_length[10]|safe_input',
             'errors' => [
                 'required' => 'กรุณาระบุเบอร์โทรศัพท์',
-                'max_length' => 'เบอร์โทรศัพท์ต้องไม่เกิน 10 ตัวอักษร'
+                'max_length' => 'เบอร์โทรศัพท์ต้องไม่เกิน 10 ตัวอักษร',
+                'safe_input' => 'Programming Found!',
             ]
         ],
         'email' => [
-            'rules' => 'required|valid_email|unique_email[email,role]',
+            'rules' => 'required|valid_email|unique_email[email,role]|safe_input',
             'errors' => [
                 'required' => 'กรุณาระบุอีเมล',
                 'valid_email' => 'รูปแบบอีเมลไม่ถูกต้อง',
-                'unique_email' => 'อีเมลนี้มีอยู่แล้ว'
+                'unique_email' => 'อีเมลนี้มีอยู่แล้ว',
+                'safe_input' => 'Programming Found!',
             ]
         ],
         'confirmemail' => [
-            'rules' => 'required|matches[email]',
+            'rules' => 'required|matches[email]|safe_input',
             'errors' => [
                 'required' => 'กรุณายืนยันอีเมล',               
-                'matches' => 'การยืนยันอีเมลไม่ตรงกัน'
+                'matches' => 'การยืนยันอีเมลไม่ตรงกัน',
+                'safe_input' => 'Programming Found!',
             ]
         ],
         'password' => [
-            'rules' => 'required|min_length[6]|password_format[password]',
+            'rules' => 'required|min_length[6]|password_format[password]|safe_input',
             'errors' => [
                 'required' => 'กรุณาระบุรหัสผ่าน',
                 'min_length' => 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',
-                'password_format' => 'รหัสผ่านต้องมี A-Z, a-z, 0-9'
+                'password_format' => 'รหัสผ่านต้องมี A-Z, a-z, 0-9',
+                'safe_input' => 'Programming Found!',
             ]
         ],
         'confirmpass' => [
-            'rules' => 'required|matches[password]',
+            'rules' => 'required|matches[password]|safe_input',
             'errors' => [
                 'required' => 'กรุณายืนยันรหัสผ่าน',
-                'matches' => 'การยืนยันรหัสผ่านไม่ตรงกัน'
+                'matches' => 'การยืนยันรหัสผ่านไม่ตรงกัน',
+                'safe_input' => 'Programming Found!',
             ]
         ],
 
+    ];
+
+    public $contactus = [        
+        'name' => [
+            'rules' => 'required|safe_input',
+            'errors' => [
+                'required' => 'กรุณาระบุชื่อ',
+                'safe_input' => 'Programming Found!',
+            ]
+        ],
+        'email' => [
+            'rules' => 'required|valid_email|safe_input',
+            'errors' => [
+                'required' => 'กรุณาระบุอีเมล',
+                'valid_email' => 'รูปแบบอีเมลไม่ถูกต้อง',
+                'safe_input' => 'Programming Found!',
+            ]
+        ],    
+        'subject' => [
+            'rules' => 'required|safe_input',
+            'errors' => [
+                'required' => 'กรุณาระบุ',
+                'safe_input' => 'Programming Found!',
+            ]
+        ],  
+        'message' => [
+            'rules' => 'required|safe_input',
+            'errors' => [
+                'required' => 'กรุณาระบุ',
+                'safe_input' => 'Programming Found!',
+            ]
+        ],
     ];
     
 }

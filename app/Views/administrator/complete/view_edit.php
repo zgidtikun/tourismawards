@@ -482,7 +482,7 @@
 
     $(".js-example-basic-multiple").prop("disabled", true);
     $('.js-example-basic-multiple').select2({
-      maximumSelectionLength: 2
+      // maximumSelectionLength: 2
     });
 
   });

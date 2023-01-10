@@ -36,10 +36,11 @@ function get_receive_admin()
     return  $result;
 }
 
-function get_receive_noti($id)
+function get_receive_noti($id,$stage)
 {
     $obj = new \App\Models\Committees();
     $data = $obj->where('users_id',$id)
+        ->where('assessment_round',$stage)
         ->select(
             'admin_id_tourism, 
             admin_id_supporting, 

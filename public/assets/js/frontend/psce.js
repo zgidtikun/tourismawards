@@ -155,21 +155,7 @@ const setFinish = () => {
         }
 
         $.each(dataset[index].question,(qk,qv) => {
-            if(!empty(qv.score_pre)){
-                arrayScore.push({
-                    appId: appid,
-                    stage: 1,
-                    assign: av,
-                    assign_total: dataset[index].group.score_prescreen,
-                    est_id: qv.est_id,
-                    ques_id: qv.id,
-                    estimate_by: qv.estimate_by,
-                    score_pre: qv.score_pre,
-                    pre_score: qv.pre_score,
-                    pre_origin: qv.score_pre_origin,
-                    weight: qv.weight,
-                });
-
+            if(!empty(qv.score_pre) && Number(qv.pre_status) == 1){
                 if(av == 1){ 
                     tescore += Number(qv.score_pre_origin) *  Number(qv.weight);
                     // tescore += Number(qv.score_pre);
@@ -224,13 +210,7 @@ const setFinish = () => {
                     data:{
                         appId: appid,
                         stage: 1,
-                        lowcarbon: estimateLowCarbon,
-                        score_te: stescore,
-                        score_sb: ssbscore,
-                        score_rs: srsscore,
-                        score_tt: sscore,
-                        score_lcb: lcbscore,
-                        sourcs: arrayScore
+                        lowcarbon: estimateLowCarbon
                 }})
             }
 
@@ -287,11 +267,15 @@ const save = (cate,seg) => {
 
         api(st).then((rs) => {
             if(rs.result == 'success'){
-                if(st.data.action == 'create'){
-                    dataset[cate].question[seg].est_id = rs.id;
-                }
-
+                dataset[cate].question[seg].est_id = rs.id;
+                dataset[cate].question[seg].estimate_by = rs.by;
                 dataset[cate].question[seg].estimate = false;
+
+                if(!empty(dataset[cate].question[seg].score_pre)){
+                    $('#sl-'+seg).removeClass('active');
+                    $('#sl-'+seg).addClass('complete');
+                }
+                
                 alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'}); 
                 waitDraft('finish');
                 resolve({ result: 'success' });       
@@ -341,11 +325,15 @@ const draft = (cate,seg) => {
 
             api(st).then((rs) => {
                 if(rs.result == 'success'){
-                    if(st.data.action == 'create'){
-                        dataset[cate].question[seg].est_id = rs.id;
+                    dataset[cate].question[seg].est_id = rs.id;
+                    dataset[cate].question[seg].estimate_by = rs.by;
+                    dataset[cate].question[seg].estimate = false;
+
+                    if(!empty(dataset[cate].question[seg].score_pre)){
+                        $('#sl-'+seg).removeClass('active');
+                        $('#sl-'+seg).addClass('complete');
                     }
 
-                    dataset[cate].question[seg].estimate = false;
                     alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'}); 
                     waitDraft('finish');
                     resolve({ result: 'success' });       
@@ -694,7 +682,7 @@ const checkComplete = () => {
         $.each(dataset[index].question,(qk,qv) => {
             if(Number(qv.pre_status) == 1){
                 countNoQuestion++;
-                let checkNotEmpty = false,
+                let checkNotEmpty = true,
                     checkRequest = false;
 
                 if(Number(qv.request_status) === 0 && qv.request_status !== null){
@@ -704,9 +692,8 @@ const checkComplete = () => {
                 
                 if(empty(qv.score_pre)){
                     checkEmptyScore = false;
+                    checkNotEmpty = false;
                     isEmpty = true;
-                } else {
-                    checkNotEmpty = true;
                 }
 
                 if(checkNotEmpty || checkRequest){
@@ -720,9 +707,9 @@ const checkComplete = () => {
         }
 
         if(checkEmptyScore){
-            $('tap-'+index).addClass('complete');
+            $('#tab-'+index).addClass('complete');
         } else {
-            $('tap-'+index).removeClass('complete');
+            $('#tab-'+index).removeClass('complete');
         }
     });
 
@@ -761,7 +748,7 @@ const checkComplete = () => {
         }
 
         if(isEmpty){
-            $('#btn-send-estimate').prop('disabled',false);
+            $('#btn-send-estimate').prop('disabled',true);
         } else {
             $('#btn-send-estimate').prop('disabled',false);
         }

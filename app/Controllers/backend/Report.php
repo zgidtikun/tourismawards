@@ -78,7 +78,7 @@ class Report extends BaseController
     {
         $data['result'] = $this->db->table('application_form AP')->select('AP.id, AP.code, AP.attraction_name_th, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, CM.admin_id_tourism, CM.admin_id_supporting, CM.admin_id_responsibility')->join('committees CM', 'CM.application_form_id = AP.id AND CM.assessment_round = 1')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
 
-        // pp($data['result']);
+        // pp($data['result']);->where('AP.id', 12)
         foreach ($data['result'] as $key => $value) {
 
             $tourism = json_decode($value->admin_id_tourism);
@@ -92,29 +92,32 @@ class Report extends BaseController
             $result['result'][$key]['application_type_sub_name'] = $value->application_type_sub_name;
             $result['result'][$key]['address_province'] = $value->address_province;
 
-            if (!empty($tourism[0])) {
-                $result['result'][$key]['tourism'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $tourism[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 1)->get()->getRowObject();
-            }
-            if (!empty($tourism[1])) {
-                $result['result'][$key]['tourism'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $tourism[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 1)->get()->getRowObject();
-            }
+            $result['result'][$key]['score'] = $this->db->table('estimate_individual EI')->select('EI.*, U.name, U.surname')->join('users U', 'U.id = EI.estimate_by')->where('EI.application_id', $value->id)->get()->getResultObject();
 
-            if (!empty($supporting[0])) {
-                $result['result'][$key]['supporting'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $supporting[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 2)->get()->getRowObject();
-            }
-            if (!empty($supporting[1])) {
-                $result['result'][$key]['supporting'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $supporting[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 2)->get()->getRowObject();
-            }
+            // if (!empty($tourism[0])) {
+            //     $result['result'][$key]['tourism'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $tourism[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 1)->get()->getRowObject();
+            // }
+            // if (!empty($tourism[1])) {
+            //     $result['result'][$key]['tourism'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $tourism[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 1)->get()->getRowObject();
+            // }
 
-            if (!empty($responsibility[0])) {
-                $result['result'][$key]['responsibility'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $responsibility[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 3)->get()->getRowObject();
-            }
-            if (!empty($responsibility[1])) {
-                $result['result'][$key]['responsibility'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $responsibility[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 3)->get()->getRowObject();
-            }
+            // if (!empty($supporting[0])) {
+            //     $result['result'][$key]['supporting'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $supporting[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 2)->get()->getRowObject();
+            // }
+            // if (!empty($supporting[1])) {
+            //     $result['result'][$key]['supporting'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $supporting[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 2)->get()->getRowObject();
+            // }
+
+            // if (!empty($responsibility[0])) {
+            //     $result['result'][$key]['responsibility'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $responsibility[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 3)->get()->getRowObject();
+            // }
+            // if (!empty($responsibility[1])) {
+            //     $result['result'][$key]['responsibility'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_pre) AS score_pre, SUM(ET.tscore_pre) AS tscore_pre, SUM(QU.weight) AS weight, SUM(QU.pre_score) AS pre_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $responsibility[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 3)->get()->getRowObject();
+            // }
         }
+        pp($result);
 
-        return view('administrator/export/pre_average', $result);
+        // return view('administrator/export/pre_average', $result);
     }
 
     public function onsite_officer()
@@ -142,34 +145,34 @@ class Report extends BaseController
             $result['result'][$key]['application_type_sub_name'] = $value->application_type_sub_name;
             $result['result'][$key]['address_province'] = $value->address_province;
 
-            if (!empty($tourism[0])) {
-                $result['result'][$key]['tourism'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $tourism[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 1)->get()->getRowObject();
-            }
-            if (!empty($tourism[1])) {
-                $result['result'][$key]['tourism'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $tourism[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 1)->get()->getRowObject();
-            }
+            // if (!empty($tourism[0])) {
+            //     $result['result'][$key]['tourism'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $tourism[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 1)->get()->getRowObject();
+            // }
+            // if (!empty($tourism[1])) {
+            //     $result['result'][$key]['tourism'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $tourism[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 1)->get()->getRowObject();
+            // }
 
-            if (!empty($supporting[0])) {
-                $result['result'][$key]['supporting'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $supporting[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 2)->get()->getRowObject();
-            }
-            if (!empty($supporting[1])) {
-                $result['result'][$key]['supporting'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $supporting[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 2)->get()->getRowObject();
-            }
+            // if (!empty($supporting[0])) {
+            //     $result['result'][$key]['supporting'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $supporting[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 2)->get()->getRowObject();
+            // }
+            // if (!empty($supporting[1])) {
+            //     $result['result'][$key]['supporting'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $supporting[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 2)->get()->getRowObject();
+            // }
 
-            if (!empty($responsibility[0])) {
-                $result['result'][$key]['responsibility'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $responsibility[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 3)->get()->getRowObject();
-            }
-            if (!empty($responsibility[1])) {
-                $result['result'][$key]['responsibility'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $responsibility[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 3)->get()->getRowObject();
-            }
+            // if (!empty($responsibility[0])) {
+            //     $result['result'][$key]['responsibility'][1] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $responsibility[0])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 3)->get()->getRowObject();
+            // }
+            // if (!empty($responsibility[1])) {
+            //     $result['result'][$key]['responsibility'][2] = $this->db->table('estimate ET')->select('SUM(ET.score_onsite) AS score_onsite, SUM(ET.tscore_onsite) AS tscore_onsite, SUM(QU.weight) AS weight, SUM(QU.onside_score) AS onside_score_total')->join('question QU', 'QU.id = ET.question_id')->where('ET.estimate_by', $responsibility[1])->where('ET.application_id', $value->id)->where('QU.assessment_group_id', 3)->get()->getRowObject();
+            // }
         }
 
-        return view('administrator/export/onsite_average', $result);
+        // return view('administrator/export/onsite_average', $result);
     }
 
     public function summary_scores()
     {
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, ES.*, AT.name AS application_type_name, ATS.name AS application_type_sub_name')->join('estimate_score ES', 'ES.application_id = AP.id', 'left')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, ES.score_prescreen_tt AS score_prescreen_tt, ES.lowcarbon_score AS lowcarbon_score, ES.score_onsite_tt AS score_onsite_tt, AT.name AS application_type_name, ATS.name AS application_type_sub_name')->join('estimate_score ES', 'ES.application_id = AP.id', 'left')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->orderBy('AP.id', 'desc')->get()->getResultObject();
         // px($data['result']);
 
         return view('administrator/export/summary_scores', $data);
@@ -185,9 +188,9 @@ class Report extends BaseController
 
     public function lowcarbon()
     {
-        $data['result'] = $this->db->table('estimate ET')->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')->join('question QU', 'QU.id = ET.question_id')->join('application_form AP', 'AP.id = ET.application_id')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
+        // $data['result'] = $this->db->table('estimate ET')->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')->join('question QU', 'QU.id = ET.question_id')->join('application_form AP', 'AP.id = ET.application_id')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
 
-        return view('administrator/export/lowcarbon', $data);
+        // return view('administrator/export/lowcarbon', $data);
     }
 
     public function export1()

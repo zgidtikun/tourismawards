@@ -100,7 +100,7 @@
 
         <div class="backendform-row">
           <div class="backendform-col subject">
-            เบอร์ติดต่อ <span class="required">*</span>
+            เบอร์ติดต่อ
           </div>
           <div class="backendform-col inpfield">
             <input type="text" name="mobile" id="mobile" class="form-control" value="<?= @$result->mobile ?>" placeholder="" required>
@@ -109,10 +109,10 @@
 
         <div class="backendform-row">
           <div class="backendform-col subject">
-            ตำแหน่งงาน <span class="required">*</span>
+            ตำแหน่งงาน
           </div>
           <div class="backendform-col inpfield">
-            <input type="text" name="position" id="position" class="form-control" value="<?= @$result->position ?>" placeholder="" required>
+            <input type="text" name="position" id="position" class="form-control" value="<?= @$result->position ?>" placeholder="">
           </div>
         </div>
 
@@ -126,7 +126,7 @@
               foreach ($award_type as $key => $value) {
             ?>
                 <p>
-                  <input type="checkbox" id="award_type_<?= $value->id ?>" name="award_type[]" value="<?= $value->id ?>">
+                  <input type="radio" id="award_type_<?= $value->id ?>" name="award_type[]" value="<?= $value->id ?>">
                   <label for="award_type_<?= $value->id ?>"><?= $value->name ?></label>
                 </p>
             <?php
@@ -256,7 +256,7 @@
 
   function validated_email() {
     var email = $('#email').val();
-    var res = main_post(BASE_URL_BACKEND + '/Users/checkData', {
+    var res = main_post(BASE_URL_BACKEND + '/users/checkData', {
       email: email
     });
     return res;

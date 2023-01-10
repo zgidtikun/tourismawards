@@ -25,9 +25,10 @@ $rowHead = [
   'ประเภทรางวัลฯ',
   'สาขา',
   'จังหวัด',
-  'คะแนนรอบ Pre-Screen',
-  'คะแนนรอบลงพื้นที่',
-  'คะแนนที่ได้โดยเฉลี่ย',
+  'คะแนนรอบ Pre-Screen (เต็ม 25 คะแนน)',
+  'คะแนนรอบลงพื้นที่ (เต็ม 75 คะแนน)',
+  'คะแนนที่ได้โดยเฉลี่ย (เต็ม 100 คะแนน)',
+  'Low carbon (เต็ม 20 คะแนน)',
 ];
 
 //set Amount Column
@@ -39,7 +40,7 @@ $end = end($colExcel);
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
-$sheet->getStyle('G:I')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('G:J')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -76,6 +77,7 @@ if (!empty($result)) {
       $value->score_prescreen_tt,
       $value->score_onsite_tt,
       $value->score_prescreen_tt + $value->score_onsite_tt,
+      $value->lowcarbon_score,
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

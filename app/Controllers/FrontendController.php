@@ -144,7 +144,7 @@ class FrontendController extends BaseController
             $data->result->sts_content = '';
             $data->result->title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen)';
             $data->result->img = base_url('assets/images/prescreen_pass.png');
-            $data->result->content = 'ขณะนี้กำลังอยู่ในช่วงขั้นตอยการประเมินขั้นต้น (Pre-screen) 
+            $data->result->content = 'ขณะนี้กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen) 
                 จากทางคณะกรรมการ จะประกาศผลการประเมินในวันที่ '
                 . FormatTree($duedate_pre,'thailand');
 
@@ -156,7 +156,7 @@ class FrontendController extends BaseController
             $data->result->sts_content = '';
             $data->result->title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินรอบลงพื้นที่';
             $data->result->img = base_url('assets/images/prescreen_pass.png');
-            $data->result->content = 'ขณะนี้กำลังอยู่ในช่วงขั้นตอยการประเมินรอบลงพื้นที่ 
+            $data->result->content = 'ขณะนี้กำลังอยู่ในช่วงขั้นตอนการประเมินรอบลงพื้นที่ 
                 จากทางคณะกรรมการ จะประกาศผลการประเมินในวันที่ '
                 . FormatTree($duedate_onsite,'thailand');
 
@@ -231,9 +231,22 @@ class FrontendController extends BaseController
             $result = ['result' => 'success'];  
 
         } catch(Exception $e){
+            save_log_error([
+                'module' => 'profile_update',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             $result = [
                 'result' => 'error',
-                'message' => $e->getMessage()
+                'message' => ''
+                // 'message' => $e->getMessage()
             ];
         }
 
@@ -471,7 +484,7 @@ class FrontendController extends BaseController
         $ind = $obj_ei->select($select)->where($where)->first();
 
         if($stage == 1){
-            if($ind->lowcarbon_status == 1){
+            if(!empty($ind->lowcarbon_status) && $ind->lowcarbon_status == 1){
                 if(!empty($ind->score_pre) && !empty($ind->lowcarbon_score)){
                     $is_finish = 'finish';
                 } else {

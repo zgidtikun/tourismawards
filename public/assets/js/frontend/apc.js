@@ -178,22 +178,6 @@ const register = {
 
                     if(register.status == 3){
                         $('#link-pre-screen').removeClass('disabled');
-                        // let setting = {
-                        //     icon: 'success',
-                        //     title: 'ใบสมัครของท่านผ่านการอนุมัติ',
-                        //     text: 'โปรดกรอกแบบประเมินขั้นต้น (Pre-screen) ภายในระยะเวลาที่กำหนด',
-                        //     mode: 'default',
-                        //     button: {
-                        //         confirm: 'กรุณาประเมินขั้นต้น',
-                        //         cancel: 'ปิด'
-                        //     }
-                        // }
-
-                        // alert.confirm(setting).then(function(response){
-                        //     if(response.status){
-                        //         window.location.href = getBaseUrl()+'/awards/pre-screen';
-                        //     }
-                        // });
                     }
                 }
             });
@@ -253,9 +237,22 @@ const register = {
                             $('.btn-confirm-submit').hide();
                         break;
                         case 3: 
+                            const prescreen = response.pre_status;
+                            let pre_css, pre_str;
+                            
+                            if($.inArray(prescreen,['draft','reject']) !== -1){
+                                pre_css = 'check';
+                                pre_str = 'เข้าทำแบบประเมินขั้นต้น';
+                            } else {
+                                pre_css = 'pass';
+                                pre_str = 'ส่งแบบประเมินเรียบร้อยแล้ว';
+                            }
+                            
                             $('#formstep-sts').addClass('pass');
                             $('#formstep-sts').html('ผ่านการตรวจสอบ');
                             $('#formstatus-pass').removeClass('hide');
+                            $('#formstep-pre').addClass(pre_css);
+                            $('#formstep-pre').html(pre_str);
                             $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
                             $('.btn-action, .selecter-file').remove();
                             $('.btn-confirm-submit').hide();

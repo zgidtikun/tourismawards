@@ -645,7 +645,7 @@
     });
 
     $('.js-example-basic-multiple').select2({
-      maximumSelectionLength: 2
+      // maximumSelectionLength: 2
     });
   });
 

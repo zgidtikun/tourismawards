@@ -41,9 +41,22 @@ class FilesController extends BaseController
                 }
             };
         } catch(Exception $e){
+            save_log_error([
+                'module' => 'profile_upload',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             $result = [
                 'result' => 'error',
-                'message' => $e->getLine().' : '.$e->getMessage()
+                'message' => ''
+                // 'message' => $e->getLine().' : '.$e->getMessage()
             ];
         }
 
@@ -104,7 +117,23 @@ class FilesController extends BaseController
                 $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์ในการอัพโหลด'];
             }
         } catch(\Exception $e){
-            $result = ['result' => 'error', 'message' => 'System : '.$e->getMessage()];
+            save_log_error([
+                'module' => 'estimate_upload_files',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
+            $result = [
+                'result' => 'error',  
+                'message' => ''
+                // 'message' => 'System : '.$e->getMessage()
+            ];
         }
 
         return $this->response->setJSON($result);
@@ -155,7 +184,23 @@ class FilesController extends BaseController
             }
 
         } catch(\Exception $e){
-            $result = ['result' => 'error', 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()];
+            save_log_error([
+                'module' => 'estimate_remove_files',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
+            $result = [
+                'result' => 'error', 
+                'message' => ''
+                // 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()
+            ];
         }
 
         return $this->response->setJSON($result);

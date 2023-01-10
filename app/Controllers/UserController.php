@@ -63,8 +63,24 @@ class UserController extends BaseController
             $result = (object) array('result' => $status, 'id' => $userId);
         } 
         catch(\Exception $e) {
-            $result = (object) array('result' => false, 'error' => 'Database : '.$e->getMessage());
+            save_log_error([
+                'module' => 'insert_user',
+                'input_data' => $data,
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
+            $result = (object) array(
+                'result' => false, 
+                'error' => 'Database : '.$e->getMessage()
+            );
         }
+
         return $result;
     }
 
@@ -76,7 +92,22 @@ class UserController extends BaseController
             $result = (object) array('result' => $status);
         } 
         catch(\Exception $e) {
-            $result = (object) array('result' => false, 'error' => 'Database : '.$e->getMessage());
+            save_log_error([
+                'module' => 'update_user',
+                'input_data' => $data,
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
+            $result = (object) array(
+                'result' => false, 
+                'error' => 'Database : '.$e->getMessage()
+            );
         }
         return $result;
     }
