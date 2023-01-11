@@ -477,7 +477,6 @@ const setQuestion = (cate,seg) => {
             qTitle.html(question.criteria_topic);
         }
         
-        console.log(question);
         qTitle.attr('data-id',question.reply_id);
         qSum.html(category.question.length);
         mSum.html(category.question.length);
@@ -614,7 +613,7 @@ const setQuestion = (cate,seg) => {
                     }
                 }
 
-                if(!empty(question.score_pre)){
+                if(!empty(question.score_pre_origin)){
                     if(Number(question.score_pre_origin) == Number(tmp[0].trim())){
                         ck = 'checked';
                     }
@@ -822,7 +821,7 @@ const calScore = (ele) => {
     let selfscore, totalscore;
 
     if(lowcarbon && Number(point.cate) == 3){
-        totalscore = selfscore = ele.value;
+        totalscore = selfscore = 0;
     } else {
         const maxscore = question.pre_score;
         const weight = question.weight;

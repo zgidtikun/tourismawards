@@ -756,8 +756,7 @@ $('#step1-link').on('keyup', function(){
 
 $('[name=step1-lowcarbon]').on('click', function(){ 
     register.formData.step1.lowcarbon = $(this).val(); 
-    register.change = true;
-    console.log(register.formData.step1)
+    register.change = true; 
 });
 
 // Step 2

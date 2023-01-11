@@ -69,7 +69,7 @@
                       }
                     }
                 ?>
-                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
+                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?> <?= $value->surname ?></option>
                 <?php
                   }
                 }
@@ -93,7 +93,7 @@
                       }
                     }
                 ?>
-                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
+                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?> <?= $value->surname ?></option>
                 <?php
                   }
                 }
@@ -117,7 +117,7 @@
                       }
                     }
                 ?>
-                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
+                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?> <?= $value->surname ?></option>
                 <?php
                   }
                 }

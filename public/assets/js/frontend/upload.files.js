@@ -14,7 +14,6 @@ const onFileHandle = (setting, input, type) => {
                 if (ref.app == 'awards/application') {
                     total = Number(register.count[ref.pointer[1]]) + Number(handle.length);                    
                 } else if (ref.app == 'awards/pre-screen') {
-                    console.log(setting)
                     let length = psc.questions[setting.cate].question[setting.seg][ref.position].length;
                     total = Number(length) + Number(handle.length);
                 } else if (ref.app == 'estimate/onsite') {

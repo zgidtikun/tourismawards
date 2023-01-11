@@ -1,3 +1,10 @@
+<style>
+    .inp-remark {
+        font-size: 13px;
+        color: #6c757d;
+        margin-left: 1rem;
+}
+</style>
 <div class="container login" style="height: 100%;" data-id="<?=$id?>">
     <div class="row">
         <div class="col6 loginbox">
@@ -13,6 +20,7 @@
                             </div>
                             <div class="inp_form_col1">
                                 <input type="password" id="password" placeholder="รหัสผ่านใหม่">
+                                <span class="inp-remark">รหัสผ่านต้องมี A-Z, a-z, 0-9 และอย่างน้อย 6 ตัวอักษร</span>
                             </div>
                             <div class="inp_form_col1">
                                 <input type="password" id="con-password" placeholder="ยืนยันรหัสผ่านใหม่">
@@ -30,7 +38,7 @@
     </div>
 </div>
 <script>
-    $('#username, #password').keypress((e) => {
+    $('#username, #password, #con-password').keypress((e) => {
         if(e.keyCode == 13){
             signin.authen();
         }
@@ -82,23 +90,30 @@
             }
         },
         validation: function() {
+            const patternPassword = /^[A-Za-z0-9]{6,}$/;
+
             if ($('#username').val() == '') {
-                alert.show('error','Oops Reset Password Fail...!', 'กรุณากรอกอีเมล');
+                alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณากรอกอีเมล');
                 return false;
             }
 
             if ($('#password').val() == '') {
-                alert.show('error','Oops Reset Password Fail...!', 'กรุณากรอกรหัสผ่านใหม่');
+                alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณากรอกรหัสผ่านใหม่');
+                return false;
+            }
+
+            if (!patternPassword.test($('#password').val())) {
+                alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'รหัสผ่านต้องมี A-Z, a-z, 0-9 และอย่างน้อย 6 ตัวอักษร');
                 return false;
             }
 
             if ($('#con-password').val() == '') {
-                alert.show('error','Oops Reset Password Fail...!', 'กรุณากรอกยืนยันรหัสผ่านใหม่');
+                alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณากรอกยืนยันรหัสผ่านใหม่');
                 return false;
             }
 
             if ($('#password').val() != $('#con-password').val()) {
-                alert.show('error','Oops Reset Password Fail...!', 'รหัสผ่านใหม่และยืนยันรหัสผ่านใหม่ไม่เหมือนกัน');
+                alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'รหัสผ่านใหม่และยืนยันรหัสผ่านใหม่ไม่เหมือนกัน');
                 return false;
             }
 

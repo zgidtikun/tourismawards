@@ -70,7 +70,7 @@
                       }
                     }
                 ?>
-                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
+                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?> <?= $value->surname ?></option>
                 <?php
                   }
                 }
@@ -94,7 +94,7 @@
                       }
                     }
                 ?>
-                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
+                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?> <?= $value->surname ?></option>
                 <?php
                   }
                 }
@@ -118,7 +118,7 @@
                       }
                     }
                 ?>
-                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?></option>
+                    <option value="<?= $value->id ?>" <?= $selected; ?>><?= $value->name ?> <?= $value->surname ?></option>
                 <?php
                   }
                 }
@@ -633,7 +633,7 @@
       } else {
         $('.remark_text_' + tab).hide();
       }
-      
+
       $('#question_no_' + tab).html(no);
       $('#btn_next_' + tab).attr('no', no);
       $('#btn_back_' + tab).attr('no', no);

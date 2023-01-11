@@ -328,15 +328,9 @@ $routes->get('forgot-password', 'backend\VerifyPassword::forgotPassword');
 //     $routes->post('MarkTest/saveUpdate', 'MarkTest::saveUpdate');
 // });
 
-$routes->group('re-estimate', static function ($routes) {
-    $routes->get('by-type/(:num)/(:num)', 'EstimateController::reCalEstimateByType/$1/$2', ['filter' => 'api:backend']);
-    $routes->get('by-application/(:num)', 'EstimateController::reCalEstimateByApp/$1', ['filter' => 'api:frontend']);
-});
-
 $routes->environment('development', static function ($routes) {
     $routes->get('set-session', 'LoginController::setSession');
     $routes->get('show-session', 'LoginController::showSession');
-    $routes->get('frontend-email', 'Home::testTemplateEmailFrontend');
 });
 
 $routes->get('403', 'Home::error_403');

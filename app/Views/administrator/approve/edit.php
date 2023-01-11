@@ -285,7 +285,7 @@
               </div>
 
               <div class="regis-form-data-col2">
-                <h4>ถนน<span class="required">*</span></h4>
+                <h4>ถนน</h4>
                 <input value="<?= $result->address_road ?>" readonly>
               </div>
 
@@ -379,7 +379,7 @@
                 </div>
 
                 <div class="regis-form-data-col2">
-                  <h4>ถนน<span class="required">*</span></h4>
+                  <h4>ถนน</h4>
                   <input value="<?= $result->company_addr_road ?>" readonly>
                 </div>
 

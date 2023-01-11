@@ -350,16 +350,4 @@ class Home extends BaseController
     {
         return view('errors/html/error_404_c');
     }
-
-    public function testTemplateEmailFrontend()
-    {
-        return view('template-frontend-email', [
-                '_header' => 'ยืนยันตัวตนการเข้าร่วมประกวด',
-                '_content' => 'คุณ xxxxxxxxxx xxxxxxxxxxxx ได้ลงทะเบียนเข้าาประกวดรางวัล'
-                    . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2556 (Thailand Tourism Awards 2023) '
-                    . 'ด้วยอีเมล xxxxxxxxxxx โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ '
-                    . '<b><a href="javascript:">'
-                    . 'Verify</a></b>'
-            ]);
-    }
 }

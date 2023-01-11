@@ -32,7 +32,7 @@ const psc = {
             psc.lowcarbon = response.lowcarbon;
             psc.questions = response.data;
             psc.stage = stage;    
-            console.log(response)
+            
             if(psc.expired && $inArray(psc.status,['draft','reject']) !== -1){ 
                 $('#formstatus-unpass').removeClass('hide');
                 $('#formstep-sts').addClass('notpass');

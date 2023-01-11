@@ -428,7 +428,7 @@ const setQuestion = async(cate,seg) => {
                 qcontent = question.question;
             }
         }
-        console.log(question);
+        
         qTitle.attr('data-id',question.reply_id);
         qTitle.html(category.group.name);
         qSum.html(category.question.length);
@@ -609,7 +609,7 @@ const setQuestion = async(cate,seg) => {
                     dis = 'disabled';
                 }
                 
-                if(!empty(question.score_onsite)){
+                if(!empty(question.score_onsite_origin)){
                     if(Number(question.score_onsite_origin) == Number(tmp[0].trim())){
                         ck = 'checked';
                     }

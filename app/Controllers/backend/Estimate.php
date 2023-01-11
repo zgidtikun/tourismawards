@@ -115,7 +115,11 @@ class Estimate extends BaseController
         // px($post);
         $count = array_merge($post['tourism'], $post['supporting']);
         $count = array_merge($count, $post['responsibility']);
-        $count = array_merge($count, $post['lowcarbon']);
+        if (!empty($post['lowcarbon'])) {
+            $count = array_merge($count, $post['lowcarbon']);
+        } else {
+            $post['lowcarbon'] = [];
+        }
         $count = array_unique($count);
         $data = [
             // 'id'                        => $post['id'],
@@ -186,7 +190,11 @@ class Estimate extends BaseController
         $post = $this->input->getVar();
         $count = array_merge($post['tourism'], $post['supporting']);
         $count = array_merge($count, $post['responsibility']);
-        $count = array_merge($count, $post['lowcarbon']);
+        if (!empty($post['lowcarbon'])) {
+            $count = array_merge($count, $post['lowcarbon']);
+        } else {
+            $post['lowcarbon'] = [];
+        }
         $count = array_unique($count);
         $data = [
             // 'id'                        => $post['id'],
