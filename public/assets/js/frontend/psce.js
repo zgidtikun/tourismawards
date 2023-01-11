@@ -132,8 +132,7 @@ const setFinish = () => {
     ttescore = tsbscoe = trsscore = 0;
     lcbscore = 0;
 
-    let arrayScore = [],
-        estimateLowCarbon = false;
+    let estimateLowCarbon = false;
     
     $.each(assign,(ak,av) => {        
         let index = av-1;
@@ -158,17 +157,14 @@ const setFinish = () => {
             if(!empty(qv.score_pre) && Number(qv.pre_status) == 1){
                 if(av == 1){ 
                     tescore += Number(qv.score_pre_origin) *  Number(qv.weight);
-                    // tescore += Number(qv.score_pre);
                     ttescore += Number(qv.pre_score);
                 }
                 else if(av == 2){ 
                     sbscoe += Number(qv.score_pre_origin) *  Number(qv.weight);
-                    // sbscoe += Number(qv.score_pre);
                     tsbscoe += Number(qv.pre_score);
                 }
                 else if(av == 3){
                     rsscore += Number(qv.score_pre_origin) *  Number(qv.weight);
-                    // rsscore += Number(qv.score_pre);
                     trsscore += Number(qv.pre_score);
                 } else {
                     lcbscore += Number(qv.score_pre_origin);
@@ -415,6 +411,20 @@ const setQuestion = (cate,seg) => {
 
         if(point.cate == -1){ point.cate = cate; }
         if(point.seg == -1){ point.seg = seg; }
+
+        qTitle.attr('data-id','');
+        qSum.html('');
+        mSum.html('');
+        qNum.html('');
+        mTNum.html('');
+        mNum.html('');
+        qSubject.html('');
+        esCmm.val('');
+        esNote.val(''); 
+        qRemark.html('หมายเหตุ : ');
+        qAblum.html('');        
+        qEva.html('');
+        qSco.html('');
         
         const category = dataset[cate];
         const question = category.question[seg];
@@ -459,36 +469,7 @@ const setQuestion = (cate,seg) => {
 
                 sRequest.show();
             }
-        }
-
-        if(regex.test(question.pre_eva)){
-            qcontent = question.question;
-        } else {        
-            if(question.question.search('ระบุ,') !== -1){
-                const qno = question.question.split(',');
-                
-                $.each(qno,(qk,qv) => {
-                    if(qk != 0){
-                        qcontent += '<br>&nbsp;&nbsp;&nbsp;&nbsp;';
-                        qv = qv.trim();
-                        s2p = qv.substr(0,2);
-                        
-                        if(isNaN(s2p)){
-                            qcontent += '&bull;&nbsp;&nbsp;'+qv;
-                        }else{
-                            s2p = s2p.trim();
-                            qv = qv.substr(2).trim();
-                            // question.no+'.'+s2p+
-                            qcontent += '&bull;&nbsp;&nbsp;'+qv;
-                        }
-                    } else {
-                        qcontent += qv;
-                    }
-                });
-            } else {
-                qcontent = question.question;
-            }
-        }     
+        }  
         
         if(cate != 3){
             qTitle.html(category.group.name);
@@ -503,7 +484,7 @@ const setQuestion = (cate,seg) => {
         qNum.html(question.no);
         mTNum.html(question.no);
         mNum.html(question.no);
-        qSubject.html(question.no+'. '+qcontent);
+        qSubject.html(question.no+'. '+question.question);
         esCmm.val(question.comment_pre);
         esNote.val(question.note_pre);    
 
@@ -517,20 +498,46 @@ const setQuestion = (cate,seg) => {
         countChar($('#comment'))
 
         const url = getBaseUrl();
-        let ap = '';
 
-        $.each(question.images,(k,v) => {
-            ap += (
-                '<div class="ablumbox-col">'
-                    + '<div class="ablum-mainimg">'
-                        + '<div class="ablum-mainimg-scale">'
-                            + '<img src="'+url+'/'+v.file_path+'" '
-                            + 'class="ablum-img" onclick="zoomImages(this)">'
+        if(question.images.length > 0){
+            qAblum.removeClass('text-center');                                        
+            qAblum.addClass('ablumbox');
+            let ap = '';
+
+            $.each(question.images,(k,v) => {
+                ap += (
+                    '<div class="ablumbox-col">'
+                        + '<div class="ablum-mainimg">'
+                            + '<div class="ablum-mainimg-scale">'
+                                + '<img src="'+url+'/'+v.file_path+'" '
+                                + 'class="ablum-img" onclick="zoomImages(this)">'
+                            + '</div>'
                         + '</div>'
                     + '</div>'
-                + '</div>'
-            );
-        });
+                );
+            });            
+
+            qAblum.html(ap);
+        } else {
+            qAblum.removeClass('ablumbox');                                        
+            qAblum.addClass('text-center');
+            qAblum.css('color','#000');
+            qAblum.text('ไม่มีรูปแนบ');
+        }
+
+        const btnDownload = $(`.btn-download`);
+
+        if(question.paper < 1){           
+            btnDownload.addClass('btn-transparent disabled');
+            btnDownload.css('color','#000');
+            btnDownload.css('opacity','1');
+            btnDownload.html('ไม่มีไฟล์แนบ');
+        } else {
+            btnDownload.removeClass('btn-transparent disabled');
+            btnDownload.css('color','#fff');
+            btnDownload.css('opacity','1');
+            btnDownload.html('ดาวน์โหลดไฟล์แนบ');
+        }
 
         let back = seg != 0 ? seg-1 : seg,
             next = seg != category.question.length-1 ? seg+1 : seg;
@@ -578,8 +585,6 @@ const setQuestion = (cate,seg) => {
         countChar1($('#qRequest'));
 
         let ev = sc = '';
-
-        qAblum.html(ap);
 
         if(regex.test(question.pre_eva)){
             ev = question.pre_eva;

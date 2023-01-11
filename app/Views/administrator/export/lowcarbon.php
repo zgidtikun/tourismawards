@@ -6,11 +6,11 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 // px(session()->user);
 //set My Spreadsheet
-$FILE_NAME  = "ข้อเสนอแนะกรรมการ";
+$FILE_NAME  = "Low Carbon";
 $DATE       = date('Y-m-d');
 $TIME       = date('H:i:s');
 $STAFF      = session()->user;
-$TITLE      = "ข้อเสนอแนะกรรมการ";
+$TITLE      = "Low Carbon";
 
 //new Spreadsheet
 $spreadsheet = new Spreadsheet();
@@ -22,13 +22,11 @@ $rowHead = [
   'ลำดับที่',
   'รหัส',
   'ชื่อสถานประกอบการ',
-  'ประเภทรางวัลฯ',
-  'สาขา',
-  'จังหวัด',
-  'ชื่อผู้ประเมิน',
-  'เกณฑ์การประเมิน',
-  'ข้อเสนอแนะ (Pre-Screen)',
-  'ข้อเสนอแนะ (ลงพื้นที่)',
+  'คะแนนรวม Respon พรีสกรีน',
+  'คะแนนรวม Respon ลงพื้นที่',
+  'คะแนนรวม Respon พรีสกรีน+ลงพื้นที่',
+  'คะแนนรวม Low carbon ของกรรมการทั้งหมด',
+  'คะแนนรวมทั้งหมด',
 ];
 
 //set Amount Column
@@ -40,6 +38,7 @@ $end = end($colExcel);
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('D:H')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -66,25 +65,15 @@ if (!empty($result)) {
   $i = 4;
   foreach ($result as $key => $value) {
 
-    if ($value->assessment_group_id == 1) {
-      $assessment = 'Tourism Excellence (Product/Service)';
-    } else if ($value->assessment_group_id == 2) {
-      $assessment = 'Supporting Business & Marketing Factors';
-    } else if ($value->assessment_group_id == 3) {
-      $assessment = 'Responsibility and Safety & Health Administration';
-    }
-
     $data = [
       ($key + 1),
       $value->code,
       $value->attraction_name_th,
-      $value->application_type_name,
-      $value->application_type_sub_name,
-      $value->address_province,
-      $value->estimate_name,
-      $assessment,
-      $value->comment_pre,
-      $value->comment_onsite,
+      $value->score_prescreen_rs,
+      $value->score_onsite_rs,
+      $value->score_prescreen_rs + $value->score_onsite_rs,
+      $value->lowcarbon_score,
+      $value->score_prescreen_rs + $value->score_onsite_rs + $value->lowcarbon_score,
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

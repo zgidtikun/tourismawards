@@ -31,6 +31,12 @@
         text-align: center;
     }
 </style>
+<?php 
+    $config = new \Config\App(); 
+    $appCurrentDate = date('Y-m-d');
+    $expireRequest = $config->Estimate_require_date;
+    $showRequest = $appCurrentDate <= $expireRequest ? true : false;
+?>
 <div class="container">
     <div class="row">
         <div class="col12">
@@ -44,10 +50,12 @@
                     onclick="window.open('<?=base_url('boards')?>','_self')">
                         ย้อนกลับ
                     </button>
+                    <?php if($showRequest): ?>
                     <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold"
                     id="btn-send-request" onclick="setRequest()">
                         ส่งคำขอข้อมูลทั้งหมด
                     </button>
+                    <?php endif; ?>
                     <button style="width: 250px;" disabled class="btn btn-confirm-submit fw-semibold"
                     id="btn-send-estimate" onclick="setFinish()">
                         ส่งผลประเมินเข้าระบบ
@@ -369,16 +377,22 @@ aria-hidden="true">
                 </script>
             </div>
             <div class="modal-footer border-0" style="display: block;">
+                <?php if($showRequest): ?>
                 <button class="btn btn-sm btn-confirm-submit float-start" disabled
                 id="btn-send-request-modal" onclick="setRequest()">
                     ส่งคำขอข้อมูลทั้งหมด
                 </button>
+                <?php endif; ?>
                 <button type="button" style="width: 80px !important;" 
-                class="btn btn-sm btn-action float-end" data-bs-dismiss="modal">ยกเลิก</button>
+                class="btn btn-sm btn-action float-end" data-bs-dismiss="modal">
+                    ยกเลิก
+                </button>
+                <?php if($showRequest): ?>
                 <button type="button" style="width: 80px !important;" 
                 class="btn btn-sm btn-main float-end" id="btn-request">
                     บันทึก
                 </button>
+                <?php endif; ?>
             </div>
         </div>
     </div>

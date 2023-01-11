@@ -23,34 +23,36 @@ class MarkTest extends BaseController
 
     public function index()
     {
-        px($_COOKIE);
-        $data = 'user-' . genVerifyCode();
-        pp(vEncryption('user-' . genVerifyCode()));
-        pp(vDecryption(vEncryption($data)));
-        $array = explode('&', $data);
-        pp($array);
+        show_404();
+        // px($_COOKIE);
+        // px(session()->get());
+        // $data = 'user-' . genVerifyCode();
+        // pp(vEncryption('user-' . genVerifyCode()));
+        // pp(vDecryption(vEncryption($data)));
+        // $array = explode('&', $data);
+        // pp($array);
 
-        exit;
-        px($_ENV);
-        // pp(session()->get());
-        // pp(checkPermission([4]));
-        px(password_hash('0000', PASSWORD_DEFAULT));
-        $model = new Admin();
+        // exit;
+        // px($_ENV);
+        // // pp(session()->get());
+        // // pp(checkPermission([4]));
+        // px(password_hash('0000', PASSWORD_DEFAULT));
+        // $model = new Admin();
 
-        $page    = (int) ($this->request->getGet('page') ?? 1);
-        $perPage = 20;
-        $total   = 200;
+        // $page    = (int) ($this->request->getGet('page') ?? 1);
+        // $perPage = 20;
+        // $total   = 200;
 
-        $data = [
-            'users' => $model->paginate(3),
-            'pager' => $model->pager,
-        ];
-        px($model->pager);
+        // $data = [
+        //     'users' => $model->paginate(3),
+        //     'pager' => $model->pager,
+        // ];
+        // px($model->pager);
 
-        $pager = service('pager');
-        $pager->setPath('path/for/my-group', 'my-group'); // Additionally you could define path for every group.
-        $pager->makeLinks($page, $perPage, $total, 'template_name', 0, 'my-group');
-        echo $pager->links();
+        // $pager = service('pager');
+        // $pager->setPath('path/for/my-group', 'my-group'); // Additionally you could define path for every group.
+        // $pager->makeLinks($page, $perPage, $total, 'template_name', 0, 'my-group');
+        // echo $pager->links();
     }
 
     public function excel()
@@ -66,7 +68,7 @@ class MarkTest extends BaseController
         $where = [];
         // $where['weight'] = 0;
         // $where['onside_score'] = 0;
-        $where['lowcarbon_status'] = 1;
+        // $where['lowcarbon_status'] = 1;
         // $where = "assessment_group_id = 3 AND application_type_id = 1 AND application_type_sub_id = 5";
         $data['fields'] = $this->db->getFieldNames('question');
         $data['result'] = $this->db->table('question')->orderBy('id', 'desc')->where($where)->get()->getResultObject();

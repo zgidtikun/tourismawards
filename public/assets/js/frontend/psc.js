@@ -22,6 +22,7 @@ const psc = {
         segment: -1,
     },
     questions: null,
+    complete: false,
     init:async function(expired,stage){
         await loading('show');
         api({method: 'get', url: '/inner-api/question/get'}).then(function(response){
@@ -31,7 +32,6 @@ const psc = {
             psc.lowcarbon = response.lowcarbon;
             psc.questions = response.data;
             psc.stage = stage;    
-            console.log(stage)
             console.log(response)
             if(psc.expired && $inArray(psc.status,['draft','reject']) !== -1){ 
                 $('#formstatus-unpass').removeClass('hide');
@@ -39,6 +39,7 @@ const psc = {
                 $('#formstep-sts').html('หมดเวลาการส่งแบบประเมินขั้นต้น');
                 $('.btn-main, .btn-action, .btn-file, .bfd-dropfield, .selecter-file, file-list').remove();
                 $('.regis-form-data textarea').prop('disabled',true);
+                psc.complete = true;
             } else {    
                 switch(psc.status){
                     case 'draft':   
@@ -67,6 +68,7 @@ const psc = {
                         $('#formstatus-complete').removeClass('hide');
                         $('.regis-form-data textarea').prop('disabled',true);
                         $('.btn-main, .btn-action, .selecter-file, .bfd-dropfield').remove();
+                        psc.complete = true;
 
                         if(psc.status == 'estimate'){
                             $('#formstep-result').html('สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว');
@@ -87,7 +89,7 @@ const psc = {
                     qval.change = false;
                 });
             });
-
+            
             showFiles.tycoon('#file',psc.questions[0].question[0].paper);
             showFiles.tycoon('#images',psc.questions[0].question[0].images);
 
@@ -142,35 +144,41 @@ const psc = {
         return  setting;
     }, 
     waitDraft: function(sts){
-        if(psc.expired && $.inArray(psc.status,['draft','reject']) !== -1){
-            if(sts == 'wait'){
-                $('#tab-0').addClass('disabled');
-                $('#tab-1').addClass('disabled');
-                $('#tab-2').addClass('disabled');                
+        return new Promise(async function(resolve, reject){
+            if(psc.expired && $.inArray(psc.status,['draft','reject']) !== -1){
+                if(sts == 'wait'){
+                    $('#tab-0').addClass('disabled');
+                    $('#tab-1').addClass('disabled');
+                    $('#tab-2').addClass('disabled');                
 
-                if(psc.lowcarbon){
-                    $('#tab-3').addClass('disabled');
+                    if(psc.lowcarbon){
+                        $('#tab-3').addClass('disabled');
+                    }
+
+                    $('.btn-choice,.btn-regis').addClass('disabled');
+                    $('#btn-back,#btn-next').prop('disabled',true);
+                    $('.btn-file,.btn-action').prop('disabled',true);
+                    $(MapData.input.reply.id).prop('readonly','readonly');
+                    resolve({finish: true});
+                } else {
+                    $('#tab-0').removeClass('disabled');
+                    $('#tab-1').removeClass('disabled');
+                    $('#tab-2').removeClass('disabled');              
+
+                    if(psc.lowcarbon){
+                        $('#tab-3').removeClass('disabled');
+                    }
+
+                    $('.btn-choice,.btn-regis').removeClass('disabled');
+                    $('#btn-back,#btn-next').prop('disabled',false);
+                    $('.btn-file,.btn-action').prop('disabled',false);
+                    $(MapData.input.reply.id).prop('readonly','');
+                    resolve({finish: true});
                 }
-
-                $('.btn-choice,.btn-regis').addClass('disabled');
-                $('#btn-back,#btn-next').prop('disabled',true);
-                $('.btn-file,.btn-action').prop('disabled',true);
-                $(MapData.input.reply.id).prop('readonly','readonly');
-            } else {
-                $('#tab-0').removeClass('disabled');
-                $('#tab-1').removeClass('disabled');
-                $('#tab-2').removeClass('disabled');              
-
-                if(psc.lowcarbon){
-                    $('#tab-3').removeClass('disabled');
-                }
-
-                $('.btn-choice,.btn-regis').removeClass('disabled');
-                $('#btn-back,#btn-next').prop('disabled',false);
-                $('.btn-file,.btn-action').prop('disabled',false);
-                $(MapData.input.reply.id).prop('readonly','');
+            } else {                
+                resolve({finish: true});
             }
-        }
+        });
     },
     reply: function(cate,seg){
         return new Promise(async function(resolve, reject){
@@ -237,7 +245,7 @@ const psc = {
                         } else {
                             if(finish.result == 'success'){
                                 let title = 'ส่งแบบประเมินเรียบร้อยแล้ว',
-                                    message = 'เราจะแจ้งผลให้ทราบ<b>ช่วงประมาณกลางเดือนเมษายน 2566';
+                                    message = 'เราจะแจ้งผลให้ทราบวันที่ <b>19 พฤษภาคม 2566</b>';
                                 
                                 alert.show(finish.result,title,message).then(function(res){
                                     window.location.reload();
@@ -250,7 +258,7 @@ const psc = {
                 }
             });
         } else {
-            alert.show('error','ดำเนินการไม่สำเร็จ','โปรดตรวจสอบการประเมินของท่าน ให้ครบถ้วน<br>ก่อนส่งแบบประเมินเข้าระบบ');
+            alert.show('error','ดำเนินการไม่สำเร็จ','กรุณาตอบคำถามให้ครบถ้วน ก่อนส่งแบบประเมินเข้าระบบ');
         }
     },
     validate: function(){
@@ -324,48 +332,47 @@ const psc = {
             } else {
                 $(MapData.label.model.item+seg).addClass('active');
             }          
-            
-            psc.setPointer(cate,seg);
-
-            if(regex.test(question.pre_eva)){
-                qcontent = question.question;
-            } else { 
-                if(question.question.search('ระบุ,') !== -1){
-                    const qno = question.question.split(',');
-
-                    $.each(qno,(qk,qv) => {
-                        if(qk != 0){
-                            qcontent += '<br>&nbsp;&nbsp;&nbsp;&nbsp;';
-                            qv = qv.trim();
-                            s2p = qv.substr(0,2);
-                            
-                            if(isNaN(s2p)){
-                                qcontent += '&bull;&nbsp;&nbsp;'+qv;
-                            }else{
-                                s2p = s2p.trim();
-                                qv = qv.substr(2).trim();
-                                // question.no+'.'+s2p+
-                                qcontent += '&bull;&nbsp;&nbsp;'+qv;
-                            }
-                        } else {
-                            qcontent += qv;
-                        }
-                    });
-                } else {
-                    qcontent = question.question;
-                }
-            }
 
             $(MapData.label.title).html(category.group.name);
             $(MapData.label.sum).html(category.question.length); 
             $(MapData.label.num).html(question.no);
-            $(MapData.label.question).html(question.no+'. '+qcontent);
+            $(MapData.label.question).html(question.no+'. '+question.question);
             $(MapData.input.reply.id).val(question.reply);
 
             countChar($('#reply'));
+            psc.setPointer(cate,seg);
 
-            showFiles.tycoon('#file',question.paper);
-            showFiles.tycoon('#images',question.images);
+            if(!psc.complete){
+                showFiles.tycoon('#file',question.paper);
+                showFiles.tycoon('#images',question.images);
+            } else {
+                if(question.images.length > 0){
+                    $('#images-ablum').removeClass('text-center');                                        
+                    $('#images-ablum').addClass('ablumbox');
+                    showFiles.tycoon('#images',question.images);
+                } else {
+                    $('#images-ablum').removeClass('ablumbox');                                        
+                    $('#images-ablum').addClass('text-center');
+                    $('#images-ablum').html('ไม่มีรูปแนบ');
+                }
+                
+                const button = $(`button[onclick="downloadFile('#file')"]`);
+
+                if(question.paper < 1){
+                    button.prop('disabled',true);
+                    button.removeClass('btn-primary');
+                    button.addClass('btn-transparent');
+                    button.css('color','#000');
+                    button.css('opacity','1');
+                    button.html('ไม่มีไฟล์แนบ');
+                } else {
+                    button.prop('disabled',false);
+                    button.removeClass('btn-transparent');
+                    button.addClass('btn-primary');
+                    button.css('color','#fff');
+                    button.html('<i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ');
+                }
+            }
 
             if(!empty(question.remark)){
                 $(MapData.label.remark).html('หมายเหตุ : '+question.remark);

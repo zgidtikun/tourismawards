@@ -145,6 +145,16 @@ class EstimateController extends BaseController
     {
         try {
             $input = (object) $this->input->getVar();
+
+            save_log_activety([
+                'module' => 'estimate_draft',
+                'action' => 'estimate_draft_'.$input->target,
+                'bank' => 'frontend',
+                'user_id' => $this->myId,
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $this->input->getVar()
+            ]);
+
             $data = [];
 
             $target = $input->target == 'pre-screen' ? 'pre' : 'onsite';
@@ -916,44 +926,112 @@ class EstimateController extends BaseController
             ->where($where_app)
             ->findAll();
 
-            $eRequest = new \App\Controllers\EstimateRequestController();
-
             foreach($application as $app){
                 $this->lowcarbon = $app->lowcarbon == 1 ? true : false;
-                $stageApp = $this->getAppUserStage($app->tycoon_id);
-                $numStage = 0;
+
+                $this->db->query(
+                   "UPDATE estimate a 
+                    JOIN question b ON a.question_id = b.id
+                    SET a.score_pre = (a.score_pre_origin * b.weight),
+                        a.score_onsite = (a.score_onsite_origin * b.weight),
+                        a.tscore_pre = ((a.score_pre_origin * b.weight) / b.pre_score),
+                        a.tscore_onsite = ((a.score_onsite_origin * b.weight) / b.onside_score)
+                    WHERE a.application_id = $app->app_id"
+                );
+
+                $individuel = $this->db->query(
+                   "SELECT a.application_id, b.estimate_by, b.score_pre, 
+                        b.score_onsite, b.score_lowcarbon, b.assign_id, 
+                        b.lowcarbon_status
+                    FROM estimate_individual a 
+                    INNER JOIN (
+                        SELECT
+                            ina.estimate_by,
+                            (SUM(ina.score_pre) / inc.score_prescreen) score_pre,
+                            (SUM(ina.score_onsite) / inc.score_onsite) score_onsite,
+                            SUM(ina.score_pre) score_lowcarbon,
+                            inb.assessment_group_id assign_id,
+                            inb.lowcarbon_status
+                        FROM estimate ina
+                        INNER JOIN question inb 
+                            ON ina.question_id = inb.id
+                        INNER JOIN assessment_group inc 
+                            ON inb.assessment_group_id = inc.id
+                        WHERE ina.application_id = 1
+                        GROUP BY ina.estimate_by, inb.assessment_group_id
+                    ) b ON a.estimate_by = b.estimate_by
+                    WHERE a.application_id = 1"
+                )
+                ->getResult();
                 
-                foreach($stageApp as $stage){
-                    $numStage++;
-
-                    if($stage->status != -1){                           
-                        $judgeId = get_receive_noti($app->tycoon_id,$numStage);
-
-                        foreach($judgeId as $jid){
-                            $this->myId = $jid;
-                            $dataEstimate = $this->getJudgeEstimate($app->app_id,$jid,$numStage);
-                            $reEstimate = $this->reupdateEstimate($dataEstimate);
-                            $isFinish = $this->checkJudgeEstimateFinish($app->app_id,$jid,$numStage);
-
-                            if($isFinish){
-                                $eRequest->complete_request($app->app_id,$jid);
-                                $this->setIndividuel(
-                                    (object)[
-                                        'appId' => $app->app_id,
-                                        'stage' => $numStage
-                                    ],
-                                    $reEstimate['individuel']
-                                );
-                            }
+                foreach($individuel as $ind){
+                    if($ind->assign_id != 4){
+                        switch($ind->assign_id){
+                            case 1: 
+                                $field_p = 'score_pte';
+                                $field_o = 'score_ote'; 
+                            break;
+                            case 2: 
+                                $field_p = 'score_psb';
+                                $field_o = 'score_osb'; 
+                            break;
+                            case 3: 
+                                $field_p = 'score_prs';
+                                $field_o = 'score_ors'; 
+                            break;
                         }
 
-                        if($this->checkFinishEsitmate($app->app_id,$numStage)){
-                            $this->setFinishEstimate($app->app_id,$numStage);
+                        $set[$field_p] = $ind->score_pre;
+                        $set[$field_o] = $ind->score_pre;
+                    } else {
+                        if($ind->lowcarbon_status == 1){
+                            $set['lowcarbon_score'] = $ind->score_lowcarbon;
+                        } else {
+                            $set['lowcarbon_score'] = 0;
                         }
-
                     }
 
+                    $this->estInd->where([
+                        'application_id' => $app->app_id,
+                        'estimate_by' => $ind->estimate_by
+                    ])
+                    ->set($set)
+                    ->update();
                 }
+                // $stageApp = $this->getAppUserStage($app->tycoon_id);
+                // $numStage = 0;
+                
+                // foreach($stageApp as $stage){
+                //     $numStage++;
+
+                //     if($stage->status != -1){                           
+                //         $judgeId = get_receive_noti($app->tycoon_id,$numStage);
+
+                //         foreach($judgeId as $jid){
+                //             $this->myId = $jid;
+                //             $dataEstimate = $this->getJudgeEstimate($app->app_id,$jid,$numStage);
+                //             $reEstimate = $this->reupdateEstimate($dataEstimate);
+                //             $isFinish = $this->checkJudgeEstimateFinish($app->app_id,$jid,$numStage);
+
+                //             if($isFinish){
+                //                 $eRequest->complete_request($app->app_id,$jid);
+                //                 $this->setIndividuel(
+                //                     (object)[
+                //                         'appId' => $app->app_id,
+                //                         'stage' => $numStage
+                //                     ],
+                //                     $reEstimate['individuel']
+                //                 );
+                //             }
+                //         }
+
+                //         if($this->checkFinishEsitmate($app->app_id,$numStage)){
+                //             $this->setFinishEstimate($app->app_id,$numStage);
+                //         }
+
+                //     }
+
+                // }
             }
 
             return ['result' => 'success', 'message' => ''];
@@ -974,12 +1052,11 @@ class EstimateController extends BaseController
         }
     }
 
-    private function checkJudgeEstimateFinish($appId,$judgeId,$stage)
+    private function getJudgeEstimateFinish($appId,$stage)
     {        
         if($stage == 1){
             $count_est = $this->estInd->where(
                 "application_id = $appId 
-                    AND estimate_by = $judgeId
                     AND CASE 
                         WHEN lowcarbon_status = 1 
                             AND score_pre IS NOT NULL 
@@ -992,14 +1069,15 @@ class EstimateController extends BaseController
                     END                    
                 ", NULL, FALSE
             )
-            ->countAllResults();
+            ->select('estimate_id, application_id')
+            ->findAll();
         } else {            
             $count_est = $this->estInd->where(
                 "application_id = $appId 
-                AND estimate_by = $judgeId
                 AND score_onsite IS NOT NULL", NULL, FALSE
             )
-            ->countAllResults();
+            ->select('estimate_id, application_id')
+            ->findAll();
         }
 
         return $count_est > 0 ? true : false;

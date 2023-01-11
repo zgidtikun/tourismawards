@@ -255,8 +255,6 @@ const setFinish = () => {
     tscore = mscore = cscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
-
-    let arrayScore = [];
     
     $.each(assign,(ak,av) => {
         
@@ -279,17 +277,14 @@ const setFinish = () => {
             if(!empty(qv.score_onsite) && Number(qv.onside_status) == 1){
                 if(av == 1){ 
                     tescore += Number(qv.score_onsite_origin) *  Number(qv.weight);
-                    // tescore += Number(qv.score_onsite);
                     ttescore += Number(qv.onside_score);
                 }
                 else if(av == 2){ 
                     sbscoe += Number(qv.score_onsite_origin) *  Number(qv.weight);
-                    // sbscoe += Number(qv.score_onsite);
                     tsbscoe += Number(qv.onside_score);
                 }
                 else{
                     rsscore += Number(qv.score_onsite_origin) *  Number(qv.weight);
-                    // rsscore += Number(qv.score_onsite);
                     trsscore += Number(qv.onside_score);
                 }
             }
@@ -353,7 +348,7 @@ const setFinish = () => {
     });
 }
 
-const setQuestion = (cate,seg) => {   
+const setQuestion = async(cate,seg) => {   
     const regex = /<[^>]+>/gi;
     let point = getPointer(),
         changeCate = false;
@@ -453,20 +448,46 @@ const setQuestion = (cate,seg) => {
         }
 
         const url = getBaseUrl();
-        let ap = '';
 
-        $.each(question.images,(k,v) => {
-            ap += (
-                '<div class="ablumbox-col">'
-                    + '<div class="ablum-mainimg">'
-                        + '<div class="ablum-mainimg-scale">'
-                            + '<img src="'+url+'/'+v.file_path+'" '
-                            + 'class="ablum-img" onclick="zoomImages(this)">'
+        if(question.images.length > 0){
+            qAblum.removeClass('text-center');                                        
+            qAblum.addClass('ablumbox');
+            let ap = '';
+
+            $.each(question.images,(k,v) => {
+                ap += (
+                    '<div class="ablumbox-col">'
+                        + '<div class="ablum-mainimg">'
+                            + '<div class="ablum-mainimg-scale">'
+                                + '<img src="'+url+'/'+v.file_path+'" '
+                                + 'class="ablum-img" onclick="zoomImages(this)">'
+                            + '</div>'
                         + '</div>'
                     + '</div>'
-                + '</div>'
-            );
-        });
+                );
+            });        
+
+            qAblum.html(ap);
+        } else {
+            qAblum.removeClass('ablumbox');                                        
+            qAblum.addClass('text-center');
+            qAblum.css('color','#000');
+            qAblum.text('ไม่มีรูปแนบ');
+        }
+
+        const btnDownload = $(`.btn-download`);
+
+        if(question.paper < 1){           
+            btnDownload.addClass('btn-transparent disabled');
+            btnDownload.css('color','#000');
+            btnDownload.css('opacity','1');
+            btnDownload.html('ไม่มีไฟล์แนบ');
+        } else {
+            btnDownload.removeClass('btn-transparent disabled');
+            btnDownload.css('color','#fff');
+            btnDownload.css('opacity','1');
+            btnDownload.html('ดาวน์โหลดไฟล์แนบ');
+        }
 
         countChar($('#comment'))
 
@@ -511,13 +532,57 @@ const setQuestion = (cate,seg) => {
             return;
         }   
 
-        let ev = sc = '';
+        if(
+            $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
+            || getIsFinish() == 'finish'
+        ){
+            const ablum_i = $('#etm-images-ablum');
+            const ablum_c = $('#camera-gallery');
+            const button_f = $(`button[onclick="downloadFile('#etm-file')"]`);
 
-        qAblum.html(ap);
-        
-        showFiles.tycoon('#etm-images',question.estFiles.images);
-        showFiles.tycoon('#etm-file',question.estFiles.paper);
-        showFiles.tycoon('#camera',question.estFiles.camera);
+            if(question.estFiles.images.length > 0){
+                ablum_i.removeClass('text-center');                                      
+                ablum_i.addClass('ablumbox');
+                showFiles.tycoon('#etm-images',question.estFiles.images);
+            } else {
+                ablum_i.removeClass('ablumbox');                                        
+                ablum_i.addClass('text-center');
+                ablum_i.css('color','#000');
+                ablum_i.text('ไม่มีรูปแนบ');
+            }
+
+            if(question.estFiles.camera.length > 0){
+                ablum_c.removeClass('text-center');                                      
+                ablum_c.addClass('album');
+                showFiles.tycoon('#camera',question.estFiles.camera);
+            } else {
+                ablum_c.removeClass('album');                                        
+                ablum_c.addClass('text-center');
+                ablum_c.css('color','#000');
+                ablum_c.text('ไม่มีรูปแนบ');
+            }
+
+            if(question.estFiles.paper.length > 0){
+                button_f.prop('disabled',false);
+                button_f.removeClass('btn-transparent');
+                button_f.addClass('btn-primary');
+                button_f.css('color','#fff');
+                button_f.html('<i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ');
+            } else {
+                button_f.prop('disabled',true);
+                button_f.removeClass('btn-primary');
+                button_f.addClass('btn-transparent');
+                button_f.css('color','#000');
+                button_f.css('opacity','1');
+                button_f.html('ไม่มีไฟล์แนบ');
+            }
+        } else {        
+            showFiles.tycoon('#etm-images',question.estFiles.images);
+            showFiles.tycoon('#etm-file',question.estFiles.paper);
+            showFiles.tycoon('#camera',question.estFiles.camera);
+        }
+
+        let ev = sc = '';
 
         if(regex.test(question.os_eva)){
             ev = question.os_eva;

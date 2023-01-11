@@ -91,7 +91,7 @@ class VerifyPassword extends BaseController
         $admin = $this->db->table('admin')->where('username', $post['username'])->get()->getRowObject();
         $verify_code = genVerifyCode();
         if (empty($admin)) {
-            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ไม่สามารถเปลี่ยนรหัสผ่านได้กรุณาตรวจสอบ E-Mail']);
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ไม่พบ E-Mail นี้ในระบบ กรุณาตรวจสอบข้อมูล']);
             exit;
         }
 
@@ -100,7 +100,7 @@ class VerifyPassword extends BaseController
             $data = [];
             $data['admin'] = $this->db->table('admin')->where('id', $admin->id)->get()->getRowObject();
             $this->sendMail($data);
-            echo json_encode(['type' => 'success', 'title' => 'เปลี่ยนรหัสผ่านสำเร็จ', 'text' => 'กรุณาตรวจสอบ E-Mail']);
+            echo json_encode(['type' => 'success', 'title' => 'แจ้งเปลี่ยนรหัสผ่านสำเร็จ', 'text' => 'กรุณาตรวจสอบ E-Mail เพื่อยืนยันการเปลี่ยนรหัสผ่าน']);
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ไม่สามารถเปลี่ยนรหัสผ่านได้กรุณาตรวจสอบ E-Mail']);
         }

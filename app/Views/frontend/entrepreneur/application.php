@@ -283,9 +283,7 @@
                                         </div>
                                         <div class="card-body-muted c-lef selecter-file" id="step1-images-list"></div>
                                         <div class="card-body attach-file">
-                                            <div class="ablumbox" id="step1-images-ablum">
-                                                
-                                            </div>
+                                            <div class="ablumbox" id="step1-images-ablum"></div>
                                         </div>
                                     </div>
                                     
@@ -330,7 +328,7 @@
                            <div class="invalid-feedback">กรุณากรอก ที่ตั้ง/เลขที่</div>
                         </div>
                         <div class="regis-form-data-col2">
-                           <h4>ถนน <span class="required">*</span></h4>
+                           <h4>ถนน</h4>
                            <input type="text" class="form-control" id="step2-road">
                            <div class="invalid-feedback">กรุณากรอก ถนน</div>
                         </div>
@@ -589,7 +587,7 @@
                                         <div class="bs-row">
                                             <div class="d-grid">
                                                 <button class="btn btn-primary" type="button"
-                                                onclick="downloadFile('#step5-landOwner-btn')">
+                                                onclick="downloadFile('#step5-landOwner')">
                                                     <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
                                                 </button>
                                             </div>

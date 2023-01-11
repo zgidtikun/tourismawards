@@ -14,6 +14,7 @@ const onFileHandle = (setting, input, type) => {
                 if (ref.app == 'awards/application') {
                     total = Number(register.count[ref.pointer[1]]) + Number(handle.length);                    
                 } else if (ref.app == 'awards/pre-screen') {
+                    console.log(setting)
                     let length = psc.questions[setting.cate].question[setting.seg][ref.position].length;
                     total = Number(length) + Number(handle.length);
                 } else if (ref.app == 'estimate/onsite') {
@@ -49,7 +50,7 @@ const onFileHandle = (setting, input, type) => {
                     if (error == 'outType') {
                         error_text = type == 'paper' ? 'กรุณาเลือกเป็นไฟล์ .pdf เท่านั้น' : 'กรุณาเลือกเป็นไฟล์ .jpeg, .jpg, .png เท่านั้น';
                     } else if (error == 'outSize') {
-                        error_text = 'กรุณาเลือกขนาดไฟล์ไม่เกิน ' + ref.maxSize + ' MiB.'
+                        error_text = 'กรุณาเลือกขนาดไฟล์ไม่เกิน ' + ref.maxSize + ' MB.'
                     }
 
                     alert.show('warning', error_title, error_text);
@@ -148,7 +149,11 @@ const uploadFile = async(setting, input, handleBy) => {
             break;
         case 'estimate/onsite':
             let estimate = dataset[setting.cate].question[setting.seg];
-            formData.append('id',estimate.est_id);
+            const est_id = !empty(estimate.est_id) ? estimate.est_id : '';
+            formData.append('app_id',appid);
+            formData.append('answer_id',estimate.reply_id);
+            formData.append('estimate_id',est_id);
+            formData.append('question_id',estimate.id);
             formData.append('position',ref.position);
             formData.append('path', ref.path);
             api_setting.method = 'action';
@@ -163,6 +168,7 @@ const uploadFile = async(setting, input, handleBy) => {
                     alert.login();
                 } else if (res.result == 'success') {
                     $(input).val('');
+                    dataset[setting.cate].question[setting.seg].est_id = response.estimate_id;
                     dataset[setting.cate].question[setting.seg].estFiles[ref.position] = res.files;
                     showFiles.tycoon(ref.input, dataset[setting.cate].question[setting.seg].estFiles[ref.position]);
                   
@@ -638,10 +644,7 @@ const referance = [{
         btnrm: '#step1-images-remove',
         show: '#step1-images-list',
         ablum: '#step1-images-ablum',
-        label: {
-            input: '#step1-images-input',
-            progress: '#step1-images-progress'
-        },
+        label: '#step1-images-label',
         api: '/inner-api/app/upload',
         position: 'registerImages',
         path: 'images',
@@ -908,10 +911,7 @@ const referance = [{
         btnrm: '#images-remove',
         show: '#images-list',
         ablum: '#images-ablum',
-        label: {
-            input: '#images-input',
-            progress: '#images-progress'
-        },
+        label: '#images-label',
         api: '/inner-api/answer/upload',
         position: 'images',
         path: 'images',
@@ -959,10 +959,7 @@ const referance = [{
         btnrm: '#etm-mages-remove',
         show: '#etm-images-list',
         ablum: '#etm-images-ablum',
-        label: {
-            input: '#etm-images-input',
-            progress: '#etm-images-progress'
-        },
+        label: '#images-label',
         api: '/inner-api/estimate/onsite/files/upload',
         position: 'images',
         path: 'images',

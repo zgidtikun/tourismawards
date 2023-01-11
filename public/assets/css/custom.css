@@ -5058,6 +5058,17 @@ width: 50%;
     height: 44px;
 }
 
+.btn-transparent {
+    background: transparent !important;
+    border: 0;
+}
+
+.btn-transparent:hover,
+.btn-transparent:focus {
+    box-shadow: none;
+    outline: 0;
+}
+
 .bg-primary {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
@@ -5823,7 +5834,7 @@ padding: 0;
 }
 #step5-type3 .bs-row .col-sm-12 .card {
   margin-top: 20px;
-  width: 100%;
+  width: 50%;
 }
 #step5-type3 .bs-row .col-sm-12 .card .d-grid{
 padding: 0;
@@ -5948,6 +5959,9 @@ margin-bottom: 0!important;
 }
 .regisform.modal-open .modal.show .modal-dialog {
     max-width: 100%;
+}
+#step5-type1 .card {
+    width: 100%;
 }
 }
 

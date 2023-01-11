@@ -126,7 +126,7 @@
               foreach ($award_type as $key => $value) {
             ?>
                 <p>
-                  <input type="radio" id="award_type_<?= $value->id ?>" name="award_type[]" value="<?= $value->id ?>">
+                  <input type="checkbox" id="award_type_<?= $value->id ?>" name="award_type[]" value="<?= $value->id ?>">
                   <label for="award_type_<?= $value->id ?>"><?= $value->name ?></label>
                 </p>
             <?php

@@ -59,7 +59,8 @@ class FrontendController extends BaseController
             $builder = $this->db->table('application_form a')
                 ->join('application_type t','a.application_type_id = t.id')
                 ->join('application_type_sub ts','a.application_type_sub_id = ts.id','LEFT')
-                ->select('a.status, a.attraction_name_th attr, t.name t_name, ts.name ts_name')
+                ->select('a.status, a.attraction_name_th attr, t.name t_name, ts.name ts_name,
+                a.require_lowcarbon')
                 ->where('created_by',$this->myId)
                 ->get();
             
@@ -75,6 +76,14 @@ class FrontendController extends BaseController
                 $user->app_attr = '(ยังไม่ได้กรอกแบบฟอร์มใบสมัคร)';
                 $user->app_t = '(ยังไม่ได้กรอกแบบฟอร์มใบสมัคร)';
                 $user->app_ts = '(ยังไม่ได้กรอกแบบฟอร์มใบสมัคร)';
+            }
+
+            if($app_f->require_lowcarbon == 1){
+                $user->lowdarbon_sts = true;
+                $user->lowcarbon_str = 'ต้องการ';
+            } else {
+                $user->lowdarbon_sts = false;
+                $user->lowcarbon_str = '';
             }
 
         } else {

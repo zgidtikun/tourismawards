@@ -14,7 +14,7 @@ const MapField = {
             { input: '#step2-siteNameTh', variant: 'siteNameTh', api: 'attraction_name_th', require: true },
             { input: '#step2-siteNameEng', variant: 'siteNameEng', api: 'attraction_name_en', require: false },
             { input: '#step2-address', variant: 'address', api: 'address_no', require: true },
-            { input: '#step2-road', variant: 'road', api: 'address_road', require: true },
+            { input: '#step2-road', variant: 'road', api: 'address_road', require: false },
             { input: '#step2-subDistrict', variant: 'subDistrict', api: 'address_sub_district', require: true },
             { input: '#step2-district', variant: 'district', api: 'address_district', require: true },
             { input: '#step2-province', variant: 'province', api: 'address_province', require: true },
@@ -105,6 +105,7 @@ const register = {
     currentDate: null,
     passYear: true,
     passYearCount: '',
+    complete: false,
     init:async function(expired){        
         await loading('show');
         this.expired = expired == 'Expired' ? true : false;
@@ -235,6 +236,7 @@ const register = {
                             $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
                             $('.btn-action, .selecter-file').remove();
                             $('.btn-confirm-submit').hide();
+                            register.complete = true;
                         break;
                         case 3: 
                             const prescreen = response.pre_status;
@@ -256,14 +258,10 @@ const register = {
                             $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
                             $('.btn-action, .selecter-file').remove();
                             $('.btn-confirm-submit').hide();
+                            register.complete = true;
                         break;
                         case 4: 
-                            let currentDateTime = getCurrentDateTime();
-                            const date1 = new Date(app.request_time);
-                            const date2 = new Date(currentDateTime);
-                            date1.setDate(date1.getDate() + 1);
-                            
-                            if(date2 <= date1){
+                            if(!app.request_expired){
                                 $('#comoment').html(app.judge_comment);
                                 $('#formstep-sts').addClass('notpass');
                                 let sts_html = $('#formstep-sts').html();
@@ -281,6 +279,7 @@ const register = {
                                 $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
                                 $('.btn-confirm-submit').hide();
                                 register.expired = true;
+                                register.complete = true;
                             }
                         break;
                         case 0: 
@@ -291,6 +290,7 @@ const register = {
                             $('.regis-form-data input, textarea').prop('disabled',true);
                             $('.attach-file').remove();
                             $('.btn-confirm-submit').hide();
+                            register.complete = true;
                         break;
                     }
                 }
@@ -366,6 +366,21 @@ const register = {
                             } else {
                                 if($.inArray(Number(register.status),[2,3,0]) === -1 && !register.expired) {
                                     clearBtnRemoveFile('by-input',ref.app,ref.input);
+                                } else {
+                                    
+                                    if(ref.path == 'images'){
+                                        $(ref.ablum).removeClass('ablumbox');                                        
+                                        $(ref.ablum).addClass('text-center');
+                                        $(ref.ablum).html('ไม่มีรูปแนบ');
+                                    } else {
+                                        const button = $(`button[onclick="downloadFile('${ref.input}')"]`);
+                                        button.prop('disabled',true);
+                                        button.removeClass('btn-primary');
+                                        button.addClass('btn-transparent');
+                                        button.css('color','#000');
+                                        button.css('opacity','1');
+                                        button.html('ไม่มีไฟล์แนบ');
+                                    }
                                 }
                             }
                         }
@@ -752,7 +767,9 @@ $('#step2-siteNameTh').on('keyup', function(){
 });
 
 $('#step2-siteNameEng').on('keyup', function(){ 
-    register.formData.step2.siteNameEng = $(this).val(); 
+    let value = $(this).val().replace(/[^a-zA-Z0-9\s]/g,'');
+    $(this).val(value);
+    register.formData.step2.siteNameEng = value; 
     register.change = true;
 });
 

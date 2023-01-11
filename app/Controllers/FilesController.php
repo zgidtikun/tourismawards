@@ -70,10 +70,32 @@ class FilesController extends BaseController
                 $obj = new \App\Models\Estimate();
                 $input = (object) $this->input->getVar();
 
-                $path = 'uploads/'.date('Y').'/'.date('m').'/'.date('d').'/';
-                $path .= 'estimate/'.$input->id.'/onsite/'.$input->path.'/';
+                if(empty($input->estimate_id)){
+                    $estimate = new \App\Models\Estimate();
+                    $estimate->insert([
+                        'application_id' => $input->app_id,
+                        'question_id' => $input->question_id,
+                        'estimate_by' => session()->get('id'),
+                        'estimate_name' => session()->get('user'),
+                        'status_pre' => 1,
+                        'status_onsite' => 1,
+                    ]);
 
-                $result = ['result' => 'success', 'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 'files' => []];                
+                    $estimate_id = $estimate->getInsertID();
+                } else {
+                    $estimate_id = $input->estimate_id;
+                }
+
+                $path = 'uploads/'.date('Y').'/'.date('m').'/'.date('d').'/';
+                $path .= 'estimate/'.$estimate_id.'/onsite/'.$input->path.'/';
+
+                $result = [
+                    'result' => 'success', 
+                    'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 
+                    'estimate_id' => $estimate_id,
+                    'files' => []
+                ];              
+
                 $files_up = [];
 
                 foreach($files['files'] as $file){
@@ -98,14 +120,14 @@ class FilesController extends BaseController
                     }
                 } 
 
-                $pack = $obj->where('id',$input->id)->select('pack_file')->first();
+                $pack = $obj->where('id',$estimate_id)->select('pack_file')->first();
 
                 if(!empty($pack->pack_file)){
                     $pack_file = json_decode($pack->pack_file);
                     $files_up = array_merge($pack_file,$files_up);
                 }
 
-                $obj->update($input->id,['pack_file' => json_encode($files_up)]);
+                $obj->update($estimate_id,['pack_file' => json_encode($files_up)]);
                 $files_up = json_decode(json_encode($files_up),false);
 
                 foreach($files_up as $file){

@@ -249,7 +249,7 @@ class AnswerController extends BaseController
 
         $finish = $this->ans->select('status')
             ->where('reply_by',$id)
-            ->where('status',2)
+            ->whereIn('status',[2,4])
             ->countAllResults();
 
         $reject = $this->ans->select('status')

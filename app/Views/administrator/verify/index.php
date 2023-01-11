@@ -80,14 +80,28 @@
     });
 
     function validated() {
-      if ($('#password').length >= 6) {
+      var number = /([0-9])/;
+      var alphabets = /([a-zA-Z])/;
+      var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
+
+      if ($('#password').val().length < 6) {
         Swal.fire(
           'ผิดพลาด!',
-          'กรุณาระบุรหัสผ่าน',
+          'กรุณาระบุรหัสผ่านมากกว่า 6 ตัวอักษร',
           'error'
         )
         return false;
       }
+
+      if (!$('#password').val().match(number) && !$('#password').val().match(alphabets)) {
+        Swal.fire(
+          'ผิดพลาด!',
+          'กรุณาระบุรหัสผ่านที่ประกอบไปด้วย ตัวเลข และ ตัวอักษรภาษาอังกฤษ',
+          'error'
+        )
+        return false;
+      }
+
       if ($('#password').val() == "") {
         Swal.fire(
           'ผิดพลาด!',

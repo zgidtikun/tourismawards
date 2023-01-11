@@ -95,6 +95,14 @@ class ApplicationController extends BaseController
                 // $detail->request_time = date('Y-m-d ',strtotime($detail->request_time));
                 $request_time = date('Y-m-d',strtotime($detail->request_time.' + 1 day'));
                 $detail->request_time_str = FormatTree($request_time,'thailand');
+
+                $current_date = date("Y-m-d H:i:s");
+                $expired_date = date("Y-m-d H:i:s", strtotime($detail->request_time."+1 day"));
+                if($current_date <= $expired_date){
+                    $detail->request_expired = false;
+                } else {
+                    $detail->request_expired = true;
+                }
             }
 
             if($detail->status == 3){     

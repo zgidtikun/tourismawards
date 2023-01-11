@@ -33,22 +33,22 @@ $spreadsheet = new Spreadsheet();
 
 $sheet = $spreadsheet->getActiveSheet();
 
-$rowHead = [
-  // '#',
-  'ลำดับที่',
-  'รหัส',
-  'ชื่อผลงาน',
-  'ประเภทรางวัลฯ',
-  'สาขา',
-  'จังหวัด',
-  'เกณฑ์การประเมิน',
-  'คะแนนของกรรมการคนที่ 1',
-  'คะแนนของกรรมการคนที่ 2',
-  'ผลรวมคะแนนเฉลี่ยที่ได้รับ',
-  'คะแนนเต็ม',
-  'weight ค่าน้ำหนัก (แต่ละด้าน)',
-  'คะแนนที่ได้โดยเฉลี่ย',
-];
+$rowHead[] = 'ลำดับที่';
+$rowHead[] = 'รหัส';
+$rowHead[] = 'ชื่อสถานประกอบการ';
+$rowHead[] = 'ประเภทรางวัลฯ';
+$rowHead[] = 'สาขา';
+$rowHead[] = 'จังหวัด';
+$rowHead[] = 'เกณฑ์การประเมิน';
+for ($i = 1; $i <= $count_committees; $i++) {
+  $rowHead[] = 'คะแนนของกรรมการคนที่ ' . $i;
+}
+
+$rowHead[] = 'ผลรวมคะแนนเฉลี่ยที่ได้รับ';
+$rowHead[] = 'คะแนนเต็ม';
+$rowHead[] = 'weight ค่าน้ำหนัก (แต่ละด้าน)';
+$rowHead[] = 'คะแนนที่ได้โดยเฉลี่ย';
+// pp($rowHead);
 
 //set Amount Column
 $colExcel = colExcel(count($rowHead));
@@ -59,7 +59,7 @@ $end = end($colExcel);
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
-$sheet->getStyle('H:M')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('H:N')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -70,7 +70,8 @@ $sheet->setCellValue('A1', $TITLE)->mergeCells('A1:' . $end . '1');
 $sheet->setCellValue('A2', "")->mergeCells('A2:' . $end . '2');
 
 //set Format
-// $sheet->getStyle('X')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
+$sheet->getStyle('H:L')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
+$sheet->getStyle('N')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
 
 foreach ($colExcel as $k => $v) {
   //set Cell Head
@@ -79,29 +80,38 @@ foreach ($colExcel as $k => $v) {
   // $sheet->getColumnDimension($v)->setWidth(20); // Set Width Size PX
   $sheet->getColumnDimension($v)->setAutoSize(true); // Set Width Auto
 }
+
 // px($result);
 if (!empty($result)) {
   // Row Start
   $i = 4;
   $j = 1;
-  foreach ($result as $key => $value) {
+  foreach ($result as $index => $value) {
 
+    $data = [];
     if (!empty($value['tourism'])) {
-      $data = [
-        $j++,
-        $value['code'],
-        $value['attraction_name_th'],
-        $value['application_type_name'],
-        $value['application_type_sub_name'],
-        $value['address_province'],
-        'Tourism Excellence (Product/Service)',
-        $value['tourism'][1]->score_pre,
-        @$value['tourism'][2]->score_pre,
-        '',
-        $value['tourism'][1]->pre_score_total,
-        $value['tourism'][1]->weight,
-        '',
-      ];
+      $data[] = $j++;
+      $data[] = $value['code'];
+      $data[] = $value['attraction_name_th'];
+      $data[] = $value['application_type_name'];
+      $data[] = $value['application_type_sub_name'];
+      $data[] = $value['address_province'];
+      $data[] = 'Tourism Excellence (Product/Service)';
+
+      $score_pte = [];
+      foreach ($value['tourism'] as $key => $val) {
+        $data[] = @$val->score_pte;
+        $score_pte[] = @$val->score_pte;
+      }
+      if (count($value['tourism']) <= $count_committees) {
+        for ($n=0; $n < ($count_committees - count($value['tourism'])); $n++) { 
+          $data[] = '';
+        }
+      }
+      $data[] = array_sum($score_pte) / count($score_pte);
+      $data[] = $value['estimate']['tourism']->sum_pre_score; // คะแนนเต็ม
+      $data[] = '10';
+      $data[] = $value['estimate']['tourism']->sum_tscore_pre;
 
       // pp($data);
       foreach ($colExcel as $k => $v) {
@@ -110,22 +120,30 @@ if (!empty($result)) {
       $i++;
     }
 
+    $data = [];
     if (!empty($value['supporting'])) {
-      $data = [
-        $j++,
-        $value['code'],
-        $value['attraction_name_th'],
-        $value['application_type_name'],
-        $value['application_type_sub_name'],
-        $value['address_province'],
-        'Supporting Business & Marketing Factors',
-        $value['supporting'][1]->score_pre,
-        @$value['supporting'][2]->score_pre,
-        '',
-        $value['supporting'][1]->pre_score_total,
-        $value['supporting'][1]->weight,
-        '',
-      ];
+      $data[] = $j++;
+      $data[] = $value['code'];
+      $data[] = $value['attraction_name_th'];
+      $data[] = $value['application_type_name'];
+      $data[] = $value['application_type_sub_name'];
+      $data[] = $value['address_province'];
+      $data[] = 'Supporting Business & Marketing Factors';
+
+      $score_psb = [];
+      foreach ($value['supporting'] as $key => $val) {
+        $data[] = @$val->score_psb;
+        $score_psb[] = @$val->score_psb;
+      }
+      if (count($value['supporting']) <= $count_committees) {
+        for ($l=0; $l < ($count_committees - count($value['supporting'])); $l++) { 
+          $data[] = '';
+        }
+      }
+      $data[] = array_sum($score_psb) / count($score_psb);
+      $data[] = $value['estimate']['supporting']->sum_pre_score; // คะแนนเต็ม
+      $data[] = '10';
+      $data[] = $value['estimate']['supporting']->sum_tscore_pre;
 
       // pp($data);
       foreach ($colExcel as $k => $v) {
@@ -134,22 +152,30 @@ if (!empty($result)) {
       $i++;
     }
 
+    $data = [];
     if (!empty($value['responsibility'])) {
-      $data = [
-        $j++,
-        $value['code'],
-        $value['attraction_name_th'],
-        $value['application_type_name'],
-        $value['application_type_sub_name'],
-        $value['address_province'],
-        'Responsibility and Safety & Health Administration',
-        $value['responsibility'][1]->score_pre,
-        @$value['responsibility'][2]->score_pre,
-        '',
-        $value['responsibility'][1]->pre_score_total,
-        $value['responsibility'][1]->weight,
-        '',
-      ];
+      $data[] = $j++;
+      $data[] = $value['code'];
+      $data[] = $value['attraction_name_th'];
+      $data[] = $value['application_type_name'];
+      $data[] = $value['application_type_sub_name'];
+      $data[] = $value['address_province'];
+      $data[] = 'Responsibility and Safety & Health Administration';
+
+      $score_prs = [];
+      foreach ($value['responsibility'] as $key => $val) {
+        $data[] = @$val->score_prs;
+        $score_prs[] = @$val->score_prs;
+      }
+      if (count($value['responsibility']) <= $count_committees) {
+        for ($m=0; $m < ($count_committees - count($value['responsibility'])); $m++) { 
+          $data[] = '';
+        }
+      }
+      $data[] = array_sum($score_prs) / count($score_prs);
+      $data[] = $value['estimate']['responsibility']->sum_pre_score; // คะแนนเต็ม
+      $data[] = '5';
+      $data[] = $value['estimate']['responsibility']->sum_tscore_pre;
 
       // pp($data);
       foreach ($colExcel as $k => $v) {

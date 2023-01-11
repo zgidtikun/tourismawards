@@ -69,7 +69,7 @@
     $('#btn_save').click(function(e) {
       // console.log(main_validated('form_input'));
       // console.log(validated());
-      if (main_validated('form_input') && validated()) {
+      if (main_validated('form_input')) {
         let formData = new FormData($('#form_input')[0]);
         var url = '<?= base_url('administrator/VerifyPassword/saveForgotPassword') ?>';
         $.ajax({
@@ -101,34 +101,6 @@
 
       }
     });
-
-    function validated() {
-      if ($('#password').val() == "") {
-        Swal.fire(
-          'ผิดพลาด!',
-          'กรุณาระบุรหัสผ่าน',
-          'error'
-        )
-        return false;
-      }
-      if ($('#confirm_password').val() == "") {
-        Swal.fire(
-          'ผิดพลาด!',
-          'กรุณายืนยันรหัสผ่าน',
-          'error'
-        )
-        return false;
-      }
-      if ($('#password').val() != $('#confirm_password').val()) {
-        Swal.fire(
-          'ผิดพลาด!',
-          'รหัสผ่านไม่ตรงกันกรุณาระบุรหัสผ่านอีกครั้ง',
-          'error'
-        )
-        return false;
-      }
-      return true;
-    }
 
     function main_validated(form_id) {
       let return_ = true;

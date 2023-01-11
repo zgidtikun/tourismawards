@@ -288,24 +288,6 @@
                                                             Remove All
                                                         </button>
                                                     </div>
-                                                    <!-- <div class="col-12"> 
-                                                        <div class='bfd-dropfield'> 
-                                                            <div class='bfd-dropfield-inner' id="etm-images-drop">
-                                                                <div class="mt-4 mb-4" id="etm-images-input">
-                                                                    <span class="fw-semibold">Drop File Here</span><br>
-                                                                    <button class="btn btn-file" style="font-size: 16px;" id="etm-images-btn">
-                                                                        <span id="images-label">Upload Files</span>
-                                                                        <input type="file" id="etm-images"
-                                                                        accept=".jpg,.jpeg,.png" multiple
-                                                                        onchange="onFileHandle({cate: pointer.cate,seg: pointer.seg},'#'+this.id,'images')"/>
-                                                                    </button>   
-                                                                </div>
-                                                                <div class="mt-4 mb-4 hide" id="etm-images-progress">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                                                 </div>
                                                 <div class="bs-row">
                                                     <span class="text-muted" style="font-size: 14px;">

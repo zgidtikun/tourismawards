@@ -153,7 +153,7 @@
                                     <div class="card border"> 
                                         <div class="card-header text-sm-center">
                                             <span class="fs-18 text-base-main fw-semibold">
-                                                แหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว
+                                                ชื่อแหล่งท่องเที่ยว/สถานประกอบการ/รายการนำเที่ยว
                                             </span>
                                         </div>
                                         <div class="card-body" style="padding: 10px;">
@@ -167,7 +167,7 @@
                                     <div class="card border"> 
                                         <div class="card-header text-sm-center">
                                             <span class="fs-18 text-base-main fw-semibold">
-                                                สาขารางวัลเข้าร่วมประกวด
+                                                ประเภทการสมัคร
                                             </span>
                                         </div>
                                         <div class="card-body" style="padding: 10px;">
@@ -181,7 +181,7 @@
                                     <div class="card border"> 
                                         <div class="card-header text-sm-center">
                                             <span class="fs-18 text-base-main fw-semibold">
-                                                สาขารางวัลย่อยเข้าร่วมประกวด
+                                                สาขารางวัล
                                             </span>
                                         </div>
                                         <div class="card-body" style="padding: 10px;">
@@ -191,13 +191,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6">
-                                    <div class="card card-body border" style="padding: 10px;">  
-                                        <span class="fs-18 text-base-main fw-semibold">
-                                            สถานะ : <span class="fw-normal text-dark"><?=$profile->member_type?></span>
-                                        </span>
+                                <?php if($profile->lowdarbon_sts): ?>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-3">
+                                    <div class="card border"> 
+                                        <div class="card-header text-sm-center">
+                                            <span class="fs-18 text-base-main fw-semibold">
+                                                ต้องการสมัครประเภทพิเศษ Low Carbon & Sustainability
+                                            </span>
+                                        </div>
+                                        <div class="card-body" style="padding: 10px;">
+                                            <span class="fs-18">
+                                                <?=$profile->lowcarbon_str?>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
+                                <?php endif; ?>
                             </div>
                             <div class="bs-row">
                             </div>
