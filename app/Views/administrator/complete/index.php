@@ -175,6 +175,21 @@
         คะแนนรวมที่ได้
         <span id="total_score">0.00</span>
       </div>
+
+      <div class="data-score" id="show_lowcarbon_score">
+        <div class="data-score-row">
+          <div class="data-score-col no">คะแนนเฉพาะด้าน Low Carbon : <span id="lowcarbon_score">0.00</span></div>
+        </div>
+
+        <div class="data-score-row">
+          <div class="data-score-col no">คะแนนสรุป Low Carbon : <span id="total_lowcarbon_score">0.00</span></div>
+        </div>
+
+        <div class="data-score-row" style="margin-top: -25px;">
+          <div class="data-score-col no"><small>(คะแนนรวมของ ด้าน Low Carbon + Responsibility ทั้ง 2 รอบ)</small></div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -259,6 +274,14 @@
       $('#onsite_tourism').html(res.score_onsite_te);
       $('#onsite_supporting').html(res.score_onsite_sb);
       $('#onsite_reponsibility').html(res.score_onsite_rs);
+
+      if (res.lowcarbon_status == 1) {
+        $('#show_lowcarbon_score').show();
+      } else {
+        $('#show_lowcarbon_score').hide();
+      }
+      $('#lowcarbon_score').html(res.lowcarbon_score);
+      $('#total_lowcarbon_score').html(F2C(Number(DF2C(res.lowcarbon_score)) + Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs))));
 
       var total_tourism = Number(DF2C(res.score_prescreen_te)) + Number(DF2C(res.score_onsite_te));
       var total_supporting = Number(DF2C(res.score_prescreen_sb)) + Number(DF2C(res.score_onsite_sb));

@@ -48,28 +48,28 @@ class Email extends BaseConfig
      *
      * @var string
      */
-    public $SMTPHost = '';
+    public $SMTPHost = 'smtp.office365.com';
 
     /**
      * SMTP Username
      *
      * @var string
      */
-    public $SMTPUser = '';
+    public $SMTPUser = 'noreply@thailandtourismawards.com';
 
     /**
      * SMTP Password
      *
      * @var string
      */
-    public $SMTPPass = '';
+    public $SMTPPass = 'Fob13825';
 
     /**
      * SMTP Port
      *
      * @var int
      */
-    public $SMTPPort = 25;
+    public $SMTPPort = 587;
 
     /**
      * SMTP Timeout (in seconds)
@@ -170,4 +170,9 @@ class Email extends BaseConfig
      * @var bool
      */
     public $DSN = false;
+
+
+     public $SenderEmail = 'noreply@thailandtourismawards.com';
+     
+     public $SenderName = 'Thailand Tourism Awards 2023';
 }

@@ -43,6 +43,23 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+    public $signin = [
+        'username' => [
+            'rules' => 'required|safe_input',
+            'errors' => [
+                'required' => 'Username require!',
+                'safe_input' => 'Programming Found!',
+            ]
+        ],
+        'password' => [
+            'rules' => 'required|safe_input',
+            'errors' => [
+                'required' => 'Username require!',
+                'safe_input' => 'Programming Found!',
+            ]
+        ],
+    ];
+
     public $signup = [
         'name' => [
             'rules' => 'required|special_str|safe_input',

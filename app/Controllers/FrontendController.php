@@ -382,6 +382,10 @@ class FrontendController extends BaseController
 
     public function prescreenEstimate($id)
     {
+        if(!acceptEstimate($id,$this->myId,1)){
+            return redirect()->to(base_url('boards'));
+        }
+
         $config = new \Config\App();
         $expire_date = $config->Estimate_ons_date;
         $current_date = date('Y-m-d');
@@ -431,6 +435,10 @@ class FrontendController extends BaseController
 
     public function onsiteEstimate($id)
     {
+        if(!acceptEstimate($id,$this->myId,2)){
+            return redirect()->to(base_url('boards'));
+        }
+
         $config = new \Config\App();
         $expire_date = $config->Estimate_ons_date;
         $current_date = date('Y-m-d');

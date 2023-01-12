@@ -30,3 +30,21 @@ function setRules($rules = [])
         else return false;
     }
 }
+
+function acceptEstimate($appId,$judgeId,$stage)
+{
+    $committees = new \App\Models\Committees();
+    $accept = $committees->where([
+        'application_form_id' => $appId,
+        'assessment_round' => $stage
+    ])
+    ->where(
+        '( admin_id_tourism LIKE \'%"'.$judgeId.'"%\'
+        OR admin_id_supporting LIKE \'%"'.$judgeId.'"%\'
+        OR admin_id_responsibility LIKE \'%"'.$judgeId.'"%\'
+        OR admin_id_lowcarbon LIKE \'%"'.$judgeId.'"%\')'
+    )
+    ->select('CASE WHEN COUNT(id) > 0 THEN TRUE ELSE FALSE END accept',false)
+    ->first();
+    return $accept->accept;
+}

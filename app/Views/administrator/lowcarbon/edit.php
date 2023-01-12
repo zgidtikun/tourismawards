@@ -10,10 +10,10 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>แก้ไขคะแนน</h3>
+        <h3>แก้ไขคะแนน (กรรมการ <?= @$user_name ?>)</h3>
       </div>
       <!-- <a href="javascript:" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
-      <a href="<?= base_url() ?>/administrator/lowcarbon/print/<?= $app_id ?>/<?= $user_id ?>" class="btn-export">
+      <a href="<?= base_url() ?>/administrator/lowcarbon/print/<?= $app_id ?>/<?= $user_id ?>" target="_blank" class="btn-export">
         <i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i> พิมพ์
       </a>
     </div>
@@ -41,15 +41,15 @@
                       <td class="text-start"><?= $value->question ?></td>
                       <td class="text-center">
                         <?php
-                        // echo $value->score_pre;
+                        // echo $value->score_pre_origin;
                         $checked_0 = '';
                         $checked_1 = '';
                         $disabled_0 = '';
                         $disabled_1 = '';
-                        if ($value->score_pre == 1) {
+                        if ($value->score_pre_origin == 1) {
                           $checked_1 = 'checked';
                           $disabled_1 = 'disabled';
-                        } else if ($value->score_pre == 0) {
+                        } else if ($value->score_pre_origin == 0) {
                           $checked_0 = 'checked';
                           $disabled_0 = 'disabled';
                         }

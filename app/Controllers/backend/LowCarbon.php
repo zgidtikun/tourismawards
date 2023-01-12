@@ -32,7 +32,7 @@ class LowCarbon extends BaseController
         $data['app_id'] = $app_id;
         $data['user_id'] = $user_id;
         $data['user_name'] = usersName($user_id);
-        $data['estimate'] = $this->db->table('estimate ET')->select('ET.*, QU.id AS qu_id, QU.question')->join('question QU', 'QU.id = ET.question_id')->where('ET.application_id', $app_id)->where('estimate_by', $user_id)->orderBy('QU.id', 'ASC')->get()->getResultObject();
+        $data['estimate'] = $this->db->table('estimate ET')->select('ET.*, QU.id AS qu_id, QU.question')->join('question QU', 'QU.id = ET.question_id AND QU.assessment_group_id = 4')->where('ET.application_id', $app_id)->where('estimate_by', $user_id)->orderBy('QU.id', 'ASC')->get()->getResultObject();
         // pp_sql();
         // pp($data);
         $data['status'] = [];
@@ -55,7 +55,7 @@ class LowCarbon extends BaseController
             show_404();
         }
         $data['user_name'] = usersName($user_id);
-        $data['estimate'] = $this->db->table('estimate ET')->select('ET.*, QU.id AS qu_id, QU.question')->join('question QU', 'QU.id = ET.question_id')->where('ET.application_id', $app_id)->where('estimate_by', $user_id)->orderBy('QU.id', 'ASC')->get()->getResultObject();
+        $data['estimate'] = $this->db->table('estimate ET')->select('ET.*, QU.id AS qu_id, QU.question')->join('question QU', 'QU.id = ET.question_id AND QU.assessment_group_id = 4')->where('ET.application_id', $app_id)->where('estimate_by', $user_id)->orderBy('QU.id', 'ASC')->get()->getResultObject();
         // pp_sql();
         // pp($data);
         return view('administrator/lowcarbon/a4', $data);
@@ -67,8 +67,8 @@ class LowCarbon extends BaseController
 
         // update step 1 table estimate
         $data = [
-            'score_pre'         => $post['score'],
-            'tscore_pre'        => $post['score'],
+            // 'score_pre'         => $post['score'],
+            // 'tscore_pre'        => $post['score'],
             'score_pre_origin'  => $post['score'],
             'updated_by'        => session()->id,
             'updated_name'      => session()->user,

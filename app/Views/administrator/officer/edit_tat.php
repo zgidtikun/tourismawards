@@ -146,7 +146,6 @@
   </div>
 </div>
 
-
 <script>
   $(function() {
     var pgurl = BASE_URL_BACKEND + '/tat';

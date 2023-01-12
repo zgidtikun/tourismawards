@@ -92,7 +92,6 @@ class ApplicationController extends BaseController
             }
             
             if(!empty($detail->request_time)){
-                // $detail->request_time = date('Y-m-d ',strtotime($detail->request_time));
                 $request_time = date('Y-m-d',strtotime($detail->request_time.' + 1 day'));
                 $detail->request_time_str = FormatTree($request_time,'thailand');
 
@@ -187,7 +186,6 @@ class ApplicationController extends BaseController
             $result = [
                 'result' => 'error', 
                 'message' => ''
-                // 'message' => 'Line : '.$e->getLine().' : '.$e->getMessage()
             ];
         }
 
@@ -221,8 +219,6 @@ class ApplicationController extends BaseController
             }
                 
             $this->appForm->update($app_id,$updd);
-            // $user = new \App\Models\Users();
-            // $user->update($this->myId,['stage' => 2]);   
 
             save_log_activety([
                 'module' => 'user_application',
@@ -251,13 +247,6 @@ class ApplicationController extends BaseController
             );
             
             helper('semail');
-            // send_email_frontend((object)[
-            //     'app_id' => $app_id,
-            //     'email' => session()->get('account'),
-            //     'tycon' => session()->get('user'),
-            //     'type' => $this->input->getVar('type')
-            // ],'app');
-
             send_email_frontend((object)[
                 'email' => session()->get('account'),
                 'tycon' => session()->get('user')
@@ -281,7 +270,6 @@ class ApplicationController extends BaseController
             $result = [
                 'result' => 'error', 
                 'message' => ''
-                // 'message' => 'Line : '.$e->getLine().' : '.$e->getMessage()
             ];
         }
 
@@ -353,7 +341,6 @@ class ApplicationController extends BaseController
             $result = [
                 'result' => 'error', 
                 'message' => ''
-                // 'message' => 'System : '.$e->getMessage()
             ];
         }
 
@@ -427,7 +414,6 @@ class ApplicationController extends BaseController
             $result = [
                 'result' => 'error', 
                 'message' => ''
-                // 'message' => 'System : '.$e->getLine().'-'.$e->getMessage()
             ];
         }
 

@@ -355,7 +355,7 @@ class Onsite extends BaseController
                     ],
                     (object)[
                         'message' => $message,
-                        'link' => base_url('awards/boards'),
+                        'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
                     ]
@@ -392,7 +392,7 @@ class Onsite extends BaseController
                     ],
                     (object)[
                         'message' => $message,
-                        'link' => base_url('awards/application'),
+                        'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
                     ]
@@ -429,7 +429,7 @@ class Onsite extends BaseController
                     ],
                     (object)[
                         'message' => $message,
-                        'link' => base_url('awards/application'),
+                        'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
                     ]

@@ -201,6 +201,22 @@ const psc = {
                             psc.questions[cate].question[seg].reply_id = reply.id;
                             psc.questions[cate].question[seg].change = false;
                             alert.toast({icon: reply.result, title: reply.message});
+
+                            if(!empty(psc.questions[cate].question[seg].reply)){
+                                if(
+                                    $.inArray(Number(psc.stage.status),[3,5]) !== -1
+                                    && !empty(psc.questions[cate].question[seg].request)
+                                    && Number(psc.questions[cate].question[seg].reply_sts) == 3
+                                ) {
+                                    $(MapData.label.model.item+seg).addClass('request');
+                                } else {
+                                    $(MapData.label.model.item+seg).removeClass('active');
+                                    $(MapData.label.model.item+seg).addClass('complete');
+                                }
+                            } else {
+                                $(MapData.label.model.item+seg).removeClass('complete');
+                            }
+
                             psc.waitDraft('finish');
                             resolve({ result: 'success' });
                         } else {

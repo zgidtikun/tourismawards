@@ -113,8 +113,7 @@ class RegisterController extends BaseController
     }
 
     public function resetPassword()
-    {
-        
+    {        
         $checkReCapcha = $this->checkCaptcha($this->input->getVar('recapcha_token'));
 
         if(!$checkReCapcha->result){
@@ -138,19 +137,6 @@ class RegisterController extends BaseController
         }
         
         return $this->response->setJSON($result);
-    }
-
-    private function randomPassword() 
-    {
-        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-        $pass = array();
-        $passLength = 8;
-        $alphaLength = strlen($alphabet) - 1;
-        for ($i = 0; $i < $passLength; $i++) {
-            $n = rand(0, $alphaLength);
-            $pass[] = $alphabet[$n];
-        }
-        return implode($pass);
     }
 
     public function resetPasswordMail($data)

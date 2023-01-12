@@ -23,6 +23,7 @@ class MarkTest extends BaseController
 
     public function index()
     {
+        // px(password_hash('1qazxsw2+-+', PASSWORD_DEFAULT));
         show_404();
         // px($_COOKIE);
         // px(session()->get());
@@ -65,6 +66,7 @@ class MarkTest extends BaseController
 
     public function question()
     {
+        show_404();
         $where = [];
         // $where['weight'] = 0;
         // $where['onside_score'] = 0;

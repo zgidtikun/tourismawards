@@ -955,7 +955,7 @@ const referance = [{
         area: '#etm-images-input',
         pointer: ['', 'etm-images'],
         btn: '#etm-images-btn',
-        btnrm: '#etm-mages-remove',
+        btnrm: '#etm-images-remove',
         show: '#etm-images-list',
         ablum: '#etm-images-ablum',
         label: '#images-label',

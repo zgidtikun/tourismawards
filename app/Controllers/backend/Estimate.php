@@ -377,7 +377,7 @@ class Estimate extends BaseController
                     ],
                     (object)[
                         'message' => $message,
-                        'link' => base_url('awards/boards'),
+                        'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
                     ]
@@ -414,7 +414,7 @@ class Estimate extends BaseController
                     ],
                     (object)[
                         'message' => $message,
-                        'link' => base_url('awards/application'),
+                        'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
                     ]
@@ -451,7 +451,44 @@ class Estimate extends BaseController
                     ],
                     (object)[
                         'message' => $message,
-                        'link' => base_url('awards/application'),
+                        'link' => base_url('boards'),
+                        'send_date' => date('Y-m-d H:i:s'),
+                        'send_by' => session()->account,
+                    ]
+                );
+            }
+        }
+
+        if (!empty(json_decode($result->admin_id_lowcarbon))) {
+            foreach (json_decode($result->admin_id_lowcarbon) as $key => $value) {
+                $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
+
+                $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon';
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
+                $email_data = [
+                    '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
+                    '_content' => $message
+                ];
+
+                $requestEmail = [
+                    'to' => $users->email,
+                    'subject' => $subject,
+                    'message' => view('administrator/template_email', $email_data),
+                    // 'from' => $from,
+                    // 'cc' => [],
+                    // 'bcc' => []
+                ];
+
+                send_email($requestEmail);
+
+                set_noti(
+                    (object)[
+                        'user_id' => $users->id,
+                        'bank' => 'frontend'
+                    ],
+                    (object)[
+                        'message' => $message,
+                        'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
                     ]

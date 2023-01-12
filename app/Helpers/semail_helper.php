@@ -17,10 +17,12 @@ function send_email_frontend($dataset, $by)
 
 class semail {
     private $mail;
+    private $config;
 
     public function __construct()
     {        
         $this->mail = new PHPMailer(true);
+        $this->config = new \Config\Email();
     }
     
     public function SendMail($requestEmail=[])
@@ -50,13 +52,13 @@ class semail {
             
             $this->mail->SMTPDebug = 0;
             $this->mail->isSMTP();
-            $this->mail->CharSet = $_ENV['email.charset'];
-            $this->mail->Host = $_ENV['email.SMTPHost'];
+            $this->mail->CharSet = $this->config->charset;
+            $this->mail->Host = $this->config->SMTPHost;
             $this->mail->SMTPAuth = true;
-            $this->mail->Username = $_ENV['email.SMTPUser'];
-            $this->mail->Password = $_ENV['email.SMTPPass'];
+            $this->mail->Username = $this->config->SMTPUser;
+            $this->mail->Password = $this->config->SMTPPass;
             $this->mail->SMTPSecure = 'tls';
-            $this->mail->Port = $_ENV['email.SMTPPort'];
+            $this->mail->Port = $this->config->SMTPPort;
             $this->mail->Subject = $requestEmail['subject'];
             $this->mail->Body = $requestEmail['message'];
             
@@ -84,7 +86,10 @@ class semail {
                     $this->mail->setFrom($fromEmail, $fromName);
                 }
            }else{
-                $this->mail->setFrom($_ENV['email.senderEmail'], $_ENV['email.senderName']);
+                $this->mail->setFrom(
+                    $this->config->SenderEmail, 
+                    $this->config->SenderName
+                );
             }
             
             if(array_key_exists('cc', $requestEmail)){
@@ -137,8 +142,8 @@ class semail {
             }
 
             $email_sys = [
-                'email' => $_ENV['email.senderEmail'],
-                'name'  => $_ENV['email.senderName']
+                'email' => $this->config->SenderEmail,
+                'name'  => $this->config->SenderName
             ];
     
             switch($by){

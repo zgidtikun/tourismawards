@@ -95,7 +95,7 @@ class Officer extends BaseController
             'assessment_group'      => json_encode($post["assessment_group"]),
             'mobile'                => $post["mobile"],
             'email'                 => $post["email"],
-            // 'position'              => $post["position"],
+            'position'              => $post["position"],
             'username'              => $post["email"],
             // 'password'              => $post["password"],
             'verify_code'           => $verify_code,
@@ -189,7 +189,7 @@ class Officer extends BaseController
             'assessment_group'      => json_encode($post["assessment_group"]),
             'mobile'                => $post["mobile"],
             // 'email'                 => $post["email"],
-            // 'position'              => $post["position"],
+            'position'              => $post["position"],
             // 'username'              => $post["email"],
             // 'role_id'               => 3,
             // 'status'                => 1,
@@ -242,7 +242,7 @@ class Officer extends BaseController
 
         // $data['result'] = $this->db->table('admin A')->select('A.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = A.member_type', 'left')->join('award_type AT', 'AT.id = A.award_type', 'left')->join('assessment_group AG', 'AG.id = A.assessment_group', 'left')->where("A.member_type = 2 AND A.status = 1 AND $or_where")->orderBy('A.id', 'desc')->get()->getResultObject();
         // pp_sql();
-        $data['award_type'] = $this->db->table('award_type')->get()->getResultObject();
+        $data['award_type'] = $this->db->table('application_type')->get()->getResultObject();
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
         $data['type']   = 1;
 
@@ -257,7 +257,7 @@ class Officer extends BaseController
 
     public function addTAT()
     {
-        $data['award_type'] = $this->db->table('award_type')->get()->getResultObject();
+        $data['award_type'] = $this->db->table('application_type')->get()->getResultObject();
 
         // Template
         $data['title']  = 'เพิ่มเจ้าหน้าที่ ททท.';
@@ -273,7 +273,7 @@ class Officer extends BaseController
         if (empty($data['result'])) {
             return redirect()->to(session()->_ci_previous_url);
         }
-        $data['award_type'] = $this->db->table('award_type')->get()->getResultObject();
+        $data['award_type'] = $this->db->table('application_type')->get()->getResultObject();
 
         // Template
         $data['title']  = 'แก้ไขเจ้าหน้าที่ ททท.';
@@ -304,7 +304,7 @@ class Officer extends BaseController
             // 'assessment_group'      => json_encode($post["assessment_group"]),
             'mobile'                => $post["mobile"],
             'email'                 => $post["email"],
-            'position'              => $post["position"],
+            // 'position'              => $post["position"],
             'username'              => $post["email"],
             // 'password'              => $post["password"],
             'verify_code'           => $verify_code,
@@ -334,7 +334,7 @@ class Officer extends BaseController
             $data = [];
             $data['users'] = $this->db->table('admin')->where('id', $insert_id)->get()->getRowObject();
             $data['verify_code'] = vEncryption('admin-' . $data['users']->verify_code);
-            $this->sendMail($data);
+            $this->sendMailTAT($data);
             
             // เก็บข้อมูลการเปลี่ยนแปลง
             // @mkdir(FCPATH . 'logs/backend-admin', 0777, true);
@@ -400,7 +400,7 @@ class Officer extends BaseController
             // 'assessment_group'      => json_encode($post["assessment_group"]),
             'mobile'                => $post["mobile"],
             // 'email'                 => $post["email"],
-            'position'              => $post["position"],
+            // 'position'              => $post["position"],
             // 'username'              => $post["email"],
             // 'role_id'               => 3,
             // 'status'                => 1,
@@ -473,7 +473,34 @@ class Officer extends BaseController
         }
         $email_data = [
             '_header' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
-            '_content' => 'คุณ ' . $data['users']->name . ' ' . $data['users']->surname . ' ได้รับการสมัครเป็นคณะกรรมการการตัดสิน '
+            '_content' => 'คุณได้รับการสมัครเป็นคณะกรรมการการตัดสิน '
+                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
+                . 'ด้วยอีเมล ' . $data['users']->email . ' '
+                . $text
+        ];
+        $requestEmail = [
+            'to' => $data['users']->email,
+            'subject' => 'เรียนคุณ ' . $data['users']->name . ' ' . $data['users']->surname,
+            'message' => view('administrator/template_email', $email_data),
+            // 'from' => $from,
+            // 'cc' => [],
+            // 'bcc' => []
+        ];
+
+        send_email($requestEmail);
+    }
+
+    public function sendMailTAT($data)
+    {
+        // px(vDecryption($data['verify_code']));
+        // px($data);
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('verify-password?t=' . $data['verify_code']) . '"  target="_blank">Verify</a></b>';
+        if ($data['users']->password != "") {
+            $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
+        }
+        $email_data = [
+            '_header' => 'เรียนคุณ ' . $data['users']->name . ' ' . $data['users']->surname,
+            '_content' => 'คุณได้รับการสมัครเป็นเจ้าหน้าที่ ททท. '
                 . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
                 . 'ด้วยอีเมล ' . $data['users']->email . ' '
                 . $text

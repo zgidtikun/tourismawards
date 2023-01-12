@@ -86,6 +86,12 @@ class Complete extends BaseController
         return view('administrator/template', $data);
     }
 
+    public function getScore($id)
+    {
+        $result = $this->db->table('estimate_score')->where('application_id', $id)->get()->getRowObject();
+        echo json_encode($result);
+    }
+
     public function reSubmit()
     {
         $post = $this->input->getVar();

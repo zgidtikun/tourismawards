@@ -18,8 +18,6 @@ class Home extends BaseController
 
     public function index()
     {
-        $obj_user = new \App\Models\Users();
-        $obj_news = new \App\Models\News();
         $data_judge = [];
         $data_news = [];
         

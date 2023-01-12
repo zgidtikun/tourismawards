@@ -61,6 +61,13 @@ class LoginController extends BaseController
                 return $this->response->setJSON($result);
             }            
         }
+
+        if(!$this->validation->run($this->input->getVar(),'signin')){
+            return $this->response->setJSON([
+                'result' => 'error',
+                'message' => 'ไม่สามารถเข้าสู่ระบบได้'
+            ]);
+        }
         
         $auth = $this->checkUser((object)$this->input->getVar(),$bank);
 
@@ -108,9 +115,6 @@ class LoginController extends BaseController
         $db = $bank == 'frontend' ? $this->instUser : $this->instAdmin;
         $where = array('username' => $requester->username);
         $account = $db->where($where)->first();
-
-        //if($bank == 'frontend' && !$account)
-        //    $account = $this->instAdmin->where($where)->first();
        
         if($account){
             if($account->status == 0)
