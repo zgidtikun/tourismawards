@@ -99,6 +99,36 @@ class EstimateRequestController extends BaseController
         ])
         ->set(['request_status' => 0])
         ->update();
+
+        try {
+            $appForm = new \App\Models\ApplicationForm();
+            $tycoon = $appForm->where('id',$app_id)
+            ->select("attraction_name_th name_th, attraction_name_en name_en")
+            ->first();
+
+            $place = !empty($tycoon->name_th) ? $tycoon->name_th : $tycoon->name_en;
+
+            $_noti = "$place ได้หมดเวลาการส่งคำตอบการประเมินเบื้องต้น (Pre-Screen) เพิ่มเติม "
+                . " โปรดทำการประเมินเบื้องต้น (Pre-Screen) อีกครั้ง";
+            
+            set_noti([
+                'user_id' => $judge_id,
+                'bank' => 'frontend'
+            ],[
+                'message' => $_noti,
+                'link' => base_url('boards'),
+                'send_date' => date('Y-m-d H:i:s'),
+                'send_by' => 'System'
+            ]); 
+
+            helper('semail');
+            send_email_frontend((object)[
+                'appId' => $app_id,
+                'judgeId' => $judge_id
+            ],'answer-request-expired');
+        } catch(Exception $e){
+            return;
+        }
     }
 
     public function respond_request($user_id)

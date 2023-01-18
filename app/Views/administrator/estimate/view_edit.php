@@ -721,6 +721,9 @@
       $('#btn_back_' + tab).attr('no', no);
       add_aws(question[tab][id].id, tab);
     });
+
+    $('.hide-choice').hide();
+    $('body').removeClass('lockbody');
   }
 
   function btn_back(elm, tab) {

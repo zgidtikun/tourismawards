@@ -1,3 +1,8 @@
+<style>
+  .dataTables_wrapper .dataTables_length {
+    justify-content: flex-start !important;
+  }
+</style>
 <div class="backendcontent">
   <div class="backendcontent-row">
     <div class="backendcontent-title">
@@ -184,7 +189,7 @@
     $("#example").dataTable().fnDestroy();
     $("#example").addClass("nowrap").dataTable({
       responsive: true,
-      searching: false,
+      searching: true,
       columnDefs: [{
         responsivePriority: 1,
         targets: 2

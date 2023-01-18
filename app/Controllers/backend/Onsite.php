@@ -331,7 +331,7 @@ class Onsite extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => $message
@@ -368,7 +368,7 @@ class Onsite extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => $message
@@ -405,7 +405,7 @@ class Onsite extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsible Tourism';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsible Tourism กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ ' . $app->Pre_expired;
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsible Tourism';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => $message

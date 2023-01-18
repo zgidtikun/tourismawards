@@ -157,7 +157,8 @@
 
               <div class="regis-form-data-col1">
                 <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด<span class="required">*</span></h4>
-                ระบุคำตอบ<span class="required">*</span> <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
+                <span>ระบุคำตอบ <span class="required">*</span> </span>
+                <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
                 <textarea rows="6" id="field" onkeyup="countChar(this)" readonly><?= $result->highlights ?></textarea>
                 <script>
                   function countChar(val) {
@@ -181,12 +182,14 @@
                   <?php
                   if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
                     foreach (json_decode($result->pack_file) as $key => $value) {
-                      if ($value->file_position == 'paperFiles') {
+                      if ($value->file_position == 'detailFiles') {
                   ?>
                         <div class="card card-body">
                           <div class="bs-row">
-                            <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                              <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <div class="col-12">
+                              <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                              <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end download_pdf pointer" title="ดูรายละเอียดเอกสาร" target="_blank"><i class="bi bi-eye"></i></a>
+                              <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end download_pdf pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                             </div>
                           </div>
                         </div>
@@ -205,12 +208,14 @@
                   <?php
                   if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
                     foreach (json_decode($result->pack_file) as $key => $value) {
-                      if ($value->file_position == 'detailFiles') {
+                      if ($value->file_position == 'paperFiles') {
                   ?>
                         <div class="card card-body">
                           <div class="bs-row">
-                            <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                              <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <div class="col-12">
+                              <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                              <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end download_pdf pointer" title="ดูรายละเอียดเอกสาร" target="_blank"><i class="bi bi-eye"></i></a>
+                              <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end download_pdf pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                             </div>
                           </div>
                         </div>
@@ -440,7 +445,7 @@
               </div>
 
               <div class="regis-form-data-col2">
-                <h4>ตำแหน่ง<span class="required">*</span></h4>
+                <h4>ตำแหน่ง</h4>
                 <input value="<?= $result->knitter_position ?>" readonly>
               </div>
 
@@ -543,6 +548,10 @@
   </div>
 </div>
 
+<form action="<?= base_url('administrator/approve/download') ?>" method="post" id="form_download" target="_blank">
+  <input type="hidden" name="name" id="name" value="">
+  <input type="hidden" name="url" id="url" value="">
+</form>
 <script>
   $(function() {
 
@@ -631,4 +640,10 @@
     }
     $('#option_application_type_sub').html(html);
   });
+
+  function download_pdf(name, url) {
+    $('#url').val(url);
+    $('#name').val(name);
+    $('#form_download').submit();
+  }
 </script>

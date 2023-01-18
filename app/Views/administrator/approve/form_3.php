@@ -54,7 +54,10 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -83,7 +86,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -113,7 +117,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -142,7 +147,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -156,7 +162,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
+          <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
             <span class="fs-18 fw-semibold">
               สำเนาผลการตรวจสอบลักษณะน้ำทิ้ง (ในกรณีเป็นสถานประกอบกิจการที่ต้องถูกควบคุมการระบายน้ำทิ้งตามที่กฎหมายกำหนด) (แนบเอกสาร)
               <span class="required">*</span>
@@ -172,7 +178,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -185,7 +192,7 @@
                 ?>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
             <span class="fs-18 fw-semibold">เอกสารแนบอื่น ๆ (ถ้ามี) เช่น หนังสือรับรอง GMP ของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ เอกสารรับรอง (Certificate) หรือรางวัลมาตรฐานผลิตภัณฑ์ระดับนานาชาติของผลิตภัณฑ์หรือของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ</h4>
               <div class="card mt-1 col-md-6" style="border: 1px solid #E5E6ED;">
@@ -199,6 +206,7 @@
                         <div class="card card-body">
                           <div class="bs-row">
                             <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                              <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
                               <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
                             </div>
                           </div>
@@ -237,7 +245,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -271,7 +280,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -300,7 +310,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -330,7 +341,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -359,7 +371,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -373,7 +386,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
+          <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
             <span class="fs-18 fw-semibold">
               สำเนาผลการตรวจสอบลักษณะน้ำทิ้ง (ในกรณีเป็นสถานประกอบกิจการที่ต้องถูกควบคุมการระบายน้ำทิ้งตามที่กฎหมายกำหนด) (แนบเอกสาร)
               <span class="required">*</span>
@@ -389,7 +402,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -402,7 +416,7 @@
                 ?>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
             <span class="fs-18 fw-semibold">เอกสารแนบอื่น ๆ (ถ้ามี) เช่น หนังสือรับรอง GMP ของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ เอกสารรับรอง (Certificate) หรือรางวัลมาตรฐานผลิตภัณฑ์ระดับนานาชาติของผลิตภัณฑ์หรือของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ</h4>
               <div class="card mt-1 col-md-6" style="border: 1px solid #E5E6ED;">
@@ -416,6 +430,7 @@
                         <div class="card card-body">
                           <div class="bs-row">
                             <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                              <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
                               <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
                             </div>
                           </div>
@@ -454,7 +469,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -488,7 +504,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -517,7 +534,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -546,7 +564,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -560,7 +579,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
+          <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
             <span class="fs-18 fw-semibold">
               สำเนาผลการตรวจสอบลักษณะน้ำทิ้ง (ในกรณีเป็นสถานประกอบกิจการที่ต้องถูกควบคุมการระบายน้ำทิ้งตามที่กฎหมายกำหนด) (แนบเอกสาร)
               <span class="required">*</span>
@@ -576,7 +595,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>
@@ -589,7 +609,7 @@
                 ?>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
             <span class="fs-18 fw-semibold">เอกสารแนบอื่น ๆ (ถ้ามี) เช่น หนังสือรับรอง GMP ของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ เอกสารรับรอง (Certificate) หรือรางวัลมาตรฐานผลิตภัณฑ์ระดับนานาชาติของผลิตภัณฑ์หรือของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ</h4>
               <div class="card mt-1 col-md-6" style="border: 1px solid #E5E6ED;">
@@ -603,6 +623,7 @@
                         <div class="card card-body">
                           <div class="bs-row">
                             <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                              <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
                               <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
                             </div>
                           </div>
@@ -641,7 +662,8 @@
                       <div class="card card-body">
                         <div class="bs-row">
                           <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                            <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                           </div>
                         </div>
                       </div>

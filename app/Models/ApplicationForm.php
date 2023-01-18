@@ -24,7 +24,8 @@ class ApplicationForm extends Model
     'knitter_email', 'knitter_line', 'year_open', 'year_total', 'manage_by', 'buss_license', 
     'buss_ckroom', 'buss_buildExt', 'buss_cites', 'admin_nominee', 'has_outlander', 'current_step', 
     'status', 'approve_by', 'approve_name', 'approve_time', 'judge_comment', 'pack_file', 
-    'created_by', 'updated_by', 'send_date', 'request_time', 'require_lowcarbon'];
+    'created_by', 'updated_by', 'send_date', 'request_time', 'require_lowcarbon', 
+    'has_effluent'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

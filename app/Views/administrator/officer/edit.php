@@ -103,7 +103,7 @@
             เบอร์ติดต่อ
           </div>
           <div class="backendform-col inpfield">
-            <input type="text" name="mobile" id="mobile" class="form-control" value="<?= @$result->mobile ?>" placeholder="">
+            <input type="number" name="mobile" id="mobile" class="form-control" maxlength="10" value="<?= @$result->mobile ?>" placeholder="">
           </div>
         </div>
 

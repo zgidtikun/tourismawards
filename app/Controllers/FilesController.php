@@ -66,6 +66,8 @@ class FilesController extends BaseController
     public function uploadEstimate()
     {
         try {
+            $files_log = [];
+
             if($files = $this->input->getFiles()){
                 $obj = new \App\Models\Estimate();
                 $input = (object) $this->input->getVar();
@@ -115,7 +117,8 @@ class FilesController extends BaseController
                             'file_size' => $file->getSizeByUnit('mb'),
                         );
                         
-                        array_push($files_up,$tmp_file);                            
+                        array_push($files_up,$tmp_file);                             
+                        array_push($files_log,$tmp_file);                          
 
                     }
                 } 
@@ -137,7 +140,19 @@ class FilesController extends BaseController
             }
             else {
                 $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์ในการอัพโหลด'];
-            }
+            }              
+
+            save_log_activety([
+                'module' => 'estimate_onsite',
+                'action' => 'estimate_upload_files',
+                'bank' => 'frontend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => [
+                    'input' => $this->input->getVar(),
+                    'files' => $files_log
+                ]
+            ]);
         } catch(\Exception $e){
             save_log_error([
                 'module' => 'estimate_upload_files',
@@ -203,7 +218,16 @@ class FilesController extends BaseController
 
                 $obj->update($input->id,['pack_file' => json_encode($tmp)]);
                 $result = ['result' => 'success', 'message' => ''];
-            }
+            }      
+
+            save_log_activety([
+                'module' => 'estimate_onsite',
+                'action' => 'estimate_remove_files',
+                'bank' => 'frontend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $this->input->getVar()
+            ]);
 
         } catch(\Exception $e){
             save_log_error([

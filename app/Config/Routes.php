@@ -230,6 +230,8 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
         $routes->get('edit/(:any)', 'Approve::edit/$1', ['filter' => 'auth:backend']);
         $routes->post('saveStatus', 'Approve::saveStatus', ['filter' => 'auth:backend']);
         $routes->post('getAplicationTypeSub/(:any)', 'Approve::getAplicationTypeSub/$1', ['filter' => 'auth:backend']);
+        // Download PDF
+        $routes->post('download', 'Approve::downloadFilePDF', ['filter' => 'api:backend']);
     });
 
     // PreScreen (แอดมินและเจ้าหน้าที่เข้าถึงได้)

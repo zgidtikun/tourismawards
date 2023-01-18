@@ -33,11 +33,13 @@
               </thead>
               <tbody>
                 <?php
+                // pp($estimate);
                 if (!empty($estimate)) {
+                  $i = 1;
                   foreach ($estimate as $key => $value) {
                 ?>
                     <tr data-row="<?= $key ?>">
-                      <td class="text-center"><?= ($key + 1) ?></td>
+                      <td class="text-center"><?= $i++; ?></td>
                       <td class="text-start"><?= $value->question ?></td>
                       <td class="text-center">
                         <?php
@@ -86,8 +88,13 @@
         icon: 'error',
         title: '<?php echo $status['error'] ?>',
         showConfirmButton: false,
-        timer: 3000
+        // timer: 3000,
+        // showCancelButton: true,
+        showCloseButton: true,
+      }).then((result) => {
+        window.location.href = BASE_URL_BACKEND + '/lowcarbon';
       });
+
     <?php } ?>
 
     var pgurl = BASE_URL_BACKEND + '/lowcarbon';

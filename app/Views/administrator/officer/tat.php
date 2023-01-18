@@ -1,3 +1,8 @@
+<style>
+  .dataTables_wrapper .dataTables_length {
+    justify-content: flex-start !important;
+  }
+</style>
 <div class="backendcontent">
   <div class="backendcontent-row">
     <div class="backendcontent-title">
@@ -7,7 +12,7 @@
       <a href="javascript:" class="btn-blue" onclick="insert_item(this)">เพิ่มสมาชิก</a>
     </div>
 
-    <form action="" method="get">
+    <!-- <form action="" method="get">
       <div class="backendcontent-subrow">
         <div class="backendcontent-subcol searchbox">
           <input type="text" name="keyword" id="keyword" value="<?= @$_GET['keyword'] ?>" placeholder="ค้นหา">
@@ -18,7 +23,7 @@
         </div>
 
       </div>
-    </form>
+    </form> -->
 
 
     <div class="backendcontent-subrow">
@@ -108,7 +113,7 @@
     $("#example").dataTable().fnDestroy();
     $("#example").addClass("nowrap").dataTable({
       responsive: true,
-      searching: false,
+      searching: true,
       columnDefs: [{
         responsivePriority: 1,
         targets: 1

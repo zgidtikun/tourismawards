@@ -42,7 +42,8 @@
                     <div class="card card-body">
                       <div class="bs-row">
                         <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                          <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                          <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                          <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                         </div>
                       </div>
                     </div>
@@ -59,7 +60,7 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
           <div class="regis-form-data-col1">
-            <h4>ต้องมีชื่อโรงแรมและจำนวนห้องพักตรงกับที่ระบุในใบอนุญาต <span class="required">*</span></h4>
+            <h4>ชื่อโรงแรมและจำนวนห้องพักตรงกับที่ระบุในใบอนุญาต <span class="required">*</span></h4>
             <p>
               <input type="radio" id="buss_ckroom_1" value="1" <?= ($result->buss_ckroom == 1) ? 'checked' : ''; ?>>
               <label for="buss_ckroom_1">ตรง</label>
@@ -87,7 +88,8 @@
                     <div class="card card-body">
                       <div class="bs-row">
                         <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                          <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                          <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                          <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                         </div>
                       </div>
                     </div>
@@ -133,7 +135,8 @@
                     <div class="card card-body">
                       <div class="bs-row">
                         <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
-                          <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-download"></i></a>
+                          <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                          <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
                         </div>
                       </div>
                     </div>

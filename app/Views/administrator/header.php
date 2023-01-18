@@ -21,7 +21,7 @@
     </div>
   </div> -->
   <div class="backend-userlogin">
-    <a href="javascript:void(0)" class="btn-user">Hi, <?= session()->user ?> <span class="user-icon"><?= strtoupper(substr(session()->user,0,1)); ?></span></a>
+    <a href="javascript:void(0)" class="btn-user">Hi, <?= session()->user ?> <span class="user-icon"><?= strtoupper(mb_substr(session()->user,0,1)); ?></span></a>
 
     <div class="user-box" style="display: none;">
       <div class="user-box-overlay"></div>
@@ -46,9 +46,9 @@
               <a href="<?= base_url('auth/logout') ?>" class="userlogout">ออกจากระบบ</a>
             </div>
           </div>
-          <div class="user-profile">
+          <!-- <div class="user-profile">
             <a href="javascript:"><i class="bi bi-person-fill"></i>&nbsp;&nbsp;ข้อมูลส่วนตัว</a>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

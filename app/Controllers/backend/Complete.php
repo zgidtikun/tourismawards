@@ -16,6 +16,8 @@ class Complete extends BaseController
     
     public function __construct()
     {
+        helper(['semail', 'verify']);
+        
         $this->ApplicationForm = new ApplicationForm;
         $this->ApplicationType = new ApplicationType;
         $this->ApplicationTypeSub = new ApplicationTypeSub;

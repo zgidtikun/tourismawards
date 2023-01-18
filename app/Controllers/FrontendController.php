@@ -105,6 +105,7 @@ class FrontendController extends BaseController
                     if($group == 1){ $user->assessment_group[$key] = 'ด้าน Tourism Excellence'; }
                     elseif($group == 2){ $user->assessment_group[$key] = 'ด้าน Supporting Business & Marketing Factors '; }
                     elseif($group == 3){ $user->assessment_group[$key] = 'ด้านความยั่งยืน (Responsibility)'; }
+                    elseif($group == 4){ $user->assessment_group[$key] = 'ด้าน Low Carbon & Sustainability'; }
                 }
             }
         }

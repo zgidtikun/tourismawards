@@ -2624,6 +2624,19 @@ display: flex;
 align-items: baseline;
 justify-content: space-between;
 }
+.content5 .regis-form-data .card.col-md-6 .card.card-body .col-12 .fs-file-name{
+padding-right: 20px;
+flex: auto;
+}
+
+.content5 .regis-form-data .card.col-md-6 .card.card-body .col-12 a {
+    border-left: 1px solid #ccc;
+    padding: 0 10px;
+}
+.content5 .regis-form-data .card.col-md-6 .card.card-body .col-12 a:last-of-type {
+    padding-right:0;
+}
+
 .swal2-title {
   padding: 20px!important;
 }
@@ -2658,6 +2671,9 @@ margin-bottom: 10px;
 }
 .note-editable{
 font-family: 'TATSana-Chon' ;
+}
+.content5 .regis-form-data-row .attachinp .card-body{
+margin: 10px 0;
 }
 
 @media screen and (max-width:1600px) {

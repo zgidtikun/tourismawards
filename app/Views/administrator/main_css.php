@@ -169,4 +169,14 @@
   .regis-form-data-col1 h4 {
     margin-bottom: 1rem;
   }
+
+  .download_pdf {
+    border-left: 1px solid #ccc;
+    padding: 0 10px;
+  }
+
+  .attachinp .card.card-body .col-12 .fs-file-name {
+    padding-right: 20px;
+    flex: auto;
+  }
 </style>

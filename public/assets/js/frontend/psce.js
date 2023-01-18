@@ -325,9 +325,12 @@ const draft = (cate,seg) => {
                     dataset[cate].question[seg].estimate_by = rs.by;
                     dataset[cate].question[seg].estimate = false;
 
-                    if(!empty(dataset[cate].question[seg].score_pre)){
+                    if(!empty(dataset[cate].question[seg].score_pre_origin)){
                         $('#sl-'+seg).removeClass('active');
                         $('#sl-'+seg).addClass('complete');
+                    } else {
+                        $('#sl-'+seg).removeClass('complete');
+                        $('#sl-'+seg).addClass('active');
                     }
 
                     alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'}); 
@@ -525,17 +528,39 @@ const setQuestion = (cate,seg) => {
         }
 
         const btnDownload = $(`.btn-download`);
+        const listDownload = $(`#list-download`);
 
         if(question.paper < 1){           
-            btnDownload.addClass('btn-transparent disabled');
-            btnDownload.css('color','#000');
-            btnDownload.css('opacity','1');
-            btnDownload.html('ไม่มีไฟล์แนบ');
+            // btnDownload.addClass('btn-transparent disabled');
+            // btnDownload.css('color','#000');
+            // btnDownload.css('opacity','1');
+            // btnDownload.html('ไม่มีไฟล์แนบ');
+            btnDownload.show();
+            listDownload.hide();
         } else {
-            btnDownload.removeClass('btn-transparent disabled');
-            btnDownload.css('color','#fff');
-            btnDownload.css('opacity','1');
-            btnDownload.html('ดาวน์โหลดไฟล์แนบ');
+            // btnDownload.removeClass('btn-transparent disabled');
+            // btnDownload.css('color','#fff');
+            // btnDownload.css('opacity','1');
+            // btnDownload.html('ดาวน์โหลดไฟล์แนบ');
+            let list = '';
+            $.each(question.paper,(key,paper) => {
+                list += `
+                    <div class="col-12">
+                        <div class="card card-body-muted">
+                            <div class="bs-row">
+                                <div class="col-12">
+                                    <a href="${getBaseUrl()+'/'+paper.file_path}" target="_blank">
+                                        <span class="fs-file-name">${paper.file_original}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            btnDownload.hide();
+            listDownload.html(list);
+            listDownload.show();
         }
 
         let back = seg != 0 ? seg-1 : seg,
@@ -750,8 +775,8 @@ const checkComplete = () => {
             $('#btn-send-request').prop('disabled',true);
             $('#btn-send-request-modal').prop('disabled',true);
         }
-
-        if(isEmpty){
+        
+        if(isEmpty || isRequest){
             $('#btn-send-estimate').prop('disabled',true);
         } else {
             $('#btn-send-estimate').prop('disabled',false);
@@ -889,7 +914,7 @@ $('.btn-getdata').click(function() {
     qRequest.val(question.request_list);
     countChar1($('#qRequest'))
 
-    if($.inArray(Number(question.request_status),[1,2,3]) !== -1){
+    if($.inArray(Number(question.request_status),[1,3]) !== -1){
         qRequest.prop('readonly','readonly');
 
         if($.inArray(Number(question.request_status),[2,3]) !== -1){

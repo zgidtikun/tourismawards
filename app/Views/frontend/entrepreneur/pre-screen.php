@@ -229,7 +229,7 @@
                                                         accept=".jpg,.jpeg,.png" multiple
                                                         onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'images')"/>
                                                     </button>                                                            
-                                                    <button class="btn btn-action" id="images-remove"
+                                                    <button class="btn btn-file" id="images-remove"
                                                     onclick="removeFile('#images',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -263,7 +263,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({cate: psc.pointer.category,seg: psc.pointer.segment},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="file-remove"
+                                                    <button class="btn btn-file" id="file-remove"
                                                     onclick="removeFile('#file',{cate: psc.pointer.category,seg: psc.pointer.segment,remove: 'all'})">
                                                         Remove All
                                                     </button>

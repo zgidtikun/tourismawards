@@ -74,7 +74,8 @@
     font-size: small;
   }
 </style>
-<?php //pp($estimate) 
+<?php 
+// pp($estimate);
 ?>
 <button id="btn_print" class="button button1" onclick="window.print()">Print</button>
 
@@ -98,15 +99,15 @@
     </thead>
     <tbody>
       <?php
-      $sum_score_pre = [];
+      $sum_score_pre_origin = [];
       if (!empty($estimate)) {
         foreach ($estimate as $key => $value) {
-          $sum_score_pre[] = $value->score_pre;
+          $sum_score_pre_origin[] = $value->score_pre_origin;
       ?>
           <tr>
             <td align="center"><?= ($key + 1) ?></td>
             <td align="left"><?= $value->question ?></td>
-            <td align="center"><?= $value->score_pre ?></td>
+            <td align="center"><?= $value->score_pre_origin ?></td>
             <td align="center"></td>
           </tr>
       <?php
@@ -116,7 +117,7 @@
       <tr>
         <td align="center"></td>
         <td align="center">คะแนนรวม</td>
-        <td align="center"><?= array_sum($sum_score_pre) ?></td>
+        <td align="center"><?= array_sum($sum_score_pre_origin) ?></td>
         <td align="center"></td>
       </tr>
     </tbody>

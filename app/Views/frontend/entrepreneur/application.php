@@ -15,6 +15,16 @@
         --bs-btn-disabled-bg: #ededed;
         --bs-btn-disabled-border-color: #ededed;
     }
+
+    #step5-openYear-btn {
+        border-top-right-radius: 0.375rem;
+        border-bottom-right-radius: 0.375rem;
+    }
+
+    .regis-form-data-col1 input.form-control.is-invalid~div.invalid-feedback,
+    .regis-form-data-col2 input.form-control.is-invalid~div.invalid-feedback {
+        display: block !important;
+    }
 </style>
 <div class="container">
     <div class="row">
@@ -192,7 +202,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-detail-remove"
+                                                    <button class="btn btn-file" id="step1-detail-remove"
                                                     onclick="removeFile('#step1-detail',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -230,7 +240,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step1-paper-remove"
+                                                    <button class="btn btn-file" id="step1-paper-remove"
                                                     onclick="removeFile('#step1-paper',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -269,7 +279,7 @@
                                                         accept=".jpg,.jpeg,.png" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'images')"/>
                                                     </button>                                                              
-                                                    <button class="btn btn-action" id="step1-images-remove"
+                                                    <button class="btn btn-file" id="step1-images-remove"
                                                     onclick="removeFile('#step1-images',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -349,8 +359,8 @@
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>รหัสไปรษณีย์ <span class="required">*</span></h4>
-                           <input type="text" class="form-control" id="step2-zipcode">
-                           <div class="invalid-feedback">กรุณากรอก รหัสไปรษณีย์</div>
+                           <input type="number" class="form-control" id="step2-zipcode" min="0" maxlength="5">
+                           <div class="invalid-feedback" id="invalid-step2-zipcode">กรุณากรอก รหัสไปรษณีย์ ให้ถูกต้อง</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>Facebook</h4>
@@ -441,8 +451,8 @@
                         </div>
                         <div class="regis-form-data-col2">
                             <h4>รหัสไปรษณีย์</h4>
-                            <input type="text" class="form-control" id="step3-zipcode">
-                            <div class="invalid-feedback">กรุณากรอก รหัสไปรษณีย์</div>
+                            <input type="number" class="form-control" id="step3-zipcode" min="0">
+                            <div class="invalid-feedback">กรุณากรอก รหัสไปรษณีย์ ให้ถูกต้อง</div>
                         </div>
                         <div class="regis-form-data-col2">
                             <h4>หมายเลขโทรศัพท์</h4>
@@ -501,7 +511,7 @@
                         <div class="regis-form-data-col2">
                            <h4>อีเมล <span class="required">*</span></h4>
                             <input type="email" class="form-control" id="step4-email">
-                            <div class="invalid-feedback">กรุณากรอก อีเมล</div>
+                            <div class="invalid-feedback" id="invalid-step4-email">กรุณากรอก อีเมล ให้ถูกต้อง</div>
                         </div>
                         <div class="regis-form-data-col2">
                            <h4>Line ID</h4>
@@ -536,10 +546,10 @@
                             <h4>เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ. <span class="required">*</span></h4>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="step5-openYear" readonly style="pointer-events: none;"> 
-                                <input type="hidden" id="step5-hiddenDate">                               
-                                <button class="btn btn-outline-success" type="button" id="step5-openYear-btn"><i class="bi bi-calendar"></i></button>
-                            </div>
-                            <div class="invalid-feedback">กรุณากรอก เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ.</div>
+                                <input type="hidden" id="step5-hiddenDate">      
+                                <button class="btn btn-outline-success" type="button" id="step5-openYear-btn"><i class="bi bi-calendar"></i></button>                        
+                                <div class="invalid-feedback" id="error-open-year">กรุณากรอก เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ.</div> 
+                            </div>                            
                         </div>
                         <div class="regis-form-data-col2">
                             <h4>ระยะเวลารวมทั้งสิ้น</h4>
@@ -549,7 +559,7 @@
                     <div class="regis-form-data-row hide" id="step5-type1">
                         <div class="regis-form-data-col1">
                             <h4>แหล่งท่องเที่ยว/กิจกรรมอยู่ในความดูแล</h4>
-                            <p><input type="radio" name="step5-t1-manageBy" id="step5-t1-manageBy-1" value="1" checked> ภาครัฐ</p>
+                            <p><input type="radio" name="step5-t1-manageBy" id="step5-t1-manageBy-1" value="1"> ภาครัฐ</p>
                             <p><input type="radio" name="step5-t1-manageBy" id="step5-t1-manageBy-2" value="2"> ชุมชนท่องเที่ยว</p>
                             <p><input type="radio" name="step5-t1-manageBy" id="step5-t1-manageBy-3" value="3"> ภาคเอกชน</p>
                         </div>
@@ -571,7 +581,7 @@
                                                     accept=".pdf" multiple
                                                     onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                 </button>                                                                    
-                                                <button class="btn btn-action" id="step5-landOwner-remove"
+                                                <button class="btn btn-file" id="step5-landOwner-remove"
                                                 onclick="removeFile('#step5-landOwner',{id: register.id,remove: 'all'})">
                                                     Remove All
                                                 </button>
@@ -595,7 +605,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4" id="div-step5-businessCert" style="display:none;">
                                 <span class="fs-18 fw-semibold" id="step5-file1-title">
                                     ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง 
                                     <span class="required">*</span>
@@ -610,7 +620,7 @@
                                                     accept=".pdf" multiple
                                                     onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                 </button>                                                                    
-                                                <button class="btn btn-action" id="step5-businessCert-remove"
+                                                <button class="btn btn-file" id="step5-businessCert-remove"
                                                 onclick="removeFile('#step5-businessCert',{id: register.id,remove: 'all'})">
                                                     Remove All
                                                 </button>
@@ -649,7 +659,7 @@
                                                     accept=".pdf" multiple
                                                     onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                 </button>                                                                    
-                                                <button class="btn btn-action" id="step5-otherCert-remove"
+                                                <button class="btn btn-file" id="step5-otherCert-remove"
                                                 onclick="removeFile('#step5-otherCert',{id: register.id,remove: 'all'})">
                                                     Remove All
                                                 </button>
@@ -704,7 +714,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-bussLicenseFiles-remove"
+                                                    <button class="btn btn-file" id="step5-bussLicenseFiles-remove"
                                                     onclick="removeFile('#step5-bussLicenseFiles',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -731,7 +741,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <div class="regis-form-data-col1">
                                         <h4>
-                                            ต้องมีชื่อโรงแรมและจำนวนห้องพักตรงกับที่ระบุในใบอนุญาต 
+                                            ชื่อโรงแรมและจำนวนห้องพักตรงกับที่ระบุในใบอนุญาต 
                                             <span class="required">*</span>
                                         </h4>
                                         <p><input type="radio" name="step5-t2-bussCkRoom" id="step5-t2-bussCkRoom-1" value="1" > ตรง</p>
@@ -755,7 +765,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-EIAreport-remove"
+                                                    <button class="btn btn-file" id="step5-EIAreport-remove"
                                                     onclick="removeFile('#step5-EIAreport',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -807,7 +817,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-otherT2Cert-remove"
+                                                    <button class="btn btn-file" id="step5-otherT2Cert-remove"
                                                     onclick="removeFile('#step5-otherT2Cert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -877,7 +887,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-spaCert-remove"
+                                                    <button class="btn btn-file" id="step5-spaCert-remove"
                                                     onclick="removeFile('#step5-spaCert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -905,6 +915,17 @@
                                     <span class="fs-18 fw-semibold">
                                         มีผลการตรวจสอบลักษณะน้ำทิ้ง (ในกรณีเป็นสถานประกอบกิจการที่ต้องถูกควบคุมการระบายน้ำทิ้งตามกฎหมายกำหนด)
                                     </span>
+                                    <div></div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" 
+                                        name="step5-t3-hasEffluent" id="step5-t3-hasEffluent-1" value="1">
+                                        <label class="form-check-label mr-2">มี</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" 
+                                        name="step5-t3-hasEffluent" id="step5-t3-hasEffluent-2" value="2">
+                                        <label class="form-check-label mr-2">ไม่มี</label>
+                                    </div>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
                                         <div class="card-body selecter-file">
                                             <div class="bs-row mb-2">
@@ -915,7 +936,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-effluent-remove"
+                                                    <button class="btn btn-file" id="step5-effluent-remove"
                                                     onclick="removeFile('#step5-effluent',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -954,7 +975,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-wellnessCert-remove"
+                                                    <button class="btn btn-file" id="step5-wellnessCert-remove"
                                                     onclick="removeFile('#step5-wellnessCert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -993,7 +1014,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-spaManger-remove"
+                                                    <button class="btn btn-file" id="step5-spaManger-remove"
                                                     onclick="removeFile('#step5-spaManger',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1032,7 +1053,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-titleDeed-remove"
+                                                    <button class="btn btn-file" id="step5-titleDeed-remove"
                                                     onclick="removeFile('#step5-titleDeed',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1058,45 +1079,6 @@
                                 </div>
 
                                 <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
-                                    <span class="fs-18 fw-semibold">
-                                        สำเนาผลการตรวจสอบลักษณะน้ำทิ้ง (ในกรณีเป็นสถานประกอบกิจการที่ต้องถูกควบคุมการระบายน้ำทิ้งตามที่กฎหมายกำหนด) (แนบเอกสาร)
-                                    </span>
-                                    <div class="card" style="border: 1px solid #E5E6ED;">
-                                        <div class="card-body selecter-file">
-                                            <div class="bs-row mb-2">
-                                                <div class="col-12">
-                                                    <button class="btn btn-file" id="step5-EffluentT3-btn">
-                                                        <span id="step5-EffluentT3-label">Upload Files</span>
-                                                        <input type="file" id="step5-EffluentT3"
-                                                        accept=".pdf" multiple
-                                                        onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
-                                                    </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-EffluentT3-remove"
-                                                    onclick="removeFile('#step5-EffluentT3',{id: register.id,remove: 'all'})">
-                                                        Remove All
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="bs-row" id="step5-EffluentT3-list">
-                                            </div>
-                                            <div class="bs-row">
-                                                <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
-                                            </div>
-                                        </div>
-                                        <div class="card-body attach-file">
-                                            <div class="bs-row">
-                                                <div class="d-grid">
-                                                    <button class="btn btn-primary" type="button"
-                                                    onclick="downloadFile('#step5-EffluentT3')">
-                                                        <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-12 col-md-6 col-xl-6 mb-4">
                                     <span class="fs-18 fw-semibold">เอกสารแนบอื่น ๆ (ถ้ามี) เช่น หนังสือรับรอง GMP ของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ เอกสารรับรอง (Certificate) 
                                         หรือรางวัลมาตรฐานผลิตภัณฑ์ระดับนานาชาติของผลิตภัณฑ์หรือของโรงงานผู้ผลิตผลิตภัณฑ์ที่ใช้ในสถานประกอบการ</span>
                                     <div class="card" style="border: 1px solid #E5E6ED;">
@@ -1109,7 +1091,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-otherT3-remove"
+                                                    <button class="btn btn-file" id="step5-otherT3-remove"
                                                     onclick="removeFile('#step5-otherT3',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1160,7 +1142,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-outlander-remove"
+                                                    <button class="btn btn-file" id="step5-outlander-remove"
                                                     onclick="removeFile('#step5-outlander',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1214,7 +1196,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-guideCert-remove"
+                                                    <button class="btn btn-file" id="step5-guideCert-remove"
                                                     onclick="removeFile('#step5-guideCert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1254,7 +1236,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-guideOldCert-remove"
+                                                    <button class="btn btn-file" id="step5-guideOldCert-remove"
                                                     onclick="removeFile('#step5-guideOldCert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1294,7 +1276,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-titleDeedT4-remove"
+                                                    <button class="btn btn-file" id="step5-titleDeedT4-remove"
                                                     onclick="removeFile('#step5-titleDeedT4',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1335,7 +1317,7 @@
                                                         accept=".pdf" multiple
                                                         onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
                                                     </button>                                                                    
-                                                    <button class="btn btn-action" id="step5-otherT4Cert-remove"
+                                                    <button class="btn btn-file" id="step5-otherT4Cert-remove"
                                                     onclick="removeFile('#step5-otherT4Cert',{id: register.id,remove: 'all'})">
                                                         Remove All
                                                     </button>
@@ -1404,7 +1386,7 @@
         
         $( "#step5-hiddenDate" ).datepicker({ 
             dateFormat: 'yy/mm/dd', 
-            maxDate: '+0d',
+            maxDate: '-1Y',
             changeMonth: true,
             changeYear: true,
             dayNames: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
@@ -1423,7 +1405,7 @@
                     let date = new Date(),
                         fulldate = $(this).val().split('/');
 
-                    let from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0];
+                    let from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0],
                         to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
 
                     let totalYear = calcDate(from,to);
@@ -1443,7 +1425,9 @@
                         let title = 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป';
                         alert.show('error',title,'');
                     }
-                } else { $('#step5-totalYear').val(''); }
+                } else { 
+                    $('#step5-totalYear').val(''); 
+                }
             }
         });
 

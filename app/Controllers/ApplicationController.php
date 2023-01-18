@@ -26,7 +26,7 @@ class ApplicationController extends BaseController
         '4' => ['knitter_name','knitter_position','knitter_tel','knitter_email',
             'knitter_line'],
         '5' => ['year_open','year_total','manage_by','buss_license','buss_ckroom','buss_buildExt',
-            'buss_cites','admin_nominee','has_outlander']
+            'buss_cites','admin_nominee','has_outlander','has_effluent']
     ];
 
     public function __construct()
@@ -167,7 +167,17 @@ class ApplicationController extends BaseController
                 }
             }
             
-            $update = $this->appForm->update($app_id,$updd);
+            $this->appForm->update($app_id,$updd);                      
+
+            save_log_activety([
+                'module' => 'user_application',
+                'action' => 'application_draft',
+                'bank' => 'frontend',
+                'user_id' => $this->myId,
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $this->input->getVar()
+            ]);
+            
             $result = ['result' => 'success', 'message' => 'บันทึกร่างแบบฟอร์มเรียบร้อยแล้ว'];
 
         } catch(\Exception $e){
@@ -284,6 +294,7 @@ class ApplicationController extends BaseController
                 $path = $this->setFilePath($app_id).'app-register/'.$this->input->getVar('path');
                 $result = ['result' => 'success', 'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 'files' => []];
                 $files_up = [];
+                $files_log = [];
 
                 foreach($files['files'] as $file){
                     if ($file->isValid() && !$file->hasMoved()) {
@@ -303,9 +314,21 @@ class ApplicationController extends BaseController
                         );
                         
                         array_push($files_up,$tmp_file);                            
-
+                        array_push($files_log,$tmp_file);    
                     }
-                } 
+                }                 
+
+                save_log_activety([
+                    'module' => 'user_application',
+                    'action' => 'application_upload_file',
+                    'bank' => 'frontend',
+                    'user_id' => $this->myId,
+                    'datetime' => date('Y-m-d H:i:s'),
+                    'data' => [
+                        'input' => $this->input->getVar(),
+                        'files' => $files_log
+                    ]
+                ]);
 
                 $pack_file = $this->appForm->where('id',$app_id)
                     ->select('pack_file')
@@ -360,7 +383,17 @@ class ApplicationController extends BaseController
     public function removeFiles()
     {
 
-        try{
+        try{                        
+
+            save_log_activety([
+                'module' => 'user_application',
+                'action' => 'application_remove_file',
+                'bank' => 'frontend',
+                'user_id' => $this->myId,
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $this->input->getVar()
+            ]);
+
             $app_id = $this->input->getVar('id');
             $tmp = [];
             $pack_file = $this->appForm->where('id',$app_id)
@@ -379,7 +412,8 @@ class ApplicationController extends BaseController
                         }
                     }
 
-                    $this->appForm->update($app_id,['pack_file' => json_encode($tmp)]);
+                    $package_file = !empty($tmp) ? json_encode($tmp) : NULL;
+                    $this->appForm->update($app_id,['pack_file' => $package_file]);
                     $result = ['result' => 'success', 'message' => '', 'files' => $tmp];
                 } else {
                     $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
@@ -395,7 +429,8 @@ class ApplicationController extends BaseController
                     }
                 }
 
-                $this->appForm->update($app_id,['pack_file' => json_encode($tmp)]);
+                $package_file = !empty($tmp) ? json_encode($tmp) : NULL;
+                $this->appForm->update($app_id,['pack_file' => $package_file]);
                 $result = ['result' => 'success', 'message' => ''];
             }
         } catch(\Exception $e){

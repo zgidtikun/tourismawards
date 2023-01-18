@@ -45,6 +45,7 @@
               <tbody>
                 <?php
                 if (!empty($result)) :
+                  $i = 1;
                   foreach ($result as $key => $value) :
                     $lowcarbon = json_decode($value->admin_id_lowcarbon);
                     $label = [];
@@ -53,7 +54,7 @@
                     }
                 ?>
                     <tr>
-                      <td><?= $key + 1 ?></td>
+                      <td class="text-center"><?= $i++; ?></td>
                       <td class="text-center"><?= $value->code ?></td>
                       <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start">

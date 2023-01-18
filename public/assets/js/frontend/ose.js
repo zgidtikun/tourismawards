@@ -368,6 +368,20 @@ const setQuestion = async(cate,seg) => {
 
         if(point.cate == -1){ point.cate = cate; }
         if(point.seg == -1){ point.seg = seg; }
+
+        qTitle.attr('data-id','');
+        qSum.html('');
+        mSum.html('');
+        qNum.html('');
+        mTNum.html('');
+        mNum.html('');
+        qSubject.html('');
+        esCmm.val('');
+        esNote.val(''); 
+        qRemark.html('หมายเหตุ : ');
+        qAblum.html('');        
+        qEva.html('');
+        qSco.html('');
         
         const category = dataset[cate];
         const question = category.question[seg];
@@ -476,17 +490,39 @@ const setQuestion = async(cate,seg) => {
         }
 
         const btnDownload = $(`.btn-download`);
+        const listDownload = $(`#list-download`);
 
         if(question.paper < 1){           
-            btnDownload.addClass('btn-transparent disabled');
-            btnDownload.css('color','#000');
-            btnDownload.css('opacity','1');
-            btnDownload.html('ไม่มีไฟล์แนบ');
+            // btnDownload.addClass('btn-transparent disabled');
+            // btnDownload.css('color','#000');
+            // btnDownload.css('opacity','1');
+            // btnDownload.html('ไม่มีไฟล์แนบ');
+            btnDownload.show();
+            listDownload.hide();
         } else {
-            btnDownload.removeClass('btn-transparent disabled');
-            btnDownload.css('color','#fff');
-            btnDownload.css('opacity','1');
-            btnDownload.html('ดาวน์โหลดไฟล์แนบ');
+            // btnDownload.removeClass('btn-transparent disabled');
+            // btnDownload.css('color','#fff');
+            // btnDownload.css('opacity','1');
+            // btnDownload.html('ดาวน์โหลดไฟล์แนบ');
+            let list = '';
+            $.each(question.paper,(key,paper) => {
+                list += `
+                    <div class="col-12">
+                        <div class="card card-body-muted">
+                            <div class="bs-row">
+                                <div class="col-12">
+                                    <a href="${getBaseUrl()+'/'+paper.file_path}" target="_blank">
+                                        <span class="fs-file-name">${paper.file_original}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            btnDownload.hide();
+            listDownload.html(list);
+            listDownload.show();
         }
 
         countChar($('#comment'))

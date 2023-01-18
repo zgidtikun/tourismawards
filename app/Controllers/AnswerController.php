@@ -54,8 +54,12 @@ class AnswerController extends BaseController
                 application_type_sub_id sub_id,
                 status')
             ->first();
-
-        if($myApp->status != 3){
+            
+        if(!empty($myApp)){
+            if($myApp->status != 3){
+                return redirect()->to(base_url('awards/application'));
+            }
+        } else {
             return redirect()->to(base_url('awards/application'));
         }
 
@@ -314,7 +318,16 @@ class AnswerController extends BaseController
                     $this->ans->where('id',$this->input->getVar('aid'),)
                         ->set([ 'reply' => $this->input->getVar('reply') ])
                         ->update();                 
-                    $insId = $this->input->getVar('aid');
+                    $insId = $this->input->getVar('aid');            
+
+                    save_log_activety([
+                        'module' => 'user_pre_screen',
+                        'action' => 'pre_screen_draft',
+                        'bank' => 'frontend',
+                        'user_id' => $this->myId,
+                        'datetime' => date('Y-m-d H:i:s'),
+                        'data' => $this->input->getVar()
+                    ]);
                     break;
                 case 'finish':
                     $insId = null;
@@ -384,7 +397,7 @@ class AnswerController extends BaseController
                         'bank' => 'frontend',
                         'user_id' => $this->myId,
                         'datetime' => date('Y-m-d H:i:s'),
-                        'data' => $this->input->getVar('answer')
+                        'data' => $this->input->getVar()
                     ]);
 
                     $form = $this->appForm->where('id',$this->input->getVar('appId'))
@@ -447,6 +460,8 @@ class AnswerController extends BaseController
     public function uploadFiles()
     {
         try{
+            $files_log = [];
+
             if($files = $this->input->getFiles()){
                 $question_id = $this->input->getVar('qid');
                 $answer_id = $this->input->getVar('aid');
@@ -473,6 +488,7 @@ class AnswerController extends BaseController
                         );
                         
                         array_push($files_up,$tmp_file);                            
+                        array_push($files_log,$tmp_file);                            
 
                     }
                 } 
@@ -509,10 +525,21 @@ class AnswerController extends BaseController
                         array_push($result['files'],$file);
                 }
                 
-            }
-             else {
+            } else {
                 $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์ในการอัพโหลด'];
-            }
+            }                           
+
+            save_log_activety([
+                'module' => 'user_pre_screen',
+                'action' => 'pre_screen_upload_file',
+                'bank' => 'frontend',
+                'user_id' => $this->myId,
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => [
+                    'input' => $this->input->getVar(),
+                    'files' => $files_log
+                ]
+            ]);
         } catch(\Exception $e){
             save_log_error([
                 'module' => 'user_pre_screen_upload_files',
@@ -541,7 +568,17 @@ class AnswerController extends BaseController
     public function removeFiles()
     {
 
-        try{
+        try{                    
+
+            save_log_activety([
+                'module' => 'user_pre_screen',
+                'action' => 'pre_screen_remove_file',
+                'bank' => 'frontend',
+                'user_id' => $this->myId,
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $this->input->getVar()
+            ]);
+
             $answer_id = $this->input->getVar('id');
             $position = $this->input->getVar('position');
             $tmp = [];

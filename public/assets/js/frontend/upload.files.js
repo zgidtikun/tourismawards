@@ -86,7 +86,7 @@ const uploadFile = async(setting, input, handleBy) => {
             api_setting.url = ref.api;
             api_setting.data = formData;
 
-            api(api_setting).then(function(response) {
+            api(api_setting).then(async function(response) {
                 let res = response;
 
                 if (res.result == 'error_login') {
@@ -99,8 +99,9 @@ const uploadFile = async(setting, input, handleBy) => {
                     });
                     
                     $(input).val('');
-                    register.count[ref.pointer[1]] += Number(countFile);
+                    register.count[ref.pointer[1]] = await register.count[ref.pointer[1]] + Number(countFile);
                     showFiles.tycoon(ref.input, register.formData[ref.pointer[0]][ref.pointer[1]]);
+                    register.checkComplete();
                 } else {
                     alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
                 }
@@ -218,6 +219,7 @@ const removeFile = async(input, setting) => {
         
         api(api_setting).then(async(response) => {
             let res = response;
+            let wait;
 
             if (res.result == 'error_login') {
                 alert.login();
@@ -226,18 +228,20 @@ const removeFile = async(input, setting) => {
                 if (setting.remove == 'fixed') {
                     register.formData[ref.pointer[0]][ref.pointer[1]] = [];
                     register.count[ref.pointer[1]] = 0;
+                    wait = true;
 
                     $.each(res.files, function(key, file) {
                         if (file.file_position == ref.position) {
                             register.formData[ref.pointer[0]][ref.pointer[1]].push(file);
                             register.count[ref.pointer[1]]++;
+                            wait = false;
                         }
                     });
                 } else {
                     register.formData[ref.pointer[0]][ref.pointer[1]] = [];
-                    register.count[ref.pointer[1]] = 0;
+                    register.count[ref.pointer[1]] = 0;                    
                 }
-
+                register.checkComplete();
                 showFiles.tycoon(input, register.formData[ref.pointer[0]][ref.pointer[1]]);
             } 
             else if (res.result == 'success' && ref.app == 'awards/pre-screen') {
@@ -1005,16 +1009,23 @@ const checkRequireFiles = (app) => {
             if(!empty(rv.require) && rv.require){
                 if(!empty(rv.pointer[3])){
                     if(
-                        Number(register.appType.main) == rv.pointer[3]
-                        && Number(register.appType.sub) == rv.pointer[4]
-                    ){
+                        Number(register.appType.main) == rv.pointer[2]
+                        && Number(register.appType.sub) == rv.pointer[3]
+                    ){                        
                         if(register.count[rv.pointer[1]] <= 0){
                             check = false;
                         }
                     }
                 } else {
-                    if(Number(register.appType.main) == rv.pointer[3]){
-                        if(register.count[rv.pointer[1]] <= 0){
+                    if(Number(register.formData.step1.appType) == rv.pointer[2]){
+                        if(rv.pointer[2] == 1){
+                            if(Number(register.formData.step5.manageBy) != 1){
+                                if(register.count[rv.pointer[1]] <= 0){
+                                    check = false;
+                                }
+                            }
+                        }
+                        else if(register.count[rv.pointer[1]] <= 0){
                             check = false;
                         }
                     }

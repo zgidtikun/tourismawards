@@ -37,7 +37,7 @@ const psc = {
                 $('#formstatus-unpass').removeClass('hide');
                 $('#formstep-sts').addClass('notpass');
                 $('#formstep-sts').html('หมดเวลาการส่งแบบประเมินขั้นต้น');
-                $('.btn-main, .btn-action, .btn-file, .bfd-dropfield, .selecter-file, file-list').remove();
+                $('.btn-main, .btn-file, .bfd-dropfield, .selecter-file, file-list').remove();
                 $('.regis-form-data textarea').prop('disabled',true);
                 psc.complete = true;
             } else {    
@@ -66,8 +66,9 @@ const psc = {
                         $('#formstep-sts').addClass('pass');
                         $('#formstep-sts').html('ส่งแบบประเมินเรียบร้อยแล้ว');                      
                         $('#formstatus-complete').removeClass('hide');
+                        $('.label-action').removeClass('hide');
                         $('.regis-form-data textarea').prop('disabled',true);
-                        $('.btn-main, .btn-action, .selecter-file, .bfd-dropfield').remove();
+                        $('.btn-main, .selecter-file, .bfd-dropfield').remove();
                         psc.complete = true;
 
                         if(psc.status == 'estimate'){
@@ -481,6 +482,6 @@ const psc = {
     },
 }
 
-$(MapData.input.reply.id).keyup(function(){
+$(MapData.input.reply.id).on('keyup change', function(){
     psc.setReply($(this).val());
 });

@@ -51,7 +51,7 @@ const MapField = {
             { input: '#step5-totalYear', variant: 'totalYear', type: 'all', api: 'year_total', require: false },
             { 
                 input: '[name=step5-t1-manageBy]', variant: 'manageBy', type: 1, div: '#step5-type1',
-                api: 'manage_by', id: '#step5-ty1-manageBy-', require: false 
+                api: 'manage_by', id: '#step5-t1-manageBy-', require: false 
             },
             { 
                 input: '#step5-t2-bussLicense', variant: 'bussLicense', type: 2, div: '#step5-type2', 
@@ -70,6 +70,10 @@ const MapField = {
                 api: 'buss_license', require: true 
             },
             { 
+                input: '[name=step5-t3-hasEffluent]', variant: 'hasEffluent', type: 3, div: '#step5-type3',
+                api: 'has_effluent', id: '#step5-t3-hasEffluent-', require: false 
+            },
+            { 
                 input: '[name=step5-t3-bussCites]', variant: 'bussCites', type: 3, div: '#step5-type3',
                 api: 'buss_cites', id: '#step5-t3-bussCites-', require: false 
             },
@@ -78,7 +82,7 @@ const MapField = {
                 api: 'admin_nominee', id: '#step5-t3-nominee-', require: false 
             },
             { 
-                input: '[name=step5-t3-outlander]', variant: 'outlander', type: 3, div: '#step5-type3',
+                input: '[name=step5-t3-outlander]', variant: 'inpOutlander', type: 3, div: '#step5-type3',
                 api: 'has_outlander', id: '#step5-t3-outlander-', require: false 
             },
             {
@@ -175,6 +179,7 @@ const register = {
 
                     register.change = false;
                     register.setStep(1);
+                    register.checkComplete();
                     loading('hide');
 
                     if(register.status == 3){
@@ -219,7 +224,7 @@ const register = {
                         $('#formstatus-uncomplete-message').hide();
                     }
                                         
-                    $('.btn-action, .selecter-file').remove();
+                    $('.btn-action.gold, .selecter-file').remove();
                     $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
                     $('.btn-confirm-submit').hide();
                 } else {
@@ -234,7 +239,7 @@ const register = {
                             $('#formstep-sts').html('รอตรวจสอบ');
                             $('#formstatus-info').removeClass('hide');
                             $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
-                            $('.btn-action, .selecter-file').remove();
+                            $('.btn-action.gold, .selecter-file').remove();
                             $('.btn-confirm-submit').hide();
                             register.complete = true;
                         break;
@@ -256,7 +261,7 @@ const register = {
                             $('#formstep-pre').addClass(pre_css);
                             $('#formstep-pre').html(pre_str);
                             $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
-                            $('.btn-action, .selecter-file').remove();
+                            $('.btn-action.gold, .selecter-file').remove();
                             $('.btn-confirm-submit').hide();
                             register.complete = true;
                         break;
@@ -275,7 +280,7 @@ const register = {
                                 $('#formstep-sts').html('หมดเวลาตอบกลับการขอข้อมูลเพิ่มเติม');
                                 $('#formstatus-uncomplete-title').html('หมดเวลาตอบกลับการขอข้อมูลเพิ่มเติมใบสมัครแล้ว');
                                 $('#formstatus-uncomplete-message').hide();
-                                $('.btn-action, .selecter-file').remove();
+                                $('.btn-action.gold, .selecter-file').remove();
                                 $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
                                 $('.btn-confirm-submit').hide();
                                 register.expired = true;
@@ -285,10 +290,9 @@ const register = {
                         case 0: 
                             $('#formstep-sts').addClass('notpass');
                             $('#formstep-sts').html('ไม่ผ่านการอนุมัติ');
-                            $('.form-main-title').removeClass('hide');
                             $('#formstatus-nopass').removeClass('hide');
-                            $('.regis-form-data input, textarea').prop('disabled',true);
-                            $('.attach-file').remove();
+                            $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
+                            $('.btn-action.gold, .selecter-file').remove();
                             $('.btn-confirm-submit').hide();
                             register.complete = true;
                         break;
@@ -338,7 +342,38 @@ const register = {
                 Object.assign(register.formData.step4, tmp['step4']);
                 Object.assign(register.formData.step5, tmp['step5']);
                 
-                register.setAppTypeSub(register.formData.step1.appType)
+                register.setAppTypeSub(register.formData.step1.appType);
+
+                if(Number(register.formData.step3.setAddress) == 1){
+                    register.formData.step3.address = register.formData.step2.address;
+                    register.formData.step3.road = register.formData.step2.road;
+                    register.formData.step3.province = register.formData.step2.province;
+                    register.formData.step3.district = register.formData.step2.district;
+                    register.formData.step3.subDistrict = register.formData.step2.subDistrict;
+                    register.formData.step3.zipcode = register.formData.step2.zipcode;
+                    $('#step3-address').val(register.formData.step2.address);
+                    $('#step3-road').val(register.formData.step2.road);
+                    $('#step3-subDistrict').val(register.formData.step2.subDistrict);
+                    $('#step3-district').val(register.formData.step2.district);
+                    $('#step3-province').val(register.formData.step2.province);
+                    $('#step3-zipcode').val(register.formData.step2.zipcode);
+                }
+
+                if(Number(register.formData.step1.appType) == 1){
+                    if(Number(register.formData.step5.manageBy) == 1){
+                        $('#div-step5-businessCert').hide();
+                    } else {
+                        const title = $('#step5-file1-title');
+
+                        if(Number(register.formData.step5.manageBy) == 2){
+                            title.html('สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน <span class="required">*</span>');
+                        } else {
+                            title.html('สำเนาใบอนุญาตประกอบธุรกิจที่ถูกต้องตามกฎหมาย <span class="required">*</span>');  
+                        }
+
+                        $('#div-step5-businessCert').show();
+                    }
+                }
                 
                 $.each(referance, function(key,ref){
                     if(ref.app == 'awards/application'){
@@ -350,8 +385,8 @@ const register = {
                 
                 if(files.length > 0){
                     $.each(files,function(key,file){
-                        let map = referance.find(el => el.position == file.file_position);
-                        let pointer = map.pointer;
+                        let ref = referance.find(el => el.position == file.file_position);
+                        let pointer = ref.pointer;
                         register.formData[pointer[0]][pointer[1]].push(file);
                         register.count[pointer[1]]++;
                     });
@@ -359,15 +394,14 @@ const register = {
                     $.each(referance, function(key,ref){
                         if(ref.app == 'awards/application'){
                             let pointer = ref.pointer;
-                            if(register.count[pointer[1]] > 0){                            
+                            if(register.formData[pointer[0]][pointer[1]].length > 0){                            
                                 showFiles.tycoon(
                                     ref.input,register.formData[pointer[0]][pointer[1]]
                                 );
                             } else {
                                 if($.inArray(Number(register.status),[2,3,0]) === -1 && !register.expired) {
                                     clearBtnRemoveFile('by-input',ref.app,ref.input);
-                                } else {
-                                    
+                                } else {                                    
                                     if(ref.path == 'images'){
                                         $(ref.ablum).removeClass('ablumbox');                                        
                                         $(ref.ablum).addClass('text-center');
@@ -388,6 +422,22 @@ const register = {
                 } else {
                     if($.inArray(Number(register.status),[2,3,0]) === -1 && !register.expired) {
                         clearBtnRemoveFile('all','awards/application','');
+                    } else {
+                        $.each(referance, function(key,ref){                                  
+                            if(ref.path == 'images'){
+                                $(ref.ablum).removeClass('ablumbox');                                        
+                                $(ref.ablum).addClass('text-center');
+                                $(ref.ablum).html('ไม่มีรูปแนบ');
+                            } else {
+                                const button = $(`button[onclick="downloadFile('${ref.input}')"]`);
+                                button.prop('disabled',true);
+                                button.removeClass('btn-primary');
+                                button.addClass('btn-transparent');
+                                button.css('color','#000');
+                                button.css('opacity','1');
+                                button.html('ไม่มีไฟล์แนบ');
+                            }
+                        });
                     }
                 }
                 
@@ -455,6 +505,7 @@ const register = {
         ];
 
         let checkComplete = true;
+        const pattern_email = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         
         $.each(tabs,function(key,tab){
             let checkRequire = true;
@@ -478,9 +529,26 @@ const register = {
                 if(map.require){
                     if(empty(register.formData['step'+tab.step][map.variant])){
                         checkRequire = false;
-                    } else {
-                        $(map.input).removeClass('is-invalid');
-                    }
+                    } 
+                    // else {
+                    //     if(map.input == '#step2-zipcode'){
+                    //         if(register.formData['step'+tab.step][map.variant].length != 5){
+                    //             checkRequire = false;
+                    //         } else {
+                    //             $(map.input).removeClass('is-invalid');
+                    //         }
+                    //     } 
+                    //     else if(map.input == '#step4-email'){
+                    //         if(!pattern_email.test(register.formData['step'+tab.step][map.variant])){
+                    //             checkRequire = false;
+                    //         } else {
+                    //             $(map.input).removeClass('is-invalid');
+                    //         }
+                    //     }
+                    //     else {
+                    //         $(map.input).removeClass('is-invalid');
+                    //     }
+                    // }
                 }
             });
 
@@ -562,8 +630,9 @@ const register = {
         formData.append('id',this.id);
         formData.append('step',step);
 
-        $.each(mapFData,function(key,map){
-            formData.append(map.api,dataStep[map.variant]);
+        $.each(mapFData,function(key,mapf){
+            const mapV = !empty(dataStep[mapf.variant]) ? dataStep[mapf.variant] : '';
+            formData.append(mapf.api,mapV);
         });
 
         setting.data = formData;
@@ -603,25 +672,25 @@ const register = {
         });
     },
     getMapField: function(by,st){
-        let map = [];
+        let mapf = [];
 
         if(by == 'step'){            
             let temp = MapField.step;
             if(st != 'finish'){ 
                 if(st != 5){
-                    map = temp['s'+st]; 
+                    mapf = temp['s'+st]; 
                 } else {
                     temp = temp['s5'];
                     let appType = register.formData.step1.appType;
 
                     $.each(temp, function(key,val){
                         if(appType == val.type || val.type == 'all'){
-                            map.push(val);
+                            mapf.push(val);
                         }
                     });
                 }
             } else {
-                map.concat(
+                mapf.concat(
                     temp.s1.concat(
                         temp.s2.concat(
                             temp.s3.concat(
@@ -629,26 +698,84 @@ const register = {
             }
         }
 
-        return map;
+        return mapf;
     },
     validate: function(){
+        const pattern_email = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         let bool_input = true;        
         
         ;[1,2,3,4,5].forEach(index => {
             let mapFData = this.getMapField('step',index),
                 formData = register.formData['step'+index];
 
-            $.each(mapFData,function(key,map){
-                if(map.require){    
-                    if(empty(formData[map.variant])){
-                        $(map.input).addClass('is-invalid');
-                        bool_input = false;
+            $.each(mapFData,function(key,mapf){
+                if(mapf.require){    
+                    if(mapf.input == '#step2-zipcode'){
+                        if(empty(formData[mapf.variant]) || (formData[mapf.variant]).toString().length !== 5){
+                            $(mapf.input).addClass('is-invalid');
+                            $('#invalid-step2-zipcode').show();
+                            bool_input = false;
+                        } else {
+                            $(mapf.input).removeClass('is-invalid');  
+                            $('#invalid-step2-zipcode').hide(); 
+                        }
+                    } 
+                    else if(mapf.input == '#step4-email'){                        
+                        if(empty(formData[mapf.variant]) || !pattern_email.test(formData[mapf.variant])){
+                            $(mapf.input).addClass('is-invalid');
+                            $('#invalid-step4-email').show();
+                            bool_input = false;
+                        } else {
+                            $(mapf.input).removeClass('is-invalid');   
+                            $('#invalid-step4-email').hide();
+                        }
                     } else {
-                        $(map.input).removeClass('is-invalid');
+                        if(empty(formData[mapf.variant])){
+                            $(mapf.input).addClass('is-invalid');
+                            bool_input = false;
+                        } else {
+                            $(mapf.input).removeClass('is-invalid');  
+                        }    
                     }
                 }
             });
         });
+
+        if(!register.passYear){
+            let confYear = register.appType.main.find(el => el.id == app);
+            $('#step5-openYear').addClass('is-invalid');
+            $('#error-open-year').html('เปิดรับสมัครสําหรับผู้ประกอบการที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป');
+            bool_input = false;
+        } else {
+            let date = new Date();
+            let fulldate = $('#step5-hiddenDate').val().split('/');
+
+            let from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0],
+                to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
+            
+            let totalYear = calcDate(from,to);
+            let app = register.formData.step1.appType;
+            let confYear = register.appType.main.find(el => el.id == app);
+            register.passYearCount = confYear.fixe_year_open;
+
+            if(Number(totalYear.total_year) < Number(confYear.fixe_year_open)){
+                bool_input = false;
+                register.passYear = false;
+                $('#error-open-year').html('เปิดรับสมัครสําหรับผู้ประกอบการที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป');
+                $('#step5-openYear').addClass('is-invalid');
+            } else {
+                $('#step5-openYear').removeClass('is-invalid');  
+                register.passYear = true;
+            }
+        }
+
+        if(!bool_input){
+            alert.show(
+                'error',
+                'ดำเนินการไม่สำเร็จ',
+                'โปรดตรวจสอบแบบฟอร์มใบสมัคร ให้ครบถ้วน ก่อนส่งแบบฟอร์มใบสมัคร'
+            );
+        }
 
         return bool_input;
 
@@ -698,7 +825,7 @@ const register = {
                             formData.append(mapv.api,df);
                         });
                     });            
-
+                    
                     api({method: 'action', url: '/inner-api/app/finish', data: formData})
                     .then(function(res){
                         loading('hide');
@@ -724,8 +851,6 @@ const register = {
                     });
                 }
             });
-        } else {
-            alert.show('error','ดำเนินการไม่สำเร็จ','โปรดตรวจสอบแบบฟอร์มใบสมัคร ให้ครบถ้วน ก่อนส่งแบบฟอร์มใบสมัคร');
         }
     },
 }
@@ -741,95 +866,113 @@ const selectType = (type,value) => {
         register.setFormDefine(value);
     }
     register.change = true;
+    register.checkComplete();
 };
 
-$('#step1-desc').on('keyup', function(){ 
+$('#step1-desc').on('keyup change', function(){ 
     register.change = true;
     register.formData.step1.desc = $(this).val(); 
     $('#step1-desc-cc').html(1000 - register.formData.step1.desc.length);
+    register.checkComplete();
 });
 
-$('#step1-link').on('keyup', function(){ 
+$('#step1-link').on('keyup change', function(){ 
     register.change = true;
     register.formData.step1.link = $(this).val(); 
+    register.checkComplete();
 });
 
 $('[name=step1-lowcarbon]').on('click', function(){ 
     register.formData.step1.lowcarbon = $(this).val(); 
     register.change = true; 
+    register.checkComplete();
 });
 
 // Step 2
-$('#step2-siteNameTh').on('keyup', function(){ 
+$('#step2-siteNameTh').on('keyup change', function(){ 
     register.formData.step2.siteNameTh = $(this).val();
      register.change = true;
+     register.checkComplete();
 });
 
-$('#step2-siteNameEng').on('keyup', function(){ 
+$('#step2-siteNameEng').on('input', function(){ 
     let value = $(this).val().replace(/[^a-zA-Z0-9\s]/g,'');
     $(this).val(value);
     register.formData.step2.siteNameEng = value; 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step2-address').on('keyup', function(){ 
+$('#step2-address').on('keyup change', function(){ 
     register.formData.step2.address = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step2-road').on('keyup', function(){ 
+$('#step2-road').on('keyup change', function(){ 
     register.formData.step2.road = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 $('#step2-province').on('keyup change', function(){ 
     register.formData.step2.province = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 $('#step2-district').on('keyup change', function(){ 
     register.formData.step2.district = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 $('#step2-subDistrict').on('keyup change', function(){ 
     register.formData.step2.subDistrict = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step2-zipcode').on('keyup change', function(){ 
+$('#step2-zipcode').on('keyup change',async function(){   
     register.formData.step2.zipcode = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step2-fb').on('keyup', function(){ 
+$('#step2-fb').on('keyup change', function(){ 
     register.formData.step2.fb = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step2-ig').on('keyup', function(){ 
+$('#step2-ig').on('keyup change', function(){ 
     register.formData.step2.ig = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step2-lid').on('keyup', function(){ 
+$('#step2-lid').on('keyup change', function(){ 
     register.formData.step2.lid = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step2-other').on('keyup', function(){ 
+$('#step2-other').on('keyup change', function(){ 
     register.formData.step2.other = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step2-gm').on('keyup', function(){ 
+$('#step2-gm').on('keyup change', function(){ 
     register.formData.step2.gm = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 // Step 3
-$('#step3-companyName').on('keyup', function(){ 
+$('#step3-companyName').on('keyup change', function(){ 
     register.formData.step3.companyName = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 $('[name=step3-setAddress]').on('click', function(){
@@ -850,131 +993,171 @@ $('[name=step3-setAddress]').on('click', function(){
     $('#step3-district').val(register.formData.step3.district);
     $('#step3-subDistrict').val(register.formData.step3.subDistrict);
     $('#step3-zipcode').val(register.formData.step3.zipcode);
+    register.checkComplete();
 });
 
-$('#step3-address').on('keyup', function(){ 
+$('#step3-address').on('keyup change', function(){ 
     register.formData.step3.address = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step3-road').on('keyup', function(){ 
+$('#step3-road').on('keyup change', function(){ 
     register.formData.step3.road = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 $('#step3-province').on('keyup, change', function(){ 
     register.formData.step3.province = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 $('#step3-district').on('keyup, change', function(){ 
     register.formData.step3.district = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 $('#step3-subDistrict').on('keyup, change', function(){ 
     register.formData.step3.subDistrict = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step3-zipcode').on('keyup, change', function(){ 
+$('#step3-zipcode').on('keyup change', function(){ 
     register.formData.step3.zipcode = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step3-telephone').on('keyup', function(){ 
+$('#step3-telephone').on('keyup change', function(){ 
     register.formData.step3.telephone = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step3-email').on('keyup', function(){ 
+$('#step3-email').on('keyup change', function(){ 
     register.formData.step3.email = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step3-lid').on('keyup', function(){ 
+$('#step3-lid').on('keyup change', function(){ 
     register.formData.step3.lid = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 // Step 4
-$('#step4-name').on('keyup', function(){ 
+$('#step4-name').on('keyup change', function(){ 
     register.formData.step4.name = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step4-position').on('keyup', function(){ 
+$('#step4-position').on('keyup change', function(){ 
     register.formData.step4.position = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step4-telephone').on('keyup', function(){ 
+$('#step4-telephone').on('keyup change', function(){ 
     register.formData.step4.telephone = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step4-email').on('keyup', function(){ 
+$('#step4-email').on('keyup change', function(){ 
     register.formData.step4.email = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step4-lid').on('keyup', function(){ 
+$('#step4-lid').on('keyup change', function(){ 
     register.formData.step4.lid = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 // Step 5
 $('[name=step5-t1-manageBy]').on('click', function(){ 
     register.formData.step5.manageBy = $(this).val(); 
     register.change = true;
-    let title;
+    
+    const panel = $('#div-step5-businessCert');
+    const title = $('#step5-file1-title');
 
     switch($(this).val()){
-        case '1': title = 'ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง'; break;
-        case '2': title = 'สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน'; break;
-        case '3': title = 'สำเนาใบอนุญาตประกอบธุรกิจที่ถูกต้องตามกฎหมาย'; break;
+        case '1': 
+            title.html('ใบรับรองมาตรฐาน หรือประกาศนียบัตรจากการท่องเที่ยวแห่ง'); 
+            panel.hide();
+        break;
+        case '2': 
+            title.html('สำเนาหนังสือการจดทะเบียนวิสาหกิจชุมชน <span class="required">*</span>');  
+            panel.show();
+        break;
+        case '3': 
+            title.html('สำเนาใบอนุญาตประกอบธุรกิจที่ถูกต้องตามกฎหมาย <span class="required">*</span>');  
+            panel.show();
+        break;
     }
     
-    $('#step5-file1-title').html(title+'<span class="required">*</span>');
+    register.checkComplete();
 });
 
 $('[name=step5-t2-buildExt]').on('click', function(){ 
     register.formData.step5.buildExt = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step5-t2-bussLicense').on('keyup', function(){ 
+$('#step5-t2-bussLicense').on('keyup change', function(){ 
     register.formData.step5.bussLicense = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 $('[name=step5-t2-bussCkRoom]').on('click', function(){ 
     register.formData.step5.bussCkRoom = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step5-t3-bussLicense').on('keyup', function(){ 
+$('#step5-t3-bussLicense').on('keyup change', function(){ 
     register.formData.step5.bussLicenseT3 = $(this).val(); 
     register.change = true;
+    register.checkComplete();
+});
+
+$('[name=step5-t3-hasEffluent]').on('click', function(){ 
+    register.formData.step5.hasEffluent = $(this).val(); 
+    register.change = true;
+    register.checkComplete();
 });
 
 $('[name=step5-t3-bussCites]').on('click', function(){ 
     register.formData.step5.bussCites = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 $('[name=step5-t3-nominee]').on('click', function(){ 
     register.formData.step5.nominee = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
 $('[name=step5-t3-outlander]').on('click', function(){ 
-    register.formData.step5.outlander = $(this).val(); 
+    register.formData.step5.inpOutlander = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 
-$('#step5-t4-bussLicense').on('keyup', function(){ 
+$('#step5-t4-bussLicense').on('keyup change', function(){ 
     register.formData.step5.bussLicenseT4 = $(this).val(); 
     register.change = true;
+    register.checkComplete();
 });
 

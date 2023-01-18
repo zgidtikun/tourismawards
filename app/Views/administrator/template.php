@@ -1,3 +1,4 @@
+<?php $app = new \Config\App(); ?> 
 <!doctype html>
 <html>
 
@@ -9,49 +10,49 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="shortcut icon" href="<?= base_url() ?>/assets/images/favicon.png">
 
-  <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js?v=<?=$app->script_v?>" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js?v=<?=$app->script_v?>"></script>
   <!-- DataTable -->
-  <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-  <script src="<?= base_url() ?>/assets/js/dataTables.responsive.min.js"></script>
+  <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js?v=<?=$app->script_v?>"></script>
+  <script src="<?= base_url() ?>/assets/js/dataTables.responsive.min.js?v=<?=$app->script_v?>"></script>
 
-  <script type="text/javascript" src="<?= base_url() ?>/assets/js/main.js" charset="utf-8"></script>
-  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/boilerplate.css" type="text/css" />
+  <script type="text/javascript" src="<?= base_url() ?>/assets/js/main.js?v=<?=$app->script_v?>" charset="utf-8"></script>
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/boilerplate.css?v=<?=$app->script_v?>" type="text/css" />
 
   <!-- Bootstrap 5 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css?v=<?=$app->script_v?>">
   <!-- Bootstrap 4 -->
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"> -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css?v=<?=$app->script_v?>"> -->
 
 
   <!-- DataTable -->
-  <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/site.css" />
-  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/responsive.dataTables.min.css" />
+  <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css?v=<?=$app->script_v?>">
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/site.css?v=<?=$app->script_v?>" />
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/responsive.dataTables.min.css?v=<?=$app->script_v?>" />
 
-  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/fonts.css" />
-  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/totop.css" />
-  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/cookie.css" />
-  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/backend.css" />
-  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/fileup.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/fonts.css?v=<?=$app->script_v?>" />
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/totop.css?v=<?=$app->script_v?>" />
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/cookie.css?v=<?=$app->script_v?>" />
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/backend.css?v=<?=$app->script_v?>" />
+  <link rel="stylesheet" href="<?= base_url() ?>/assets/css/fileup.css?v=<?=$app->script_v?>" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css?v=<?=$app->script_v?>">
 
   <!-- Select2 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css?v=<?=$app->script_v?>">
   <!-- summernote -->
-  <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/summernote/summernote-bs5.min.css">
-  <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/summernote/summernote-lite.min.css">
+  <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/summernote/summernote-bs5.min.css?v=<?=$app->script_v?>">
+  <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/summernote/summernote-lite.min.css?v=<?=$app->script_v?>">
 
-  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
+  <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css?v=<?=$app->script_v?>" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js?v=<?=$app->script_v?>"></script>
 
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script> -->
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css?v=<?=$app->script_v?>" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js?v=<?=$app->script_v?>"></script> -->
 
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css?v=<?=$app->script_v?>">
 
   <!-- Chart JS -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js?v=<?=$app->script_v?>"></script> -->
 
   <!-- Apex Charts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -109,12 +110,12 @@
   <!-- SweetAlert2 -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- Toastr -->
-  <script src="<?php echo base_url() ?>/assets/plugins/toastr/toastr.min.js"></script>
+  <script src="<?php echo base_url() ?>/assets/plugins/toastr/toastr.min.js?v=<?=$app->script_v?>"></script>
   <!-- Select2 -->
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js?v=<?=$app->script_v?>"></script>
   <!-- Summernote -->
-  <script src="<?php echo base_url() ?>/assets/plugins/summernote/summernote-bs5.min.js"></script>
-  <script src="<?php echo base_url() ?>/assets/plugins/summernote/summernote-lite.min.js"></script>
+  <script src="<?php echo base_url() ?>/assets/plugins/summernote/summernote-bs5.min.js?v=<?=$app->script_v?>"></script>
+  <script src="<?php echo base_url() ?>/assets/plugins/summernote/summernote-lite.min.js?v=<?=$app->script_v?>"></script>
 
   <?php echo view('administrator/main_js') ?>
 

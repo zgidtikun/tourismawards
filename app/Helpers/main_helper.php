@@ -72,7 +72,7 @@ function adminName($id = "")
     }
     $db = \Config\Database::connect();
     $result = $db->table('admin')->where('id', $id)->get()->getRowObject();
-    return $result->name . " ". $result->surname;
+    return $result->name . " " . $result->surname;
 }
 
 function usersName($id = "")
@@ -82,7 +82,7 @@ function usersName($id = "")
     }
     $db = \Config\Database::connect();
     $result = $db->table('users')->where('id', $id)->get()->getRowObject();
-    return $result->name . " ". $result->surname;
+    return $result->name . " " . $result->surname;
 }
 
 function applicationType($id)
@@ -453,7 +453,7 @@ function readFiles($dir)
         if ($dh = opendir($dir)) {
             while (($file = readdir($dh)) !== false) {
                 if ($file != '.' && $file != '..') {
-                    $file_name[] = $dir.$file;
+                    $file_name[] = $dir . $file;
                 }
             }
             closedir($dh);

@@ -145,7 +145,7 @@ class EstimateController extends BaseController
     {
         try {
             $input = (object) $this->input->getVar();
-
+            
             save_log_activety([
                 'module' => 'estimate_draft',
                 'action' => 'estimate_draft_'.$input->target,

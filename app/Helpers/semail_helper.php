@@ -267,13 +267,27 @@ class semail {
                     $_cc = [];
                     $_bcc = ['zgidtikun@gmail.com'];
                     
-                    $judge = $this->getCommittees($dataset->appId);                    
+                    $judge = $this->getUser($dataset->appId);                    
                     
                     if(!empty($judge)){
                         foreach($judge as $user){
                             array_push($_to,$user->email);
                         }
-                    }
+                    }      
+                break;
+                case 'answer-request-expired':
+                    $tycoon = $this->getTycoon($dataset->appId);
+                    $_header = 'ไม่มีการตอบกลับการขอข้อมูลเพิ่มเติม';
+                    $_content = "$tycoon->place ได้หมดเวลาการส่งคำตอบการประเมินเบื้องต้น (Pre-Screen) เพิ่มเติม "
+                        . "จึงขอให้ท่านคณะกรรมการกรุณาล็อกอินเข้าสู่เว็บไซต์ เพื่อทำการประเมินเบื้องต้น (Pre-Screen) อีกครั้ง";
+                    
+                    $judge = $this->getUser($dataset->judgeId);   
+
+                    $_subject = 'แจ้งการ'.$_header;
+                    $_to = $judge->email;
+                    $_from = $email_sys;
+                    $_cc = [];
+                    $_bcc = ['zgidtikun@gmail.com'];    
                 break;
                 case 'estimate-request':
                     $user = $this->getUser($dataset->id);  

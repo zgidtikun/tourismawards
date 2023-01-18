@@ -31,13 +31,11 @@ class Approve extends BaseController
 
     public function index()
     {
-        // var_dump($_GET);
-        // pp($_GET);
         $like = [];
         $where = [];
         $sub_id = 1;
         if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
-            // $like['attraction_name_th'] = $_GET['keyword'];
+            $like['attraction_name_th'] = $_GET['keyword'];
             $like['company_name'] = $_GET['keyword'];
         }
         if (!empty($_GET['application_type_id']) && $_GET['application_type_id'] != "") {
@@ -57,12 +55,8 @@ class Approve extends BaseController
         } else {
             $where['status >= '] = '2';
         }
-        // pp($where);
 
-        $data['result'] = $this->ApplicationForm->like($like, 'match', 'both')->where($where)->orderBy('id', 'desc')->findAll();
-        // pp_sql();
-        // pp($data['result']);
-        // exit;
+        $data['result'] = $this->ApplicationForm->orLike($like, 'match', 'both')->where($where)->orderBy('id', 'desc')->findAll();
 
         $data['application_type'] = $this->ApplicationType->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
@@ -243,5 +237,17 @@ class Approve extends BaseController
         } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
         }
+    }
+
+    function downloadFilePDF()
+    {
+        $post = $this->input->getVar();
+        // px($post);
+        // We'll be outputting a PDF  
+        header('Content-type: application/pdf');
+        // It will be called downloaded.pdf  
+        header('Content-Disposition: attachment; filename="' . $post['name'] . '"');
+        // The PDF source is in original.pdf  
+        readfile($post['url']);
     }
 }

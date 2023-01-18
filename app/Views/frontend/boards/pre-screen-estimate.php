@@ -222,8 +222,15 @@
                         <div class="regis-form-data-col2 attachfile">
                             <div class="attachinp">
                                 <h4>แนบไฟล์</h4>
-                                <a href="javascript:downloadFile();" class="btn-download">ดาวน์โหลดไฟล์แนบ</a>
+                                <!-- <a href="javascript:downloadFile();" class="btn-download">ดาวน์โหลดไฟล์แนบ</a> -->
+                                <a href="javascript:;" class="btn-download btn-transparent disabled"
+                                style="color:#000;opacity:1;">
+                                    ไม่มีไฟล์แนบ
+                                </a>
+                                <div id="list-download">
+                                </div>
                             </div>
+
                             <div class="attachinp border-0 is-estimate">
                                 <a href="javascript:void(0)" class="btn-getdata active">
                                     ขอข้อมูลเพิ่มเติม

@@ -23,6 +23,20 @@ class MarkTest extends BaseController
 
     public function index()
     {
+        $url = 'https://www.tennis.in.th/uploads/2023/01/12/13/app-register/paper/20230112_212a53e787e5.pdf';
+        $new_name = '115544sdsdsdsds.pdf';
+        pp($url);
+        // We'll be outputting a PDF  
+        header('Content-type: application/pdf');
+
+        // It will be called downloaded.pdf  
+        header('Content-Disposition: attachment; filename="5555.pdf"');
+
+        // The PDF source is in original.pdf  
+        readfile($url);
+        exit;
+
+        px(mb_substr("แหล่งท่องเที่ยว", 0, 1));
         // px(password_hash('1qazxsw2+-+', PASSWORD_DEFAULT));
         show_404();
         // px($_COOKIE);
@@ -184,13 +198,13 @@ class MarkTest extends BaseController
     {
         $email_data = [];
         $email = 'diaryads0@gmail.com';     //'diaryads0@gmail.com', ['diaryads0@gmail.com', 'diaryads0@gmail.com']
-        $from = ['email'=>'noreply@chaiyohosting.com', 'name'=>'Tourism Awards 2023'];   //email, name
+        $from = ['email' => 'noreply@chaiyohosting.com', 'name' => 'Tourism Awards 2023'];   //email, name
         $cc = ['diaryads0@gmail.com'];
         $bcc = ['kritsana@chaiyohosting.com'];
-        
+
         $subject = 'ไปไหนมา';
         $message = view('template_email', $email_data);
-        
+
         $requestEmail = [
             'to' => $email,
             'subject' => $subject,
@@ -199,33 +213,33 @@ class MarkTest extends BaseController
             'cc' => $cc,
             'bcc' => $bcc
         ];
-                
+
         try {
-            
+
             $response = $this->SendMail($requestEmail);
             echo $response['message'];
-            
         } catch (Exception $e) {
             print_r($e);
             echo "Something went wrong. Please try again.";
         }
     }
-    
-    private function SendMail($requestEmail=[]){
-        
-        if(!$requestEmail || count($requestEmail)<=0){
-            return ['status'=> false, 'message'=>'Invalid email data.'];
+
+    private function SendMail($requestEmail = [])
+    {
+
+        if (!$requestEmail || count($requestEmail) <= 0) {
+            return ['status' => false, 'message' => 'Invalid email data.'];
         }
-        if(!array_key_exists('to', $requestEmail) || !array_key_exists('subject', $requestEmail) || !array_key_exists('message', $requestEmail)){
-            return ['status'=> false, 'message'=>'Invalid email data, required [to|subject|message] value.'];
+        if (!array_key_exists('to', $requestEmail) || !array_key_exists('subject', $requestEmail) || !array_key_exists('message', $requestEmail)) {
+            return ['status' => false, 'message' => 'Invalid email data, required [to|subject|message] value.'];
         }
-        if((is_string($requestEmail['to']) && @trim($requestEmail['to'])=='') || (is_array($requestEmail['to']) && @count($requestEmail['to'])==0) || @$requestEmail['subject']=='' || @$requestEmail['message']==''){
-            return ['status'=> false, 'message'=>'Invalid email data.'];
+        if ((is_string($requestEmail['to']) && @trim($requestEmail['to']) == '') || (is_array($requestEmail['to']) && @count($requestEmail['to']) == 0) || @$requestEmail['subject'] == '' || @$requestEmail['message'] == '') {
+            return ['status' => false, 'message' => 'Invalid email data.'];
         }
-        
+
         try {
             $mail = new PHPMailer(true);
-            
+
             $mail->SMTPDebug = 2;
             $mail->isSMTP();
             $mail->CharSet = $_ENV['email.charset'];
@@ -237,63 +251,63 @@ class MarkTest extends BaseController
             $mail->Port = $_ENV['email.SMTPPort'];
             $mail->Subject = $requestEmail['subject'];
             $mail->Body = $requestEmail['message'];
-            
-            if(is_array($requestEmail['to'])){
-                foreach($requestEmail['to'] as $address){
-                    if(trim($address)!=''){
+
+            if (is_array($requestEmail['to'])) {
+                foreach ($requestEmail['to'] as $address) {
+                    if (trim($address) != '') {
                         $mail->addAddress(trim($address));
                     }
-                }                
-            }else{
+                }
+            } else {
                 $mail->addAddress(trim($requestEmail['to']));
             }
-            
-            
-            if(array_key_exists('from', $requestEmail)){
-                if(array_key_exists('email', $requestEmail['from']) && @trim($requestEmail['from']['email'])!=''){
+
+
+            if (array_key_exists('from', $requestEmail)) {
+                if (array_key_exists('email', $requestEmail['from']) && @trim($requestEmail['from']['email']) != '') {
                     $fromEmail = $requestEmail['from']['email'];
-                    
-                    if(array_key_exists('name', $requestEmail['from']) && @trim($requestEmail['from']['name'])!=''){
+
+                    if (array_key_exists('name', $requestEmail['from']) && @trim($requestEmail['from']['name']) != '') {
                         $fromName = $requestEmail['from']['name'];
-                    }else{
+                    } else {
                         $fromName = $fromEmail;
                     }
-                    
+
                     $mail->setFrom($fromEmail, $fromName);
                 }
-//            }else{
-//                $mail->setFrom($_ENV['email.SMTPUser'], $_ENV['email.SMTPUser']);
+                //            }else{
+                //                $mail->setFrom($_ENV['email.SMTPUser'], $_ENV['email.SMTPUser']);
             }
-            
-            if(array_key_exists('cc', $requestEmail)){
-                if(is_array($requestEmail['cc'])){
-                    foreach($requestEmail['cc'] as $cc){
-                        if(trim($cc)!=''){
+
+            if (array_key_exists('cc', $requestEmail)) {
+                if (is_array($requestEmail['cc'])) {
+                    foreach ($requestEmail['cc'] as $cc) {
+                        if (trim($cc) != '') {
                             $mail->addCC(trim($cc));
                         }
-                    }  
-                }                                  
+                    }
+                }
             }
-            if(array_key_exists('bcc', $requestEmail)){
-                if(is_array($requestEmail['bcc'])){
-                    foreach($requestEmail['bcc'] as $bcc){
-                        if(trim($bcc)!=''){
+            if (array_key_exists('bcc', $requestEmail)) {
+                if (is_array($requestEmail['bcc'])) {
+                    foreach ($requestEmail['bcc'] as $bcc) {
+                        if (trim($bcc) != '') {
                             $mail->addBCC(trim($bcc));
                         }
-                    }  
-                }                                  
+                    }
+                }
             }
-                        
+
             $mail->isHTML(true);
 
             if (!$mail->send()) {
-                return ['status'=> false, 'message'=>'Something went wrong. Please try again.'];
+                return ['status' => false, 'message' => 'Something went wrong. Please try again.'];
             } else {
-                return ['status'=> true, 'message'=>'Email sent successfully.'];
+                return ['status' => true, 'message' => 'Email sent successfully.'];
             }
         } catch (Exception $e) {
             print_r($e);
-            return ['status'=> false, 'message'=>'Something went wrong. Please try again.'];
+            return ['status' => false, 'message' => 'Something went wrong. Please try again.'];
         }
     }
 }
