@@ -5,19 +5,29 @@
         margin-left: 1rem;
 }
 </style>
-<div class="container login" style="height: 100%;" data-id="<?=$id?>">
+<div class="container login" style="height: 100%;" data-id="<?=$id?>" data-lg="<?=$login?>">
     <div class="row">
         <div class="col6 loginbox">
             <div class="formbox">
                 <div class="formbox_row">
-                    <div class="inp_form login">
+                    <div class="inp_form login text-center">
                         <h3>ตั้งค่ารหัสผ่านใหม่</h3>
+                        <?php if(!$status): ?>
+                        <div class="alert alert-danger" style="margin-top:1.5rem;">
+                            <?=$message?>
+                        </div>
+                        <?php else : ?>
                         <div class="inp_form_row">
                             <div class="inp_form_col1">
                                 <input type="text" id="username" placeholder="อีเมล"
                                 value="<?=$email?>"
-                                <?=!empty($email) ? 'disabled' : ''?>>
+                                disabled>
                             </div>
+                            <?php if($login): ?>
+                            <div class="inp_form_col1">
+                                <input type="password" id="old-password" placeholder="รหัสผ่านเดิม">
+                            </div>
+                            <?php endif; ?>
                             <div class="inp_form_col1">
                                 <input type="password" id="password" placeholder="รหัสผ่านใหม่">
                                 <span class="inp-remark">รหัสผ่านต้องมี A-Z, a-z, 0-9 และอย่างน้อย 6 ตัวอักษร</span>
@@ -29,6 +39,7 @@
                                 <button type="button" onclick="signin.authen()">บันทึก</button>
                             </div>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -57,8 +68,11 @@
                     url: '<?= base_url('auth/new-password') ?>',
                     data: {
                         id: $('.login').attr('data-id'),
+                        lg: $('.login').attr('data-lg'), 
                         email: $('#username').val(),
                         password: $('#password').val(),
+                        password_old: $('#old-password').val(),
+                        password_con: $('#con-password').val(),
                         recapcha_token: signin.token
                     },
                     dataType: 'json',
@@ -67,17 +81,20 @@
                         if (response.result == 'success') {
                             $('#password').val('');
                             $('#con-password').val('');
+                            $('#old-password').val('');
 
-                            let message;
+                            let message,link;
                             
                             <?php if(!session()->get('isLoggedIn')) : ?>
                             message = 'ด้วยปุ่ม "ตกลง" เพื่อยังหน้าเข้าสู่ระบบ';
+                            link = '<?=base_url('login')?>';
                             <?php else : ?>
                             message = 'ด้วยปุ่ม "ตกลง" เพื่อยังหน้าข้อมูลส่วนตัว';
+                            link = '<?=base_url('profile')?>';
                             <?php endif; ?>
 
                             alert.show('success','เปลี่ยนรหัสผ่านใหม่เรียบร้อยแล้ว', message).then(function(data){
-                                window.location.href = '<?=base_url('login')?>';
+                                window.location.href = link;
                             });
                         } else {
                             alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', response.message);                               
@@ -90,10 +107,16 @@
             }
         },
         validation: function() {
-            const patternPassword = /^[A-Za-z0-9]{6,}$/;
-
+            const patternPassword = /^[A-Za-z0-9]+$/;
+            const lg = $('.login').attr('data-lg');
+            
             if ($('#username').val() == '') {
                 alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณากรอกอีเมล');
+                return false;
+            }
+
+            if(Number(lg) == 1 && $('#old-password').val() == ''){
+                alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณากรอกรหัสผ่านเดิม');
                 return false;
             }
 
@@ -102,7 +125,12 @@
                 return false;
             }
 
-            if (!patternPassword.test($('#password').val())) {
+            if (!/^[a-zA-Z0-9]/g.test($('#password').val())) {
+                alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'รหัสผ่านต้องมี A-Z, a-z, 0-9 และอย่างน้อย 6 ตัวอักษร');
+                return false;
+            }
+            
+            if ($('#password').val().length < 6) {
                 alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'รหัสผ่านต้องมี A-Z, a-z, 0-9 และอย่างน้อย 6 ตัวอักษร');
                 return false;
             }

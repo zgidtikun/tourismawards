@@ -87,21 +87,72 @@ class Home extends BaseController
         ));
     }
 
-    public function newpassword($id = null)
+    public function newpassword($token = null)
     {
-        if(!empty($id)){
-            $obj = new \App\Models\Users();
-            $user = $obj->where('id',$id)->select('email')->first();
-            $email= $user->email;
+        $obj = new \App\Models\Users();
+
+        if(!empty($token)){
+            $token = urldecode($token);
+            
+            $user = $obj->where(
+                "CONCAT(verify_code,id) LIKE '$token'",NULL,false
+            )
+            ->select('email,id')
+            ->first();
+
+            if(!empty($user)){
+                if(session()->get('isLoggedIn')){
+                    if($user->id == session()->get('id')){
+                        $id = $user->id;
+                        $email = $user->email;
+                        $status = true;
+                        $message = '';
+                    } else {
+                        $id = '';
+                        $email = '';
+                        $status = false;
+                        $message = 'Token ของท่านไม่ถูกต้อง';
+                    }
+                } else {
+                    $id = $user->id;
+                    $email = $user->email;
+                    $status = true;
+                    $message = '';
+                }
+            } else {
+                $id = '';
+                $email = '';
+                $status = false;
+                $message = 'Token ของท่านไม่ถูกต้อง';
+            }
         } else {
-            $email = '';
+            if(session()->get('isLoggedIn')){            
+                $user = $obj->where('id',session()->get('id'))
+                ->select('email')
+                ->first();
+
+                $id = session()->get('id');
+                $email = $user->email;
+                $status = true;
+                $message = '';
+            } else {
+                $id = '';
+                $email = '';
+                $status = false;
+                $message = 'Token ของท่านไม่ถูกต้อง';
+            }
         }
+
+        $login = !empty(session()->get('isLoggedIn')) ? session()->get('isLoggedIn') : false;
 
         return view('template-frontend',array(
             'title' => 'ตั้งค่ารหัสผ่านใหม่',
             '_recapcha' => $this->recapcha,
             'id' => !empty($id) ? $id : '',
             'email' => $email,
+            'status' => $status,
+            'message' => $message,
+            'login' => $login,
             'view' => 'frontend/new-password'
         ));
     }

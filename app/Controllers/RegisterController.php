@@ -132,6 +132,8 @@ class RegisterController extends BaseController
         } else {
             $user = $this->user->getUserByEmail($email,1);
             $account = $user->account;
+            $verify_code = $this->user->updateVerifyCode($account->id);
+            $account->verify_code = $verify_code;
             $this->resetPasswordMail($account);
             $result = array('result' => 'success', 'bank' => $user->bank);
         }
@@ -158,6 +160,22 @@ class RegisterController extends BaseController
                 );
                 return $this->response->setJSON($result);
             }
+
+            $obj_user = new \App\Models\Users();
+
+            if($this->input->getVar('lg') == 1){
+                $account = $obj_user->where('id',$this->input->getVar('id'))->first();
+                
+                if(!empty($account)){
+                    $authenticatePassword = password_verify($this->input->getVar('password_old'), $account->password);
+                    
+                    if(!$authenticatePassword){
+                        return $this->response->setJSON(['result' => 'error', 'message' => 'รหัสผ่านเดิมไม่ถูกต้อง']);
+                    }
+                } else {
+                    return $this->response->setJSON(['resullt' => 'error', 'อีเมลของคุณไม่ถูกต้อง']);
+                }
+            }
             
             if(!empty($this->input->getVar('id'))){
                 $where = ['id' => $this->input->getVar('id')];
@@ -165,7 +183,6 @@ class RegisterController extends BaseController
                 $where = ['email' => $this->input->getVar('email')];
             }
 
-            $obj_user = new \App\Models\Users();
             $update = $obj_user->where($where)
                 ->set(['password' => password_hash($this->input->getVar('password'),PASSWORD_DEFAULT)])
                 ->update();
@@ -180,7 +197,6 @@ class RegisterController extends BaseController
             return $this->response->setJSON([
                 'result' => 'error', 
                 'message' => ''
-                // 'message' => $e->getMessage()
             ]);
         }
     }

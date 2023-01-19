@@ -31,6 +31,7 @@ class PreScreen extends BaseController
     {
         $like = [];
         $where = [];
+        $where_type = [];
         $sub_id = 1;
         // $like['status'] = 0;
         // $like['status'] = 4;
@@ -51,6 +52,7 @@ class PreScreen extends BaseController
 
         if (!empty(session()->award_type) && session()->award_type != "" && !isAdmin()) {
             $where['application_type_id'] = session()->award_type;
+            $where_type['id'] = session()->award_type;
             $sub_id = session()->award_type;
         }
 
@@ -58,7 +60,7 @@ class PreScreen extends BaseController
         $data['result'] = $this->db->table('application_form AP')->select('AP.*')->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
         // pp_sql();
         // px($data['result']);
-        $data['application_type'] = $this->ApplicationType->findAll();
+        $data['application_type'] = $this->ApplicationType->where($where_type)->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
 
         // Template

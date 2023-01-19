@@ -261,14 +261,16 @@ class AnswerController extends BaseController
             ->where('status',3)
             ->countAllResults();
 
-        $estimate = $this->usStg->select('stauts')
+        $result = $this->usStg->select('stauts')
             ->where('user_id',$id)
+            ->where('stage',1)
             ->whereIn('status',[6,7])
             ->countAllResults();
         
         if($draft > 0) return 'draft';
         elseif($reject > 0) return 'reject';
-        elseif($finish > 0 || $estimate > 0) return 'finish';
+        elseif($result > 0) return 'result';
+        elseif($finish > 0) return 'finish';
         else return 'draft';
     }
 
@@ -315,7 +317,7 @@ class AnswerController extends BaseController
                     $insId = $this->ans->getInsertID();
                     break;
                 case 'update':                    
-                    $this->ans->where('id',$this->input->getVar('aid'),)
+                    $this->ans->where('id',$this->input->getVar('aid'))
                         ->set([ 'reply' => $this->input->getVar('reply') ])
                         ->update();                 
                     $insId = $this->input->getVar('aid');            
@@ -398,6 +400,14 @@ class AnswerController extends BaseController
                         'user_id' => $this->myId,
                         'datetime' => date('Y-m-d H:i:s'),
                         'data' => $this->input->getVar()
+                    ]);
+                    save_log_activety([
+                        'module' => 'step flow',
+                        'action' => 'application-'.$this->input->getVar('appId'),
+                        'bank' => 'frontend',
+                        'user_id' => $this->myId,
+                        'datetime' => date('Y-m-d H:i:s'),
+                        'data' => 'user_pre_screen'
                     ]);
 
                     $form = $this->appForm->where('id',$this->input->getVar('appId'))

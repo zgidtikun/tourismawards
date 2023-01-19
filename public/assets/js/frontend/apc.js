@@ -184,6 +184,7 @@ const register = {
 
                     if(register.status == 3){
                         $('#link-pre-screen').removeClass('disabled');
+                        $('#link-pre-screen').addClass('inactive');
                     }
                 }
             });
@@ -245,7 +246,8 @@ const register = {
                         break;
                         case 3: 
                             const prescreen = response.pre_status;
-                            let pre_css, pre_str;
+                            const result = response.result_status;
+                            let pre_css, pre_str, result_css, result_str;
                             
                             if($.inArray(prescreen,['draft','reject']) !== -1){
                                 pre_css = 'check';
@@ -254,12 +256,21 @@ const register = {
                                 pre_css = 'pass';
                                 pre_str = 'ส่งแบบประเมินเรียบร้อยแล้ว';
                             }
+
+                            if(result){
+                                result_css = 'check';
+                                result_str = 'ตรวจสอบผลการประเมิน';                                
+                                $('#link-pre-result').removeClass('disabled');                    
+                                $('#link-pre-result').addClass('inactive');
+                            }
                             
                             $('#formstep-sts').addClass('pass');
                             $('#formstep-sts').html('ผ่านการตรวจสอบ');
                             $('#formstatus-pass').removeClass('hide');
                             $('#formstep-pre').addClass(pre_css);
                             $('#formstep-pre').html(pre_str);
+                            $('#formstep-result').addClass(result_css);
+                            $('#formstep-result').html(result_str);
                             $('.regis-form-data input, textarea, #step5-openYear-btn').prop('disabled',true);
                             $('.btn-action.gold, .selecter-file').remove();
                             $('.btn-confirm-submit').hide();

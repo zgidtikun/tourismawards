@@ -20,7 +20,7 @@ class Approve extends BaseController
     
     public function __construct()
     {
-        helper(['semail', 'verify']);
+        helper(['semail', 'verify', 'log']);
 
         $this->Users = new Users;
         $this->UsersStage = new UsersStage;
@@ -33,6 +33,7 @@ class Approve extends BaseController
     {
         $like = [];
         $where = [];
+        $where_type = [];
         $sub_id = 1;
         if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
             $like['attraction_name_th'] = $_GET['keyword'];
@@ -48,6 +49,7 @@ class Approve extends BaseController
         }
         if (!empty(session()->award_type) && session()->award_type != "" && !isAdmin()) {
             $where['application_type_id'] = session()->award_type;
+            $where_type['id'] = session()->award_type;
             $sub_id = session()->award_type;
         }
         if (array_key_exists('status', $_GET) && $_GET['status'] != "") {
@@ -58,7 +60,7 @@ class Approve extends BaseController
 
         $data['result'] = $this->ApplicationForm->orLike($like, 'match', 'both')->where($where)->orderBy('id', 'desc')->findAll();
 
-        $data['application_type'] = $this->ApplicationType->findAll();
+        $data['application_type'] = $this->ApplicationType->where($where_type)->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
 
         // Template
@@ -105,6 +107,7 @@ class Approve extends BaseController
     {
         $like = [];
         $where = [];
+        $where_type = [];
         $sub_id = 1;
         // $like['status'] = 0;
         // $like['status'] = 4;
@@ -125,6 +128,7 @@ class Approve extends BaseController
 
         if (!empty(session()->award_type) && session()->award_type != "" && !isAdmin()) {
             $where['application_type_id'] = session()->award_type;
+            $where_type['id'] = session()->award_type;
             $sub_id = session()->award_type;
         }
 
@@ -133,7 +137,7 @@ class Approve extends BaseController
         // exit;
         // pp($data['result']);
 
-        $data['application_type'] = $this->ApplicationType->findAll();
+        $data['application_type'] = $this->ApplicationType->where($where_type)->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
 
         // Template
@@ -152,89 +156,121 @@ class Approve extends BaseController
 
     public function saveStatus()
     {
-        $post = $this->input->getVar();
-        $id = $post['insert_id'];
-        unset($post['insert_id']);
-        $post['approve_by'] = session()->id;
-        $post['approve_name'] = session()->user;
-        $post['approve_time'] = date('Y-m-d H:i:s');
-
-        if ($post['status'] == 4) {
-            $post['request_time'] = date('Y-m-d H:i:s');
-        }
-        // px($post);
-
-        $result = $this->db->table('application_form')->where('id', $id)->update($post);
-        if ($result) {
-            $result = $this->ApplicationForm->find($id);
-            $users = $this->db->table('users')->where('id', $result->created_by)->get()->getRowObject();
-            $subject = '';
-            $message = '';
+        try{
+            $post = $this->input->getVar();
+            $id = $post['insert_id'];
+            unset($post['insert_id']);
+            $post['approve_by'] = session()->id;
+            $post['approve_name'] = session()->user;
+            $post['approve_time'] = date('Y-m-d H:i:s');
 
             if ($post['status'] == 4) {
-                $subject = 'ใบสมัครของท่านมีการขอข้อมูลเพิ่มเติม';
-                $message = 'ใบสมัครของท่านยังไม่สมบูรณ์ กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบข้อมูลเพิ่มเติม และส่งข้อมูลตอบกลับภายใน 24 ชั่วโมง';
-            } else if ($post['status'] == 3) {
-                $subject = 'ใบสมัครของท่านได้รับการอนุมัติเรียบร้อยแล้ว';
-                $message = 'ใบสมัครของท่านได้รับการอนุมัติแล้ว ท่านสามารถล็อกอินเข้าสู่เว็บไซต์เพื่อทำการกรอกข้อมูลแบบประเมินขั้นต้น (Pre-Screen) ให้แล้วเสร็จภายในวันที่ 23 เมษายน 2566';
-            } else if ($post['status'] == 0) {
-                $subject = 'ใบสมัครของท่านไม่ผ่านการอนุมัติ';
-                $message = 'ขอขอบพระคุณผู้ประกอบการที่สนใจเข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 <br>';
-                $message .= 'ทางโครงการฯ ขอแจ้งว่าใบสมัครของท่านไม่ได้รับการอนุมัติ <br>';
-                $message .= 'หากมีคำถามเพิ่มเติม กรุณาติดต่อ support@tourismawards.tourismthailand.org';
+                $post['request_time'] = date('Y-m-d H:i:s');
             }
+            // px($post);
 
-            $email_data = [
-                '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
-                '_content' => $message
-            ];
+            $result = $this->db->table('application_form')->where('id', $id)->update($post);
+            if ($result) {
+                $result = $this->ApplicationForm->find($id);
+                $users = $this->db->table('users')->where('id', $result->created_by)->get()->getRowObject();
+                if ($post['status'] == 3) {
+                    $this->db->table('users')->where('id', $result->created_by)->update(['stage' => 2]);
+                }
+                                
+                save_log_activety([
+                    'module' => 'step flow',
+                    'action' => 'application-'.$id,
+                    'bank' => 'backend',
+                    'user_id' => session()->id,
+                    'datetime' => date('Y-m-d H:i:s'),
+                    'data' => 'application form management (status: '.$post['status'].')'
+                ]);
 
-            $requestEmail = [
-                'to' => $users->email,
-                'subject' => $subject,
-                'message' => view('administrator/template_email', $email_data),
-                // 'from' => $from,
-                // 'cc' => [],
-                // 'bcc' => []
-            ];
+                $subject = '';
+                $message = '';
 
-            send_email($requestEmail);
+                $link_redirect = base_url('awards/application');
+                if ($post['status'] == 4) {
+                    $subject = 'ใบสมัครของท่านมีการขอข้อมูลเพิ่มเติม';
+                    $message = 'ใบสมัครของท่านยังไม่สมบูรณ์ กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบข้อมูลเพิ่มเติม และส่งข้อมูลตอบกลับภายใน 24 ชั่วโมง';
+                    $message_noti = 'ใบสมัครของท่านยังไม่สมบูรณ์ กรุณาตรวจสอบข้อมูลเพิ่มเติม และส่งข้อมูลตอบกลับภายใน 24 ชั่วโมง';
+                } else if ($post['status'] == 3) {
+                    $subject = 'ใบสมัครของท่านได้รับการอนุมัติเรียบร้อยแล้ว';
+                    $message = 'ใบสมัครของท่านได้รับการอนุมัติแล้ว ท่านสามารถล็อกอินเข้าสู่เว็บไซต์เพื่อทำการกรอกข้อมูลแบบประเมินขั้นต้น (Pre-Screen) ให้แล้วเสร็จภายในวันที่ 23 เมษายน 2566';
+                    $message_noti = 'ใบสมัครของท่านได้รับการอนุมัติแล้ว กรุณาทำการกรอกข้อมูลแบบประเมินขั้นต้น (Pre-Screen) ให้แล้วเสร็จภายในวันที่ 23 เมษายน 2566';
+                    $link_redirect = base_url('awards/pre-screen');
+                } else if ($post['status'] == 0) {
+                    $subject = 'ใบสมัครของท่านไม่ผ่านการอนุมัติ';
+                    $message = 'ขอขอบพระคุณผู้ประกอบการที่สนใจเข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 <br>';
+                    $message .= 'ทางโครงการฯ ขอแจ้งว่าใบสมัครของท่านไม่ได้รับการอนุมัติ <br>';
+                    $message .= 'หากมีคำถามเพิ่มเติม กรุณาติดต่อ support@tourismawards.tourismthailand.org';
+                    $message_noti = $subject;
+                }
 
-            set_noti(
-                (object)[
-                    'user_id' => $result->created_by,
-                    'bank' => 'frontend'
-                ],
-                (object)[
-                    'message' => $message,
-                    'link' => base_url('awards/application'),
-                    'send_date' => date('Y-m-d H:i:s'),
-                    'send_by' => session()->account,
+                $email_data = [
+                    '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
+                    '_content' => $message
+                ];
+
+                $requestEmail = [
+                    'to' => $users->email,
+                    'subject' => $subject,
+                    'message' => view('administrator/template_email', $email_data),
+                    // 'from' => $from,
+                    // 'cc' => [],
+                    // 'bcc' => []
+                ];
+
+                send_email($requestEmail);
+
+                set_noti(
+                    (object)[
+                        'user_id' => $result->created_by,
+                        'bank' => 'frontend'
+                    ],
+                    (object)[
+                        'message' => $message_noti,
+                        'link' => $link_redirect,
+                        'send_date' => date('Y-m-d H:i:s'),
+                        'send_by' => session()->account,
+                    ]
+                );
+
+                // เก็บข้อมูลการเปลี่ยนแปลง
+                @mkdir(FCPATH . 'logs/backend-approve', 0777, true);
+                $fp = fopen(FCPATH . 'logs/backend-approve/application_id_' . $id . '.txt', 'a+');
+
+                fwrite($fp, "====================== Start Log Application " . $id . " ======================\n");
+                if ($post['status'] == 4) {
+                    fwrite($fp, "มีการขอข้อมูลเพิ่มเติม โดย " . session()->account . " ");
+                } else if ($post['status'] == 3) {
+                    fwrite($fp, "มีการอนุมัติใบสมัคร โดย " . session()->account . " ");
+                } else if ($post['status'] == 0) {
+                    fwrite($fp, "มีการ Reject ใบสมัคร โดย " . session()->account . " ");
+                }
+
+                fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
+                fclose($fp);
+                
+                echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => '']);
+            } else {
+                echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
+            }
+            
+        } catch(\Exception $e){
+
+            save_log_error([
+                'module' => 'approve_application_form',
+                'input_data' => $this->input->getVar(),
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
                 ]
-            );
+            ]);
 
-            // เก็บข้อมูลการเปลี่ยนแปลง
-            @mkdir(FCPATH . 'logs/backend-approve', 0777, true);
-            $fp = fopen(FCPATH . 'logs/backend-approve/application_id_' . $id . '.txt', 'a+');
-
-            fwrite($fp, "====================== Start Log Application " . $id . " ======================\n");
-            if ($post['status'] == 4) {
-                fwrite($fp, "มีการขอข้อมูลเพิ่มเติม โดย " . session()->account . " ");
-            } else if ($post['status'] == 3) {
-                fwrite($fp, "มีการอนุมัติใบสมัคร โดย " . session()->account . " ");
-            } else if ($post['status'] == 0) {
-                fwrite($fp, "มีการ Reject ใบสมัคร โดย " . session()->account . " ");
-            }
-
-            fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
-            fclose($fp);
-
-
-            if ($post['status'] == 3) {
-                $result = $this->db->table('users')->where('id', $result->created_by)->update(['stage' => 2]);
-            }
-            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => '']);
-        } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
         }
     }

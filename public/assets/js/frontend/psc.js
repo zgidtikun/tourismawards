@@ -62,7 +62,7 @@ const psc = {
                         // $('.btn-main, .selecter-file, .bfd-dropfield').css('display','none');
                     break;
                     case 'finish':
-                    case 'estimate':
+                    case 'result':
                         $('#formstep-sts').addClass('pass');
                         $('#formstep-sts').html('ส่งแบบประเมินเรียบร้อยแล้ว');                      
                         $('#formstatus-complete').removeClass('hide');
@@ -71,8 +71,8 @@ const psc = {
                         $('.btn-main, .selecter-file, .bfd-dropfield').remove();
                         psc.complete = true;
 
-                        if(psc.status == 'estimate'){
-                            $('#formstep-result').html('สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว');
+                        if(psc.status == 'result'){
+                            $('#formstep-result').html('ตรวจสอบผลการประเมิน');
                             $('.formstep-col.estimate > a').removeClass('disabled');
                             $('.formstep-col.estimate > a').addClass('inactive');
                         }

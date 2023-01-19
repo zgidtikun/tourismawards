@@ -111,4 +111,14 @@ class UserController extends BaseController
         }
         return $result;
     }
+
+    public function updateVerifyCode($id)
+    {
+        helper('verify');
+        $code = genVerifyCode();
+        $this->instUsers->where('id',$id)
+        ->set(['verify_code' => $code])
+        ->update();
+        return $code;
+    }
 }

@@ -116,6 +116,22 @@
     width: 100%;
 }
 
+.btn-profile input[type=file] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: none;
+    cursor: inherit;
+    display: block;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .btn i.bi-pencil-square:before {
     color: #fff !important;
 }
@@ -297,7 +313,7 @@
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-floating">
                                         <input type="text" class="form-control" id="p-mobile"
-                                        value="<?=$profile->mobile?>">
+                                        value="<?=$profile->mobile?>" maxlength="10">
                                         <label>เบอร์โทรศัพท์<span class="text-danger ml-1">*</span></label>
                                         <div id="invalid-p-mobile" class="invalid-feedback">
                                             กรุณากรอก เบอร์โทรศัพท์
@@ -317,11 +333,11 @@
                             </div>
                             <div class="bs-row mt-3">
                                 <div class="col-12">
-                                    <button type="reset" class="btn btn-danger float-end ml-2">
+                                    <!-- <button type="reset" class="btn btn-danger float-end ml-2">
                                         <i class="bi bi-x-circle mr-1"></i> ยกเลิก
-                                    </button>
+                                    </button> -->
                                     <button type="button" class="btn btn-primary float-end" onclick="pf.save()">
-                                        <i class="bi bi-pencil-square mr-1"></i> แก้ไข
+                                        <i class="bi bi-pencil-square mr-1"></i> อัพเดทข้อมูล
                                     </button>
                                 </div>
                             </div>
@@ -332,4 +348,9 @@
         </div>
     </div>
 </div>
+<script>
+    $('#p-mobile').on('keyup change input', function(){
+        this.value = this.value.replace(/[^0-9]/g,'');
+    });
+</script>
 <script src="<?=base_url('assets/js/frontend/profile.js')?>"></script>

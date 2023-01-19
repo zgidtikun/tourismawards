@@ -27,6 +27,7 @@ class Estimate extends BaseController
     {
         $like = [];
         $where = [];
+        $where_type = [];
         $sub_id = 1;
         // $like['status'] = 0;
         // $like['status'] = 4;
@@ -47,6 +48,7 @@ class Estimate extends BaseController
 
         if (!empty(session()->award_type) && session()->award_type != "" && !isAdmin()) {
             $where['application_type_id'] = session()->award_type;
+            $where_type['id'] = session()->award_type;
             $sub_id = session()->award_type;
         }
 
@@ -54,7 +56,7 @@ class Estimate extends BaseController
         // pp_sql();
         // px($data['result']);
 
-        $data['application_type'] = $this->ApplicationType->findAll();
+        $data['application_type'] = $this->ApplicationType->where($where_type)->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
 
         // Template
@@ -256,6 +258,7 @@ class Estimate extends BaseController
     {
         $like = [];
         $where = [];
+        $where_type = [];
         $sub_id = 1;
         // $like['status'] = 0;
         // $like['status'] = 4;
@@ -276,6 +279,7 @@ class Estimate extends BaseController
 
         if (!empty(session()->award_type) && session()->award_type != "" && !isAdmin()) {
             $where['application_type_id'] = session()->award_type;
+            $where_type['id'] = session()->award_type;
             $sub_id = session()->award_type;
         }
         // px($_GET);
@@ -285,7 +289,7 @@ class Estimate extends BaseController
         // px($data['result']);
         // exit;
 
-        $data['application_type'] = $this->ApplicationType->findAll();
+        $data['application_type'] = $this->ApplicationType->where($where_type)->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
 
         // Template
@@ -353,7 +357,8 @@ class Estimate extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence';
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 23 เมษายน 2566 ';
+                $message_noti = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => $message
@@ -376,7 +381,7 @@ class Estimate extends BaseController
                         'bank' => 'frontend'
                     ],
                     (object)[
-                        'message' => $message,
+                        'message' => $message_noti,
                         'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
@@ -390,7 +395,8 @@ class Estimate extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors';
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 23 เมษายน 2566 ';
+                $message_noti = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => $message
@@ -413,7 +419,7 @@ class Estimate extends BaseController
                         'bank' => 'frontend'
                     ],
                     (object)[
-                        'message' => $message,
+                        'message' => $message_noti,
                         'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
@@ -427,7 +433,8 @@ class Estimate extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsible Tourism';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsible Tourism';
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsible Tourism กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 23 เมษายน 2566 ';
+                $message_noti = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsible Tourism';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => $message
@@ -450,7 +457,7 @@ class Estimate extends BaseController
                         'bank' => 'frontend'
                     ],
                     (object)[
-                        'message' => $message,
+                        'message' => $message_noti,
                         'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
@@ -464,7 +471,8 @@ class Estimate extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon';
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 23 เมษายน 2566 ';
+                $message_noti = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => $message
@@ -487,7 +495,7 @@ class Estimate extends BaseController
                         'bank' => 'frontend'
                     ],
                     (object)[
-                        'message' => $message,
+                        'message' => $message_noti,
                         'link' => base_url('boards'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,

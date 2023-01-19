@@ -97,6 +97,14 @@ class EstimateController extends BaseController
                 'datetime' => date('Y-m-d H:i:s'),
                 'data' => $this->input->getVar()
             ]);
+            save_log_activety([
+                'module' => 'step flow',
+                'action' => 'application-'.$appid,
+                'bank' => 'frontend',
+                'user_id' => $this->myId,
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => 'estimate_pre_screen'
+            ]);
 
             set_noti(
                 (object) [
@@ -308,6 +316,15 @@ class EstimateController extends BaseController
                 'user_id' => $this->myId,
                 'datetime' => date('Y-m-d H:i:s'),
                 'data' => $input
+            ]);
+            
+            save_log_activety([
+                'module' => 'step flow',
+                'action' => 'application-'.$input->appId,
+                'bank' => 'frontend',
+                'user_id' => $this->myId,
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $module
             ]);
 
             $dataEstimate = $this->getJudgeEstimate($input->appId,$this->myId,$input->stage);

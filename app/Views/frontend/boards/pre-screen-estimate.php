@@ -132,7 +132,7 @@
                         1. Tourism Excellence
                     </a>
                     <a href="javascript:setQuestion(1,0);" id="tab-1" class="btn-form-step">
-                        2. Suporting Business & Marketing Factors
+                        2. Supporting Business & Marketing Factors
                     </a>
                     <a href="javascript:setQuestion(2,0);" id="tab-2" class="btn-form-step">
                         3. Responsibility and Safety & Health

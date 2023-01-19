@@ -164,11 +164,12 @@ class semail {
                     $_bcc = ['zgidtikun@gmail.com'];
                 break;
                 case 'reset-pass':
-                    $_recipient = $dataset->name.' '.$dataset->surname;          
+                    $_recipient = $dataset->name.' '.$dataset->surname;     
+                    $_token = urlencode($dataset->verify_code.$dataset->id);
                     $_message = view('template-frontend-email',[
                         '_header' => 'เรียน คุณ'.$_recipient,
                         '_content' => '<p>ท่านได้ส่งคำร้องขอในการเปลี่ยนรหัสผ่าน กรุณากดปุ่มด้านล่างเพื่อทำการเปลี่ยนรหัสผ่าน<p>'
-                            . '<p><b><a href="'.base_url('new-password/'.$dataset->id)
+                            . '<p><b><a href="'.base_url('new-password/'.$_token)
                             . '" target="_blank">เปลี่ยนรหัสผ่าน</a></b></p>'
                     ]);
     
@@ -390,6 +391,18 @@ class semail {
             
             return $result;
         } catch(Exception $e){
+            helper('semail');
+            save_log_error([
+                'module' => 'helper_send_email',
+                'input_data' => '',
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
             return [ 'result' => false,  'message' => $e ];
         }
     }

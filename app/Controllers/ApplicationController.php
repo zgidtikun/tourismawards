@@ -85,6 +85,7 @@ class ApplicationController extends BaseController
     {
         $detail = $this->appForm->where('created_by',$id)->first();
         $pre_status = 'none';
+        $result_status = false;
 
         if(!empty($detail)){
             if(!empty($detail->pack_file)){
@@ -107,11 +108,26 @@ class ApplicationController extends BaseController
             if($detail->status == 3){     
                 $answer = new \App\Controllers\AnswerController();
                 $pre_status = $answer->getPrescreenStatus($this->myId);
+
+                $userStage = new \App\Models\UsersStage();
+                $stage = $userStage->where([
+                    'user_id' => $this->myId,
+                    'stage' => 1
+                ])
+                ->select('status')
+                ->first();
+
+                if(!empty($stage)){
+                    if(in_array($stage->status,[6,7])){                        
+                        $result_status = true;
+                    }
+                }
             }
 
             $result = array(
                 'result' => 'success', 
                 'pre_status' => $pre_status, 
+                'result_status' => $result_status, 
                 'data' => $detail
             );
         } else {
@@ -130,6 +146,7 @@ class ApplicationController extends BaseController
             $result = array(
                 'result' => 'success',
                 'pre_status' => $pre_status,
+                'result_status' => $result_status, 
                 'data' => (object) array(
                     'id' => $instId,
                     'application_type_id' => 1,
@@ -237,6 +254,14 @@ class ApplicationController extends BaseController
                 'user_id' => $this->myId,
                 'datetime' => date('Y-m-d H:i:s'),
                 'data' => $this->input->getVar()
+            ]);
+            save_log_activety([
+                'module' => 'step flow',
+                'action' => 'application-'.$app_id,
+                'bank' => 'frontend',
+                'user_id' => $this->myId,
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => 'user_application'
             ]);
 
             $form = $this->appForm->where('id',$app_id)

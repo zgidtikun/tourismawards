@@ -25,11 +25,11 @@
                     <div class="news-content-txt">
                         <?=$new->description?>
                     </div>
-                    <div class="news-content-social">
+                    <!-- <div class="news-content-social">
                         <a href="javascript:;"><i class="bi bi-facebook"></i></a>
                         <a href="javascript:;"><i class="bi bi-twitter"></i></a>
                         <a href="javascript:;"><i class="bi bi-google"></i></a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

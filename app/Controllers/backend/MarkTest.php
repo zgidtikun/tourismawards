@@ -23,6 +23,8 @@ class MarkTest extends BaseController
 
     public function index()
     {
+        show_404();
+        px(session()->get());
         $url = 'https://www.tennis.in.th/uploads/2023/01/12/13/app-register/paper/20230112_212a53e787e5.pdf';
         $new_name = '115544sdsdsdsds.pdf';
         pp($url);
@@ -38,7 +40,6 @@ class MarkTest extends BaseController
 
         px(mb_substr("แหล่งท่องเที่ยว", 0, 1));
         // px(password_hash('1qazxsw2+-+', PASSWORD_DEFAULT));
-        show_404();
         // px($_COOKIE);
         // px(session()->get());
         // $data = 'user-' . genVerifyCode();

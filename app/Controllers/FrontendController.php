@@ -155,7 +155,7 @@ class FrontendController extends BaseController
             $data->result->title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen)';
             $data->result->img = base_url('assets/images/prescreen_pass.png');
             $data->result->content = 'ขณะนี้กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen) 
-                จากทางคณะกรรมการ จะประกาศผลการประเมินในวันที่ '
+                จากทางคณะกรรมการ<br>จะประกาศผลการประเมินในวันที่ '
                 . FormatTree($duedate_pre,'thailand');
 
             return view('frontend/entrepreneur/_template',(array) $data);
@@ -239,7 +239,6 @@ class FrontendController extends BaseController
             $users = new \App\Models\Users();
             $users->update($this->input->getVar('id'),$this->input->getVar('profile'));
             $result = ['result' => 'success'];  
-
         } catch(Exception $e){
             save_log_error([
                 'module' => 'profile_update',

@@ -36,8 +36,8 @@ const pf = {
                 if(s.result == 'error_login'){
                     alert.login();
                 } else if(s.result == 'success'){
-                    alert.show(s.result,'อัพเดทข้อมูลเรียบร้อยแล้ว','').then(function(a){
-                        window.location.reload();
+                    alert.show(s.result,'อัพเดทข้อมูลเรียบร้อยแล้ว','').then(function(a){                        
+                        // window.location.reload();
                     });
                 } else {
                     alert.show(s.result,'ไม่สามารถอัพเดทข้อมูลได้',s.message);
@@ -46,16 +46,30 @@ const pf = {
         }
     },
     validation(){
-        const iv = true;
+        let iv = true;
+        const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
         $.each(mf, function(k, m){
             if(m.ps == 'form'){
                 if(empty($(m.ip).val())){
-                    if(!$(m.ip).hasClass('is-invalid'))
-                        $(m.ip).addClass('is-invalid');
+                    if(m.id == 'p-email'){
+                        $(m.iv).html('กรุณากรอก อีเมล');
+                    }
+
+                    $(m.ip).addClass('is-invalid');
                     iv = false;
                 } else {
-                    $(m.ip).removeClass('is-invalid');
+                    if(m.id == 'p-email'){
+                        if(!pattern.test($(m.ip).val())){
+                            $(m.ip).addClass('is-invalid');
+                            $(m.iv).html('กรุณากรอก อีเมล ให้ถูกต้อง');
+                            iv = false;
+                        } else {
+                            $(m.ip).removeClass('is-invalid');
+                        }
+                    } else {
+                        $(m.ip).removeClass('is-invalid');
+                    }
                 }
             }
         });
@@ -97,6 +111,7 @@ const onFileHandel = (id) => {
             if(ul.result == 'error_login'){
                 alert.login();
             } else if(ul.result == 'success'){
+                $('#header-img-profile').attr('src',ul.link);
                 $(s.src).attr('src',ul.link);
             } else {
                 alert.show(ul.result,'ไม่สามารถอัพโหลดรูปได้',ul.message);

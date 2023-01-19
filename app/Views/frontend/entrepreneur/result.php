@@ -24,8 +24,8 @@
                         <div class="formstep-icon"><span><i class="bi bi-check-lg"></i></span></div>
                     </div>
                     <div class="formstep-col estimate active">
-                        <div class="formstep-title" data-tab="3">3. สรุปผลการประเมิน</div>
-                        <div class="formstep-status check" data-tab="3">สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว
+                        <div class="formstep-title" data-tab="3">3. ผลการประเมิน</div>
+                        <div class="formstep-status check" data-tab="3">ตรวจสอบผลการประเมิน
                         </div>
                         <div class="formstep-icon"><span><i class="bi bi-clock"></i></span></div>
                     </div>

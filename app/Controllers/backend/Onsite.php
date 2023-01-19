@@ -27,6 +27,7 @@ class Onsite extends BaseController
     {
         $like = [];
         $where = [];
+        $where_type = [];
         $sub_id = 1;
         // $like['status'] = 0;
         // $like['status'] = 4;
@@ -47,6 +48,7 @@ class Onsite extends BaseController
 
         if (!empty(session()->award_type) && session()->award_type != "" && !isAdmin()) {
             $where['application_type_id'] = session()->award_type;
+            $where_type['id'] = session()->award_type;
             $sub_id = session()->award_type;
         }
 
@@ -55,7 +57,7 @@ class Onsite extends BaseController
         // pp_sql();
         // px($data['result']);
 
-        $data['application_type'] = $this->ApplicationType->findAll();
+        $data['application_type'] = $this->ApplicationType->where($where_type)->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
 
         // Template

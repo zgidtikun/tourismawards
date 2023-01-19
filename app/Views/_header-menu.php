@@ -67,7 +67,7 @@
                                     <div class="user-status-img">
                                        <div class="status-img">
                                           <div class="status-img-scale">
-                                             <img src="<?= base_url(session()->get('profile')) ?>">
+                                             <img id="header-img-profile" src="<?= base_url(session()->get('profile')) ?>">
                                           </div>
                                        </div>
                                     </div>
@@ -89,14 +89,28 @@
                                     </div>
                                  </div>
                                  <div class="user-profile">
-                                    <?php if (in_array(session()->get('role'), [1, 3])) : ?>
+                                    <?php 
+                                       if (in_array(session()->get('role'), [1, 3])) : 
+                                          // $user_obj = new \App\Models\Users();
+                                          // $user = $user_obj->where('id',session()->get('id'))
+                                          // ->select('verify_code')
+                                          // ->first();
+                                          // $new_pass_token = urlencode($user->verify_code.session()->get('id'));
+                                    ?>
                                        <a href="<?= base_url('profile') ?>" class="mb-1">
                                           <i class="bi bi-person-fill"></i>
                                           &nbsp;&nbsp;ข้อมูลส่วนตัว
                                        </a>
                                        <?php
                                        if (session()->get('role') == 1) {
-                                          $url = 'awards/application';
+                                          if(session()->get('stage') == 1)
+                                             $url = 'awards/application';
+                                          elseif(session()->get('stage') == 2)
+                                             $url = 'awards/pre-screen';
+                                          elseif(session()->get('stage') == 3)
+                                             $url = 'awards/result';
+                                          else $url = 'awards/application'; 
+
                                           $content = 'ข้อมูลใบสมัคร';
                                           $manual = base_url('download/tycoon_manual.pdf');
                                        } else {
@@ -108,8 +122,8 @@
                                        <a href="<?= base_url($url) ?>" class="mb-1">
                                           <i class="bi bi-award-fill"></i>
                                           &nbsp;&nbsp;<?= $content ?>
-                                       </a>                                       
-                                       <a href="<?= base_url('new-password/'.session()->get('id')) ?>" class="mb-1">
+                                       </a>   
+                                       <a href="<?= base_url('new-password') ?>" class="mb-1">
                                           <i class="bi bi-key-fill"></i>
                                           &nbsp;&nbsp;เปลี่ยนรหัสผ่านใหม่
                                        </a>                                  

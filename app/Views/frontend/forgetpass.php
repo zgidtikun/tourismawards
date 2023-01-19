@@ -55,7 +55,7 @@
                             recapcha_token: forget.token
                         },
                         dataType: 'json',
-                        success: function(response){
+                        success:async function(response){
                             if(response.result == 'success'){
                                 let setting = {
                                     icon: 'success',
@@ -67,8 +67,12 @@
                                     },
                                     mode: 'default'
                                 }
-                                let confirm = alert.confirm(setting);
-                                if(confirm) window.location.href = '<?=base_url('login')?>/'+response.bank;
+                                let confirm = await alert.confirm(setting);
+                                if(confirm.status) {
+                                    window.location.href = '<?=base_url('login')?>/'+response.bank;
+                                } else {
+                                    $('#email').val('');
+                                }
                             } else {
                                 alert.show('error','Oops...!',response.message);
                                 return;

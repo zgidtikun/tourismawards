@@ -55,7 +55,7 @@ $routes->get('new/(:num)', 'Home::new_detail/$1');
 $routes->get('forget-password', 'RegisterController::forgetpass');
 $routes->get('verify-user', 'Home::verifyuser');
 $routes->get('new-password', 'Home::newpassword');
-$routes->get('new-password/(:num)', 'Home::newpassword/$1');
+$routes->get('new-password/(:any)', 'Home::newpassword/$1');
 
 $routes->get('login', 'LoginController::index');
 $routes->get('login/(:any)', 'LoginController::index/$1');

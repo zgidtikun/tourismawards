@@ -83,6 +83,7 @@
               </thead>
               <tbody>
                 <?php
+
                 if (!empty($result)) :
                   foreach ($result as $key => $value) :
                     $status = '';
@@ -90,7 +91,15 @@
                     if ($value->status == 2) {
                       $status = '<div class="userstatus trader">รอตรวจสอบ</div>';
                     } else if ($value->status == 4) {
-                      $status = '<div class="userstatus chk">ขอข้อมูลเพิ่มเติม</div>';
+                      if ($value->request_time != "" && $value->request_time != null) {
+                        if (strtotime('+1 day', strtotime($value->request_time)) < time()) {
+                          $status = '<div class="userstatus officer">หมดเวลาการขอข้อมูลเพิ่มเติม</div>';
+                        } else {
+                          $status = '<div class="userstatus chk">ขอข้อมูลเพิ่มเติม</div>';
+                        }
+                      } else {
+                        $status = '<div class="userstatus chk">ขอข้อมูลเพิ่มเติม</div>';
+                      }
                     } else if ($value->status == 3) {
                       $button = '<a href="javascript:" class="btn-edit" title="ดูข้อมูล" onclick="edit_item(' . $value->id . ')"><i class="bi bi-pencil-square"></i></a>';
                       $status = '<div class="userstatus judge">อนุมัติ</div>';

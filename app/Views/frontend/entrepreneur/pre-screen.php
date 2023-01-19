@@ -42,7 +42,7 @@
                     </div>
                     <div class="formstep-col estimate">
                         <a href="<?= base_url('awards/result') ?>" class="disabled">
-                            <div class="formstep-title">3. สรุปผลการประเมิน</div>
+                            <div class="formstep-title">3. ผลการประเมิน</div>
                         </a>
                         <div class="formstep-status check" id="formstep-result" data-tab="3"></div>
                         <div class="formstep-icon"><span><i class="bi bi-three-dots"></i></span></div>
@@ -111,7 +111,7 @@
                     </a>
                     <a href="javascript:;" id="tab-1" class="btn-form-step"
                     onclick="psc.setNewQuestion(1,0)">
-                        2. Suporting Business & Marketing Factors
+                        2. Supporting Business & Marketing Factors
                     </a>
                     <a href="javascript:;" id="tab-2" class="btn-form-step"
                     onclick="psc.setNewQuestion(2,0)">

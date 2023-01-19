@@ -36,6 +36,8 @@ class FilesController extends BaseController
                                 'result' => 'success',
                                 'link' => base_url($full_path)
                             ];
+
+                            session()->set('profile',$result['link']);
                         }
                     }
                 }
