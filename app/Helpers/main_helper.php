@@ -128,6 +128,12 @@ function show_404()
     exit();
 }
 
+function show_403()
+{
+    header('Location: ' . base_url() . '/403');
+    exit();
+}
+
 // รูปแบบวันที่ที่ใช้ในเอกสาร
 function docDate($date, $format = 3, $lang = 'thailand')
 {
@@ -461,3 +467,35 @@ function readFiles($dir)
     }
     return $file_name;
 }
+
+// function PasswordEncrypt($string)
+// {
+//     $salting = substr(md5(microtime()), -1) . $string;
+//     return mySecretKey($salting, 'e');
+// }
+
+// function PasswordDecrypt($string)
+// {
+//     $encode = mySecretKey($string, 'd');
+//     return substr($encode, 1);
+// }
+
+// function mySecretKey($string, $action = 'e')
+// {
+//     $output = false;
+//     $encrypt_method = "AES-256-CBC";
+
+//     $secret_key = 'n%&M|#3$y+A+rv_mRtz8c12K+&ju';
+//     $secret_iv = '#K!@#Mark$&*(Hash)pass-$_$';
+
+//     $key = hash('sha256', $secret_key);
+//     $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+//     if ($action == 'e') {
+//         $output = base64_encode(openssl_encrypt($string, $encrypt_method, $key, 0, $iv));
+//     } else if ($action == 'd') {
+//         $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+//     }
+
+//     return $output;
+// }

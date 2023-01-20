@@ -753,20 +753,21 @@ const register = {
         });
 
         if(!register.passYear){
-            let confYear = register.appType.main.find(el => el.id == app);
+            const app = register.formData.step1.appType;
+            const confYear = register.appType.main.find(el => el.id == app);
             $('#step5-openYear').addClass('is-invalid');
             $('#error-open-year').html('เปิดรับสมัครสําหรับผู้ประกอบการที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป');
             bool_input = false;
         } else {
-            let date = new Date();
-            let fulldate = $('#step5-hiddenDate').val().split('/');
+            const date = new Date();
+            const fulldate = $('#step5-hiddenDate').val().split('/');
 
-            let from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0],
-                to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
+            const from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0];
+            const to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
             
-            let totalYear = calcDate(from,to);
-            let app = register.formData.step1.appType;
-            let confYear = register.appType.main.find(el => el.id == app);
+            const totalYear = calcDate(from,to);
+            const app = register.formData.step1.appType;
+            const confYear = register.appType.main.find(el => el.id == app);
             register.passYearCount = confYear.fixe_year_open;
 
             if(Number(totalYear.total_year) < Number(confYear.fixe_year_open)){

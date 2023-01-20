@@ -9,20 +9,32 @@ class VerifyPassword extends BaseController
 
     public function __construct()
     {
-        helper(['semail', 'verify']);
+        helper(['main', 'semail', 'verify']);
     }
 
     public function index()
     {
+        if (!empty(session()->account)) {
+            show_403();
+        }
+        // echo urldecode($_GET['t']);
         // pp($_GET['t']);
-        // px(vDecryption($_GET['t']));
         if (!empty($_GET['t'])) {
-            $token = explode('-', vDecryption($_GET['t']));
+            $token = explode('-', vDecryption(urlencode($_GET['t'])));
 
             if ($token[0] == 'users') {
                 $data['result'] = $this->db->table('users')->where('verify_code', $token[1])->get()->getRowObject();
             } else if ($token[0] == 'admin') {
                 $data['result'] = $this->db->table('admin')->where('verify_code', $token[1])->get()->getRowObject();
+            }
+
+            if (empty($data['result'])) {
+                $token = explode('-', vDecryption($_GET['t']));
+                if ($token[0] == 'users') {
+                    $data['result'] = $this->db->table('users')->where('verify_code', $token[1])->get()->getRowObject();
+                } else if ($token[0] == 'admin') {
+                    $data['result'] = $this->db->table('admin')->where('verify_code', $token[1])->get()->getRowObject();
+                }
             }
             if (empty($data['result'])) {
                 show_404();
@@ -76,6 +88,9 @@ class VerifyPassword extends BaseController
 
     public function forgotPassword()
     {
+        if (!empty(session()->account)) {
+            show_403();
+        }
         $data['title_name']  = 'ลืมรหัสผ่าน';
 
         $data['title']  = 'Tourist Award | Forgot Password';
@@ -108,7 +123,7 @@ class VerifyPassword extends BaseController
 
     public function sendMail($data)
     {
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code)) . '"  target="_blank">Verify</a></b>';
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code)) . '"  target="_blank">Verify</a></b>';
         $email_data = [
             '_header' => 'มีการแก้ไขข้อมูลผู้ใช้งานบนเว็บไซต์',
             '_content' => 'เรียนคุณ ' . $data['admin']->name . ' ' . $data['admin']->surname . ' ท่านได้ส่งคำร้องขอในการเปลี่ยนรหัสผ่าน '

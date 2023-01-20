@@ -203,7 +203,7 @@ class semail {
                             . 'กรุณารอผลการตรวจสอบข้อมูลภายใน 7 วัน</p>'
                     ]);
                     
-                    $_subject = 'แจ้งการรับแบบฟอร์มการสมัครเข้ารับการพิจารณา';
+                    $_subject = 'ส่งใบสมัครเรียบร้อยแล้ว';
                     $_to = $dataset->email;
                     $_from = $email_sys;
                     $_cc = [];
@@ -211,7 +211,7 @@ class semail {
                 break;
                 case 'app': 
                     $tycoon = $this->getTycoon($dataset->app_id);
-                    $_header = 'แจ้งการส่งใบสัครเข้าระบบ';
+                    $_header = 'แจ้งการส่งใบสมัครเข้าระบบ';
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
                         '_content' => $tycoon->place 
@@ -240,13 +240,13 @@ class semail {
                     }
                 break;
                 case 'answer-complete':                    
-                    $_header = 'การส่งแบบประเมินขั้นต้น';
+                    $_header = 'ส่งแบบประเมินขั้นต้น (Pre-Screen)';
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
                         '_content' => 'ท่านส่งแบบประเมินขั้นต้น (Pre-Screen) เรียบร้อยแล้ว กรุณาติดตามผลการประเมินทางอีเมล หรือเว็บไซต์'
                     ]);
     
-                    $_subject = $_header;
+                    $_subject = 'ท่านส่งแบบประเมินขั้นต้น (Pre-Screen) เรียบร้อยแล้ว';
                     $_to = $dataset->email;
                     $_from = $email_sys;
                     $_cc = [];
@@ -254,15 +254,15 @@ class semail {
                 break;
                 case 'answer-request-complete':
                     $_header = 'ตอบกลับการขอข้อมูลเพิ่มเติม';
-                    $_content = "$dataset->tycon ได้ส่งคำตอบการประเมินเบื้องต้น (Pre-Screen) เพิ่มเติมกลับมาเรียบร้อยแล้ว "
-                        . "จึงขอให้ท่านคณะกรรมการกรุณาล็อกอินเข้าสู่เว็บไซต์ เพื่อทำการประเมินเบื้องต้น (Pre-Screen) อีกครั้ง";
+                    $_content = "$dataset->tycon ได้ส่งคำตอบการประเมินเบื้องต้น (Pre-Screen) เพิ่มเติมกลับมาเรียบร้อยแล้ว " 
+                                . "จึงขอให้ท่านคณะกรรมการกรุณาล็อกอินเข้าสู่เว็บไซต์ เพื่อทำการประเมินเบื้องต้น (Pre-Screen) อีกครั้ง ภายในวันที่ 13 พฤษภาคม 2566";
                     
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
                         '_content' => $_content
                     ]);
 
-                    $_subject = 'แจ้งการ'.$_header;
+                    $_subject = "$dataset->tycon ได้ตอบกลับการขอข้อมูลเพิ่มเติมของท่านเรียบร้อยแล้ว";
                     $_to = [];
                     $_from = $email_sys;
                     $_cc = [];
@@ -284,22 +284,48 @@ class semail {
                     
                     $judge = $this->getUser($dataset->judgeId);   
 
-                    $_subject = 'แจ้งการ'.$_header;
+                    $_subject = "ไม่มีการตอบกลับการขอข้อมูลเพิ่มเติมจาก $tycoon->place";
                     $_to = $judge->email;
                     $_from = $email_sys;
                     $_cc = [];
                     $_bcc = ['zgidtikun@gmail.com'];    
                 break;
-                case 'estimate-request':
+                case 'estimate-request':    
+                    
+                    $db = \Config\Database::connect();
+
+                    $subQuery = $db->table('estimate')
+                    ->select('question_id')
+                    ->where('application_id',$dataset->appId)
+                    ->where('request_status',1)
+                    ->getCompiledSelect();
+
+                    $builder = $db->table('assessment_group a')
+                    ->select('a.name')
+                    ->join('question b','a.id = b.assessment_group_id')
+                    ->join("($subQuery) c",'b.id = c.question_id')
+                    ->groupBy('a.id')
+                    ->get();
+
+                    $ass_arr = [];
+
+                    foreach($builder->getResult() as $key=>$ass){
+                        $str_ass = 'ด้าน '.$ass->name;
+                        array_push($ass_arr,$str_ass);
+                    }
+
+                    $assessent = implode(', ',$ass_arr);
                     $user = $this->getUser($dataset->id);  
+                    
                     $_header = 'ขอข้อมูลเพิ่มเติม';                
                     $_message = view('template-frontend-email',[
                         '_header' => $_header,
                         '_content' => '<p>คณะกรรมการมีการขอข้อมูลเพิ่มเติม แบบประเมินของท่าน '
-                        . 'กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบการขอข้อมูล และส่งข้อมูลตอบกลับภายใน 3 วัน</p>'
+                        . $assessent
+                        . ' กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบการขอข้อมูล และส่งข้อมูลตอบกลับภายใน 3 วัน</p>'
                     ]);
-    
-                    $_subject = 'แจ้งการขอข้อมูลเพิ่มเติมในขั้นตอนการประเมินเบื้องต้น';
+                    
+                    $_subject = 'แบบประเมินขั้นต้น (Pre-Screen) มีการขอข้อมูลเพิ่มเติม';
                     $_to = $user->email;
                     $_from = $email_sys;
                     $_cc = [];

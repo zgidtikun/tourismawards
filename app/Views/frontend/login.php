@@ -22,7 +22,7 @@
                                 <a href="<?= base_url('register') ?>" class="link_yellow">ลงทะเบียน</a>
                                 <br>
                                 <?php endif; ?>
-                                <a href="<?= base_url('forget-password') ?>" class="link_yellow">ลืมรหัสผ่าน</a>
+                                <a href="<?= base_url('forgot-password') ?>" class="link_yellow">ลืมรหัสผ่าน</a>
                             </div>
                             <div class="inp_form_col1 submit">
                                 <button type="button" onclick="signin.authen()">เข้าสู่ระบบ</button>
@@ -78,7 +78,7 @@
                                 window.location.href = response.redirect;
                             });
                         } else {
-                            alert.show('error','Oops Login Fail...!', response.message);                               
+                            alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', response.message);                               
                         }
                     }
                 });
@@ -89,12 +89,12 @@
         },
         validation: function() {
             if ($('#username').val() == '') {
-                alert.show('error','Oops Login Fail...!', 'Plase enter a usernamne.');
+                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'Plase enter a usernamne.');
                 return false;
             }
 
             if ($('#password').val() == '') {
-                alert.show('error','Oops Login Fail...!', 'Plase enter a password.');
+                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'Plase enter a password.');
                 return false;
             }
 

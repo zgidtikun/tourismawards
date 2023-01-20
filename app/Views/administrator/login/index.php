@@ -49,7 +49,7 @@
                 </div>
                 <button class="btn btn-lg border-white gradient-4 gradient-4-hover gradient-4-shadow w-100 waves-effect mb-2" id="btn_login" type="button" onclick="signin.authen()">เข้าสู่ระบบ</button>
                 <div class="form-group ml-3">
-                  <a href="<?= base_url('forgot-password') ?>" class="mt-2" rel="noopener noreferrer">ลืมรหัสผ่าน</a>
+                  <a href="<?= base_url('administrator/forgot-password') ?>" class="mt-2" rel="noopener noreferrer">ลืมรหัสผ่าน</a>
                 </div>
               </form>
             </div>

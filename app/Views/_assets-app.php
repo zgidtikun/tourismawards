@@ -1,6 +1,7 @@
 <?php $app = new \Config\App(); ?> 
 <!-- script -->
 <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+
 <script src="<?=base_url('assets/js/jquery.mmenu.min.all.js')?>?v=<?=$app->script_v?>" type="text/javascript" charset="utf-8"></script>
 <script src="<?=base_url('assets/js/animated-header.js')?>?v=<?=$app->script_v?>" charset="utf-8"></script>
 <script src="<?=base_url('assets/js/slick.js')?>?v=<?=$app->script_v?>" type="text/javascript" charset="utf-8"></script>

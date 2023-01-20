@@ -16,7 +16,7 @@ class Complete extends BaseController
     
     public function __construct()
     {
-        helper(['semail', 'verify']);
+        helper(['semail', 'verify', 'log']);
         
         $this->ApplicationForm = new ApplicationForm;
         $this->ApplicationType = new ApplicationType;
@@ -101,6 +101,16 @@ class Complete extends BaseController
         $post = $this->input->getVar();
         $result = $this->db->table('users_stage')->where('user_id', $post['user_id'])->where('stage', 2)->update(['status' => 2]);
         $result = $this->db->table('estimate_individual')->where('application_id', $post['app_id'])->update(['score_onsite' => NULL]);
+
+        save_log_activety([
+            'module' => 'step_flow_checking',
+            'action' => 'application-'.$post['app_id'],
+            'bank' => 'backend',
+            'user_id' => session()->id,
+            'datetime' => date('Y-m-d H:i:s'),
+            'data' => 'ย้อนสถานะกลับไปประเมินรอบลงพื้นที่'
+        ]);
+
         if ($result) {
             $this->sendMail($post['user_id']);
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'ทำการดีดกลับเอกสารการประเมินสำเร็จ']);
@@ -120,15 +130,17 @@ class Complete extends BaseController
             foreach (json_decode($result->admin_id_tourism) as $key => $value) {
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
+                $subject = 'แบบประเมินของ ' . $result->attraction_name_th . ' สามารถแก้ไขประเมินได้';
                 $message = 'แบบประเมินของ ' . $result->attraction_name_th . ' สามารถแก้ไขประเมินได้ กรุณาเข้าสู่ระบบเพื่อแก้ไขการประเมิน และส่งแบบประเมินเข้าระบบอีกครั้ง หรือหากท่านไม่ต้องการแก้ไขการประเมิน ให้ท่านเข้าสู่ระบบเพื่อกดส่งแบบประเมินเข้าระบบอีกครั้ง';
+                $message_noti = 'แบบประเมินของ ' . $result->attraction_name_th . ' สามารถแก้ไขประเมินได้ กรุณาแก้ไขการประเมิน และส่งแบบประเมินเข้าระบบอีกครั้ง หรือหากท่านไม่ต้องการแก้ไขการประเมิน ให้ท่านกดส่งแบบประเมินเข้าระบบอีกครั้ง';
                 $email_data = [
-                    '_header' => $message,
+                    '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname . ' <br>' . $message
                 ];
 
                 $requestEmail = [
                     'to' => $users->email,
-                    'subject' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
+                    'subject' => $subject,
                     'message' => view('administrator/template_email', $email_data),
                     // 'from' => $from,
                     // 'cc' => [],
@@ -143,7 +155,7 @@ class Complete extends BaseController
                         'bank' => 'frontend'
                     ],
                     (object)[
-                        'message' => $message,
+                        'message' => $message_noti,
                         'link' => base_url('awards/application'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
@@ -156,15 +168,17 @@ class Complete extends BaseController
             foreach (json_decode($result->admin_id_supporting) as $key => $value) {
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
+                $subject = 'แบบประเมินของ ' . $result->attraction_name_th . ' สามารถแก้ไขประเมินได้';
                 $message = 'แบบประเมินของ ' . $result->attraction_name_th . ' สามารถแก้ไขประเมินได้ กรุณาเข้าสู่ระบบเพื่อแก้ไขการประเมิน และส่งแบบประเมินเข้าระบบอีกครั้ง หรือหากท่านไม่ต้องการแก้ไขการประเมิน ให้ท่านเข้าสู่ระบบเพื่อกดส่งแบบประเมินเข้าระบบอีกครั้ง';
+                $message_noti = 'แบบประเมินของ ' . $result->attraction_name_th . ' สามารถแก้ไขประเมินได้ กรุณาแก้ไขการประเมิน และส่งแบบประเมินเข้าระบบอีกครั้ง หรือหากท่านไม่ต้องการแก้ไขการประเมิน ให้ท่านกดส่งแบบประเมินเข้าระบบอีกครั้ง';
                 $email_data = [
-                    '_header' => $message,
+                    '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname . ' <br>' . $message
                 ];
-
+                
                 $requestEmail = [
                     'to' => $users->email,
-                    'subject' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
+                    'subject' => $subject,
                     'message' => view('administrator/template_email', $email_data),
                     // 'from' => $from,
                     // 'cc' => [],
@@ -179,7 +193,7 @@ class Complete extends BaseController
                         'bank' => 'frontend'
                     ],
                     (object)[
-                        'message' => $message,
+                        'message' => $message_noti,
                         'link' => base_url('awards/application'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,
@@ -192,15 +206,17 @@ class Complete extends BaseController
             foreach (json_decode($result->admin_id_responsibility) as $key => $value) {
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
+                $subject = 'แบบประเมินของ ' . $result->attraction_name_th . ' สามารถแก้ไขประเมินได้';
                 $message = 'แบบประเมินของ ' . $result->attraction_name_th . ' สามารถแก้ไขประเมินได้ กรุณาเข้าสู่ระบบเพื่อแก้ไขการประเมิน และส่งแบบประเมินเข้าระบบอีกครั้ง หรือหากท่านไม่ต้องการแก้ไขการประเมิน ให้ท่านเข้าสู่ระบบเพื่อกดส่งแบบประเมินเข้าระบบอีกครั้ง';
+                $message_noti = 'แบบประเมินของ ' . $result->attraction_name_th . ' สามารถแก้ไขประเมินได้ กรุณาแก้ไขการประเมิน และส่งแบบประเมินเข้าระบบอีกครั้ง หรือหากท่านไม่ต้องการแก้ไขการประเมิน ให้ท่านกดส่งแบบประเมินเข้าระบบอีกครั้ง';
                 $email_data = [
-                    '_header' => $message,
+                    '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
                     '_content' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname . ' <br>' . $message
                 ];
 
                 $requestEmail = [
                     'to' => $users->email,
-                    'subject' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
+                    'subject' => $subject,
                     'message' => view('administrator/template_email', $email_data),
                     // 'from' => $from,
                     // 'cc' => [],
@@ -215,7 +231,7 @@ class Complete extends BaseController
                         'bank' => 'frontend'
                     ],
                     (object)[
-                        'message' => $message,
+                        'message' => $message_noti,
                         'link' => base_url('awards/application'),
                         'send_date' => date('Y-m-d H:i:s'),
                         'send_by' => session()->account,

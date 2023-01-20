@@ -243,18 +243,13 @@
         else $('#btn-regis').prop('disabled',true);
     });
 
-    $('#telephone').on('keyup',function(){
-        replaceTel($('#telephone').val());
+    $('#telephone').on('keyup change input', function(){
+        this.value = this.value.replace(/[^0-9]/g,'');
     });
 
-    $('#telephone').on('change',function(){
-        replaceTel($('#telephone').val());
+    $('#name, #surname').on('keyup change input', function() {
+        this.value = this.value.replace(/[^a-zA-Z\u0E00-\u0E7F\s]/g,'');
     });
-
-    const replaceTel = str => {
-        str = str.replace(/\D/g,'');
-        $('#telephone').val(str);
-    }
 
     var hide = (id) => {
         if(!$('#'+id).hasClass('hide'))

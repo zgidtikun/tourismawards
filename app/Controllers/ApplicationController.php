@@ -219,6 +219,14 @@ class ApplicationController extends BaseController
         return $this->response->setJSON($result);
     }
 
+    private function getCurrentStatus($id)
+    {
+        $form = $this->appForm->where('id',$id)
+        ->select('status')
+        ->first();
+        return !empty($form->status) ? $form->status : 0;
+    }
+
     public function finishApp()
     {
 
@@ -232,60 +240,65 @@ class ApplicationController extends BaseController
             );
             
             $app_id = $input['id'];
-            $updd = [
-                'step' => $this->input->getVar('step'),
-                'status' => 2,
-                'updated_by' => $this->myId,
-                'send_date' => date('Y-m-d H:i:s')
-            ];
+            $status = $this->getCurrentStatus($app_id);
 
-            foreach($maps as $map){
-                if(array_key_exists($map,$input)){
-                    $updd[$map] = $input[$map] != "" ? $input[$map] : NULL;
+            if(in_array($status,[1,4])){
+                $updd = [
+                    'step' => $this->input->getVar('step'),
+                    'status' => 2,
+                    'updated_by' => $this->myId,
+                    'send_date' => date('Y-m-d H:i:s')
+                ];
+
+                foreach($maps as $map){
+                    if(array_key_exists($map,$input)){
+                        $updd[$map] = $input[$map] != "" ? $input[$map] : NULL;
+                    }
                 }
-            }
+                    
+                $this->appForm->update($app_id,$updd);
+
+                save_log_activety([
+                    'module' => 'user_application',
+                    'action' => 'application_send_sys',
+                    'bank' => 'frontend',
+                    'user_id' => $this->myId,
+                    'datetime' => date('Y-m-d H:i:s'),
+                    'data' => $this->input->getVar()
+                ]);
+
+                save_log_activety([
+                    'module' => 'step_flow_checking',
+                    'action' => 'application-'.$app_id,
+                    'bank' => 'frontend',
+                    'user_id' => $this->myId,
+                    'datetime' => date('Y-m-d H:i:s'),
+                    'data' => 'ผู้ประกอบการกดส่งใบสมัครประกวด'
+                ]);
+
+                $form = $this->appForm->where('id',$app_id)
+                    ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
+                    ->first();
+
+                set_multi_noti(
+                    get_receive_admin(),
+                    (object) [
+                        'bank' => 'backend'
+                    ],
+                    (object) [
+                        'message' => $form->place_name.' ได้ทำการส่งใบสมัครเข้าสู่ระบบ กรุณาทำการตรวจสอบใบสมัคร',
+                        'link' => base_url('awards/result'),
+                        'send_date' => date('Y-m-d H:i:s'),
+                        'send_by' => $form->place_name
+                    ]
+                );
                 
-            $this->appForm->update($app_id,$updd);
-
-            save_log_activety([
-                'module' => 'user_application',
-                'action' => 'application_send_sys',
-                'bank' => 'frontend',
-                'user_id' => $this->myId,
-                'datetime' => date('Y-m-d H:i:s'),
-                'data' => $this->input->getVar()
-            ]);
-            save_log_activety([
-                'module' => 'step flow',
-                'action' => 'application-'.$app_id,
-                'bank' => 'frontend',
-                'user_id' => $this->myId,
-                'datetime' => date('Y-m-d H:i:s'),
-                'data' => 'user_application'
-            ]);
-
-            $form = $this->appForm->where('id',$app_id)
-                ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
-                ->first();
-
-            set_multi_noti(
-                get_receive_admin(),
-                (object) [
-                    'bank' => 'backend'
-                ],
-                (object) [
-                    'message' => $form->place_name.' ได้ทำการส่งใบสมัครเข้าสู่ระบบ กรุณาทำการตรวจสอบใบสมัคร',
-                    'link' => base_url('awards/result'),
-                    'send_date' => date('Y-m-d H:i:s'),
-                    'send_by' => $form->place_name
-                ]
-            );
-            
-            helper('semail');
-            send_email_frontend((object)[
-                'email' => session()->get('account'),
-                'tycon' => session()->get('user')
-            ],'app-wait');
+                helper('semail');
+                send_email_frontend((object)[
+                    'email' => session()->get('account'),
+                    'tycon' => session()->get('user')
+                ],'app-wait');
+            }
 
             $result = ['result' => 'success', 'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว'];
 

@@ -57,6 +57,11 @@ abstract class BaseController extends Controller
         $this->email        = \Config\Services::email();        
         $this->validation   = \Config\Services::validation();
         $this->input        = $request;
+        $sel = "SELECT assessment_group.id, assessment_group.name 
+            FROM (SELECT * FROM estimate WHERE application_id=1 AND request_status=1) estimate
+            INNER JOIN question ON estimate.question_id=question.id
+            INNER JOIN assessment_group ON question.assessment_group_id=assessment_group.id
+            GROUP BY assessment_group.id";
     }
 
     

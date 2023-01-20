@@ -8,6 +8,7 @@ class LowCarbon extends BaseController
 {
     function __construct()
     {
+        helper(['log']);
     }
 
     public function index()
@@ -107,6 +108,16 @@ class LowCarbon extends BaseController
             ];
             $result = $this->db->table('estimate_score')->where('application_id', $post['application_id'])->where('lowcarbon_status', 1)->update($data);
         }
+
+        save_log_activety([
+            'module' => 'step_flow_checking',
+            'action' => 'application-'.$post['application_id'],
+            'bank' => 'backend',
+            'user_id' => session()->id,
+            'datetime' => date('Y-m-d H:i:s'),
+            'data' => 'ปรับคะแนน Low Carbon'
+        ]);
+
         if ($result) {
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'มีการแก้ไขคะแนนเรียบร้อยแล้ว']);
         }else{

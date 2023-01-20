@@ -86,22 +86,49 @@
               </thead>
               <tbody>
                 <?php
+                // px($result);
                 if (!empty($result)) :
                   foreach ($result as $key => $value) :
                     if ($value->users_stage_status == 1) {
-                      $status = '<div class="userstatus trader">รอส่งผลการประเมิน</div>';
+                      $status = '<div class="userstatus pointer trader">รอส่งผลการประเมิน</div>';
                     } else if ($value->users_stage_status == 2) {
-                      $status = '<div class="userstatus chk">กำลังประเมิน</div>';
+                      $status = '<div class="userstatus pointer chk">กำลังประเมิน</div>';
                     } else if ($value->users_stage_status == 3) {
-                      $status = '<div class="userstatus trader">ขอข้อมูลเพิ่มเติม</div>';
+                      $status = '<div class="userstatus pointer trader">ขอข้อมูลเพิ่มเติม</div>';
                     } else if ($value->users_stage_status == 4) {
-                      $status = '<div class="userstatus judge">ตอบรับคำขอ</div>';
+                      $status = '<div class="userstatus pointer judge">ตอบรับคำขอ</div>';
                     } else if ($value->users_stage_status == 5) {
-                      $status = '<div class="userstatus officer">ไม่มีการตอบกลับ</div>';
+                      $status = '<div class="userstatus pointer officer">ไม่มีการตอบกลับ</div>';
                     } else if ($value->users_stage_status == 6) {
-                      $status = '<div class="userstatus judge">ผ่านการประเมิน</div>';
+                      $status = '<div class="userstatus pointer judge">ผ่านการประเมิน</div>';
                     } else if ($value->users_stage_status == 7) {
-                      $status = '<div class="userstatus officer">ไม่ผ่านการประเมิน</div>';
+                      $status = '<div class="userstatus pointer officer">ไม่ผ่านการประเมิน</div>';
+                    }
+
+                    $judge = '';
+                    if (!empty(json_decode($value->admin_id_tourism))) {
+                      $judge .= '<p><small> ด้าน Tourism Excellence (Product/Service)</small></p>';
+                      foreach (json_decode($value->admin_id_tourism) as $key => $val) {
+                        $judge .= '<p>' . usersName($val) . '</p>';
+                      }
+                    }
+                    if (!empty(json_decode($value->admin_id_supporting))) {
+                      $judge .= '<p><small> ด้าน Supporting Business & Marketing Factors</small></p>';
+                      foreach (json_decode($value->admin_id_supporting) as $key => $val) {
+                        $judge .= '<p>' . usersName($val) . '</p>';
+                      }
+                    }
+                    if (!empty(json_decode($value->admin_id_responsibility))) {
+                      $judge .= '<p><small> ด้าน Responsibility and Safety & Health Administration</small></p>';
+                      foreach (json_decode($value->admin_id_responsibility) as $key => $val) {
+                        $judge .= '<p>' . usersName($val) . '</p>';
+                      }
+                    }
+                    if (!empty(json_decode($value->admin_id_lowcarbon))) {
+                      $judge .= '<p><small> ด้าน Low Carbon</small></p>';
+                      foreach (json_decode($value->admin_id_lowcarbon) as $key => $val) {
+                        $judge .= '<p>' . usersName($val) . '</p>';
+                      }
                     }
                 ?>
                     <tr>
@@ -110,7 +137,16 @@
                       <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>
                       <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
-                      <td class="text-center"><?= $status ?></td>
+                      <td class="text-center">
+                        <div class="tooltip_c">
+                          <?= $status ?>
+                          <div class="top">
+                            <h3>รายชื่อกรรมการ</h3>
+                            <?= $judge ?>
+                            <i></i>
+                          </div>
+                        </div>
+                      </td>
                       <!-- <td class="text-center">
                         <?php echo docDate($value->duedate, 3); ?>
                       </td> -->

@@ -15,7 +15,7 @@ class Answer extends Model
     protected $useSoftDeletes = false;
 
     protected $allowedFields = ['reply', 'reply_by', 'question_id', 'pack_file', 
-    'status', 'send_date'];
+    'status', 'send_date', 'created_at', 'updated_at'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

@@ -98,12 +98,12 @@ class EstimateController extends BaseController
                 'data' => $this->input->getVar()
             ]);
             save_log_activety([
-                'module' => 'step flow',
+                'module' => 'step_flow_checking',
                 'action' => 'application-'.$appid,
                 'bank' => 'frontend',
                 'user_id' => $this->myId,
                 'datetime' => date('Y-m-d H:i:s'),
-                'data' => 'estimate_pre_screen'
+                'data' => 'กรรมการกดส่งขอข้อมูล Pre-Screen เพิ่มเติม'
             ]);
 
             set_noti(
@@ -123,6 +123,7 @@ class EstimateController extends BaseController
             helper('semail');
             send_email_frontend((object)[
                 'id' => $form->created_by,
+                'appId' => $appid
             ],'estimate-request');
                 
             $result = ['result' => 'success'];
@@ -319,12 +320,12 @@ class EstimateController extends BaseController
             ]);
             
             save_log_activety([
-                'module' => 'step flow',
+                'module' => 'step_flow_checking',
                 'action' => 'application-'.$input->appId,
                 'bank' => 'frontend',
                 'user_id' => $this->myId,
                 'datetime' => date('Y-m-d H:i:s'),
-                'data' => $module
+                'data' => 'ส่งผลประเมิน รอบ '.($input->stage == 1 ? 'pre_screen' : 'onsite')
             ]);
 
             $dataEstimate = $this->getJudgeEstimate($input->appId,$this->myId,$input->stage);
@@ -819,12 +820,12 @@ class EstimateController extends BaseController
                 'send_by' => $form->place_name
             ]);
 
-        helper('semail');
-        send_email_frontend((object)[
-            'id' => $form->app_of,
-            'appId' => $data->app_id,
-            'stage' => $data->stage
-        ],'estimate-complete');
+        // helper('semail');
+        // send_email_frontend((object)[
+        //     'id' => $form->app_of,
+        //     'appId' => $data->app_id,
+        //     'stage' => $data->stage
+        // ],'estimate-complete');
     }
 
     public function setAwardResut()

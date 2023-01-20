@@ -1399,7 +1399,7 @@
                 var yearT = new Date(dp).getFullYear()-0;  
                 var yearTH = yearT+543;
                 var fulldate = dp;    
-                var fulldateTH= fulldate.replace(yearT,yearTH);
+                var fulldateTH = fulldate.replace(yearT,yearTH);
                 $('#step5-openYear').val(fulldateTH);
                 $('#step5-hiddenDate').val(fulldate);    
 

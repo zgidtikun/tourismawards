@@ -515,7 +515,7 @@ class App extends BaseConfig
             $this->announcement_ons_date = '2024-01-01'; // วันที่ประกาศผล ลงพื้นที่
             $this->announcement_date = '2024-01-01'; // วันที่ประกาศผลรางวัล
             $this->Estimate_require_date = '2023-06-06'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
-            $this->Estimate_pre_date = '2023-06-13'; // วันหมดเขตการประเมินรอบ Pre-screen
+            $this->Estimate_pre_date = '2023-06-10'; // วันหมดเขตการประเมินรอบ Pre-screen
             $this->Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่
         }
         elseif(getenv('CI_ENVIRONMENT') == 'testing'){

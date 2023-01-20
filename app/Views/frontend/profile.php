@@ -352,5 +352,10 @@
     $('#p-mobile').on('keyup change input', function(){
         this.value = this.value.replace(/[^0-9]/g,'');
     });
+
+    $('#p-name, #p-surname').on('keyup change input', function() {
+        this.value = this.value.replace(/[^a-zA-Z\u0E00-\u0E7F\s]/g,'');
+    });
 </script>
-<script src="<?=base_url('assets/js/frontend/profile.js')?>"></script>
+<?php $config = new \Config\App(); ?>
+<script src="<?=base_url('assets/js/frontend/profile.js')?>?v=<?=$config->script_v?>"></script>

@@ -97,7 +97,9 @@ class AnswerController extends BaseController
                 $this->ans->insert([
                     'question_id' => $mq->id,
                     'reply_by' => $this->myId,
-                    'status' => 1
+                    'status' => 1,
+                    'created_at' => $current_datetime,
+                    'updated_at' => $current_datetime
                 ]);
             }
         }
@@ -115,7 +117,9 @@ class AnswerController extends BaseController
                     $this->ans->insert([
                         'question_id' => $mq->id,
                         'reply_by' => $this->myId,
-                        'status' => 1
+                        'status' => 1,
+                        'created_at' => $current_datetime,
+                        'updated_at' => $current_datetime
                     ]);
                 }
             }
@@ -402,12 +406,12 @@ class AnswerController extends BaseController
                         'data' => $this->input->getVar()
                     ]);
                     save_log_activety([
-                        'module' => 'step flow',
+                        'module' => 'step_flow_checking',
                         'action' => 'application-'.$this->input->getVar('appId'),
                         'bank' => 'frontend',
                         'user_id' => $this->myId,
                         'datetime' => date('Y-m-d H:i:s'),
-                        'data' => 'user_pre_screen'
+                        'data' => 'ผู้ประกอบการกดส่งแบบประเมิน'
                     ]);
 
                     $form = $this->appForm->where('id',$this->input->getVar('appId'))

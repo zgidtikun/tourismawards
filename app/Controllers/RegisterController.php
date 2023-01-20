@@ -18,6 +18,10 @@ class RegisterController extends BaseController
 
     public function forgetpass()
     {
+        if(session()->get('isLoggedIn')){
+            return redirect()->to(base_url('home'));
+        }
+        
         $data = [
             'title' => 'ลืมรหัสผ่าน',
             'view' => 'frontend/forgetpass',
@@ -28,6 +32,10 @@ class RegisterController extends BaseController
 
     public function signup()
     {
+        if(session()->get('isLoggedIn')){
+            return redirect()->to(base_url('home'));
+        }
+
         $status = false;
         $error = array();
         $data = (object) $this->input->getVar();

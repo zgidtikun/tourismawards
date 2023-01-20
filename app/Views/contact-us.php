@@ -116,21 +116,25 @@
                         <div class="contact-form-col2 inputfield">
                             <label data-tab="1" id="lName">ชื่อ-นามสกุล<span class="required">*</span></label>
                             <input type="text" id="sName" data-tab="1">
+                            <div class="invalid-feedback" id="ivName"></div>
                             <a href="javascript:void(0)" class="btn-inpreset" data-tab="1"><i class="bi bi-x"></i></a>
                         </div>
                         <div class="contact-form-col2 inputfield">
                             <label data-tab="2" id="lEmail">อีเมล<span class="required">*</span></label>
                             <input type="email" id="sEmail" data-tab="2">
+                            <div class="invalid-feedback" id="ivEmail"></div>
                             <a href="javascript:void(0)" class="btn-inpreset" data-tab="2"><i class="bi bi-x"></i></a>
                         </div>
                         <div class="contact-form-col1 inputfield">
                             <label data-tab="3" id="lSubject">เรื่อง<span class="required">*</span></label>
                             <input type="text" id="sSubject" data-tab="3">
+                            <div class="invalid-feedback" id="ivSubject"></div>
                             <a href="javascript:void(0)" class="btn-inpreset" data-tab="3"><i class="bi bi-x"></i></a>
                         </div>
                         <div class="contact-form-col1 inputfield">
                             <label data-tab="4" id="lMessage">ข้อความ<span class="required">*</span></label>
                             <textarea id="sMessage" rows="5" data-tab="4"></textarea>
+                            <div class="invalid-feedback" id="ivMessage"></div>
                             <a href="javascript:void(0)" class="btn-inpreset" data-tab="4"><i class="bi bi-x"></i></a>
                         </div>
                         <div class="contact-form-col1 btn-form-row">
@@ -141,48 +145,35 @@
                     <script>
                         jQuery(document).ready(function() { //input value hide label
                             $('.btn-inpreset').hide();
-                            $('input').keypress(function() {
-                                var datatab = $(this).attr('data-tab');
-                                $('.btn-inpreset[data-tab="' + datatab + '"]').show();
-                                $('label[data-tab="' + datatab + '"]').hide();
+
+                            $('input, textarea').on('input', function() {
+                                const datatab = $(this).attr('data-tab');
+                                const input = `.inputfield input[data-tab="${datatab}"]`;
+                                const textarea = `.inputfield textarea[data-tab="${datatab}"]`;
+                                const label = `label[data-tab="${datatab}"]`;
+                                const inpreset = `.btn-inpreset[data-tab="${datatab}"]`;
+
+                                $(input).removeClass('is-invalid');
+                                $(textarea).removeClass('is-invalid');
+                                
+                                if ($(this).val().length > 0) {
+                                    $(label).hide();
+                                    $(inpreset).show();
+                                } else {
+                                    $(label).show();
+                                    $(inpreset).hide();
+                                }
                             });
-                            $('textarea').keypress(function() {
-                                var datatab = $(this).attr('data-tab');
-                                $('.btn-inpreset[data-tab="' + datatab + '"]').show();
-                                $('label[data-tab="' + datatab + '"]').hide();
-                            });
+
                             $('.btn-inpreset').click(function() {
-                                var datatab = $(this).attr('data-tab');
-                                $('.inputfield input[data-tab="' + datatab + '"]').val('');
-                                $('.inputfield textarea[data-tab="' + datatab + '"]').val('');
-                                $('label[data-tab="' + datatab + '"]').show();
+                                const datatab = $(this).attr('data-tab');
+                                $(`.inputfield input[data-tab="${datatab}"]`).val('');
+                                $(`.inputfield input[data-tab="${datatab}"]`).removeClass('is-invalid');
+                                $(`.inputfield textarea[data-tab="${datatab}"]`).val('');
+                                $(`.inputfield textarea[data-tab="${datatab}"]`).removeClass('is-invalid');
+                                $(`label[data-tab="${datatab}"]`).show();
                                 $(this).hide();
                             });
-
-                        });
-
-                        $('input').change(function() {
-                            var datatab = $(this).attr('data-tab');
-                            if ($(this).val().length > 0) {
-                                //input value has value hide label
-                                $('label[data-tab="' + datatab + '"]').hide();
-                            } else {
-                                //input value empt value hide label
-                                $('.btn-inpreset[data-tab="' + datatab + '"]').hide();
-                                $('label[data-tab="' + datatab + '"]').show();
-                            }
-                        });
-
-                        $('textarea').change(function() {
-                            var datatab = $(this).attr('data-tab');
-                            if ($(this).val().length > 0) {
-                                //input value has value hide label
-                                $('label[data-tab="' + datatab + '"]').hide();
-                            } else {
-                                //input value empt value hide label
-                                $('.btn-inpreset[data-tab="' + datatab + '"]').hide();
-                                $('label[data-tab="' + datatab + '"]').show();
-                            }
                         });
                     </script>
                 </div>
@@ -246,51 +237,43 @@
         --bs-btn-disabled-border-color: #0d6efd;
         --bs-btn-border-radius: 0.375rem;
     }
-</style>
 
-<script src="<?=base_url('assets/js/frontend/other.js')?>"></script>
+    input.is-invalid, 
+    textarea.is-invalid {
+        border-color: #dc3545;
+        background-color: #F0DDDD;
+        padding-right: calc(1.5em + 0.75rem);
+    }
+
+    .invalid-feedback {
+        display: none;
+        width: 100%;
+        margin-top: 0.25rem;
+        font-size: 15px;
+        color: #dc3545;
+    }
+
+    .is-invalid~.invalid-feedback {
+        display: block;
+    }
+</style>
+<?php $config = new \Config\App(); ?>
+<script src="<?=base_url('assets/js/frontend/other.js')?>?v=<?=$config->script_v?>"></script>
 <script>
     $(document).ready(() => {
         $('.mainsite').addClass('contact');
-    });
+    });    
 
-    const send = () => {        
-        let recapcha_token = '';
-        <?php if (!empty($_recapcha) && $_recapcha) : ?>
-        recapchaToken().then(function(data) {
-           recapcha_token = data.rccToken;
-        <?php endif; ?>
-
-        const mf = [
-            { label: '#lName', input: '#sName' },
-            { label: '#lEmail', input: '#sEmail' },
-            { label: '#lSubject', input: '#sSubject' },
-            { label: '#lMessage', input: '#sMessage' }
-        ];
-
-        let ms, vd = true;
-
-        $.each(mf,(k,v) => {
-            if(empty($(v.input).val())){
-                ms = 'กรุณากรอก '+$(v.label).html();
-                vd = false;
-                return;
-            }
-        });
-
-        if(!vd){
-            Swal.fire({
-                icon: 'error',
-                html: ms,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'ตกลง',
-                customClass: {
-                    confirmButton: 'btn btn-primary'
-                },
-                buttonsStyling: false
-            });
+    const send = async() => {      
+        if(validate()){
             return;
         }
+
+        let recapcha_token = '';
+        <?php if (!empty($_recapcha) && $_recapcha) : ?>
+        const recap = await recapchaToken();
+        recapcha_token = recap.rccToken;
+        <?php endif; ?>
 
         const st = {
             method: 'post',
@@ -304,34 +287,71 @@
             }
         }
 
-        api(st).then((rs) => {
-            let tt = msg = '';
+        const callback = await api(st);
+        let title, message;
 
-            if(rs.result == 'success'){
-                tt = 'ได้ทำการส่งอีเมลเรียบร้อยแล้ว';
-                $('#sName, #sEmail, #sSubject, #sMessage').val('');
+        if(callback.result == 'success'){            
+            title = 'ได้ทำการส่งอีเมลเรียบร้อยแล้ว';            
+            defaultInput();
+        } else {
+            title = 'ไม่สามารถส่งอีเมลได้';
+
+            if(!empty(callback.message)){
+                message = callback.message;
+            }
+        }
+
+        Swal.fire({
+            icon: callback.result,
+            title: title,
+            html: message,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'ตกลง',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false
+        });
+    }
+
+    const validate = () => {
+        const mf = [
+            { label: '#lName', input: '#sName', invaid: '#ivName' },
+            { label: '#lEmail', input: '#sEmail', invaid: '#ivEmail' },
+            { label: '#lSubject', input: '#sSubject', invaid: '#ivSubject' },
+            { label: '#lMessage', input: '#sMessage', invaid: '#ivMessage' }
+        ];
+
+        const patternEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+        let invalid = false;
+
+        $.each(mf,(k,v) => {
+            if(empty($(v.input).val())){
+                const message = 'กรุณากรอก '+$(v.label).html();
+                $(v.input).addClass('is-invalid');
+                $(v.invaid).html(message);
+                invalid = true;
             } else {
-                tt = 'ไม่สามารถส่งอีเมลได้';
-                if(!empty(rs.message)){
-                    msg = rs.message;
+                if(v.input == '#sEmail'){
+                    if(!patternEmail.test($(v.input).val())){
+                        $(v.input).addClass('is-invalid');
+                        $(v.invaid).html('กรุณากรอก อีเมล ให้ถูกต้อง');
+                        invalid = true;
+                    }
                 }
-            }   
+            }
+        });
 
-            Swal.fire({
-                icon: rs.result,
-                title: tt,
-                html: msg,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'ตกลง',
-                customClass: {
-                    confirmButton: 'btn btn-primary'
-                },
-                buttonsStyling: false
-            });
+        return invalid;
+    }
+
+    const defaultInput = () => {
+        $.each([1,2,3,4],(key,val) => {
+            $(`input[data-tab="${val}"]`).val('');
+            $(`textarea[data-tab="${val}"]`).val('');
+            $(`label[data-tab="${val}"]`).show();
+            $(`.btn-inpreset[data-tab="${val}"]`).hide();
         });
-        
-        <?php if (!empty($_recapcha) && $_recapcha) : ?>
-        });
-        <?php endif; ?>
     }
 </script>

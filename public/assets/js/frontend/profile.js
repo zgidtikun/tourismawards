@@ -1,9 +1,10 @@
 const mf = [    
-    { ip: '#p-prefix', id: 'p-prefix', iv: '', ps: 'form', api: 'prefix' },
-    { ip: '#p-name', id: 'p-name', iv: '#nvalid-p-name', ps: 'form', api: 'name' },
-    { ip: '#p-surname', id: 'p-surname', iv: '#nvalid-p-surname', ps: 'form', api: 'surname' },
-    { ip: '#p-mobile', id: 'p-mobile', iv: '#nvalid-p-mobile', ps: 'form', api: 'mobile' },
-    { ip: '#p-email', id: 'p-email', iv: '#nvalid-p-email', ps: 'form', api: 'email' },
+    { ip: '#p-prefix', id: 'p-prefix', iv: '', ps: 'form', api: 'prefix', validate: true },
+    { ip: '#p-name', id: 'p-name', iv: '#nvalid-p-name', ps: 'form', api: 'name', validate: true },
+    { ip: '#p-surname', id: 'p-surname', iv: '#nvalid-p-surname', ps: 'form', api: 'surname', validate: true },
+    { ip: '#p-mobile', id: 'p-mobile', iv: '#nvalid-p-mobile', ps: 'form', api: 'mobile', validate: true },
+    { ip: '#p-email', id: 'p-email', iv: '#nvalid-p-email', ps: 'form', api: 'email', validate: true },
+    { ip: '#p-email', id: 'p-email', iv: null, ps: 'form', api: 'username', validate: false },
     { ip: '#p-uimage', id: 'p-uimage', src: '#p-image', ps: 'file', s: 10 },
 ];
 
@@ -27,7 +28,7 @@ const pf = {
                     fd.append('profile['+v.api+']',$(v.ip).val());
                 }
             });
-
+            
             st.data = fd;
 
             api(st).then(function(r){
@@ -50,7 +51,7 @@ const pf = {
         const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
         $.each(mf, function(k, m){
-            if(m.ps == 'form'){
+            if(m.ps == 'form' && m.validate){
                 if(empty($(m.ip).val())){
                     if(m.id == 'p-email'){
                         $(m.iv).html('กรุณากรอก อีเมล');

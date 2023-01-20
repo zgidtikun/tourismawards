@@ -17,7 +17,7 @@ class Approve extends BaseController
     private $ApplicationForm;
     private $ApplicationType;
     private $ApplicationTypeSub;
-    
+
     public function __construct()
     {
         helper(['semail', 'verify', 'log']);
@@ -133,9 +133,6 @@ class Approve extends BaseController
         }
 
         $data['result'] = $this->ApplicationForm->like($like, 'match', 'both')->where($where)->orderBy('id', 'desc')->findAll();
-        // pp_sql();
-        // exit;
-        // pp($data['result']);
 
         $data['application_type'] = $this->ApplicationType->where($where_type)->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $sub_id)->findAll();
@@ -156,7 +153,7 @@ class Approve extends BaseController
 
     public function saveStatus()
     {
-        try{
+        try {
             $post = $this->input->getVar();
             $id = $post['insert_id'];
             unset($post['insert_id']);
@@ -167,7 +164,18 @@ class Approve extends BaseController
             if ($post['status'] == 4) {
                 $post['request_time'] = date('Y-m-d H:i:s');
             }
-            // px($post);
+
+            $app = $this->db->table('application_form')->where('id', $id)->get()->getRowObject();
+            if (!empty($app)) {
+                if ($app->status == 0) {
+                    echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ใบสมัครนี้ถูกปฏิเสธโดย ' . $app->approve_name]);
+                    exit;
+                }
+                if ($app->status == 3) {
+                    echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ใบสมัครนี้ถูกอนุมัติโดย ' . $app->approve_name]);
+                    exit;
+                }
+            }
 
             $result = $this->db->table('application_form')->where('id', $id)->update($post);
             if ($result) {
@@ -176,14 +184,14 @@ class Approve extends BaseController
                 if ($post['status'] == 3) {
                     $this->db->table('users')->where('id', $result->created_by)->update(['stage' => 2]);
                 }
-                                
+
                 save_log_activety([
-                    'module' => 'step flow',
-                    'action' => 'application-'.$id,
+                    'module' => 'step_flow_checking',
+                    'action' => 'application-' . $id,
                     'bank' => 'backend',
                     'user_id' => session()->id,
                     'datetime' => date('Y-m-d H:i:s'),
-                    'data' => 'application form management (status: '.$post['status'].')'
+                    'data' => 'อัพเดตสถานะใบสมัคร (status: ' . $post['status'] . ')'
                 ]);
 
                 $subject = '';
@@ -191,20 +199,20 @@ class Approve extends BaseController
 
                 $link_redirect = base_url('awards/application');
                 if ($post['status'] == 4) {
-                    $subject = 'ใบสมัครของท่านมีการขอข้อมูลเพิ่มเติม';
-                    $message = 'ใบสมัครของท่านยังไม่สมบูรณ์ กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบข้อมูลเพิ่มเติม และส่งข้อมูลตอบกลับภายใน 24 ชั่วโมง';
-                    $message_noti = 'ใบสมัครของท่านยังไม่สมบูรณ์ กรุณาตรวจสอบข้อมูลเพิ่มเติม และส่งข้อมูลตอบกลับภายใน 24 ชั่วโมง';
+                    $subject = 'ใบสมัครมีการขอข้อมูลเพิ่มเติม';
+                    $message = 'ใบสมัครของท่านยังไม่สมบูรณ์ กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบข้อมูลเพิ่มเติม และส่งข้อมูลตอบกลับภายใน 1 วัน';
+                    $message_noti = 'ใบสมัครของท่านยังไม่สมบูรณ์ กรุณาตรวจสอบข้อมูลเพิ่มเติม และส่งข้อมูลตอบกลับภายใน 1 วัน';
                 } else if ($post['status'] == 3) {
-                    $subject = 'ใบสมัครของท่านได้รับการอนุมัติเรียบร้อยแล้ว';
+                    $subject = 'อนุมัติใบสมัคร';
                     $message = 'ใบสมัครของท่านได้รับการอนุมัติแล้ว ท่านสามารถล็อกอินเข้าสู่เว็บไซต์เพื่อทำการกรอกข้อมูลแบบประเมินขั้นต้น (Pre-Screen) ให้แล้วเสร็จภายในวันที่ 23 เมษายน 2566';
                     $message_noti = 'ใบสมัครของท่านได้รับการอนุมัติแล้ว กรุณาทำการกรอกข้อมูลแบบประเมินขั้นต้น (Pre-Screen) ให้แล้วเสร็จภายในวันที่ 23 เมษายน 2566';
                     $link_redirect = base_url('awards/pre-screen');
                 } else if ($post['status'] == 0) {
-                    $subject = 'ใบสมัครของท่านไม่ผ่านการอนุมัติ';
+                    $subject = 'ไม่อนุมัติใบสมัคร';
                     $message = 'ขอขอบพระคุณผู้ประกอบการที่สนใจเข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 <br>';
                     $message .= 'ทางโครงการฯ ขอแจ้งว่าใบสมัครของท่านไม่ได้รับการอนุมัติ <br>';
-                    $message .= 'หากมีคำถามเพิ่มเติม กรุณาติดต่อ support@tourismawards.tourismthailand.org';
-                    $message_noti = $subject;
+                    $message .= 'หากมีคำถามเพิ่มเติม กรุณาติดต่อ ttakinnari14@gmail.com';
+                    $message_noti = 'ใบสมัครของท่านไม่ได้รับการอนุมัติ';
                 }
 
                 $email_data = [
@@ -251,13 +259,12 @@ class Approve extends BaseController
 
                 fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
                 fclose($fp);
-                
+
                 echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => '']);
             } else {
                 echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขข้อมูลไม่สำเร็จ']);
             }
-            
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
 
             save_log_error([
                 'module' => 'approve_application_form',

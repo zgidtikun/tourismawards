@@ -237,8 +237,10 @@ class FrontendController extends BaseController
     {
         try {
             $users = new \App\Models\Users();
-            $users->update($this->input->getVar('id'),$this->input->getVar('profile'));
+            $profile = $this->input->getVar('profile');
+            $users->update($this->input->getVar('id'),$profile);
             $result = ['result' => 'success'];  
+            session()->set('account',$profile['username']);
         } catch(Exception $e){
             save_log_error([
                 'module' => 'profile_update',

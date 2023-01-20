@@ -43,15 +43,9 @@ class UserController extends BaseController
     {         
         $countUser = $this->db->table('users')->where('email',$email)
             ->countAllResults();
-
-        $countAdmin = $this->db->table('admin')->where('email',$email)
-            ->countAllResults();
         
-        if($countUser > 0 || $countAdmin > 0)
-            $exist = false;
-        else $exist = true;
-
-        return $exist;
+        if($countUser > 0) return false;
+        else return true;
     }
 
     public function insertUser($data)

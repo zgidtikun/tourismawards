@@ -52,7 +52,7 @@ $routes->get('application-guide', 'Home::appguide');
 $routes->get('privacy-policy', 'Home::privacypolicy');
 $routes->get('new', 'Home::new');
 $routes->get('new/(:num)', 'Home::new_detail/$1');
-$routes->get('forget-password', 'RegisterController::forgetpass');
+$routes->get('forgot-password', 'RegisterController::forgetpass');
 $routes->get('verify-user', 'Home::verifyuser');
 $routes->get('new-password', 'Home::newpassword');
 $routes->get('new-password/(:any)', 'Home::newpassword/$1');
@@ -228,7 +228,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
         $routes->get('history', 'Approve::history', ['filter' => 'auth:backend']);
         $routes->get('check', 'Approve::check', ['filter' => 'auth:backend']);
         $routes->get('edit/(:any)', 'Approve::edit/$1', ['filter' => 'auth:backend']);
-        $routes->post('saveStatus', 'Approve::saveStatus', ['filter' => 'auth:backend']);
+        $routes->post('saveStatus', 'Approve::saveStatus', ['filter' => 'api:backend']);
         $routes->post('getAplicationTypeSub/(:any)', 'Approve::getAplicationTypeSub/$1', ['filter' => 'auth:backend']);
         // Download PDF
         $routes->post('download', 'Approve::downloadFilePDF', ['filter' => 'api:backend']);
@@ -310,14 +310,12 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     $routes->post('MarkTest/saveUpdate', 'MarkTest::saveUpdate');
 
     // ยืนยันตัวตน Backend
+    $routes->get('verify-password', 'VerifyPassword::index');
+    $routes->get('forgot-password', 'VerifyPassword::forgotPassword');
     $routes->post('VerifyPassword/savePassword', 'VerifyPassword::savePassword');
     $routes->post('VerifyPassword/saveForgotPassword', 'VerifyPassword::saveForgotPassword');
 });
 
-
-// ยืนยันตัวตน Backend
-$routes->get('verify-password', 'backend\VerifyPassword::index');
-$routes->get('forgot-password', 'backend\VerifyPassword::forgotPassword');
 
 // $routes->group('backend', static function ($routes) {
 //     // MarkTest is Controller for Test Only
