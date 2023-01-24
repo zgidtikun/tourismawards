@@ -123,7 +123,7 @@ class VerifyPassword extends BaseController
 
     public function sendMail($data)
     {
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code)) . '"  target="_blank">Verify</a></b>';
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code)) . '"  target="_blank">ยืนยันตัวตน</a></b>';
         $email_data = [
             '_header' => 'มีการแก้ไขข้อมูลผู้ใช้งานบนเว็บไซต์',
             '_content' => 'เรียนคุณ ' . $data['admin']->name . ' ' . $data['admin']->surname . ' ท่านได้ส่งคำร้องขอในการเปลี่ยนรหัสผ่าน '

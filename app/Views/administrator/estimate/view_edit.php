@@ -1,3 +1,12 @@
+<style>
+  #btn_back_1,
+  #btn_back_2,
+  #btn_back_3,
+  #btn_back_4,
+  #btn_back_5 {
+    display: none;
+  }
+</style>
 <div class="backendcontent forminput">
   <div class="backendcontent-row">
     <div class="backendcontent-title">
@@ -719,6 +728,18 @@
       $('#question_no_' + tab).html(no);
       $('#btn_next_' + tab).attr('no', no);
       $('#btn_back_' + tab).attr('no', no);
+
+      var question_count = $('#question_count_' + tab).text();
+      if (no <= 1) {
+        $('#btn_back_' + tab).hide();
+        $('#btn_next_' + tab).show();
+      } else if (no == question_count) {
+        $('#btn_next_' + tab).hide();
+        $('#btn_back_' + tab).show();
+      } else {
+        $('#btn_back_' + tab).show();
+        $('#btn_next_' + tab).show();
+      }
       add_aws(question[tab][id].id, tab);
     });
 
@@ -733,9 +754,11 @@
     if (no <= 1) {
       $('#btn_back_' + tab).attr('no', 1);
       $('#btn_next_' + tab).attr('no', 1);
+      $('#btn_back_' + tab).hide();
     } else {
       $('#btn_back_' + tab).attr('no', no);
       $('#btn_next_' + tab).attr('no', no);
+      $('#btn_next_' + tab).show();
     }
   }
 
@@ -747,9 +770,11 @@
     if (no >= question_count) {
       $('#btn_back_' + tab).attr('no', question_count);
       $('#btn_next_' + tab).attr('no', question_count);
+      $('#btn_next_' + tab).hide();
     } else {
       $('#btn_next_' + tab).attr('no', no);
       $('#btn_back_' + tab).attr('no', no);
+      $('#btn_back_' + tab).show();
     }
   }
 </script>

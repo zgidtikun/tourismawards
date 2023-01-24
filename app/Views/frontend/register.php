@@ -81,6 +81,7 @@
                                         'name' => 'name',
                                         'value' => !empty($_signup->data->name) ? $_signup->data->name  : '',
                                         'placeholder' => 'ชื่อ *', 
+                                        'maxlength' => 255,
                                         'class' => !empty($_signup->error->name) ? 'inp-invalid' : ''
                                     ];
                                     echo form_input($attr);
@@ -97,6 +98,7 @@
                                         'name' => 'surname',
                                         'value' => !empty($_signup->data->surname) ? $_signup->data->surname  : '',
                                         'placeholder' => 'นามสกุล *', 
+                                        'maxlength' => 255,
                                         'class' => !empty($_signup->error->surname) ? 'inp-invalid' : ''
                                     ];
                                     echo form_input($attr);

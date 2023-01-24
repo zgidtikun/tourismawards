@@ -366,11 +366,61 @@ const boards = {
         }
         
         const ref = this.dt.find(el => el.id == id);
+        const taget = ref.targetEstimate;
+        const lscore = ref.lowcarbon_score;
         const spre = ref.score_pre;
         const sons = ref.score_onsite;
+        
+        if(Number(taget) == 3){
 
-        $('#td-spre').html(spre);
-        $('#td-sons').html(sons);
+            $('#score thead').html(
+                `<tr>
+                    <th class="text-center">คะแนนรวม<br>(Pre-screen)</th>
+                    <th class="text-center">ผลการประเมินด้าน<br>Low Carbon</th>
+                    <th class="text-center">คะแนนรวม<br>(รอบลงพื้นที่)</th>
+                </tr>`
+            );
+
+            $('#score tbody').html(
+                `<tr>
+                    <td class="text-center">${spre}</td>
+                    <td class="text-center">${lscore}</td>
+                    <td class="text-center">${sons}</td>
+                </tr>`
+            );
+
+        }
+        else if(Number(taget) == 2){
+
+            $('#score thead').html(
+                `<tr>
+                    <th class="text-center">ผลการประเมินด้าน Low Carbon</th>
+                </tr>`
+            );
+
+            $('#score tbody').html(
+                `<tr>
+                    <td class="text-center">${lscore}</td>
+                </tr>`
+            );
+        } 
+        else {
+
+            $('#score thead').html(
+                `<tr>
+                    <th class="text-center">คะแนนรวม<br>(Pre-screen)</th>
+                    <th class="text-center">คะแนนรวม<br>(รอบลงพื้นที่)</th>
+                </tr>`
+            );
+
+            $('#score tbody').html(
+                `<tr>
+                    <td class="text-center">${spre}</td>
+                    <td class="text-center">${sons}</td>
+                </tr>`
+            );
+        }
+
         $('#modal-score').modal('show');
     },
     closeScore(){

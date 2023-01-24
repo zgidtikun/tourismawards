@@ -467,7 +467,7 @@ class Officer extends BaseController
     {
         // px(vDecryption($data['verify_code']));
         // px($data);
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . $data['verify_code']) . '"  target="_blank">Verify</a></b>';
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . $data['verify_code']) . '"  target="_blank">ยืนยันตัวตน</a></b>';
         if ($data['users']->password != "") {
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }
@@ -494,7 +494,7 @@ class Officer extends BaseController
     {
         // px(vDecryption($data['verify_code']));
         // px($data);
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . $data['verify_code']) . '"  target="_blank">Verify</a></b>';
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . $data['verify_code']) . '"  target="_blank">ยืนยันตัวตน</a></b>';
         if ($data['users']->password != "") {
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }

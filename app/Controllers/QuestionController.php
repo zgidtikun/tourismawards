@@ -17,6 +17,41 @@ class QuestionController extends BaseController
             $this->db = \Config\Database::connect();        
     }
 
+    private function checkTargetEstimate($appId,$round)
+    {
+        $obj = new \App\Models\Committees();
+
+        $check_normal = $obj->where('application_form_id',$appId)
+        ->where('assessment_round',$round)
+        ->where(
+            '( admin_id_tourism LIKE \'%"'.$this->myId.'"%\'
+            OR admin_id_supporting LIKE \'%"'.$this->myId.'"%\'
+            OR admin_id_responsibility LIKE \'%"'.$this->myId.'"%\')'
+        )
+        ->select('CASE WHEN COUNT(id) > 0 THEN TRUE ELSE FALSE END cid')
+        ->first();
+        
+        if($round == 1){
+            $check_lowcarbon = $obj->where('application_form_id',$appId)
+            ->where('assessment_round',$round)
+            ->where('admin_id_lowcarbon LIKE \'%"'.$this->myId.'"%\'')
+            ->select('CASE WHEN COUNT(id) > 0 THEN TRUE ELSE FALSE END cid')
+            ->first();
+        } else {
+            $check_lowcarbon = false;
+        }
+        
+        if($check_normal->cid && $check_lowcarbon->cid){
+            return 3;
+        } 
+        elseif($check_lowcarbon->cid){
+            return 2;
+        }
+        else {
+            return 1;
+        }
+    }
+
     public function getListEstimate($round,$status = 'wait')
     {
         try{
@@ -49,7 +84,8 @@ class QuestionController extends BaseController
                 ->getCompiledSelect();
 
             $subEstInd = $this->db->table('estimate_individual')
-                ->select('application_id,score_pre, score_onsite')
+                ->select('application_id, score_pre, score_onsite,
+                lowcarbon_status, lowcarbon_score')
                 ->where('estimate_by',$this->myId)
                 ->getCompiledSelect();
                       
@@ -62,7 +98,9 @@ class QuestionController extends BaseController
                     IFNULL(es.score_pre,0) score_pre,
                     IFNULL(es.score_onsite,0) score_onsite,
                     IFNULL(inse.request_status,\'\') request_status,
-                    IFNULL(inse.show_status,\'\') show_status'                    
+                    IFNULL(inse.show_status,\'\') show_status,
+                    IFNULL(es.lowcarbon_status,2) lowcarbon_status,
+                    IFNULL(es.lowcarbon_score,0) lowcarbon_score'                    
                 )
                 ->join('application_type at','af.application_type_id = at.id')
                 ->join('application_type_sub ats','af.application_type_sub_id = ats.id','LEFT')
@@ -97,6 +135,9 @@ class QuestionController extends BaseController
                     $round == 'pre-screen' ? 1 : 2,
                     $this->myId
                 );
+
+                $targetEstimate = $this->checkTargetEstimate($val->id,($round == 'pre-screen' ? 1 : 2));
+                $val->targetEstimate = $targetEstimate;
 
                 if(
                     ($status == 'wait' && $isFinish == 'unfinish')

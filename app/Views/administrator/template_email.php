@@ -245,7 +245,8 @@
 
                               <div style="color: #34495e; line-height: 140%; text-align: left; word-wrap: break-word;">
                                 <p style="font-size: 14px; line-height: 140%;"><span style="color: #fff; font-size: 14px; line-height: 19.6px;">การท่องเที่ยวแห่งประเทศไทย (สำนักงานใหญ่)</span><br /><span style="color: #fff; font-size: 14px; line-height: 19.6px;">1600 ถ.เพชรบุรีตัดใหม่ แขวงมักกะสัน เขตราชเทวี กรุงเทพฯ</span><br /><span style="color: #fff; font-size: 14px; line-height: 19.6px;">10400 ประเทศไทย</span></p>
-                                <p style="font-size: 14px; line-height: 140%;"><span style="color: #fff; font-size: 14px; line-height: 19.6px;">โทร : 02-250-5500</span><br /><span style="color: #fff; font-size: 14px; line-height: 19.6px;">อีเมล์ : tourismawards.tat@gmail.com</span></p>
+                                <p style="font-size: 14px; line-height: 140%;"><span style="color: #fff; font-size: 14px; line-height: 19.6px;">โทร : 02-250-5500</span><br />
+                                <!-- <span style="color: #fff; font-size: 14px; line-height: 19.6px;">อีเมล์ : tourismawards.tat@gmail.com</span></p> -->
                               </div>
 
                             </td>

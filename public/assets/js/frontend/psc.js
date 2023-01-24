@@ -283,7 +283,9 @@ const psc = {
 
         $.each(this.questions, function(keyc,valc){
             $.each(valc.question, function(keyq, valq){
-                if(empty(valq.reply)){ check = false }
+                if(empty(valq.reply)){ 
+                    check = false 
+                }
             });
         });
 

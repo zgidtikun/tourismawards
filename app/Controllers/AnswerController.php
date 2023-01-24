@@ -462,9 +462,9 @@ class AnswerController extends BaseController
 
             $result = [
                 'result' => 'error', 
-                'message' => ''
-                // 'line' => $e->getLine(),
-                // 'message' => 'System : '.$e->getMessage()
+                // 'message' => ''
+                'line' => $e->getLine(),
+                'message' => 'System : '.$e->getMessage()
             ];
         }
 

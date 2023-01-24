@@ -5957,6 +5957,9 @@ margin-bottom: 0!important;
 #step5-type3 .bs-row .col-sm-12 .card {
   width: 100%;
 }
+[id^="step5-type"] .card{
+    width: 100%;
+}
 .regisform.modal-open .modal.show .modal-dialog {
     max-width: 100%;
 }
@@ -6019,4 +6022,8 @@ float: right;
     margin: 0;
     flex: auto;
 }
+}
+
+.hide-choice-content::-webkit-scrollbar {
+    width: 7px;
 }

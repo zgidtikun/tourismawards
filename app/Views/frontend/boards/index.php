@@ -2,6 +2,15 @@
     .dataTables_wrapper .dataTables_paginate .paginate_button {
         width: auto !important;
     }
+
+    .tr-lowcarbon {
+        background-color:#f3f6f9;
+    }
+
+    .tr-lowcarbon .fw-semibold {        
+        margin: 0 !important;
+        color: #0c2e54;
+    }
 </style>
 <div class="container">
     <div class="row">
@@ -201,7 +210,7 @@
                 <button type="button" class="btn-close" onclick="boards.closeScore()"></button>
             </div>
             <div class="modal-body">
-                <table class="table boards">
+                <table class="table boards" id="score">
                     <thead class="align-middle">
                         <tr>
                             <th class="text-center">
@@ -218,6 +227,12 @@
                         <tr>
                             <td class="text-center" id="td-spre">0.00</td>
                             <td class="text-center" id="td-sons">0.00</td>
+                        </tr>
+                        <tr id="tr-lowcarbon" class="tr-lowcarbon border-top">
+                            <td class="fw-semibold">
+                                คะแนนรวมด้าน Low Carbon
+                            </td>
+                            <td id="td-lowcarbon" class="text-center">0.00</td>
                         </tr>
                     </tbody>
                 </table>

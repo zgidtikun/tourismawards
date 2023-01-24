@@ -235,7 +235,7 @@ class Admin extends BaseController
 
     public function sendMail($data)
     {
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code)) . '"  target="_blank">Verify</a></b>';
+        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code)) . '"  target="_blank">ยืนยันตัวตน</a></b>';
         if ($data['admin']->password != "") {
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }

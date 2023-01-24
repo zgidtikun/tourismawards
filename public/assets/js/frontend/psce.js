@@ -133,6 +133,7 @@ const setFinish = () => {
     lcbscore = 0;
 
     let estimateLowCarbon = false;
+    let estimateMain = false;
     
     $.each(assign,(ak,av) => {        
         let index = av-1;
@@ -140,14 +141,17 @@ const setFinish = () => {
         if(av == 1){ 
             te = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
+            estimateMain = true; 
         }
         else if(av == 2){ 
             sb = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
+            estimateMain = true; 
         }
         else if(av == 3){
             rs = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
+            estimateMain = true; 
         }
         else {
             estimateLowCarbon = true; 
@@ -172,16 +176,18 @@ const setFinish = () => {
             }
         });
     });
-
-    const stescore = tescore != 0 ? ((tescore * te) / ttescore).toFixed(2) : 0;
-    const ssbscore = sbscoe != 0 ? ((sbscoe * sb) / tsbscoe).toFixed(2) : 0;
-    const srsscore = rsscore != 0 ? ((rsscore * rs) / trsscore).toFixed(2) : 0;
-    const sscore = (parseFloat(stescore) + parseFloat(ssbscore) + parseFloat(srsscore)).toFixed(2);
     
     let confirm_title = `ยืนยันการส่งผลประเมินเข้าระบบ`;
-    confirm_title += `\r\nคะแนนที่ประเมินคือ <span class="txt-yellow">${sscore}</span> คะแนน`;
 
-    if(estimateLowCarbon && estimateLowCarbon){
+    if(estimateMain){
+        const stescore = tescore != 0 ? ((tescore * te) / ttescore).toFixed(2) : 0;
+        const ssbscore = sbscoe != 0 ? ((sbscoe * sb) / tsbscoe).toFixed(2) : 0;
+        const srsscore = rsscore != 0 ? ((rsscore * rs) / trsscore).toFixed(2) : 0;
+        const sscore = (parseFloat(stescore) + parseFloat(ssbscore) + parseFloat(srsscore)).toFixed(2);
+        confirm_title += `\r\nคะแนนที่ประเมินคือ <span class="txt-yellow">${sscore}</span> คะแนน`;
+    }
+
+    if(estimateLowCarbon){
         confirm_title += `\r\nคะแนน Low Carbon คือ <span class="txt-yellow">${lcbscore}</span> คะแนน`;
     }
 

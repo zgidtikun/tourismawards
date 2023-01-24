@@ -62,11 +62,11 @@
           <div class="regis-form-data-col1">
             <h4>ชื่อโรงแรมและจำนวนห้องพักตรงกับที่ระบุในใบอนุญาต <span class="required">*</span></h4>
             <p>
-              <input type="radio" id="buss_ckroom_1" value="1" <?= ($result->buss_ckroom == 1) ? 'checked' : ''; ?>>
+              <input type="radio" id="buss_ckroom_1" value="1" <?= ($result->buss_ckroom == 1) ? 'checked' : ''; ?> disabled>
               <label for="buss_ckroom_1">ตรง</label>
             </p>
             <p>
-              <input type="radio" id="buss_ckroom_0" value="0" <?= ($result->buss_ckroom == 0) ? 'checked' : ''; ?>>
+              <input type="radio" id="buss_ckroom_0" value="0" <?= ($result->buss_ckroom == 0) ? 'checked' : ''; ?> disabled>
               <label for="buss_ckroom_0">ไม่ตรง</label>
             </p>
           </div>
@@ -107,11 +107,11 @@
           <div class="regis-form-data-col1">
             <h4>กรณีมีส่วนต่อขยายของอาคารจะต้องแสดงรายงานการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน <span class="required">*</span></h4>
             <p>
-              <input type="radio" id="buss_build_ext_1" value="1" <?= ($result->buss_buildExt == 1) ? 'checked' : ''; ?>>
+              <input type="radio" id="buss_build_ext_1" value="1" <?= ($result->buss_buildExt == 1) ? 'checked' : ''; ?> disabled>
               <label for="buss_build_ext_1">มี (กรณีที่เลือก ต้องแนบเอกสารการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน)</label>
             </p>
             <p>
-              <input type="radio" id="buss_build_ext_0" value="0" <?= ($result->buss_buildExt == 0) ? 'checked' : ''; ?>>
+              <input type="radio" id="buss_build_ext_0" value="0" <?= ($result->buss_buildExt == 0) ? 'checked' : ''; ?> disabled>
               <label for="buss_build_ext_0">ไม่มี</label>
             </p>
           </div>

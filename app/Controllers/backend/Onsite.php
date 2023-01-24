@@ -79,9 +79,10 @@ class Onsite extends BaseController
         $data['application_type'] = $this->ApplicationType->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $data['result']->application_type_id)->findAll();
 
-        $data['status_1'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"1"', 'both')->get()->getResultObject();
-        $data['status_2'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"2"', 'both')->get()->getResultObject();
-        $data['status_3'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"3"', 'both')->get()->getResultObject();
+        $type_id = $data['result']->application_type_id;
+        $data['status_1'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"1"', 'both')->like('award_type', '"' . $type_id . '"', 'both')->get()->getResultObject();
+        $data['status_2'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"2"', 'both')->like('award_type', '"' . $type_id . '"', 'both')->get()->getResultObject();
+        $data['status_3'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"3"', 'both')->like('award_type', '"' . $type_id . '"', 'both')->get()->getResultObject();
 
         $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 2)->get()->getRowObject();
 
@@ -312,10 +313,11 @@ class Onsite extends BaseController
         $data['id'] = $id;
         $data['application_type'] = $this->ApplicationType->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $data['result']->application_type_id)->findAll();
-
-        $data['status_1'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"1"', 'both')->get()->getResultObject();
-        $data['status_2'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"2"', 'both')->get()->getResultObject();
-        $data['status_3'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"3"', 'both')->get()->getResultObject();
+        
+        $type_id = $data['result']->application_type_id;
+        $data['status_1'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"1"', 'both')->like('award_type', '"' . $type_id . '"', 'both')->get()->getResultObject();
+        $data['status_2'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"2"', 'both')->like('award_type', '"' . $type_id . '"', 'both')->get()->getResultObject();
+        $data['status_3'] = $this->db->table('users')->where('role_id', 3)->like('assessment_group', '"3"', 'both')->like('award_type', '"' . $type_id . '"', 'both')->get()->getResultObject();
 
         $data['committees'] = $this->db->table('committees')->where('application_form_id', $id)->where('assessment_round', 2)->get()->getRowObject();
 

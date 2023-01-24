@@ -881,14 +881,14 @@ const selectType = (type,value) => {
     register.checkComplete();
 };
 
-$('#step1-desc').on('keyup change', function(){ 
+$('#step1-desc').on('keyup change input', function(){ 
     register.change = true;
     register.formData.step1.desc = $(this).val(); 
     $('#step1-desc-cc').html(1000 - register.formData.step1.desc.length);
     register.checkComplete();
 });
 
-$('#step1-link').on('keyup change', function(){ 
+$('#step1-link').on('keyup change input', function(){ 
     register.change = true;
     register.formData.step1.link = $(this).val(); 
     register.checkComplete();
@@ -901,13 +901,13 @@ $('[name=step1-lowcarbon]').on('click', function(){
 });
 
 // Step 2
-$('#step2-siteNameTh').on('keyup change', function(){ 
+$('#step2-siteNameTh').on('keyup change input', function(){ 
     register.formData.step2.siteNameTh = $(this).val();
      register.change = true;
      register.checkComplete();
 });
 
-$('#step2-siteNameEng').on('input', function(){ 
+$('#step2-siteNameEng').on('keyup change input', function(){ 
     let value = $(this).val().replace(/[^a-zA-Z0-9\s]/g,'');
     $(this).val(value);
     register.formData.step2.siteNameEng = value; 
@@ -915,73 +915,73 @@ $('#step2-siteNameEng').on('input', function(){
     register.checkComplete();
 });
 
-$('#step2-address').on('keyup change', function(){ 
+$('#step2-address').on('keyup change input', function(){ 
     register.formData.step2.address = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step2-road').on('keyup change', function(){ 
+$('#step2-road').on('keyup change input', function(){ 
     register.formData.step2.road = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
-$('#step2-province').on('keyup change', function(){ 
+$('#step2-province').on('keyup change input', function(){ 
     register.formData.step2.province = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step2-district').on('keyup change', function(){ 
+$('#step2-district').on('keyup change input', function(){ 
     register.formData.step2.district = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step2-subDistrict').on('keyup change', function(){ 
+$('#step2-subDistrict').on('keyup change input', function(){ 
     register.formData.step2.subDistrict = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step2-zipcode').on('keyup change',async function(){   
+$('#step2-zipcode').on('keyup change input',async function(){   
     register.formData.step2.zipcode = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step2-fb').on('keyup change', function(){ 
+$('#step2-fb').on('keyup change input', function(){ 
     register.formData.step2.fb = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step2-ig').on('keyup change', function(){ 
+$('#step2-ig').on('keyup change input', function(){ 
     register.formData.step2.ig = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step2-lid').on('keyup change', function(){ 
+$('#step2-lid').on('keyup change input', function(){ 
     register.formData.step2.lid = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step2-other').on('keyup change', function(){ 
+$('#step2-other').on('keyup change input', function(){ 
     register.formData.step2.other = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step2-gm').on('keyup change', function(){ 
+$('#step2-gm').on('keyup change input', function(){ 
     register.formData.step2.gm = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
 // Step 3
-$('#step3-companyName').on('keyup change', function(){ 
+$('#step3-companyName').on('keyup change input', function(){ 
     register.formData.step3.companyName = $(this).val(); 
     register.change = true;
     register.checkComplete();
@@ -1008,86 +1008,86 @@ $('[name=step3-setAddress]').on('click', function(){
     register.checkComplete();
 });
 
-$('#step3-address').on('keyup change', function(){ 
+$('#step3-address').on('keyup change input', function(){ 
     register.formData.step3.address = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step3-road').on('keyup change', function(){ 
+$('#step3-road').on('keyup change input', function(){ 
     register.formData.step3.road = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step3-province').on('keyup, change', function(){ 
+$('#step3-province').on('keyup, change input', function(){ 
     register.formData.step3.province = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step3-district').on('keyup, change', function(){ 
+$('#step3-district').on('keyup, change input', function(){ 
     register.formData.step3.district = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step3-subDistrict').on('keyup, change', function(){ 
+$('#step3-subDistrict').on('keyup, change input', function(){ 
     register.formData.step3.subDistrict = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step3-zipcode').on('keyup change', function(){ 
+$('#step3-zipcode').on('keyup change input', function(){ 
     register.formData.step3.zipcode = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step3-telephone').on('keyup change', function(){ 
+$('#step3-telephone').on('keyup change input', function(){ 
     register.formData.step3.telephone = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step3-email').on('keyup change', function(){ 
+$('#step3-email').on('keyup change input', function(){ 
     register.formData.step3.email = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step3-lid').on('keyup change', function(){ 
+$('#step3-lid').on('keyup change input', function(){ 
     register.formData.step3.lid = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
 // Step 4
-$('#step4-name').on('keyup change', function(){ 
+$('#step4-name').on('keyup change input', function(){ 
     register.formData.step4.name = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step4-position').on('keyup change', function(){ 
+$('#step4-position').on('keyup change input', function(){ 
     register.formData.step4.position = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step4-telephone').on('keyup change', function(){ 
+$('#step4-telephone').on('keyup change input', function(){ 
     register.formData.step4.telephone = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step4-email').on('keyup change', function(){ 
+$('#step4-email').on('keyup change input', function(){ 
     register.formData.step4.email = $(this).val(); 
     register.change = true;
     register.checkComplete();
 });
 
-$('#step4-lid').on('keyup change', function(){ 
+$('#step4-lid').on('keyup change input', function(){ 
     register.formData.step4.lid = $(this).val(); 
     register.change = true;
     register.checkComplete();
@@ -1125,7 +1125,7 @@ $('[name=step5-t2-buildExt]').on('click', function(){
     register.checkComplete();
 });
 
-$('#step5-t2-bussLicense').on('keyup change', function(){ 
+$('#step5-t2-bussLicense').on('keyup change input', function(){ 
     register.formData.step5.bussLicense = $(this).val(); 
     register.change = true;
     register.checkComplete();
@@ -1137,7 +1137,7 @@ $('[name=step5-t2-bussCkRoom]').on('click', function(){
     register.checkComplete();
 });
 
-$('#step5-t3-bussLicense').on('keyup change', function(){ 
+$('#step5-t3-bussLicense').on('keyup change input', function(){ 
     register.formData.step5.bussLicenseT3 = $(this).val(); 
     register.change = true;
     register.checkComplete();
@@ -1167,7 +1167,7 @@ $('[name=step5-t3-outlander]').on('click', function(){
     register.checkComplete();
 });
 
-$('#step5-t4-bussLicense').on('keyup change', function(){ 
+$('#step5-t4-bussLicense').on('keyup change input', function(){ 
     register.formData.step5.bussLicenseT4 = $(this).val(); 
     register.change = true;
     register.checkComplete();

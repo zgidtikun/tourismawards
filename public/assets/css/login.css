@@ -2028,8 +2028,8 @@ margin-left: 0!important;
 #step5-type1 .bs-row .col-sm-12{
 width: 100%;
 }
-#form-step-5 span.fw-semibold {
-    margin-bottom: 5px;
+#form-step-5 span.fw-semibold { /*edit gd-02 20-01-2566*/
+    margin-bottom: 20px;
     display: block;
 }
 .attachinp.is-estimate .btn-getdata{
@@ -2046,6 +2046,17 @@ margin: 0;
     margin: 0;
     width: 49%;
     max-width: 150px;
+}
+
+/*edit register form step5*/
+/*edit gd-02 20-01-2566*/
+#form-step-5 .col-xs-12 {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 40px!important;
+}
+[id^="step5-type"] .card{
+width: 50%;
 }
 
 @media screen and (max-width:1366px) {
@@ -2823,4 +2834,4 @@ height: auto!important;
 }
 }
 
-/*GD-02-V.09122565*/
+/*GD-02-V.20012566*/

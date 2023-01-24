@@ -1,3 +1,43 @@
+<style>
+   .menubox li {
+      border-bottom: 1px solid #FFF;
+   }
+
+   .menubox li ul {
+      list-style: georgian inside !important;
+      padding: 0;
+   }
+
+   .menubox li ul.hide {
+      display: none;
+   }
+
+   .menubox li ul.show {
+      display: block;
+   }
+
+   .menubox li li {
+      border-bottom: 0;
+      padding-left: 15px;
+      margin: 5px 0 5px 0;
+   }
+
+   .menubox li li a:link,
+   .menubox li li a:visited
+   {
+      border-bottom: 0;
+      padding-bottom: 2.5px;
+   }
+
+   .menubox li a:link, 
+   .menubox li a:visited{
+      border-bottom: 0;
+   }
+
+   .menubox li a i.bi {
+      margin-right: 0.5rem;
+   }
+</style>
 <div id="header">
    <div id="header-inner">
 
@@ -228,14 +268,42 @@
                </div>
                <ul>
                   <li><a href="<?= base_url('home') ?>">หน้าแรก</a></li>
-                  <li><a href="<?= base_url('about-us') ?>">เกี่ยวกับโครงการ</a></li>
-                  <li><a href="<?= base_url('awards-winner') ?>">ข้อมูลการประกวดรางวัล</a></li>
-                  <li><a href="<?= base_url('application-guide') ?>">คู่มือประกวดรางวัล</a></li>
-                  <li><a href="<?= base_url('application-guide') ?>">คู่มือการสมัคร</a></li>
-                  <li><a href="<?= base_url('awards-winner') ?>">ผลงานที่ได้รับรางวัล</a></li>
+                  <li>
+                     <a href="javascript:slidemenu(1);">เกี่ยวกับโครงการ</a>
+                     <ul class="hide" data-menu="1">
+                        <li><a href="<?= base_url('about-us') ?>">ข้อมูลโครงการฯ</a></li>
+                        <li><a href="<?= base_url('judge') ?>">กรรมการที่ปรึกษา</a></li>
+                        <li><a href="<?= base_url('judge') ?>">กรรมการตัดสินแต่ละประเภท</a></li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="javascript:slidemenu(2);">ข้อมูลการประกวดรางวัล</a>
+                     <ul class="hide" data-menu="2">
+                        <li><a href="<?= base_url('awards-infomation') ?>?p=Attraction">แหล่งท่องท่องเที่ยว 6 สาขา</a></li>
+                        <li><a href="<?= base_url('awards-infomation') ?>?p=Accommodation">ที่พักนักท่องเที่ยว 4 สาขา</a></li>
+                        <li><a href="<?= base_url('awards-infomation') ?>?p=HealthAndWellness">การท่องเที่ยวเชิงสุขภาพ 4 สาขา</a></li>
+                        <li><a href="<?= base_url('awards-infomation') ?>?p=TourProgram">รายการนำเที่ยว</a></li>
+                        <li><a href="<?= base_url('awards-infomation') ?>?p=Judge">เกณฑ์การให้คะแนนตัดสิน</a></li>
+                        <li><a href="<?= base_url('awards-infomation') ?>?p=Benefits">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="javascript:slidemenu(3);">คู่มือการสมัคร</a>
+                     <ul class="hide" data-menu="3">
+                        <li><a href="<?= base_url('application-guide') ?>?p=manual">คู่มือการลงทะเบียนประกวดรางวัล</a></li>
+                        <li><a href="<?= base_url('application-guide') ?>?p=duedate">กำหนดการรับสมัคร</a></li>
+                        <li><a href="<?= base_url('application-guide') ?>?p=register">สมัครเข้าร่วมประกวดรางวัล</a></li>
+                     </ul>
+                  </li>
+                  <li>
+                     <a href="javascript:slidemenu(4);">ผลงานที่ได้รับรางวัล</a>
+                     <ul class="hide" data-menu="4">
+                        <!-- <li><a href="<?= base_url('awards-winner') ?>">ครั้งที่ 14</a></li> -->
+                        <li><a href="<?= base_url('awards-winner-13') ?>">ครั้งที่ 13</a></li>
+                     </ul>
+                  </li>
                   <li><a href="<?= base_url('new') ?>">ข่าวประชาสัมพันธ์</a></li>
                   <li><a href="<?= base_url('contact-us') ?>">ติดต่อเรา</a></li>
-                  <li><a href="javascript:void(0);">ค้นหา</a></li>
                </ul>
             </div>
          </div>
@@ -245,6 +313,26 @@
 </div>
 
 <script>
+   const slidemenu = data => {
+      if($(`ul[data-menu="${data}"]`).hasClass('hide')){
+         $(`ul[data-menu="${data}"]`).slideDown(200)
+         .removeClass('hide')
+         .addClass('show');
+      } else {
+         $(`ul[data-menu="${data}"]`).slideUp(200)
+         .removeClass('show')
+         .addClass('hide');
+      }
+
+      $.each([1,2,3,4],(key,val) => {
+         if(val !== Number(data)){
+            $(`ul[data-menu="${val}"]`).slideUp(200)
+            .removeClass('show')
+            .addClass('hide');
+         }
+      });
+   }
+
    jQuery(document).ready(function() {
 
       $('.btn-menu').click(function() {

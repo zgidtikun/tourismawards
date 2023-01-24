@@ -28,6 +28,7 @@
         </div>
     </div>
 
+    <?php if (true) : ?>
     <!-- Source -->
     <div class="container">
         <p><b><?= esc(clean_path($file)) ?></b> at line <b><?= esc($line) ?></b></p>
@@ -61,7 +62,7 @@
                     <li>
                         <p>
                             <!-- Trace info -->
-                            <?php if (isset($row['file']) && is_file($row['file'])) :?>
+                            <?php if ( isset($row['file']) && is_file($row['file'])) :?>
                                 <?php
                                 if (isset($row['function']) && in_array($row['function'], ['include', 'include_once', 'require', 'require_once'], true)) {
                                     echo esc($row['function'] . ' ' . clean_path($row['file']));
@@ -380,6 +381,7 @@
         </div>  <!-- /tab-content -->
 
     </div> <!-- /container -->
+    <?php endif; ?>
 
     <div class="footer">
         <div class="container">
