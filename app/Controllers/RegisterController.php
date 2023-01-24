@@ -196,6 +196,11 @@ class RegisterController extends BaseController
                 ->update();
 
             if($update){
+                helper('semail');
+                send_email_frontend((object)[
+                    'user_id' => $this->input->getVar('id')
+                ],'change-password-success');
+
                 return $this->response->setJSON(['result' => 'success']);
             } else {
                 return $this->response->setJSON(['resullt' => 'error', 'อีเมลของคุณไม่ถูกต้อง']);

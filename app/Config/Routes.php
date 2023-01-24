@@ -298,6 +298,11 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
         $routes->post('changeScore', 'LowCarbon::changeScore', ['filter' => 'api:4']);
     });
 
+    // TourismAwards (เฉพาะแอดมินที่เข้าได้)
+    $routes->group('tourismawards', static function ($routes) {
+        $routes->get('', 'TourismAwards::index', ['filter' => 'auth:4']);
+    });
+
     // MarkTest is Controller for Test Only
     $routes->get('MarkTest', 'MarkTest::index');
     $routes->get('MarkTest/Mail', 'MarkTest::Mail');

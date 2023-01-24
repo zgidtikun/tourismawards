@@ -85,7 +85,7 @@ class LoginController extends BaseController
             'bank' => $bank
         );
         
-        $this->saveLogLogin($setting);
+        $this->saveLogLogin('success',$setting);
         $this->setLoggedIn($setting);
         
         if($auth->role_id == 1){
@@ -116,29 +116,53 @@ class LoginController extends BaseController
         $db = $bank == 'frontend' ? $this->instUser : $this->instAdmin;
         $where = array('username' => $requester->username);
         $account = $db->where($where)->first();
+        $fail = true;
        
         if($account){
             if($account->status == 0)
-                return (object) array('result' => 'error', 'message' => 'ผู้ใช้งานยังไม่ถูกอนุมัติ');
+                $result = (object) array('result' => 'error', 'message' => 'ผู้ใช้งานยังไม่ถูกอนุมัติ');
 
             $authenticatePassword = password_verify($requester->password, $account->password);
-            if($authenticatePassword)
-                return (object) $account;
+            if($authenticatePassword){
+                $result = $account;
+                $fail = false;
+            }
             else
-                return (object) array('result' => 'error', 'message' => 'รหัสผ่านไม่ถูกต้อง');
+                $result = (object) array('result' => 'error', 'message' => 'รหัสผ่านไม่ถูกต้อง');
         } else
-            return (object) array('result' => 'error', 'message' => 'ไม่มีอีเมลนี้ในระบบ');
+            $result = (object) array('result' => 'error', 'message' => 'ไม่มีอีเมลนี้ในระบบ');        
+        
+        if($fail){
+            $setting = (object) array(
+                'bank' => $bank,
+                'username' => $requester->username,
+                'message' => $result->message
+            );
+
+            $this->saveLogLogin('fail',$setting);
+        }
+
+        return $result;
     }   
 
-    private function saveLogLogin($data)
+    private function saveLogLogin($status,$data)
     {
         $path_log = 'log-login-'.$data->bank;
         $file_name = '/login_'.date('Ymd').'.txt';
         $file_content = 'Login - Time :: '.date('H:i:s')."\n";
         $file_content .= 'Username :: '.$data->username."\n";
-        $file_content .= 'Identity name :: '.$data->fullname."\n";
-        $file_content .= 'Role :: '.$data->role."\n";
+
+        if($status == 'success'){
+            $file_content .= "Status :: Success\n";
+            $file_content .= 'Identity name :: '.$data->fullname."\n";
+            $file_content .= 'Role :: '.$data->role."\n";
+        } else {            
+            $file_content .= "Status :: Fail\n";
+            $file_content .= 'Message :: '.$data->message."\n";
+        }
+
         $file_content .= 'IP :: '.$this->request->getIPAddress()."\n\n";
+
         create_log_file($path_log,$file_name,$file_content);
     }
 

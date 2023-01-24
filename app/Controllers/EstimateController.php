@@ -97,6 +97,7 @@ class EstimateController extends BaseController
                 'datetime' => date('Y-m-d H:i:s'),
                 'data' => $this->input->getVar()
             ]);
+                
             save_log_activety([
                 'module' => 'step_flow_checking',
                 'action' => 'application-'.$appid,

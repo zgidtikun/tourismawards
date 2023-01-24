@@ -156,7 +156,7 @@
               </div>
 
               <div class="regis-form-data-col1">
-                <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด<span class="required">*</span></h4>
+                <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด <span class="required">*</span></h4>
                 <span>ระบุคำตอบ <span class="required">*</span> </span>
                 <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
                 <textarea rows="6" id="field" onkeyup="countChar(this)" readonly><?= $result->highlights ?></textarea>
@@ -355,12 +355,12 @@
                 </h3>
               </div>
               <div class="regis-form-data-col1">
-                <h4>ชื่อหน่วยงาน/บริษัท<span class="required">*</span></h4>
+                <h4>ชื่อหน่วยงาน/บริษัท <span class="required">*</span></h4>
                 <input value="<?= $result->company_name ?>" readonly>
               </div>
 
               <div class="regis-form-data-col1">
-                <h4>ที่อยู่<span class="required">*</span></h4>
+                <h4>ที่อยู่</h4>
                 <div class="selectaddress">
                   <div class="selectaddresscol">
                     <p>
@@ -379,7 +379,7 @@
 
               <div class="hide-address">
                 <div class="regis-form-data-col2">
-                  <h4>ที่ตั้ง/เลขที่<span class="required">*</span></h4>
+                  <h4>ที่ตั้ง/เลขที่</h4>
                   <input value="<?= $result->company_addr_no ?>" readonly>
                 </div>
 
@@ -389,22 +389,22 @@
                 </div>
 
                 <div class="regis-form-data-col2">
-                  <h4>จังหวัด<span class="required">*</span></h4>
+                  <h4>จังหวัด</h4>
                   <input value="<?= $result->company_addr_province ?>" readonly>
                 </div>
 
                 <div class="regis-form-data-col2">
-                  <h4>อำเภอ<span class="required">*</span></h4>
+                  <h4>อำเภอ</h4>
                   <input value="<?= $result->company_addr_district ?>" readonly>
                 </div>
 
                 <div class="regis-form-data-col2">
-                  <h4>ตำบล<span class="required">*</span></h4>
+                  <h4>ตำบล</h4>
                   <input value="<?= $result->company_addr_sub_district ?>" readonly>
                 </div>
 
                 <div class="regis-form-data-col2">
-                  <h4>รหัสไปรษณีย์<span class="required">*</span></h4>
+                  <h4>รหัสไปรษณีย์</h4>
                   <input value="<?= $result->company_addr_zipcode ?>" readonly>
                 </div>
 
@@ -440,7 +440,7 @@
                 </h3>
               </div>
               <div class="regis-form-data-col2">
-                <h4>ชื่อ-นามสกุลผู้ประสานงาน<span class="required">*</span></h4>
+                <h4>ชื่อ-นามสกุลผู้ประสานงาน <span class="required">*</span></h4>
                 <input value="<?= $result->knitter_name ?>" readonly>
               </div>
 
@@ -450,12 +450,12 @@
               </div>
 
               <div class="regis-form-data-col2">
-                <h4>หมายเลขโทรศัพท์<span class="required">*</span></h4>
+                <h4>หมายเลขโทรศัพท์ <span class="required">*</span></h4>
                 <input value="<?= $result->knitter_tel ?>" readonly>
               </div>
 
               <div class="regis-form-data-col2">
-                <h4>อีเมล<span class="required">*</span></h4>
+                <h4>อีเมล <span class="required">*</span></h4>
                 <input value="<?= $result->knitter_email ?>" readonly>
               </div>
 

@@ -35,26 +35,33 @@
     </div>
 </div>
 <script>
-    <?php if($_verified) : ?>
-    alert.confirm(
-        {
-            mode: 'default',
-            icon: 'success',
-            title: 'Verified ผู้ประกอบการเรียบร้อยแล้ว',
-            text: '<?=($_password) ? 'คุณยังไม่ได้ตั้งค่ารหัสผผ่าน' : ''?>',
-            button: {
-                confirm: '<?=($_password) ? 'ตั้งค่ารหัสผผ่าน' : 'เข้าสู่ระบบ'?>',
-                cancel: 'ยกเลิก'
-            }
-        }
-    ).then((res) => {
-        <?php if($_password) : ?>
-        window.location.href = '<?=base_url('new-password')?>';
-        <?php else : ?>
-        window.location.href = '<?=base_url('login')?>';
-        <?php endif; ?>
+    $(document).ready(function(){
+        showAlert('<?=($_verified ? 'success' : 'error')?>');
     });
-    <?php else : ?>
-    alert.show('error','ไม่สามารถ Verify ผู้ประกอบการได้','กรุณาติดต่อเจ้าหน้าที่');
-    <?php endif; ?>
+
+    const showAlert = async verified => {
+        switch(verified){
+            case 'success':
+                const setting = {
+                    icon: 'success',
+                    title: 'Verified ผู้ประกอบการเรียบร้อยแล้ว',
+                    text: '',
+                    btnText: 'เข้าสู่ระบบ'
+                    // text: '<?=($_password) ? 'คุณยังไม่ได้ตั้งค่ารหัสผผ่าน' : ''?>',
+                    // btnText: '<?=($_password) ? 'ตั้งค่ารหัสผผ่าน' : 'เข้าสู่ระบบ'?>',
+                }
+
+                alert.verify(setting).then(response => {
+                    <?php // if($_password) : ?>
+                    // window.location.href = '<?=base_url('new-password')?>';
+                    <?php //else : ?>
+                    window.location.href = '<?=base_url('login')?>';
+                    <?php // endif; ?>                    
+                });
+            break;
+            case 'error': 
+                alert.show('error','ไม่สามารถ Verify ผู้ประกอบการได้','กรุณาติดต่อเจ้าหน้าที่');
+            break;
+        }
+    }
 </script>

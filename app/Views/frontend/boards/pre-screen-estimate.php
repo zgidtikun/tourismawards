@@ -32,9 +32,11 @@
     }
 </style>
 <?php 
+    helper('main');
     $config = new \Config\App(); 
     $appCurrentDate = date('Y-m-d');
     $expireRequest = $config->Estimate_require_date;
+    $expireRequestStr = FormatTree($expireRequest,'thailand');
     $showRequest = $appCurrentDate <= $expireRequest ? true : false;
 ?>
 <div class="container">
@@ -370,18 +372,10 @@ aria-hidden="true">
                 <div class="alert alert-success mt-2" role="alert" id="rq-finish" style="display: none;">
                     <b><i class="bi bi-check-circle-fill mr-2"></i>ผู้ประกอบการตอบกลับแล้ว</b>
                 </div>
-                <textarea rows="9" id="qRequest" onkeyup="countChar1($('#qRequest'))"></textarea>
-                <script>
-                    function countChar1(inp) {
-                        var len = inp.val().length;
-                        if (len >= 1000) {
-                            $('#charNum1').text('0');
-                            inp.val(inp.val().substring(0, 1000));
-                        } else {
-                            $('#charNum1').text((1000 - len).toLocaleString("en"));
-                        }
-                    };
-                </script>
+                <textarea rows="9" id="qRequest" onkeyup="countChar1($('#qRequest'))"
+                <?php if(!$showRequest){ echo 'readonly="readonly"'; } ?>></textarea>
+                <span class="fw-normal text-danger mt-2">หมายเหตุ : สามารถขอข้อมูลเพิ่มเติมได้ถึงวันที่ <?=$expireRequestStr?></span>
+                
             </div>
             <div class="modal-footer border-0" style="display: block;">
                 <?php if($showRequest): ?>
@@ -422,10 +416,21 @@ aria-hidden="true">
                     status: <?=$stage->status?>,
                     isFinish: '<?=$isFinish?>',
                 },
-                [<?=implode(",",$assign)?>]
+                [<?=implode(",",$assign)?>],
+                <?=($showRequest ? 1 : 0)?>
             );
         } catch(error) {
             window.location.reload();
         }
     });
+
+    function countChar1(inp) {
+        var len = inp.val().length;
+        if (len >= 1000) {
+            $('#charNum1').text('0');
+            inp.val(inp.val().substring(0, 1000));
+        } else {
+            $('#charNum1').text((1000 - len).toLocaleString("en"));
+        }
+    };
 </script>

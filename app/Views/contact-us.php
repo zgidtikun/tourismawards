@@ -69,7 +69,7 @@
                                     อีเมล
                                 </div>
                                 <div class="contact-txt">
-                                    tourismawards.tat@gmail.com
+                                    tourismawards14@gmail.com
                                 </div>
                             </div>
                         </li>

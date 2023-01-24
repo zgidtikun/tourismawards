@@ -52,6 +52,23 @@ const alert = {
             window.location.href =  origin+'/login';
         });
     },
+    verify: function(setting) { 
+        return new Promise(function(resolve){         
+            Swal.fire({
+                icon: setting.icon,
+                title: setting.title,
+                html: setting.text,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: setting.btnText,
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                resolve({status: true});
+            });
+        });
+    },
     toast: function(setting){
         let init = this.initToast();
         init.fire({

@@ -1,4 +1,4 @@
-var appid, sp, tycoon, dataset, assign,
+var appid, sp, tycoon, dataset, assign, expireRequest,
     pointer     = { cate: -1, seg: -1 }
     haveRequest = false
     lowcarbon   = false;
@@ -28,10 +28,11 @@ const qRequest  = $('#qRequest');
 const mSelect   = $('#mSelect');
 const sRequest   = $('#sRequest');
 
-const setPage = (id,stage,ass) => {
+const setPage = (id,stage,ass,er) => {
     appid = id;
     sp = stage;
     assign = ass;
+    expireRequest = er == 1 ? false : true;
     init();
 }
 
@@ -914,22 +915,30 @@ $('.btn-getdata').click(function() {
     const point = getPointer();
     const question =  dataset[point.cate].question[point.seg];
     
+    $('#rp-finish').hide();
+    $('#rp-wait').hide();
+    
     mTNum.html(question.no);
     mNum.html(question.no);
     mSelect.val(point.seg);
     qRequest.val(question.request_list);
     countChar1($('#qRequest'))
 
-    if($.inArray(Number(question.request_status),[1,3]) !== -1){
+    if(expireRequest){
         qRequest.prop('readonly','readonly');
+    }
+    else if(!empty(question.request_list)){
+        if($.inArray(Number(question.request_status),[1,2,3]) !== -1){
+            qRequest.prop('readonly','readonly');
 
-        if($.inArray(Number(question.request_status),[2,3]) !== -1){
-            $('#rp-finish').show();
+            if($.inArray(Number(question.request_status),[2,3]) !== -1){
+                $('#rp-finish').show();
+            } else {
+                $('#rp-wait').show();
+            }
         } else {
-            $('#rp-wait').show();
+            qRequest.prop('readonly','');
         }
-    } else {
-        qRequest.prop('readonly','');
     }
 
     $('#modal-add-paper').modal('show');

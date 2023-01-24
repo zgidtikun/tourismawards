@@ -474,11 +474,11 @@ class App extends BaseConfig
     public $Pre_open = '2021-03-05'; // วันเปิดแบบฟอร์มรอบ Pre-screen
     public $Pre_expired = '2023-03-05'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
     public $announcement_ons_date = '2024-01-01'; // วันที่ประกาศผล ลงพื้นที่
-    public $announcement_pre_date = '2024-01-01'; // วันที่ประกาศผล prescreen
+    public $announcement_pre_date = '2022-01-01'; // วันที่ประกาศผล prescreen
     public $announcement_date = '2024-01-01'; // วันที่ประกาศผลรางวัล
     public $Estimate_pre_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ Pre-screen
     public $Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่
-    public $Estimate_require_date = '2024-01-01'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
+    public $Estimate_require_date = '2023-06-06'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
     public $JudgingCriteriaPre = 18;
     public $JudgingCriteriaOnst = 57;
     public $JudgingCriteriaScore;

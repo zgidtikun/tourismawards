@@ -140,7 +140,7 @@ class semail {
             if(getenv('CI_ENVIRONMENT') != 'production'){
                 $email_ct = 'gidtikun@chaiyohosting.com';
             } else {
-                $email_ct = 'tourismawards.tat@gmail.com';
+                $email_ct = 'tourismawards14@gmail.com';
             }
 
             $email_sys = [
@@ -180,6 +180,22 @@ class semail {
                     $_to = $dataset->email;
                     $_cc = [];
                     $_bcc = [$this->mail_bcc];
+                break;
+                case 'change-password-success':                    
+                    $user = $this->getUser($dataset->user_id); 
+                    $_message = view('template-frontend-email',[
+                        '_header' => 'แก้ไขรหัสผ่านเรียบร้อย',
+                        '_content' => '<p>เรียน คุณ '.$user->fullname.'<br>
+                            ท่านได้ทำการเปลี่ยนรหัสผ่านสำเร็จแล้ว<br>
+                            ขณะนี้สามารถทำการล็อกอินเข้าสู่เว็บไซต์ด้วยรหัสผ่านใหม่ของท่านได้ทันที<br>
+                            <b style="color:#dc3545;">*รหัสผ่านของท่านเป็นความลับ จึงไม่ควรเปิดเผยต่อผู้อื่นทราบ<b></p>'
+                    ]);
+                    
+                    $_subject = 'แก้ไขรหัสผ่านเรียบร้อย';
+                    $_to = $user->email;
+                    $_from = $email_sys;
+                    $_cc = [];
+                    $_bcc = [$this->mail_bcc];  
                 break;
                 case 'contact':
                     $input = (object) $dataset;

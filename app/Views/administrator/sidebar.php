@@ -67,7 +67,7 @@
             </li>
             <li><a href="<?= base_url() ?>/administrator/onsite/estimate" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
             <li><a href="<?= base_url() ?>/administrator/complete" data-type="process"><label>การประเมินที่เสร็จสมบูรณ์</label></a></li>
-            <li><a href="<?= base_url() ?>/administrator/lowcarbon" data-type="process"><label>Low Carbon</label></a></li>
+            <li><a href="<?= base_url() ?>/administrator/lowcarbon" data-type="process"><label>Low Carbon หลังลงพื้นที่</label></a></li>
           </ul>
         </div>
       </div>

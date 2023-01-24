@@ -9,7 +9,7 @@
   </div>
 
   <div class="regis-form-data-col2">
-    <h4>เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ.<span class="required">*</span></h4>
+    <h4>เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ. <span class="required">*</span></h4>
     <input value="<?= $result->year_open ?>" readonly>
   </div>
 
@@ -19,7 +19,7 @@
   </div>
 
   <div class="regis-form-data-col1">
-    <h4>เลขที่ใบอนุญาตประกอบธุรกิจ<span class="required">*</span></h4>
+    <h4>เลขที่ใบอนุญาตประกอบธุรกิจ <span class="required">*</span></h4>
     <input value="<?= $result->buss_license ?>" readonly>
   </div>
 

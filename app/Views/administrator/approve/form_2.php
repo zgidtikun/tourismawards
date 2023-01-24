@@ -9,7 +9,7 @@
   </div>
 
   <div class="regis-form-data-col2">
-    <h4>เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ.<span class="required">*</span></h4>
+    <h4>เปิดให้บริการหรือดำเนินการตั้งแต่ พ.ศ. <span class="required">*</span></h4>
     <input value="<?= $result->year_open ?>" readonly>
   </div>
 
@@ -19,7 +19,7 @@
   </div>
 
   <div class="regis-form-data-col1">
-    <h4>เลขที่ใบอนุญาตประกอบธุรกิจ<span class="required">*</span></h4>
+    <h4>เลขที่ใบอนุญาตประกอบธุรกิจ <span class="required">*</span></h4>
     <input value="<?= $result->buss_license ?>" readonly>
   </div>
 
@@ -29,7 +29,7 @@
       <div class="bs-row row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
           <span class="fs-18 fw-semibold">
-            ใบอนุญาตประกอบการธุรกิจโรงแรม (ตาม พ.ร.บ. โรงแรม ปี พ.ศ. 2547) เป็นระยะเวลาไม่ต่ำกว่า 1 ปี นับถึงวันปิดรับสมัคร<span class="required">*</span>
+            ใบอนุญาตประกอบการธุรกิจโรงแรม (ตาม พ.ร.บ. โรงแรม ปี พ.ศ. 2547) เป็นระยะเวลาไม่ต่ำกว่า 1 ปี นับถึงวันปิดรับสมัคร <span class="required">*</span>
           </span>
           <div class="card mt-1 col-md-6" style="border: 1px solid #E5E6ED;">
             <div class="card-body selecter-file">

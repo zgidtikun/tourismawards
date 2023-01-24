@@ -75,13 +75,20 @@
                 <p><?=$result->sts_title?></p>
                 <?php endif; ?>
             </div>
-
+            
             <div class="formmainbox">
                 <div class="estimate-result">
+                    <?php if(!empty($result->title)): ?>
                     <span class="header"><?=$result->title?></span>
-                    <img src="<?=$result->img?>" <?php if($result->award_result) : ?>
-                        style="width: 300px !important;padding-bottom: 2rem !important;"
-                    <?php endif; ?>>
+                    <?php endif; ?>
+                    <img src="<?=$result->img?>" 
+                    <?php if($result->award_result) : ?>
+                        style="width: 300px !important;padding-bottom: 2rem !important;<?=$img_padding_top?>"
+                    <?php endif; ?>                    
+                    <?php if(empty($result->title)) : ?>
+                        style="padding-top: 0 !important;"
+                    <?php endif; ?> 
+                    >
                     <span class="content"><?=$result->content?></span>
                 </div>
             </div>

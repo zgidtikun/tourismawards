@@ -292,7 +292,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="p-name"
+                                        <input type="text" class="form-control" id="p-name" maxlength="255"
                                         value="<?=$profile->name?>">
                                         <label>ชื่อจริง<span class="text-danger ml-1">*</span></label>
                                         <div id="invalid-p-name" class="invalid-feedback">
@@ -302,7 +302,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-4">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="p-surname"
+                                        <input type="text" class="form-control" id="p-surname" maxlength="255"
                                         value="<?=$profile->surname?>">
                                         <label>นามสกุล<span class="text-danger ml-1">*</span></label>
                                         <div id="invalid-p-surname" class="invalid-feedback">
@@ -322,10 +322,10 @@
                                 </div>
                                 <div class="col-sm-12 col-md-8">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="p-email"
+                                        <input type="email" class="form-control" id="p-email" readonly
                                         value="<?=$profile->email?>">
-                                        <label>อีเมล<span class="text-danger ml-1">*</span></label>
-                                        <div id="invalid-p-email" class="invalid-feedback">
+                                        <label>อีเมล</label>
+                                        <div id="invalid-p-email" class="invalid-feedback" >
                                             กรุณากรอก อีเมล
                                         </div>
                                     </div>

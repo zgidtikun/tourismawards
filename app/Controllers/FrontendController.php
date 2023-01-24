@@ -70,7 +70,7 @@ class FrontendController extends BaseController
                 $user->app_sts = $app_f->status;                
                 $user->app_attr = !empty($app_f->attr) ? $app_f->attr : '(ยังไม่ได้กรอกแบบฟอร์มใบสมัคร)';
                 $user->app_t = !empty($app_f->t_name) ? $app_f->t_name : '(ยังไม่ได้กรอกแบบฟอร์มใบสมัคร)';
-                $user->app_ts = !empty($app_f->ts_name) ? $app_f->t_name : '(ยังไม่ได้กรอกแบบฟอร์มใบสมัคร)';
+                $user->app_ts = !empty($app_f->ts_name) ? $app_f->ts_name : '(ยังไม่ได้กรอกแบบฟอร์มใบสมัคร)';
             } else {
                 $user->app_sts = -1;                
                 $user->app_attr = '(ยังไม่ได้กรอกแบบฟอร์มใบสมัคร)';
@@ -152,28 +152,17 @@ class FrontendController extends BaseController
         if($current < $duedate_pre){
             $data->result->sts_title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen)';   
             $data->result->sts_content = '';
-            $data->result->title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen)';
+            $data->result->title = '';
             $data->result->img = base_url('assets/images/prescreen_pass.png');
-            $data->result->content = 'ขณะนี้กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen) 
-                จากทางคณะกรรมการ<br>จะประกาศผลการประเมินในวันที่ '
+            $data->result->content = 'ผลงานของท่านอยู่ระหว่างการตรวจประเมินขั้นต้น (Pre-Screen)'
+                . '<br>ประกาศผลงานที่ผ่านการประเมินขั้นต้น (Pre-Screen) ในวันที่ '
                 . FormatTree($duedate_pre,'thailand');
 
             return view('frontend/entrepreneur/_template',(array) $data);
         }        
 
-        if($current < $duedate_onsite){
-            $data->result->sts_title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินรอบลงพื้นที่';   
-            $data->result->sts_content = '';
-            $data->result->title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินรอบลงพื้นที่';
-            $data->result->img = base_url('assets/images/prescreen_pass.png');
-            $data->result->content = 'ขณะนี้กำลังอยู่ในช่วงขั้นตอนการประเมินรอบลงพื้นที่ 
-                จากทางคณะกรรมการ จะประกาศผลการประเมินในวันที่ '
-                . FormatTree($duedate_onsite,'thailand');
+        if($current >= $duedate_onsite && !empty($onsite) && in_array($onsite->status,[6,7])){   
 
-            return view('frontend/entrepreneur/_template',(array) $data);
-        }
-
-        if(!empty($onsite) && in_array($onsite->status,[6])){   
             $data->result->sts_title = 'สรุปผลการประเมินรอบลงพื้นที่เรียบร้อยแล้ว';   
             $data->result->sts_content = 'ระบบได้แจ้งผลการประเมินของท่านเรียบร้อยแล้ว';     
             $data->result->title = 'ผลการประเมินรอบลงพื้นที่';
@@ -208,23 +197,36 @@ class FrontendController extends BaseController
                 }
             } else {
                 $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
-                $data->result->content = 'แบบประเมินขอท่าน ไม่ผ่านการประเมินรอบลงื้นที่ 
-                    หากมีข้อสงสัยเพิ่มเติม สามารถติดต่อเจ้าหน้าที่ ททท. ได้ที่ <a href="tel:021234567">02-123-4567</a>';
+                $data->result->content = 'ขอขอบพระคุณผู้ประกอบการที่เข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 
+                    <br>ทางโครงการฯ ขอแจ้งว่าผลงานของท่านไม่ผ่านการประเมินรอบลงพื้นที่
+                    <br>หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ 
+                    <br>Line Official : @tourismawards';
             }
         } else {         
-            $data->result->sts_title = 'สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว (Pre-screen)';   
+            $data->result->sts_title = 'ผลการประเมินขั้นต้นเรียบร้อยแล้ว (Pre-screen)';   
             $data->result->sts_content = '';
-            $data->result->title = 'สรุปผลการประเมินขั้นต้นเรียบร้อยแล้ว (Pre-screen)';
+            $data->result->title = '';
 
             if($prescreen->status == 6){
                 $data->result->img = base_url('assets/images/prescreen_complete.png');
-                $data->result->content = 'ขอแสดงความยินดีด้วย ใบสมัครของท่านผ่านการประเมินขั้นต้น (Pre-Screen) 
-                    ลำดับถัดไปให้เตรียมตัวให้พร้อมสำหรับการประเมินรองลงพื้นที่ 
-                    โดยเจ้าหน้าที่ ททท. จะติดต่อไปอีกครั้งทางอีเมล';
+                $data->result->content = 'ผลงานของท่านผ่านการประเมินขั้นต้น (Pre-Screen)
+                    <br>ขอให้ท่านนำส่ง PowerPoint และ Video Clip เพื่อนำเสนอผลงาน
+                    <br>ตามหลักเกณฑ์การตัดสินรางวัลฯ ดาวน์โหลดเอกสารได้ที่
+                    <br><br>
+                    เกณฑ์การประเมินรอบลงพื้นที่<br>
+                    <button type="button" class="btn btn-main" style="max-width:190px"
+                    onclick="">
+                        <i class="bi bi-cloud-download"></i> Download File
+                    </button>
+                    <br><br>
+                    ส่งผลงานได้ที่ E-mail : tourismawards14@gmail.com
+                    <br>โดยระบุชื่อเรื่อง : ประเภท สาขาที่สมัคร + ชื่อที่ท่านส่งเข้าประกวด';
             } else {
                 $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
-                $data->result->content = 'แบบประเมินขอท่าน ไม่ผ่านการประเมินขั้นต้น (Pre-screen)
-                    หากมีข้อสงสัยเพิ่มเติม สามารถติดต่อเจ้าหน้าที่ ททท. ได้ที่ <a href="tel:021234567">02-123-4567</a>';
+                $data->result->content = 'ขอขอบพระคุณผู้ประกอบการที่เข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566'
+                    . '<br>ทางโครงการฯ ขอแจ้งว่าผลงานของท่านไม่ผ่านการประเมินขั้นต้น (Pre-Screen)'
+                    . '<br>หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ '
+                    . '<br>Line Official : @tourismawards';
             }
 
         }
@@ -389,7 +391,7 @@ class FrontendController extends BaseController
         }
 
         $config = new \Config\App();
-        $expire_date = $config->Estimate_ons_date;
+        $expire_date = $config->Estimate_pre_date;
         $current_date = date('Y-m-d');
         $stage = $this->getStage($id,1);
 

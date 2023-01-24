@@ -127,7 +127,7 @@
                                         เลือก <span class="text-gold">ประเภท</span> และ <span class="text-gold">สาขา</span> 
                                         รางวัลที่ผู้ประกอบการต้องการเข้าประกวด
                                     </li>
-                                    <li>กรอกข้อมูลและแนบเอการประกอบเพื่อ<span class="text-gold">ยืนยันสถานประกอบการ</span></li>
+                                    <li>กรอกข้อมูลและแนบเอกสารประกอบเพื่อ<span class="text-gold">ยืนยันสถานประกอบการ</span></li>
                                     <li>ตรวจสอบข้อมูลและรอ<span class="text-gold">ยืนยันการสมัคร</span></li>
                                 </ol>
                             </div>

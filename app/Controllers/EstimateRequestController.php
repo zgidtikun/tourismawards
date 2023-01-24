@@ -25,6 +25,15 @@ class EstimateRequestController extends BaseController
         return $count == 0 ? true : false;
     }
 
+    // public function check_send_request($by,$appId,$judgeId,$userId)
+    // {
+    //     $config = new \Config\App;
+    //     $current_date = date('Y-m-d');
+    //     $estimate_request_expire = $config->Estimate_require_date;
+
+    //     if()
+    // }
+
     public function insert_judge_request($data)
     {
         if($this->exist_judge_request($data['app_id'],$data['judge_id'],$data['user_id'])){

@@ -31,7 +31,7 @@ z-index: 999;
 }
 .menubox {
     display: block;
-    width: 300px;
+    width: 320px;
     max-height: 600px;
     position: absolute;
     background-color: #0d2c55;
@@ -60,6 +60,7 @@ z-index: 999;
     right: 0;
     background-color: #0d2c55;
     padding-bottom: 20px;
+    z-index: 1;
 }
 .menulogo img {
     height: 50px;
@@ -79,15 +80,19 @@ display: none;
 .menubox li {
     display: block;
     padding: 0;
-    margin: 5px 0 10px 0;
-    
+    margin: 10px 0;
 }
 .menubox li a:link, .menubox li a:visited {
     color: #FFF;
     font-size: 18px;
     border-bottom: 1px solid #FFF;
     display: block;
-    padding-bottom: 5px;
+    padding: 0;
+    padding-bottom: 10px;
+    border-radius: 0;
+}
+.menubox li:last-child a{
+border-bottom: 0;
 }
 .menubox a.menuclose {
     position: absolute;
@@ -95,7 +100,7 @@ display: none;
     right: 15px;
     width: auto;
     height: auto;
-    z-index: 1;
+    z-index: 2;
 }
 .menubox a.menuclose i::before{
 font-size: 30px;
@@ -106,6 +111,52 @@ width: 100%;
 height: 100%;
 max-width: 100%;
 max-height: 100%;
+}
+
+.submenubox-list {
+    border-bottom: 1px solid #FFF;
+    padding-bottom: 10px;
+}
+.submenubox-list ul {
+    list-style: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+.submenubox-list li {
+    margin: 10px 0;
+    padding-left: 10px;
+}
+.submenubox-list li a:link, .submenubox-list li a:visited {
+    padding: 0 0 0 30px;
+    border-bottom: 0;
+    position: relative;
+}
+.submenubox-list li a::before{
+font-family: "bootstrap-icons";
+content:"\F4EB";
+font-size: 14px;
+position: absolute;
+top: 3px;
+left: 0;
+}
+
+.btn-submenu{
+position: relative;
+}
+.btn-submenu:before{
+font-family: "bootstrap-icons";
+content:"\F285";
+color: #FFF;
+position: absolute;
+right: 0;
+width: 20px;
+height: 20px;
+transition: all 0.1s ease-in-out;
+}
+.btn-submenu.active:before{
+transform: rotate(-90deg);
 }
 }
 
