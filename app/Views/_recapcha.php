@@ -25,11 +25,3 @@
         });
     }
 </script>
-<!-- Excample call function gen recapcha token -->
-<!-- <script>
-    $(document).ready(function(){
-        recapchaToken().then(function(data){                
-            $('#recapcha_token').val(data.rccToken);
-        });
-    });
-</script> -->

@@ -109,6 +109,10 @@ class VerifyPassword extends BaseController
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ไม่พบ E-Mail นี้ในระบบ กรุณาตรวจสอบข้อมูล']);
             exit;
         }
+        if ($admin->status == 0 || $admin->status_delete == 0) {
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'E-Mail นี้ในระบบ ยังไม่ถูกยืนยันตัวตน']);
+            exit;
+        }
 
         $result = $this->db->table('admin')->where('username', $post['username'])->update(['verify_code' => $verify_code]);
         if ($result) {

@@ -1278,7 +1278,7 @@ a.btn-cancle {
     margin:0;
     scroll-snap-align: end;
     flex: none;
-    color: #222;
+    color: #CCC;
     align-content: flex-start;
     width: auto;
     margin-left: 0;
@@ -2936,6 +2936,35 @@ flex-wrap: wrap;
 [class^=regis-form-data-col].title {
     padding: 0;
 }
+.regis-form-step {
+    margin: 20px 0 40px 0;
+    padding: 0;
+    overflow: hidden;
+    flex-direction: column;
+}
+.regis-form-step a.btn-form-step {
+    margin: 10px 0;
+}
+.regis-form-step a.btn-form-step {
+    width: 100%;
+}
+.regis-form-step a.btn-form-step {
+    padding: 0 30px 15px 10px;
+    justify-content: flex-start;
+    text-align: left;
+    border-bottom: 3px solid #FFF;
+}
+.regis-form-step a.btn-form-step.active {
+    padding: 0 20px 15px 10px;
+    color: #152a54;
+    border-bottom: 3px solid #152a54;
+}
+.regis-form-step a.btn-form-step.complete {
+    padding: 0 30px 15px 10px;
+}
+.regis-form-step a.btn-form-step.complete::before{
+right: 10px;
+}
 }
 
 @media screen and (max-width:768px) {
@@ -3495,15 +3524,7 @@ width: 100%;
     padding: 20px 0!important;
     display: block;
 }
-.regis-form-step {
-    margin: 20px 0;
-}
 
-.regis-form-step a.btn-form-step:last-child{
-margin-right: 20px;
-        justify-content: center;
-
-}
 .regis-form-data-col1, .regis-form-data-col2 {
     margin-bottom: 20px;
     width: 100%;
@@ -3521,20 +3542,6 @@ margin-right: 20px;
 .ablumbox-col {
     width: 50%;
     padding: 10px;
-}
-
-.regis-form-step a.btn-form-step {
-    width: 100%;
-}
-.regis-form-step a.btn-form-step {
-    padding: 0 10px 15px 10px;
-    justify-content: center;
-}
-.regis-form-step a.btn-form-step.complete {
-    padding: 0 30px 15px 10px;
-}
-.regis-form-step a.btn-form-step.complete::before{
-right: 10px;
 }
 .backendform .fileup-file {
     display: flex;
@@ -3631,5 +3638,4 @@ padding: 0;
     }
 }
 
-
-/*GD-02-V.27122565*/
+/*GD-02-V.25012566*/

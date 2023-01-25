@@ -31,7 +31,9 @@ const psc = {
             psc.appId = response.app_id;    
             psc.lowcarbon = response.lowcarbon;
             psc.questions = response.data;
-            psc.stage = stage;    
+            psc.stage = stage;
+            
+            $('.btn-regis').removeClass('active').addClass('disabled');
             
             if(psc.expired && $inArray(psc.status,['draft','reject']) !== -1){ 
                 $('#formstatus-unpass').removeClass('hide');
@@ -95,6 +97,7 @@ const psc = {
             showFiles.tycoon('#images',psc.questions[0].question[0].images);
 
             psc.setNewQuestion(0,0);
+            psc.checkComplete();
             loading('hide');
         });
     },
@@ -218,18 +221,21 @@ const psc = {
                                 $(MapData.label.model.item+seg).removeClass('complete');
                             }
 
-                            psc.waitDraft('finish');
+                            psc.waitDraft('finish');                            
+                            psc.checkComplete();
                             resolve({ result: 'success' });
                         } else {
                             alert.toast({icon: reply.result, title: reply.message});    
-                            psc.waitDraft('finish');
+                            psc.waitDraft('finish');                            
+                            psc.checkComplete();
                             resolve({ result: 'error' });                    
                         }
                     }
                 });
 
             } else {
-                psc.waitDraft('finish');
+                psc.waitDraft('finish');                
+                psc.checkComplete();
                 resolve({ result: 'success' });
             }
         });
@@ -444,6 +450,7 @@ const psc = {
                 $('#btn-next').show();
             }
 
+            psc.checkComplete();
         });
     },
     setDropdown: function(qt,cate,seg){
@@ -473,7 +480,16 @@ const psc = {
     setReply: function(str){
         let point = this.getPointer();
         this.questions[point.cate].question[point.seg].reply = str;
-        this.questions[point.cate].question[point.seg].change = true;
+        this.questions[point.cate].question[point.seg].change = true; 
+        const modal_id = `${MapData.label.model.item}${point.seg}`;
+        
+        if(!empty(str)){
+            $(modal_id).removeClass('active').addClass('complete');
+        } else {
+            $(modal_id).removeClass('complete').addClass('active');
+        }
+
+        psc.checkComplete();
     },
     setPointer: function(cate,seg){
         this.pointer.category = cate;
@@ -482,6 +498,28 @@ const psc = {
     getPointer: function(){
         return {cate: this.pointer.category, seg: this.pointer.segment};
     },
+    checkComplete: function() {
+        let complete = true;
+        const assign = psc.lowcarbon ? [0,1,2,3,] : [0,1,2];
+
+        $.each(assign,(ikey, index) => {
+            const assessment = psc.questions[index].question;
+            
+            $.each(assessment,(akey, qval) => {
+                if(empty(qval.reply)){
+                    complete = false;
+                }
+            });
+        });
+
+        if(complete){
+            if($('.btn-regis').hasClass('disabled'))
+                $('.btn-regis').removeClass('disabled').addClass('active');
+        } else {
+            if($('.btn-regis').hasClass('active'))
+                $('.btn-regis').removeClass('active').addClass('disabled');
+        }
+    }
 }
 
 $(MapData.input.reply.id).on('keyup change', function(){

@@ -188,12 +188,15 @@ class FrontendController extends BaseController
                             case 3: $data->result->content .= 'เกียรติบัตรรางวัลอุตสาหกรรมท่องเที่ยวไทย (Thailand Tourism Certificate)'; break;
                         }
                     } else {
-                        $data->result->content = 'ท่านไม่ผ่านเกณฑ์ประเมินการได้รับรางวัล';
+                        $data->result->content = 'ท่านไม่ผ่านเกณฑ์ประเมินการได้รับรางวัล<br>
+                        หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ<br>
+                        Line Official : @tourismawards';
                     }
                 } else { 
                     $data->result->img = base_url('assets/images/prescreen_pass.png');
-                    $data->result->content = 'ขอแสดงความยินดีด้วย แบบประเมินของท่านผ่านการประเมินรอบลงพื้นที่ 
-                        ทางโครงการฯ จะประกาศผลอย่างเป็นทางการอีกครั้ง';
+                    $data->result->content = 'ผลงานของท่านผ่านการประเมินรอบลงพื้นที่<br>
+                        ทางโครงการฯ จะประกาศผลอย่างเป็นทางการอีกครั้ง<br>
+                        โดยท่านสามารถดูผลรางวัลได้ที่ https://tourismawards.tourismthailand.org/awards-winner';
                 }
             } else {
                 $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
@@ -208,6 +211,31 @@ class FrontendController extends BaseController
             $data->result->title = '';
 
             if($prescreen->status == 6){
+                $app_f = new \App\Models\ApplicationForm();
+                $form = $app_f->where('created_by',$this->myId)
+                ->select('application_type_id type_id')
+                ->first();
+
+                if($form->type_id == 1){
+                    $download_link = base_url('download/คุณสมบัติ_ประเภทแหล่งท่องเที่ยว.pdf');
+                }
+                elseif($form->type_id == 2){
+                    $download_link = base_url('download/คุณสมบัติ_ประเภทที่พัก.pdf');
+                }
+                elseif($form->type_id == 3){
+                    $download_link = base_url('download/คุณสมบัติ_ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf');
+                }
+                elseif($form->type_id == 4){
+                    $download_link = base_url('download/คุณสมบัติ_ประเภทรายการนำเที่ยว.pdf');
+                }
+                else {
+                    $download_link = '';
+                }
+
+                if(!empty($download_link)){
+                    $download_link = "window.open('$download_link','_blank')";
+                }
+
                 $data->result->img = base_url('assets/images/prescreen_complete.png');
                 $data->result->content = 'ผลงานของท่านผ่านการประเมินขั้นต้น (Pre-Screen)
                     <br>ขอให้ท่านนำส่ง PowerPoint และ Video Clip เพื่อนำเสนอผลงาน
@@ -215,7 +243,7 @@ class FrontendController extends BaseController
                     <br><br>
                     เกณฑ์การประเมินรอบลงพื้นที่<br>
                     <button type="button" class="btn btn-main" style="max-width:190px"
-                    onclick="">
+                    onclick="'.$download_link.'">
                         <i class="bi bi-cloud-download"></i> Download File
                     </button>
                     <br><br>

@@ -12,6 +12,9 @@ class EstimateRequestController extends BaseController
     public function __construct()
     {
         $this->obj = new EstimateRequest();
+
+        if(!isset($this->db))
+            $this->db = \Config\Database::connect();     
     }
 
     public function exist_judge_request($app_id,$judge_id,$user_id)
@@ -25,14 +28,14 @@ class EstimateRequestController extends BaseController
         return $count == 0 ? true : false;
     }
 
-    // public function check_send_request($by,$appId,$judgeId,$userId)
-    // {
-    //     $config = new \Config\App;
-    //     $current_date = date('Y-m-d');
-    //     $estimate_request_expire = $config->Estimate_require_date;
+    public function check_send_request($by,$appId,$judgeId,$userId)
+    {
+        $config = new \Config\App;
+        $current_date = date('Y-m-d');
+        $estimate_request_expire = $config->Estimate_require_date;
 
-    //     if()
-    // }
+        
+    }
 
     public function insert_judge_request($data)
     {

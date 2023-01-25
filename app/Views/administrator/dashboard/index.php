@@ -40,6 +40,11 @@
 </div>
 <script>
   $(function() {
+    $('.btn-menulist').each(function (key, elm) {
+      if ($(elm).data('tab') == 2) {
+        $(elm).click();
+      }
+    });
 
     var res = main_post(BASE_URL_BACKEND + '/dashboard/getData');
     // cc(res)

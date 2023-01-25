@@ -70,19 +70,16 @@
       <div class="form-table">
         <div class="grid">
           <div class="unit w-1-1">
-            <!-- <table id="main_datatable" class="display"> -->
             <table id="example" class="display" style="width: 100%;">
               <thead>
                 <tr>
-                  <th data-priority="2">ลำดับ</th>
+                  <th>ลำดับ</th>
                   <th>รหัสใบสมัคร</th>
-                  <th data-priority="1">ชื่อสถานประกอบการ</th>
-                  <th>ประเภทที่ตัดสิน</th>
-                  <th>สาขารางวัล</th>
-                  <!-- <th>สถานะ</th> -->
+                  <th>ชื่อสถานประกอบการ</th>
+                  <!-- <th>ประเภทที่ตัดสิน</th> -->
+                  <!-- <th>สาขารางวัล</th> -->
                   <th>คะแนนรวม</th>
                   <th>รางวัล</th>
-                  <!-- <th>จัดการ</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -90,22 +87,6 @@
                 if (!empty($result)) :
                   foreach ($result as $key => $value) :
                     $total = $value->score_prescreen_tt + $value->score_onsite_tt;
-                    if ($value->users_stage_status == 1) {
-                      $status = '<div class="userstatus trader">รอดำเนินการ</div>';
-                    } else if ($value->users_stage_status == 2) {
-                      $status = '<div class="userstatus chk">กำลังประเมิน</div>';
-                    } else if ($value->users_stage_status == 3) {
-                      $status = '<div class="userstatus trader">ขอข้อมูลเพิ่มเติม</div>';
-                    } else if ($value->users_stage_status == 4) {
-                      $status = '<div class="userstatus judge">ตอบรับคำขอ</div>';
-                    } else if ($value->users_stage_status == 5) {
-                      $status = '<div class="userstatus officer">ไม่มีการตอบกลับ</div>';
-                    } else if ($value->users_stage_status == 6) {
-                      $status = '<div class="userstatus judge">ผ่านการประเมิน</div>';
-                    } else if ($value->users_stage_status == 7) {
-                      $status = '<div class="userstatus officer">ไม่ผ่านการประเมิน</div>';
-                    }
-
                     $awards = '';
                     if ($total >= 85) {
                       $awards = 'รางวัลยอดเยี่ยม (Thailand Tourism Gold Award)';
@@ -116,23 +97,13 @@
                     }
                 ?>
                     <tr>
-                      <td><?= $key + 1 ?></td>
+                      <td class="text-center"><?= $key + 1 ?></td>
                       <td class="text-center"><?= $value->code ?></td>
                       <td class="text-start"><?= $value->attraction_name_th ?></td>
-                      <td class="text-start"><?= applicationType($value->application_type_id) ?></td>
-                      <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td>
-                      <!-- <td class="text-center"><?= $status ?></td> -->
-                      <!-- <td class="text-center">
-                        <?php echo docDate($value->created_at, 3) ?>
-                      </td> -->
-                      <td><?= $total ?></td>
-                      <td><?= $awards ?></td>
-                      <!-- <td>
-                        <div class="form-table-col edit">
-                          <a href="javascript:" class="btn-toggles" title="ดูคะแนน" onclick="view_score('<?= $value->id ?>')"><i class="bi bi-toggles"></i></a>
-                          <a href="javascript:" class="btn-edit" title="ให้กรรมการประเมินใหม่" onclick="re_submit(<?= $value->created_by ?>, <?= $value->id ?>)"><i class="bi bi-arrow-clockwise"></i></a>
-                        </div>
-                      </td> -->
+                      <!-- <td class="text-start"><?= applicationType($value->application_type_id) ?></td> -->
+                      <!-- <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td> -->
+                      <td class="text-center"><?= $total ?></td>
+                      <td class="text-start"><?= $awards ?></td>
                     </tr>
                 <?php
                   endforeach;
@@ -148,74 +119,11 @@
   </div>
 </div>
 
-<div class="hidebox-login judgescore" style="display: none;">
-  <div class="hidebox-login-overlay"></div>
-  <div class="hidebox-login-content requireinpt">
-    <a href="javascript:void(0)" class="hidebox-login-close"><i class="bi bi-x"></i></a>
-    <div class="hidebox-login-txt">
-      <div class="data-title">
-        <h3>ตารางสรุปคะแนนการประเมิน</h3>
-      </div>
-      <div class="data-score">
-
-        <div class="data-score-row header">
-          <div class="data-score-col no">หัวข้อที่ประเมิน</div>
-          <div class="data-score-col oldscore">Pre-screen</div>
-          <div class="data-score-col newscore">ลงพื้นที่</div>
-          <div class="data-score-col totalscore">รวม</div>
-        </div>
-
-        <div class="data-score-row">
-          <div class="data-score-col no">1. <?= $assessment_group[0]->name ?></div>
-          <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_tourism">-</span></div>
-          <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_tourism">-</span></div>
-          <div class="data-score-col totalscore"><label>รวม : </label><span id="total_tourism">-</div>
-        </div>
-
-        <div class="data-score-row">
-          <div class="data-score-col no">2. <?= $assessment_group[1]->name ?></div>
-          <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_supporting">-</span></div>
-          <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_supporting">-</span></div>
-          <div class="data-score-col totalscore"><label>รวม : </label><span id="total_supporting">-</div>
-        </div>
-
-        <div class="data-score-row">
-          <div class="data-score-col no">3. <?= $assessment_group[2]->name ?></div>
-          <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_reponsibility">-</span></div>
-          <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_reponsibility">-</span></div>
-          <div class="data-score-col totalscore"><label>รวม : </label><span id="total_reponsibility">-</div>
-        </div>
-      </div>
-
-      <div class="data-totalscore">
-        คะแนนรวมที่ได้
-        <span id="total_score">0.00</span>
-      </div>
-
-      <div class="data-score" id="show_lowcarbon_score">
-        <div class="data-score-row">
-          <div class="data-score-col no">คะแนนเฉพาะด้าน Low Carbon : <span id="lowcarbon_score">0.00</span></div>
-        </div>
-
-        <div class="data-score-row">
-          <div class="data-score-col no">คะแนนสรุป Low Carbon : <span id="total_lowcarbon_score">0.00</span></div>
-        </div>
-
-        <div class="data-score-row" style="margin-top: -25px;">
-          <div class="data-score-col no"><small>(คะแนนรวมของ ด้าน Low Carbon + Responsibility ทั้ง 2 รอบ)</small></div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-
 
 <script>
   $(function() {
 
-    var pgurl = BASE_URL_BACKEND + '/complete';
+    var pgurl = BASE_URL_BACKEND + '/tourismawards';
     active_page(pgurl);
 
     $.fn.DataTable.ext.pager.numbers_length = 6;
@@ -227,12 +135,6 @@
         responsivePriority: 1,
         targets: 2
       }, {
-        responsivePriority: 1,
-        targets: 5
-      }, {
-        responsivePriority: 10001,
-        targets: 6
-      }, {
         responsivePriority: 10001,
         targets: 4
       }, {
@@ -242,7 +144,8 @@
         responsivePriority: 10001,
         targets: 1
       }],
-      lengthMenu: [10, 25, 50, 100],
+      pageLength: 20,
+      lengthMenu: [10, 20, 50, 100],
       oLanguage: {
         sSearchPlaceholder: "ค้นหา",
         sLengthMenu: "แสดง _MENU_ รายการ",
@@ -256,90 +159,4 @@
       }
     });
   })
-
-  $('#keyword').on('keypress', function(e) {
-    if (e.which == 13) {
-      $('#btn_search').click();
-    }
-  });
-
-  $('#application_type_id').change(function(e) {
-    $('#btn_search').click();
-  });
-
-  $('#application_type_sub_id').change(function(e) {
-    $('#btn_search').click();
-  });
-
-  $('#sort').change(function(e) {
-    $('#btn_search').click();
-  });
-
-  function view_item(id) {
-    window.location.href = BASE_URL_BACKEND + '/complete/view/' + id;
-  }
-
-  function view_score(id) {
-    var res = main_post(BASE_URL_BACKEND + '/complete/getScore/' + id);
-    // cc(res)
-    if (res != null) {
-      $('#pre_tourism').html(res.score_prescreen_te);
-      $('#pre_supporting').html(res.score_prescreen_sb);
-      $('#pre_reponsibility').html(res.score_prescreen_rs);
-
-      $('#onsite_tourism').html(res.score_onsite_te);
-      $('#onsite_supporting').html(res.score_onsite_sb);
-      $('#onsite_reponsibility').html(res.score_onsite_rs);
-
-      if (res.lowcarbon_status == 1) {
-        $('#show_lowcarbon_score').show();
-      } else {
-        $('#show_lowcarbon_score').hide();
-      }
-      $('#lowcarbon_score').html(res.lowcarbon_score);
-      $('#total_lowcarbon_score').html(F2C(Number(DF2C(res.lowcarbon_score)) + Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs))));
-
-      var total_tourism = Number(DF2C(res.score_prescreen_te)) + Number(DF2C(res.score_onsite_te));
-      var total_supporting = Number(DF2C(res.score_prescreen_sb)) + Number(DF2C(res.score_onsite_sb));
-      var total_reponsibility = Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs));
-
-      $('#total_tourism').html(F2C(total_tourism));
-      $('#total_supporting').html(F2C(total_supporting));
-      $('#total_reponsibility').html(F2C(total_reponsibility));
-
-      $('#total_score').html(F2C(total_tourism + total_supporting + total_reponsibility));
-    }
-
-    $('.hidebox-login').show().addClass('active');
-    $('body').addClass('lockbody');
-  }
-
-  function re_submit(user_id, app_id) {
-    var option = {
-      title: "Warning!",
-      text: "คุณต้องการยืนยันการตอบกลับเอกสารเพื่อให้กรรมการประเมินรอบลงพื้นที่ใหม่หรือไม่?",
-    }
-    swal_confirm(option).done(function() {
-      var res = main_post(BASE_URL_BACKEND + '/complete/reSubmit', {
-        app_id: app_id,
-        user_id: user_id
-      });
-      res_swal(res, 1);
-    })
-  }
-
-
-  $('.hidebox-login-close').click(function() {
-    $('.hidebox-login').hide().removeClass('active');
-    $('body').removeClass('lockbody');
-  });
-
-  // function export_data() {
-  //   var url = BASE_URL_BACKEND + '/complete/register';
-  //   $('#search_form').attr('action', url);
-  //   $('#search_form').attr('target', '_blank');
-  //   $('#search_form').submit();
-  //   $('#search_form').attr('target', '');
-  //   $('#search_form').attr('action', '');
-  // }
 </script>

@@ -107,40 +107,67 @@
             }
         },
         validation: function() {
+            const username = $('#username').val();
+            const passwordOld = $('#old-password').val();
+            const passwordNew = $('#password').val(); 
+            const passwordCon = $('#con-password').val();
             const patternPassword = /^[A-Za-z0-9]+$/;
             const lg = $('.login').attr('data-lg');
+            let strength = 0;
             
-            if ($('#username').val() == '') {
+            if (username == '') {
                 alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณากรอกอีเมล');
                 return false;
             }
 
-            if(Number(lg) == 1 && $('#old-password').val() == ''){
+            if(Number(lg) == 1 && passwordOld == ''){
                 alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณากรอกรหัสผ่านเดิม');
                 return false;
             }
 
-            if ($('#password').val() == '') {
+            if (passwordNew == '') {
                 alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณากรอกรหัสผ่านใหม่');
                 return false;
             }
 
-            if (!/^[a-zA-Z0-9]/g.test($('#password').val())) {
+            if (!/^[a-zA-Z0-9]/g.test(passwordNew)) {
                 alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'รหัสผ่านต้องมี A-Z, a-z, 0-9 และอย่างน้อย 6 ตัวอักษร');
                 return false;
             }
             
-            if ($('#password').val().length < 6) {
+            if (passwordNew.length < 6) {
                 alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'รหัสผ่านต้องมี A-Z, a-z, 0-9 และอย่างน้อย 6 ตัวอักษร');
                 return false;
             }
 
-            if ($('#con-password').val() == '') {
+            if (passwordNew.match(/[a-z]+/)) {
+                strength++;
+            }
+
+            if (passwordNew.match(/[A-Z]+/)) {
+                strength++;
+            }
+
+            if (passwordNew.match(/[0-9]+/)) {
+                strength++;
+            }
+            
+            if (strength < 3) {
+                alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'รหัสผ่านต้องมี A-Z, a-z, 0-9 และอย่างน้อย 6 ตัวอักษร');
+                return false;
+            }
+
+            if(Number(lg) == 1 && passwordNew == passwordOld){                
+                alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณาตัวรหัสผ่านใหม่ให้ไม่เหมือนกับรหัสผ่านเดิม');
+                return false;
+            }
+
+            if (passwordCon == '') {
                 alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'กรุณากรอกยืนยันรหัสผ่านใหม่');
                 return false;
             }
 
-            if ($('#password').val() != $('#con-password').val()) {
+            if (passwordNew != passwordCon) {
                 alert.show('error','ไม่สามารถเปลี่ยนรหัสผ่านใหม่ได้', 'รหัสผ่านใหม่และยืนยันรหัสผ่านใหม่ไม่เหมือนกัน');
                 return false;
             }

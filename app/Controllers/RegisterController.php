@@ -125,25 +125,40 @@ class RegisterController extends BaseController
         $checkReCapcha = $this->checkCaptcha($this->input->getVar('recapcha_token'));
 
         if(!$checkReCapcha->result){
-            $result = array(
+            $result = [
                 'result' => 'error',
                 'message' => $checkReCapcha->message
-            );
+            ];
             return $this->response->setJSON($result);
         }           
 
         $email = $this->input->getVar('email');
         $exist = $this->user->checkExistEmail($email);
+        
 
         if($exist){
-            $result = array('result' => 'error', 'message' => 'ไม่มีอีเมลนี้ในระบบ');
+            $result = ['result' => 'error', 'message' => 'ไม่มีอีเมลนี้ในระบบ'];
         } else {
             $user = $this->user->getUserByEmail($email,1);
             $account = $user->account;
-            $verify_code = $this->user->updateVerifyCode($account->id);
-            $account->verify_code = $verify_code;
-            $this->resetPasswordMail($account);
-            $result = array('result' => 'success', 'bank' => $user->bank);
+
+            if($account->status == 1 && $account->verify_status == 1 && $account->status_delete == 1){
+                $verify_code = $this->user->updateVerifyCode($account->id);
+                $account->verify_code = $verify_code;
+                $this->resetPasswordMail($account);
+                $result = ['result' => 'success', 'bank' => $user->bank];
+            } else {
+                if($account->status_delete == 0){
+                    $message = 'อีเมลนี้ถูกยกเลิกการใช้งาน';
+                } else {
+                    $message = 'อีเมลนี้ยังไม่ได้ยืนยันตัวตน';
+                }
+
+                $result = [
+                    'result' => 'error',
+                    'message' => $message
+                ];
+            }
         }
         
         return $this->response->setJSON($result);

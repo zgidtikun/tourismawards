@@ -18,36 +18,32 @@ class QuestionController extends BaseController
     }
 
     private function checkTargetEstimate($appId,$round)
-    {        
-        if($round == 1){
-            $obj = new \App\Models\Committees();
+    {                
+        $obj = new \App\Models\Committees();
 
-            $check_normal = $obj->where('application_form_id',$appId)
-            ->where('assessment_round',$round)
-            ->where(
-                '( admin_id_tourism LIKE \'%"'.$this->myId.'"%\'
-                OR admin_id_supporting LIKE \'%"'.$this->myId.'"%\'
-                OR admin_id_responsibility LIKE \'%"'.$this->myId.'"%\')'
-            )
-            ->select('CASE WHEN COUNT(id) > 0 THEN TRUE ELSE FALSE END cid')
-            ->first();
+        $check_normal = $obj->where('application_form_id',$appId)
+        ->where('assessment_round',$round)
+        ->where(
+            '( admin_id_tourism LIKE \'%"'.$this->myId.'"%\'
+            OR admin_id_supporting LIKE \'%"'.$this->myId.'"%\'
+            OR admin_id_responsibility LIKE \'%"'.$this->myId.'"%\')'
+        )
+        ->select('CASE WHEN COUNT(id) > 0 THEN TRUE ELSE FALSE END cid')
+        ->first();
+        
+        $check_lowcarbon = $obj->where('application_form_id',$appId)
+        ->where('assessment_round',$round)
+        ->where('admin_id_lowcarbon LIKE \'%"'.$this->myId.'"%\'')
+        ->select('CASE WHEN COUNT(id) > 0 THEN TRUE ELSE FALSE END cid')
+        ->first();
             
-            $check_lowcarbon = $obj->where('application_form_id',$appId)
-            ->where('assessment_round',$round)
-            ->where('admin_id_lowcarbon LIKE \'%"'.$this->myId.'"%\'')
-            ->select('CASE WHEN COUNT(id) > 0 THEN TRUE ELSE FALSE END cid')
-            ->first();
-                
-            if($check_normal->cid && $check_lowcarbon->cid){
-                return 3;
-            } 
-            elseif($check_lowcarbon->cid){
-                return 2;
-            }
-            else {
-                return 1;
-            }
-        } else {
+        if($check_normal->cid && $check_lowcarbon->cid){
+            return 3;
+        } 
+        elseif($check_lowcarbon->cid){
+            return 2;
+        }
+        else {
             return 1;
         }
     }
@@ -136,8 +132,12 @@ class QuestionController extends BaseController
                     $this->myId
                 );
 
-                $targetEstimate = $this->checkTargetEstimate($val->id,($round == 'pre-screen' ? 1 : 2));
-                $val->targetEstimate = $targetEstimate;
+                if($round == 'pre-screen'){
+                    $targetEstimate = $this->checkTargetEstimate($val->id,($round == 'pre-screen' ? 1 : 2));
+                    $val->targetEstimate = $targetEstimate;
+                } else {
+                    $val->targetEstimate = 1;
+                }
 
                 if(
                     ($status == 'wait' && $isFinish == 'unfinish')

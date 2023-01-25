@@ -119,25 +119,39 @@ class LoginController extends BaseController
         $fail = true;
        
         if($account){
-            if($account->status == 0)
-                $result = (object) array('result' => 'error', 'message' => 'ผู้ใช้งานยังไม่ถูกอนุมัติ');
+            if(
+                $account->status == 1 && 
+                $account->verify_status == 1 && 
+                $account->status_delete == 1
+            ){
+                $authenticatePassword = password_verify($requester->password, $account->password);
+                if($authenticatePassword){
+                    $result = $account;
+                    $fail = false;
+                }
+                else
+                    $result = (object) ['result' => 'error', 'message' => 'รหัสผ่านไม่ถูกต้อง'];
+            } else {
+                if($account->status_delete == 0){
+                    $message = 'ผู้ใช้งานนี้ถูกยกเลิกการใช้งาน';
+                } else {
+                    $message = 'ผู้ใช้งานนี้ยังไม่ได้ยืนยันตัวตน';
+                }
 
-            $authenticatePassword = password_verify($requester->password, $account->password);
-            if($authenticatePassword){
-                $result = $account;
-                $fail = false;
+                $result = (object) [
+                    'result' => 'error', 
+                    'message' => $message
+                ];
             }
-            else
-                $result = (object) array('result' => 'error', 'message' => 'รหัสผ่านไม่ถูกต้อง');
         } else
-            $result = (object) array('result' => 'error', 'message' => 'ไม่มีอีเมลนี้ในระบบ');        
+            $result = (object) ['result' => 'error', 'message' => 'ไม่มีอีเมลนี้ในระบบ'];        
         
         if($fail){
-            $setting = (object) array(
+            $setting = (object) [
                 'bank' => $bank,
                 'username' => $requester->username,
                 'message' => $result->message
-            );
+            ];
 
             $this->saveLogLogin('fail',$setting);
         }
