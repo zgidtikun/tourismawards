@@ -1122,6 +1122,7 @@ $('[name=step5-t1-manageBy]').on('click', function(){
 $('[name=step5-t2-buildExt]').on('click', function(){ 
     register.formData.step5.buildExt = $(this).val(); 
     register.change = true;
+    console.log('buildExt: '+register.formData.step5.buildExt);
     register.checkComplete();
 });
 

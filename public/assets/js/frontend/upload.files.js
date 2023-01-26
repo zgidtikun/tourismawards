@@ -730,6 +730,21 @@ const referance = [{
         maxSize: 15
     },
     {
+        input: '#step5-buildExt',
+        pointer: ['step5', 'buildExtF', 2],
+        btn: '#step5-buildExt-btn',
+        btnrm: '#step5-buildExt-remove',
+        show: '#step5-buildExt-list',
+        label: '#step5-buildExt-label',
+        api: '/inner-api/app/upload',
+        position: 'buildExtFiles',
+        require: true,
+        path: 'paper',
+        app: 'awards/application',
+        maxUpload: 5,
+        maxSize: 15
+    },
+    {
         input: '#step5-otherT2Cert',
         pointer: ['step5', 'otherT2Cert'],
         btn: '#step5-otherT2Cert-btn',
@@ -1023,6 +1038,21 @@ const checkRequireFiles = (app) => {
                                 if(register.count[rv.pointer[1]] <= 0){
                                     check = false;
                                 }
+                            } else if(register.count[rv.pointer[1]] <= 0) {
+                                check = false;
+                            }
+                        }
+                        else if(rv.pointer[2] == 2){
+                            if(rv.pointer[1] == 'buildExtF'){
+                                let buildExt = Number(register.formData.step5.buildExt);
+                                if(buildExt == 1){
+                                    if(register.count[rv.pointer[1]] <= 0){
+                                        check = false;
+                                    }
+                                }
+                            }
+                            else if(register.count[rv.pointer[1]] <= 0){
+                                check = false;
                             }
                         }
                         else if(register.count[rv.pointer[1]] <= 0){

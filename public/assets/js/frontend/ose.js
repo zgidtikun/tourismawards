@@ -629,7 +629,7 @@ const setQuestion = async(cate,seg) => {
         }
 
         qEva.html(ev);        
-        const sco = question.os_scor.split(',');
+        const sco = question.os_scor.split('|');
         
         sc += '<h4>เกณฑ์การให้คะแนนรอบ ลงพื้นที่</h4>';
         

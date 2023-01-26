@@ -625,7 +625,7 @@ const setQuestion = (cate,seg) => {
                 '</span>';
         }
 
-        const sco = question.pre_scor.split(',');
+        const sco = question.pre_scor.split('|');
 
         sc += '<h4>เกณฑ์การให้คะแนนรอบ Pre-Screen</h4>';
         

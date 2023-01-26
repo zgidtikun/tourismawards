@@ -799,6 +799,39 @@
                                         </h4>
                                         <p><input type="radio" name="step5-t2-buildExt" id="step5-t2-buildExt-1" value="1"> มี (กรณีที่เลือก ต้องแนบเอกสารการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน)</p>
                                         <p><input type="radio" name="step5-t2-buildExt" id="step5-t2-buildExt-0" value="0"> ไม่มี</p>
+                                        <div class="card mt-3" style="border: 1px solid #E5E6ED;">
+                                            <div class="card-body selecter-file">
+                                                <div class="bs-row mb-2">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-file" id="step5-buildExt-btn">
+                                                            <span id="step5-buildExt-label">Upload Files</span>
+                                                            <input type="file" id="step5-buildExt"
+                                                            accept=".pdf" multiple
+                                                            onchange="onFileHandle({id: register.id},'#'+this.id,'paper')"/>
+                                                        </button>                                                                    
+                                                        <button class="btn btn-file" id="step5-buildExt-remove"
+                                                        onclick="removeFile('#step5-buildExt',{id: register.id,remove: 'all'})">
+                                                            Remove All
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="bs-row" id="step5-buildExt-list">
+                                                </div>
+                                                <div class="bs-row">
+                                                    <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body attach-file">
+                                                <div class="bs-row">
+                                                    <div class="d-grid">
+                                                        <button class="btn btn-primary" type="button"
+                                                        onclick="downloadFile('#step5-buildExt')">
+                                                            <i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div> 
                                 </div>
                             </div>                            

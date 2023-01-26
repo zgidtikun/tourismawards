@@ -2168,32 +2168,50 @@ padding: 0 10px;
 }
 .dashboard-tab-row {
     display: flex;
-    overflow: auto;
-    flex: none;
-    width: auto;
-    flex-flow: row nowrap;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding: 0 0 5px 0;
-    -webkit-appearance: none;
+    flex-direction: column;
 }
-.dashboard-tab-col{
+
+.dashboard-tab-col {
     display: flex;
     padding: 0 10px 0 0;
-    margin: 0;
+    margin: 5px 0;
     position: relative;
     scroll-snap-align: end;
     flex: none;
     color: #222;
     align-content: flex-start;
     width: auto;
-    text-align: center;
+    text-align: left;
 }
 .dashboard-tab-col:last-of-type{
 padding: 0;
 }
+.dashboard-tab-col a{
+    justify-content: flex-start;
+}
 .regis-form-data {
     padding: 0 0 40px 0;
+}
+.regis-form-step {
+    padding: 0 0 5px 0;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+.regis-form-step a{
+border-bottom: 3px solid #FFF;
+}
+.regis-form-step a.btn-form-step {
+    width: 100%;
+    margin-bottom: 20px;
+    padding-left: 0;
+    text-align: left;
+    justify-content: flex-start;
+}
+}
+
+@media screen and (min-width:768px) and (max-width:1023px) {
+.estimatestatus-col{
+width: 50%;
 }
 }
 
@@ -2345,9 +2363,7 @@ order: 6;
 .dashboard-table-row .dashboard-table-col.edit{
 order: 7;
 }
-.estimatestatus .bs-row .col-md-3{
-width: 50%;
-}
+
 [class^="regis-form-data-col"] {
   font-size: 16px;
 }
@@ -2599,37 +2615,8 @@ margin-bottom: 0;
     row-gap: 20px;
 }
 .estimatestatus {
-    padding: 20px 0;
+    padding: 20px 0 0 0;
     margin: 0;
-}
-.estimatestatus-row {
-    display: flex;
-    overflow: auto;
-    flex: none;
-    width: 100%;
-    flex-flow: row nowrap;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    margin: 0;
-    -webkit-appearance: none;
-}
-.estimatestatus-row::-webkit-scrollbar{
-display: none;
-}
-.estimatestatus-col {
-    display: flex;
-    padding: 0 0 0 20px;
-    margin: 0 -10px 0 0;
-    position: relative;
-    scroll-snap-align: start;
-    flex: none;
-    color: #222;
-    align-content: flex-start;
-    width: calc((100%) / 1.15);
-    text-align: left;
-}
-.estimatestatus-col:last-of-type{
-margin-right: 20px;
 }
 .estimat-amount {
     font-size: 24px;
@@ -2710,9 +2697,6 @@ right: 0;
     max-height: none;
 line-height: 22px;
 }
-.regis-form-step a.btn-form-step{
-width: 100%;
-}
 
 .hide-choice-box li {
     width: 33.33%;
@@ -2721,6 +2705,11 @@ width: 100%;
 }
 .login_list ul {
     justify-content: space-between;
+    float: none;
+}
+.regisform .login_list li.userlogin {
+    margin-left: 0;
+    flex: none;
 }
 
 .formstep-col.prescreen.active .formstep-icon::after{
@@ -2748,18 +2737,6 @@ display: none;
 }
 .dashboard-tab {
     padding: 0;
-}
-.dashboard-tab-col {
-    display: flex;
-    padding: 0 10px;
-    margin: 0;
-    position: relative;
-    scroll-snap-align: end;
-    flex: none;
-    color: #222;
-    align-content: flex-start;
-    width: 100%;
-    text-align: center;
 }
 .dashboard-box .bs-row.mt-4 {
     margin: 0!important;
@@ -2807,6 +2784,68 @@ height: auto!important;
   width: 100% !important;
   padding: 0;
 }
+.estimateslide{
+display: none;
+}
+.estimateslide .slick-list {
+    margin: 0 -10px;
+}
+.estimateslide .slick-dots {
+    position: relative;
+    bottom: 0;
+    display: flex;
+    width: auto;
+    padding: 0;
+    margin: 10px 0 0 0;
+    list-style: none;
+    text-align: center;
+    justify-content: center;
+}
+.estimateslide .slick-dots li {
+    position: relative;
+    display: flex;
+    width: 14px;
+    height: 14px;
+    margin: 0 5px;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 100%;
+    overflow: hidden;
+}
+.estimateslide .slick-dots li button {
+    padding: 0;
+    min-width: auto;
+    width: 100%;
+    height: 100%;
+}
+.estimateslide .slick-dots li button:before {
+    font-family: 'slick';
+    font-size: 30px;
+    line-height: 0;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    text-align: center;
+    opacity: .25;
+    color: black;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #000;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s;
+}
+.estimateslide .slick-dots li.slick-active button:before {
+    opacity: 1;
+    background-color: #0d2c55;
+}
+.estimat-title{
+height: auto!important;
+}
 }
 
 @media screen and (max-width:1023px) and (orientation:landscape){
@@ -2834,4 +2873,4 @@ height: auto!important;
 }
 }
 
-/*GD-02-V.20012566*/
+/*GD-02-V.25012566*/

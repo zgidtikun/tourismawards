@@ -191,7 +191,7 @@
                                 </div>
                                 <div class="inp_form_col1 accept">
                                     <input type="checkbox" id="accept">
-                                    ข้าพเจ้าได้อ่านและตกลงยินยอมตามรายละเอียดข้อตกลงและเงื่อนไขการใช้งานและ<b><a href="<?=base_url('privacy-policy')?>" title="นโยบายความเป็นส่วนตัว">นโยบายความเป็นส่วนตัว</a></b>
+                                    ข้าพเจ้าได้อ่านและตกลงยินยอมตามรายละเอียดข้อตกลงและเงื่อนไขการใช้งานและ<b><a href="<?=base_url('privacy-policy')?>" target="_blank" title="นโยบายความเป็นส่วนตัว">นโยบายความเป็นส่วนตัว</a></b>
                                 </div>
                                 <div class="inp_form_col1 submit">
                                     <button id="btn-regis" type="button" disabled

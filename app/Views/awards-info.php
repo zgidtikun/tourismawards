@@ -217,7 +217,7 @@
                             </div>
                             <div class="award-list-section">
                                 <button type="button" class="btn btn-main" 
-                                onclick="window.open('<?=base_url('download/คุณสมบัติ_ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>','_blank')">
+                                onclick="window.open('<?=base_url('download/คุณสมบัติ_ประเภทที่พัก.pdf')?>','_blank')">
                                     <i class="bi bi-cloud-download"></i> Download File
                                 </button>
                             </div>
@@ -230,7 +230,7 @@
                             </div>
                             <div class="award-list-section">
                                 <button type="button" class="btn btn-main" 
-                                onclick="window.open('<?=base_url('download/คุณสมบัติ_ประเภทที่พัก.pdf')?>','_blank')">
+                                onclick="window.open('<?=base_url('download/คุณสมบัติ_ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>','_blank')">
                                     <i class="bi bi-cloud-download"></i> Download File
                                 </button>
                             </div>
