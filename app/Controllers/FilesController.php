@@ -16,7 +16,7 @@ class FilesController extends BaseController
             $id = $this->input->getVar('id');
 
             if($images = $this->input->getFiles()){
-                $path = 'uploads/'.date('Y').'/'.date('m').'/'.date('d');
+                $path = 'uploads/'.date('Y').'/'.date('m').'/'.date('d').'/images.';
                 foreach($images['image'] as $image){
                     if($image->isValid() && !$image->hasMoved()){
                         $extension = $image->guessExtension();
@@ -74,6 +74,8 @@ class FilesController extends BaseController
                 $obj = new \App\Models\Estimate();
                 $input = (object) $this->input->getVar();
 
+                $path = setPathFile().$input->path.'/';
+
                 if(empty($input->estimate_id)){
                     $estimate = new \App\Models\Estimate();
                     $estimate->insert([
@@ -90,8 +92,7 @@ class FilesController extends BaseController
                     $estimate_id = $input->estimate_id;
                 }
 
-                $path = 'uploads/'.date('Y').'/'.date('m').'/'.date('d').'/';
-                $path .= 'estimate/'.$estimate_id.'/onsite/'.$input->path.'/';
+                $prefix = 'estimate_'.$estimate_id.'_'.session()->get('id').'_';
 
                 $result = [
                     'result' => 'success', 
@@ -107,7 +108,7 @@ class FilesController extends BaseController
                         
                         $originalName = $file->getName();
                         $extension = $file->guessExtension();
-                        $newName = randomFileName($extension);
+                        $newName = $prefix.randomFileName($extension);
                         
                         $file->move(FCPATH.$path, $newName);
 

@@ -371,7 +371,10 @@ const register = {
                 }
 
                 if(Number(register.formData.step1.appType) == 1){
-                    if(Number(register.formData.step5.manageBy) == 1){
+                    if(empty(register.formData.step5.manageBy)){
+                        $('#div-step5-businessCert').hide();
+                    }
+                    else if(Number(register.formData.step5.manageBy) == 1){
                         $('#div-step5-businessCert').hide();
                     } else {
                         const title = $('#step5-file1-title');
@@ -1122,7 +1125,6 @@ $('[name=step5-t1-manageBy]').on('click', function(){
 $('[name=step5-t2-buildExt]').on('click', function(){ 
     register.formData.step5.buildExt = $(this).val(); 
     register.change = true;
-    console.log('buildExt: '+register.formData.step5.buildExt);
     register.checkComplete();
 });
 

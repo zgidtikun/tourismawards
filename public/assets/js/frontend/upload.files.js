@@ -1033,12 +1033,17 @@ const checkRequireFiles = (app) => {
                     }
                 } else {
                     if(Number(register.formData.step1.appType) == rv.pointer[2]){
-                        if(rv.pointer[2] == 1){
-                            if(Number(register.formData.step5.manageBy) != 1){
-                                if(register.count[rv.pointer[1]] <= 0){
-                                    check = false;
+                        if(rv.pointer[2] == 1){  
+                            if(rv.pointer[1] == 'businessCert'){    
+                                if(!empty(register.formData.step5.manageBy)) {            
+                                    if(Number(register.formData.step5.manageBy) != 1){
+                                        if(register.count[rv.pointer[1]] <= 0){
+                                            check = false;
+                                        }
+                                    }
                                 }
-                            } else if(register.count[rv.pointer[1]] <= 0) {
+                            }
+                            else if(register.count[rv.pointer[1]] <= 0){
                                 check = false;
                             }
                         }

@@ -480,7 +480,8 @@ class AnswerController extends BaseController
                 $question_id = $this->input->getVar('qid');
                 $answer_id = $this->input->getVar('aid');
                 $position = $this->input->getVar('position');
-                $path = $this->setFilePath($this->myId).'pre-screen/'.$this->input->getVar('path');
+                $path = setPathFile().$this->input->getVar('path');
+                $prefix = 'app_ps_'.$answer_id.'_'.$this->myId.'_';
                 $result = ['result' => 'success', 'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 'files' => []];
                 $files_up = [];
 
@@ -489,7 +490,7 @@ class AnswerController extends BaseController
                         
                         $originalName = $file->getName();
                         $extension = $file->guessExtension();
-                        $newName = randomFileName($extension);
+                        $newName = $prefix.randomFileName($extension);
                         
                         $file->move(FCPATH.$path, $newName);
 
@@ -656,17 +657,6 @@ class AnswerController extends BaseController
         }
 
         return $this->response->setJSON($result);
-    }
-
-    private function setFilePath($id)
-    {
-        $form = new \App\Models\ApplicationForm();        
-        $at = $form->where('created_by',$id)->select('created_at')->first();
-        $year = date('Y',strtotime($at->created_at));
-        $month = date('m',strtotime($at->created_at));
-        $day = date('d',strtotime($at->created_at));
-        $path = 'uploads/'.$year.'/'.$month.'/'.$day.'/'.$this->myId.'/';
-        return $path;
     }
 }
 

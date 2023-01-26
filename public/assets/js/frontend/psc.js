@@ -522,6 +522,6 @@ const psc = {
     }
 }
 
-$(MapData.input.reply.id).on('keyup change', function(){
+$(MapData.input.reply.id).on('keyup change input', function(){
     psc.setReply($(this).val());
 });

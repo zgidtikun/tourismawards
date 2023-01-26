@@ -329,7 +329,8 @@ class ApplicationController extends BaseController
         try{
             if($files = $this->input->getFiles()){
                 $app_id = $this->input->getVar('id');
-                $path = $this->setFilePath($app_id).'app-register/'.$this->input->getVar('path');
+                $path = setPathFile().$this->input->getVar('path');
+                $prefix = 'app_'.$app_id.'_'.$this->myId.'_';
                 $result = ['result' => 'success', 'message' => 'อัพโหลดไฟล์สำเร็จแล้ว', 'files' => []];
                 $files_up = [];
                 $files_log = [];
@@ -339,7 +340,7 @@ class ApplicationController extends BaseController
                         
                         $originalName = $file->getName();
                         $extension = $file->guessExtension();
-                        $newName = randomFileName($extension);
+                        $newName = $prefix.randomFileName($extension);
                         
                         $file->move(FCPATH.$path, $newName);
 
@@ -406,16 +407,6 @@ class ApplicationController extends BaseController
         }
 
         return $this->response->setJSON($result);
-    }
-
-    private function setFilePath($id)
-    {
-        $at = $this->appForm->where('id',$id)->select('created_at')->first();
-        $year = date('Y',strtotime($at->created_at));
-        $month = date('m',strtotime($at->created_at));
-        $day = date('d',strtotime($at->created_at));
-        $path = 'uploads/'.$year.'/'.$month.'/'.$day.'/'.$this->myId.'/';
-        return $path;
     }
 
     public function removeFiles()

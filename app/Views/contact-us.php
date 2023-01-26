@@ -1,7 +1,7 @@
 <div class="banner-box">
 
     <div class="txt-banner">
-        <h2>ติดต่อ</h2>
+        <h2>ติดต่อเรา</h2>
     </div>
 
 </div>
