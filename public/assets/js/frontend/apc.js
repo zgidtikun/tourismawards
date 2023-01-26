@@ -110,6 +110,7 @@ const register = {
     passYear: true,
     passYearCount: '',
     complete: false,
+    ExpiredOpenDate: null,
     init:async function(expired){        
         await loading('show');
         this.expired = expired == 'Expired' ? true : false;
@@ -204,7 +205,9 @@ const register = {
                 let app = response.data;
                 let files = !empty(app.pack_file) ? app.pack_file : [],
                     tmp = [];
-                
+
+                register.ExpiredOpenDate = response.expire_open;                
+                console.log(register.ExpiredOpenDate);
                 register.first = true;
                 register.id = app.id;
                 register.status = app.status;
@@ -354,6 +357,7 @@ const register = {
                 Object.assign(register.formData.step5, tmp['step5']);
                 
                 register.setAppTypeSub(register.formData.step1.appType);
+                countChar();
 
                 if(Number(register.formData.step3.setAddress) == 1){
                     register.formData.step3.address = register.formData.step2.address;
@@ -884,10 +888,25 @@ const selectType = (type,value) => {
     register.checkComplete();
 };
 
+const countChar = () => {
+    const cc = $('#step1-desc-cc');
+    const len = register.formData.step1.desc.length
+
+    if(len >= 1000){
+        cc.html(0);
+        const str = register.formData.step1.desc.substring(0, 1000);
+        register.formData.step1.desc = str;
+        $('#step1-desc').val(str);
+    } else {        
+        cc.html((1000 - len).toLocaleString("en"));
+    }
+}
+
 $('#step1-desc').on('keyup change input', function(){ 
     register.change = true;
     register.formData.step1.desc = $(this).val(); 
     $('#step1-desc-cc').html(1000 - register.formData.step1.desc.length);
+    countChar();
     register.checkComplete();
 });
 

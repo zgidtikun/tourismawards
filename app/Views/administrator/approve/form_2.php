@@ -103,20 +103,48 @@
             </div>
           </div>
         </div>
+
         <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
-          <div class="regis-form-data-col1">
-            <h4>กรณีมีส่วนต่อขยายของอาคารจะต้องแสดงรายงานการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน <span class="required">*</span></h4>
-            <p>
-              <input type="radio" id="buss_build_ext_1" value="1" <?= ($result->buss_buildExt == 1) ? 'checked' : ''; ?> disabled>
-              <label for="buss_build_ext_1">มี (กรณีที่เลือก ต้องแนบเอกสารการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน)</label>
-            </p>
-            <p>
-              <input type="radio" id="buss_build_ext_0" value="0" <?= ($result->buss_buildExt == 0) ? 'checked' : ''; ?> disabled>
-              <label for="buss_build_ext_0">ไม่มี</label>
-            </p>
+          <span class="fs-18 fw-semibold">
+            กรณีมีส่วนต่อขยายของอาคารจะต้องแสดงรายงานการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน <span class="required">*</span>
+          </span>
+          <p>
+            <input type="radio" id="buss_build_ext_1" value="1" <?= ($result->buss_buildExt == 1) ? 'checked' : ''; ?> disabled>
+            <label for="buss_build_ext_1">มี (กรณีที่เลือก ต้องแนบเอกสารการประเมินผลกระทบสิ่งแวดล้อมที่สอดคล้องกัน)</label>
+          </p>
+          <p>
+            <input type="radio" id="buss_build_ext_0" value="0" <?= ($result->buss_buildExt == 0) ? 'checked' : ''; ?> disabled>
+            <label for="buss_build_ext_0">ไม่มี</label>
+          </p>
+          <div class="card mt-1 col-md-6" style="border: 1px solid #E5E6ED;">
+            <div class="card-body selecter-file">
+              <h4>เอกสาร</h4>
+              <?php
+              if (!empty($result->pack_file) && !empty(json_decode($result->pack_file))) {
+                foreach (json_decode($result->pack_file) as $key => $value) {
+                  if ($value->file_position == 'buildExtFiles') {
+              ?>
+                    <div class="card card-body">
+                      <div class="bs-row">
+                        <div class="col-12"> <span class="fs-file-name"><?= $value->file_original ?> (<?= $value->file_size ?> Mb)</span>
+                          <a href="<?= base_url() . '/' . $value->file_path ?>" class="float-end pointer" title="โหลดไฟล์" target="_blank"><i class="bi bi-eye"></i></a>
+                          <a href="javascript:download_pdf('<?= $value->file_original ?>', '<?= base_url() . '/' . $value->file_path ?>')" class="float-end pointer" title="ดาวน์โหลดไฟล์"><i class="bi bi-download"></i></a>
+                        </div>
+                      </div>
+                    </div>
+              <?php
+                  }
+                }
+              } else {
+                echo '<h5 class="text-danger"><i>ไม่ได้แนบเอกสาร</i></h5>';
+              }
+              ?>
+            </div>
           </div>
         </div>
+
       </div>
+
       <div class="bs-row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-xl-12 mb-4">
           <span class="fs-18 fw-semibold">

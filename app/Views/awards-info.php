@@ -239,7 +239,7 @@
                         <li>
                             <div class="award-list-name">
                                 ประเภทรายการนำเที่ยว<br>
-                                (Tour Program)
+                                (Tourism Program)
                             </div>
                             <div class="award-list-section">
                                 <button type="button" class="btn btn-main" 

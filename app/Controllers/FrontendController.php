@@ -91,10 +91,10 @@ class FrontendController extends BaseController
                 $user->award_type = json_decode($user->award_type,false);
 
                 foreach($user->award_type as $key=>$type){
-                    if($type == 1){ $user->award_type[$key] = 'ประเภทแหล่งท่องเที่ยว'; }
-                    elseif($type == 2){ $user->award_type[$key] = 'ประเภทการท่องเที่ยวเชิงสุขภาพ'; }
-                    elseif($type == 3){ $user->award_type[$key] = 'ประเภทที่พักนักท่องเที่ยว'; }
-                    elseif($type == 4){ $user->award_type[$key] = 'ประเภทรายการนำเที่ยว'; }
+                    if($type == 1){ $user->award_type[$key] = 'แหล่งท่องเที่ยว (Attraction)'; }
+                    elseif($type == 2){ $user->award_type[$key] = 'ที่พักนักท่องเที่ยว (Accommodation)'; }
+                    elseif($type == 3){ $user->award_type[$key] = 'การท่องเที่ยวเชิงสุขภาพ (Health and Wellness Tourism)'; }
+                    elseif($type == 4){ $user->award_type[$key] = 'รายการนำเที่ยว (Tourism Program)'; }
                 }
             }
             
@@ -102,9 +102,9 @@ class FrontendController extends BaseController
                 $user->assessment_group = json_decode($user->assessment_group);
 
                 foreach($user->assessment_group as $key=>$group){
-                    if($group == 1){ $user->assessment_group[$key] = 'ด้าน Tourism Excellence'; }
-                    elseif($group == 2){ $user->assessment_group[$key] = 'ด้าน Supporting Business & Marketing Factors '; }
-                    elseif($group == 3){ $user->assessment_group[$key] = 'ด้านความยั่งยืน (Responsibility)'; }
+                    if($group == 1){ $user->assessment_group[$key] = 'ด้าน Tourism Excellence (Product/Service)'; }
+                    elseif($group == 2){ $user->assessment_group[$key] = 'ด้าน Supporting Business & Marketing Factors'; }
+                    elseif($group == 3){ $user->assessment_group[$key] = 'ด้าน Responsibility and Safety & Health Administration'; }
                     elseif($group == 4){ $user->assessment_group[$key] = 'ด้าน Low Carbon & Sustainability'; }
                 }
             }

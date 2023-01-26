@@ -1429,21 +1429,19 @@
             monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
             monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
             onSelect:function(dp,input){    
-                var yearT = new Date(dp).getFullYear()-0;  
-                var yearTH = yearT+543;
-                var fulldate = dp;    
-                var fulldateTH = fulldate.replace(yearT,yearTH);
+                const yearT = new Date(dp).getFullYear()-0;  
+                const yearTH = yearT+543;
+                const fulldate = dp;    
+                const fulldateTH = fulldate.replace(yearT,yearTH);
                 $('#step5-openYear').val(fulldateTH);
                 $('#step5-hiddenDate').val(fulldate);    
 
                 if(!empty(dp)){
-                    let date = new Date(),
-                        fulldate = $(this).val().split('/');
-
-                    let from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0],
-                        to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
-
-                    let totalYear = calcDate(from,to);
+                    const date = new Date();
+                    const fulldate = $(this).val().split('/');
+                    const from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0];
+                    const to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
+                    const totalYear = calcDate(from,to);
                     
                     register.change = true;
                     register.passYear = true;
@@ -1451,13 +1449,13 @@
                     register.formData.step5.totalYear = totalYear.result;
                     $('#step5-totalYear').val(totalYear.result);
 
-                    let app = register.formData.step1.appType;
-                    let confYear = register.appType.main.find(el => el.id == app);
+                    const app = register.formData.step1.appType;
+                    const confYear = register.appType.main.find(el => el.id == app);
                     register.passYearCount = confYear.fixe_year_open;
                     
                     if(Number(totalYear.total_year) < Number(confYear.fixe_year_open)){
                         register.passYear = false;
-                        let title = 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป';
+                        const title = 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป';
                         alert.show('error',title,'');
                     }
                 } else { 
