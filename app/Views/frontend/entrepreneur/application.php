@@ -25,6 +25,13 @@
     .regis-form-data-col2 input.form-control.is-invalid~div.invalid-feedback {
         display: block !important;
     }
+
+    a.btn-save.disabled {
+        color: #152a54;
+        background-color: #ededed;        
+        border-bottom: 3px solid #ededed;
+        pointer-events: none;
+    }
 </style>
 <div class="container">
     <div class="row">
@@ -182,7 +189,7 @@
                            <h4>อธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด <span class="required">*</span></h4>
                            ระบุคำตอบ <span class="required">*</span> 
                            <span class="text-muted">(จำนวนตัวอักษรคงเหลือ <span id="step1-desc-cc">1,000</span>/1,000)</span>
-                           <textarea class="form-control" id="step1-desc" maxlength="1000" rows="12"></textarea>
+                           <textarea class="form-control" id="step1-desc" rows="12"></textarea>
                            <div class="invalid-feedback">กรุณาอธิบายจุดเด่นของผลงานที่ต้องการส่งเข้าประกวด</div>
                         </div>
                         <div class="regis-form-data-col1 inpvdo">

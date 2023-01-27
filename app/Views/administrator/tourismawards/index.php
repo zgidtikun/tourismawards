@@ -102,7 +102,7 @@
                       <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <!-- <td class="text-start"><?= applicationType($value->application_type_id) ?></td> -->
                       <!-- <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td> -->
-                      <td class="text-center"><?= $total ?></td>
+                      <td class="text-end"><?= $total ?></td>
                       <td class="text-start"><?= $awards ?></td>
                     </tr>
                 <?php

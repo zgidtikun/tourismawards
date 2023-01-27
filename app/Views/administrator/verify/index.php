@@ -68,8 +68,6 @@
 <script>
   $(function() {
     $('#btn_save').click(function(e) {
-      // console.log(main_validated('form_input'));
-      // console.log(validated());
       if (main_validated('form_input') && validated()) {
         let formData = new FormData($('#form_input')[0]);
         var url = '<?= base_url('administrator/VerifyPassword/savePassword') ?>';
@@ -81,17 +79,8 @@
 
     function validated() {
       var number = /([0-9])/;
-      var alphabets = /([a-zA-Z])/;
-      var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
-
-      if ($('#password').val().length < 6) {
-        Swal.fire(
-          'ผิดพลาด!',
-          'กรุณาระบุรหัสผ่านมากกว่า 6 ตัวอักษร ประกอบไปด้วย ตัวเลข และ ตัวอักษรภาษาอังกฤษ',
-          'error'
-        )
-        return false;
-      }
+      var alphabets = /([a-z])/;
+      var alphabets_upper = /([A-Z])/;
 
       if ($('#password').val() == "") {
         Swal.fire(
@@ -101,6 +90,16 @@
         )
         return false;
       }
+
+      if ($('#password').val().length < 6 || !$('#password').val().match(alphabets) || !$('#password').val().match(alphabets_upper) || !$('#password').val().match(number)) {
+        Swal.fire(
+          'ผิดพลาด!',
+          'กรุณาระบุรหัสผ่านมากกว่า 6 ตัวอักษร ประกอบไปด้วย ตัวเลข และ ตัวอักษรภาษาอังกฤษ (0-9,a-z,A-Z)',
+          'error'
+        )
+        return false;
+      }
+
       if ($('#confirm_password').val() == "") {
         Swal.fire(
           'ผิดพลาด!',
@@ -109,6 +108,7 @@
         )
         return false;
       }
+
       if ($('#password').val() != $('#confirm_password').val()) {
         Swal.fire(
           'ผิดพลาด!',

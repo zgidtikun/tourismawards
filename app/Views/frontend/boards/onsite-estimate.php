@@ -262,7 +262,9 @@
                                 onkeyup="countChar($('#comment'))"></textarea>
                                 <script>
                                     function countChar(inp) {
-                                        var len = inp.val().length;
+                                        const str = inp.val();
+                                        const len = str.replace(/\r/g,'').length;
+
                                         if (len >= 1000) {
                                             $('#charNum').text('0');
                                             inp.val(inp.val().substring(0, 1000));

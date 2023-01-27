@@ -89,14 +89,14 @@
           </div>
         </div>
 
-        <!-- <div class="backendform-row">
+        <div class="backendform-row password">
           <div class="backendform-col subject">
-            รหัสผ่าน <span class="required">*</span>
+            รหัสผ่าน
           </div>
           <div class="backendform-col inpfield">
             <input type="password" name="password" id="password" class="form-control" value="" placeholder="">
           </div>
-        </div> -->
+        </div>
 
         <div class="backendform-row">
           <div class="backendform-col subject">
@@ -172,15 +172,15 @@
     var pgurl = BASE_URL_BACKEND + '/officer';
     active_page(pgurl);
   });
-  
+
   $(function() {
     var insert_id = $('#insert_id').val();
     if (insert_id != "" || insert_id != 0) {
       $('#email').prop('disabled', true);
-      $('#password').prop('required', false);
+      $('.password').show();
     } else {
       $('#email').prop('disabled', false);
-      $('#password').prop('required', true);
+      $('.password').hide();
     }
 
     var award_type = '<?= @$result->award_type ?>';
@@ -201,17 +201,12 @@
 
   $('#btn_save').click(function(e) {
     var insert_id = $('#insert_id').val();
-    if (main_validated('input_form') && validated()) {
+    if (main_validated('input_form')) {
       if (!isEmail($('#email').val())) {
         toastr.error('กรุณาระบุรูปแบบอีเมลให้ถูกต้อง');
         return false;
       }
       if (insert_id == "" || insert_id == 0) {
-        if ($('#password').val() == "") {
-          $('#password').focus();
-          toastr.error('กรุณาระบุรหัสผ่าน');
-          return false;
-        }
         if (validated_email()) {
           toastr.error('E-Mail นี้มีการสมัครเข้าใช้งานแล้ว');
           return false;
@@ -223,12 +218,15 @@
           }
         });
       } else {
-        var res = main_save(BASE_URL_BACKEND + '/officer/saveUpdate', '#input_form');
-        res_swal(res, 0, function() {
-          if (res.type == 'success') {
-            window.location.href = BASE_URL_BACKEND + '/officer';
-          }
-        });
+        if (validated()) {
+          var res = main_save(BASE_URL_BACKEND + '/officer/saveUpdate', '#input_form');
+          res_swal(res, 0, function() {
+            if (res.type == 'success') {
+              window.location.href = BASE_URL_BACKEND + '/officer';
+            }
+          });
+        }
+
       }
     }
   });
@@ -239,6 +237,10 @@
   }
 
   function validated() {
+    var number = /([0-9])/;
+    var alphabets = /([a-z])/;
+    var alphabets_upper = /([A-Z])/;
+
     var award_type = $('[name="award_type[]"]:checked').length;
     var assessment_group = $('[name="assessment_group[]"]:checked').length;
     if (award_type == 0) {
@@ -246,11 +248,20 @@
       $(award_type).focus();
       return false;
     }
+
     if (assessment_group == 0) {
       toastr.error('กรุณาเลือกความเชี่ยวชาญอย่างน้อย 1 รายการ');
       $(assessment_group).focus();
       return false;
     }
+
+    if ($('#password').val() != "") {
+      if ($('#password').val().length < 6 || !$('#password').val().match(alphabets) || !$('#password').val().match(alphabets_upper) || !$('#password').val().match(number)) {
+        toastr.error('กรุณาระบุรหัสผ่านมากกว่า 6 ตัวอักษร ประกอบไปด้วย ตัวเลข และ ตัวอักษรภาษาอังกฤษ (0-9,a-z,A-Z)');
+        return false;
+      }
+    }
+
     return true;
   }
 

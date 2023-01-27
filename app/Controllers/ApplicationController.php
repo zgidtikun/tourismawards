@@ -327,6 +327,7 @@ class ApplicationController extends BaseController
     public function uploadFiles()
     {
         try{
+
             if($files = $this->input->getFiles()){
                 $app_id = $this->input->getVar('id');
                 $path = setPathFile().$this->input->getVar('path');

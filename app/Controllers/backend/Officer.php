@@ -122,7 +122,7 @@ class Officer extends BaseController
             $data['users'] = $this->db->table('users')->where('id', $insert_id)->get()->getRowObject();
             $data['verify_code'] = vEncryption('users-' . $data['users']->verify_code);
             $this->sendMail($data);
-            
+
             // เก็บข้อมูลการเปลี่ยนแปลง
             // @mkdir(FCPATH . 'logs/backend-users', 0777, true);
             // $fp = fopen(FCPATH . 'logs/backend-users/users_id_' . $insert_id . '.txt', 'a+');
@@ -197,12 +197,16 @@ class Officer extends BaseController
             'updated_at'            => date('Y-m-d H:i:s'),
         ];
 
-        // if (!empty($post['password'])) {
-        //     $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        // }
+        if (!empty($post['password']) && $post['password'] != "") {
+            $data['password']       = password_hash($post['password'], PASSWORD_DEFAULT);
+            $data['status']         = 1;
+            $data['verify_status']  = 1;
+            $data['verify_date']    = date('Y-m-d H:i:s');
+            $data['verify_code']    = genVerifyCode();
+        }
         $result = $this->db->table('users')->where('id', $post['insert_id'])->update($data);
         if ($result) {
-            
+
             // เก็บข้อมูลการเปลี่ยนแปลง
             // @mkdir(FCPATH . 'logs/backend-users', 0777, true);
             // $fp = fopen(FCPATH . 'logs/backend-users/users_id_' . $post['insert_id'] . '.txt', 'a+');
@@ -335,7 +339,7 @@ class Officer extends BaseController
             $data['users'] = $this->db->table('admin')->where('id', $insert_id)->get()->getRowObject();
             $data['verify_code'] = vEncryption('admin-' . $data['users']->verify_code);
             $this->sendMailTAT($data);
-            
+
             // เก็บข้อมูลการเปลี่ยนแปลง
             // @mkdir(FCPATH . 'logs/backend-admin', 0777, true);
             // $fp = fopen(FCPATH . 'logs/backend-admin/admin_id_' . $insert_id . '.txt', 'a+');
@@ -408,12 +412,16 @@ class Officer extends BaseController
             'updated_at'            => date('Y-m-d H:i:s'),
         ];
 
-        // if (!empty($post['password'])) {
-        //     $data['password'] = password_hash($post['password'], PASSWORD_DEFAULT);
-        // }
+        if (!empty($post['password']) && $post['password'] != "") {
+            $data['password']       = password_hash($post['password'], PASSWORD_DEFAULT);
+            $data['status']         = 1;
+            $data['verify_status']  = 1;
+            $data['verify_date']    = date('Y-m-d H:i:s');
+            $data['verify_code']    = genVerifyCode();
+        }
         $result = $this->db->table('admin')->where('id', $post['insert_id'])->update($data);
         if ($result) {
-            
+
             // เก็บข้อมูลการเปลี่ยนแปลง
             // @mkdir(FCPATH . 'logs/backend-admin', 0777, true);
             // $fp = fopen(FCPATH . 'logs/backend-admin/admin_id_' . $post['insert_id'] . '.txt', 'a+');

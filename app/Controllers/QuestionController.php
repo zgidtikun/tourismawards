@@ -51,6 +51,9 @@ class QuestionController extends BaseController
     public function getListEstimate($round,$status = 'wait')
     {
         try{
+            $obj_ass = new \App\Models\AssessmentGroup();
+            $assessment = $obj_ass->findAll();
+
             $subEstimateSelect = 'application_id app_id, MAX(updated_at) updated_at, '
                 . 'MIN(request_status) request_status';
             if($round == 'pre-screen'){
@@ -80,8 +83,13 @@ class QuestionController extends BaseController
                 ->getCompiledSelect();
 
             $subEstInd = $this->db->table('estimate_individual')
-                ->select('application_id, score_pre, score_onsite,
-                lowcarbon_status, lowcarbon_score')
+                ->select(
+                    'application_id, 
+                    score_pte, score_psb, score_prs,
+                    score_ote, score_osb, score_ors,
+                    score_pre, score_onsite,
+                    lowcarbon_status, lowcarbon_score'
+                )
                 ->where('estimate_by',$this->myId)
                 ->getCompiledSelect();
                       
@@ -91,12 +99,18 @@ class QuestionController extends BaseController
                     ats.name section, us.stage, us.status, us.duedate,
                     us.id stage_id,
                     IFNULL(inse.updated_at,\'\') updated_at,
-                    IFNULL(es.score_pre,0) score_pre,
-                    IFNULL(es.score_onsite,0) score_onsite,
                     IFNULL(inse.request_status,\'\') request_status,
                     IFNULL(inse.show_status,\'\') show_status,
+                    IFNULL(es.score_pte,\'\') score_pte,
+                    IFNULL(es.score_psb,\'\') score_psb,
+                    IFNULL(es.score_prs,\'\') score_prs,
+                    IFNULL(es.score_pre,\'\') score_pre,
+                    IFNULL(es.score_ote,\'\') score_ote,
+                    IFNULL(es.score_osb,\'\') score_osb,
+                    IFNULL(es.score_ors,\'\') score_ors,
+                    IFNULL(es.score_onsite,\'\') score_onsite,
                     IFNULL(es.lowcarbon_status,2) lowcarbon_status,
-                    IFNULL(es.lowcarbon_score,0) lowcarbon_score'                    
+                    IFNULL(es.lowcarbon_score,\'\') lowcarbon_score'                    
                 )
                 ->join('application_type at','af.application_type_id = at.id')
                 ->join('application_type_sub ats','af.application_type_sub_id = ats.id','LEFT')
@@ -201,7 +215,11 @@ class QuestionController extends BaseController
                 }
             }
             
-            $result = ['result' => 'success', 'data' => $list];
+            $result = [
+                'result' => 'success', 
+                'assessment' => $assessment,
+                'data' => $list
+            ];
         } catch(Exception $e){
             save_log_error([
                 'module' => 'estimate_get_list',

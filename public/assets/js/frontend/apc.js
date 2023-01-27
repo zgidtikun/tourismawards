@@ -205,9 +205,7 @@ const register = {
                 let app = response.data;
                 let files = !empty(app.pack_file) ? app.pack_file : [],
                     tmp = [];
-
-                register.ExpiredOpenDate = response.expire_open;                
-                console.log(register.ExpiredOpenDate);
+                    
                 register.first = true;
                 register.id = app.id;
                 register.status = app.status;
@@ -872,6 +870,34 @@ const register = {
             });
         }
     },
+    waitUpload: function(action,input) {
+        return new Promise(function(resolve){
+            const btnHFinish = $('#btnHFinish');
+            const btnFFinish = $('#btnFFinish');
+            const ref = referance.find(el => el.input == input);
+            const html_uploading = 'Uploading...';
+            const html_finish = 'Upload Files';
+
+            switch(action){
+                case 'lock':
+                    $(ref.label).html(setSpinner(html_uploading));
+                    $('input, textarea, .btn-file, .btn-action').prop('disabled', true);
+                    btnFFinish.prop('disabled', true);
+                    btnHFinish.removeClass('active').addClass('disabled');
+                    $('.btn-save').addClass('disabled');
+                    resolve({status: true});
+                break;
+                case 'unlock':
+                    $(ref.label).html(html_finish);
+                    $('input, textarea, .btn-file, .btn-action').prop('disabled', false);
+                    btnFFinish.prop('disabled', false);
+                    btnHFinish.removeClass('disabled').addClass('active');
+                    $('.btn-save').removeClass('disabled');
+                    resolve({status: true});
+                break;
+            }
+        });
+    }
 }
 
 // Application Register
@@ -890,11 +916,12 @@ const selectType = (type,value) => {
 
 const countChar = () => {
     const cc = $('#step1-desc-cc');
-    const len = register.formData.step1.desc.length
+    const desc = register.formData.step1.desc.replace(/\r/g,'');    
+    const len = desc.length;
 
     if(len >= 1000){
         cc.html(0);
-        const str = register.formData.step1.desc.substring(0, 1000);
+        const str = desc.substring(0, 1000);
         register.formData.step1.desc = str;
         $('#step1-desc').val(str);
     } else {        
@@ -905,7 +932,6 @@ const countChar = () => {
 $('#step1-desc').on('keyup change input', function(){ 
     register.change = true;
     register.formData.step1.desc = $(this).val(); 
-    $('#step1-desc-cc').html(1000 - register.formData.step1.desc.length);
     countChar();
     register.checkComplete();
 });
