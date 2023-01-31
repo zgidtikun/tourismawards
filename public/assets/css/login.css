@@ -365,13 +365,13 @@ width: 400px;
 }
 .inp_form h3{
 font-size: 34px;
-color: #0D2C55;
+color: #205010;
 margin: 0;
 }
 .inp_form .subhead{
 text-align: center;
 margin: 0;
-color: #0D2C55;
+color: #205010;
 }
 .inp_form.forget h3,.inp_form.forget p{
 text-align: center;
@@ -382,7 +382,7 @@ height: 50px;
 padding: 10px 20px;
 }
 .inp_form input:focus,.inp_form select:focus{
-border: 1px solid #0D2C55;
+border: 1px solid #205010;
 }
 .inp_form input::placeholder{
 color: #CCC;
@@ -433,7 +433,7 @@ text-align: center;
 text-align: center;
 }
 .inp_form .submit button {
-    background-color: #0D2C55;
+    background-color: #205010;
     text-align: center;
     margin: 20px 0 0 0;
     border-radius: 30px;
@@ -442,6 +442,13 @@ text-align: center;
     color: #FFF;
     font-size: 20px;
     width: 100%;
+}
+.inp_form .submit button#btn-regis{
+    background-color: #2a6118;
+    max-width: 300px;
+}
+.inp_form .submit button[type="reset"] {
+    background-color: #CCC;
 }
 .inp_form .submit button.reset {
     background-color: #99342F;
@@ -477,7 +484,7 @@ display: none;
     margin: 0;
     border-bottom: 1px solid #ebedf2;
     text-align: center;
-    color: #152a54;
+    color: #2a6118;
 }
 .formmainbox .title-txt {
     font-size: 30px;
@@ -496,7 +503,7 @@ padding: 40px 20px;
     overflow: hidden;
 }
 .formstep-col.active{
-    color: #152a54;
+    color: #2a6118;
 }
 .formstep-title {
     padding: 0 20px;
@@ -535,10 +542,10 @@ color: #F00;
     z-index: 1;
 }
 .formstep-col.active .formstep-icon span{
-    background-color: #152a54;
+    background-color: #2a6118;
 }
 .formstep-col.complete .formstep-icon span{
-    background-color: #152a54;
+    background-color: #2a6118;
 }
 .formstep-icon i {
     line-height: 0;
@@ -567,10 +574,10 @@ color: #F00;
 }
 
 .formstep-col.prescreen.active .formstep-icon::before {
-    background-color: #0D2C55;
+    background-color: #205010;
 }
 .formstep-col.estimate.active .formstep-icon::before {
-    background-color: #0D2C55;
+    background-color: #205010;
 }
 .formstep-col.prescreen.active .formstep-icon::after {
     content: "";
@@ -584,7 +591,7 @@ color: #F00;
 }
 
 .formstep-col.complete .formstep-icon::before {
-    background-color: #0D2C55;
+    background-color: #205010;
 }
 .formstep-col:first-of-type .formstep-icon:before {
     left: 50%;
@@ -696,8 +703,8 @@ display: none;
   line-height: 22px;
 }
 .regis-form-step a.active {
-    color: #152a54;
-    border-bottom: 3px solid #152a54;
+    color: #000;
+    border-bottom: 3px solid #2a6118;
     padding: 0 20px 20px 20px;
 }
 .regis-form-step a.complete::before {
@@ -781,7 +788,7 @@ width: 100%;
 flex-direction: column;
 }
 [class^=regis-form-data-col] h3 {
-    color: #0D2C55;
+    color: #205010;
     margin: 0;
     padding-left: 40px;
     
@@ -2597,7 +2604,7 @@ margin-bottom: 0;
     align-items: baseline;
 }
 [class^=regis-form-data-col] h3 {
-    color: #0D2C55;
+    color: #205010;
     margin: 0;
     padding-left: 40px;
     width: 100%;
@@ -2841,7 +2848,7 @@ display: none;
 }
 .estimateslide .slick-dots li.slick-active button:before {
     opacity: 1;
-    background-color: #0d2c55;
+    background-color: #205010;
 }
 .estimat-title{
 height: auto!important;

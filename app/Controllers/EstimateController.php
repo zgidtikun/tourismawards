@@ -791,35 +791,35 @@ class EstimateController extends BaseController
     private function sendEstimateResult($data)
     {                
 
-        $form = $this->appForm->where('id',$data->app_id)
-        ->select(
-            'created_by app_of,
-            IFNULL(attraction_name_th,attraction_name_en) place_name'
-            ,false
-        )
-        ->first();
+        // $form = $this->appForm->where('id',$data->app_id)
+        // ->select(
+        //     'created_by app_of,
+        //     IFNULL(attraction_name_th,attraction_name_en) place_name'
+        //     ,false
+        // )
+        // ->first();
 
-        if($data->stage == 1){
-            if($data->pass){
-                $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณามอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)';                       
-            } else {
-                $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินขั้นต้น (Pre-screen) เข้าสู่ระบบ';
-            }
-        } else {
-            $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินรอบลงพื้นที่เข้าสู่ระบบ';
-        }
+        // if($data->stage == 1){
+        //     if($data->pass){
+        //         $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณามอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)';                       
+        //     } else {
+        //         $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินขั้นต้น (Pre-screen) เข้าสู่ระบบ';
+        //     }
+        // } else {
+        //     $message_a = $form->place_name.' ได้ทำการส่งแบบประเมินรอบลงพื้นที่เข้าสู่ระบบ';
+        // }
 
-        set_multi_noti(
-            get_receive_admin(),
-            (object) [
-                'bank' => 'backend'
-            ],
-            (object) [
-                'message'=> $message_a,
-                'link' => '',
-                'send_date' => date('Y-m-d H:i:s'),
-                'send_by' => $form->place_name
-            ]);
+        // set_multi_noti(
+        //     get_receive_admin(),
+        //     (object) [
+        //         'bank' => 'backend'
+        //     ],
+        //     (object) [
+        //         'message'=> $message_a,
+        //         'link' => '',
+        //         'send_date' => date('Y-m-d H:i:s'),
+        //         'send_by' => $form->place_name
+        //     ]);
 
         // helper('semail');
         // send_email_frontend((object)[

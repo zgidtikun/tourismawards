@@ -368,6 +368,10 @@ class AnswerController extends BaseController
                     ->select('status')
                     ->first();
 
+                    $form = $this->appForm->where('id',$this->input->getVar('appId'))
+                        ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
+                        ->first();
+
                     $isEstimateRequire = false;
                     
                     if(!empty($cusstg)){
@@ -386,7 +390,7 @@ class AnswerController extends BaseController
                                 ->update();
 
                             $judgeRequest = new \App\Controllers\EstimateRequestController();
-                            $judgeRequest->respond_request($this->myId);
+                            $judgeRequest->respond_request($this->myId,$form->place_name);
                             $isEstimateRequire = true;
                         }
                     } else {
@@ -405,6 +409,7 @@ class AnswerController extends BaseController
                         'datetime' => date('Y-m-d H:i:s'),
                         'data' => $this->input->getVar()
                     ]);
+
                     save_log_activety([
                         'module' => 'step_flow_checking',
                         'action' => 'application-'.$this->input->getVar('appId'),
@@ -413,22 +418,6 @@ class AnswerController extends BaseController
                         'datetime' => date('Y-m-d H:i:s'),
                         'data' => 'ผู้ประกอบการกดส่งแบบประเมิน'
                     ]);
-
-                    $form = $this->appForm->where('id',$this->input->getVar('appId'))
-                        ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
-                        ->first();
-
-                    set_multi_noti(
-                        get_receive_admin(),
-                        (object) [
-                            'bank' => 'backend'
-                        ],
-                        (object) [
-                            'message'=> $form->place_name.' ได้ทำการส่งแบบประเมินเข้าสู่ระบบ กรุณามอบหมายกรรมการเพื่อประเมินรอบขั้นต้น (Pre-Screen)',
-                            'link' => '',
-                            'send_date' => date('Y-m-d H:i:s'),
-                            'send_by' => $form->place_name
-                        ]);
 
                     helper('semail');
 

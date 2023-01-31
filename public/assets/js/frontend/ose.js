@@ -520,6 +520,7 @@ const setQuestion = async(cate,seg) => {
                     </div>
                 `;
             });
+            
             btnDownload.hide();
             listDownload.html(list);
             listDownload.show();
@@ -574,7 +575,8 @@ const setQuestion = async(cate,seg) => {
         ){
             const ablum_i = $('#etm-images-ablum');
             const ablum_c = $('#camera-gallery');
-            const button_f = $(`button[onclick="downloadFile('#etm-file')"]`);
+            
+            showFiles.tycoon('#etm-file',question.estFiles.paper);
 
             if(question.estFiles.images.length > 0){
                 ablum_i.removeClass('text-center');                                      
@@ -596,21 +598,6 @@ const setQuestion = async(cate,seg) => {
                 ablum_c.addClass('text-center');
                 ablum_c.css('color','#000');
                 ablum_c.text('ไม่มีรูปแนบ');
-            }
-
-            if(question.estFiles.paper.length > 0){
-                button_f.prop('disabled',false);
-                button_f.removeClass('btn-transparent');
-                button_f.addClass('btn-primary');
-                button_f.css('color','#fff');
-                button_f.html('<i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ');
-            } else {
-                button_f.prop('disabled',true);
-                button_f.removeClass('btn-primary');
-                button_f.addClass('btn-transparent');
-                button_f.css('color','#000');
-                button_f.css('opacity','1');
-                button_f.html('ไม่มีไฟล์แนบ');
             }
         } else {        
             showFiles.tycoon('#etm-images',question.estFiles.images);

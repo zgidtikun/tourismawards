@@ -37,7 +37,7 @@ const MapField = {
             { input: '#step3-zipcode', variant: 'zipcode', api: 'company_addr_zipcode', require: false },
             { input: '#step3-telephone', variant: 'telephone', api: 'mobile', require: false },
             { input: '#step3-email', variant: 'email', api: 'email', require: false },
-            { input: '#step3-lid', variant: 'lid', api: 'line_id', require: false },
+            { input: '#step3-lid', variant: 'lid', api: 'company_line', require: false },
         ],
         s4: [
             { input: '#step4-name', variant: 'name', api: 'knitter_name', require: true },
@@ -393,7 +393,7 @@ const register = {
                 
                 $.each(referance, function(key,ref){
                     if(ref.app == 'awards/application'){
-                        let pointer = ref.pointer;
+                        const pointer = ref.pointer;
                         register.formData[pointer[0]][pointer[1]] = [];
                         register.count[pointer[1]] = 0;
                     }
@@ -401,15 +401,15 @@ const register = {
                 
                 if(files.length > 0){
                     $.each(files,function(key,file){
-                        let ref = referance.find(el => el.position == file.file_position);
-                        let pointer = ref.pointer;
+                        const ref = referance.find(el => el.position == file.file_position);
+                        const pointer = ref.pointer;
                         register.formData[pointer[0]][pointer[1]].push(file);
                         register.count[pointer[1]]++;
                     });
 
                     $.each(referance, function(key,ref){
                         if(ref.app == 'awards/application'){
-                            let pointer = ref.pointer;
+                            const pointer = ref.pointer;
                             if(register.formData[pointer[0]][pointer[1]].length > 0){                            
                                 showFiles.tycoon(
                                     ref.input,register.formData[pointer[0]][pointer[1]]
@@ -630,6 +630,7 @@ const register = {
             });
         }
 
+        $('#main-focus')[0].scrollIntoView();
         register.checkComplete();
     },
     saveDraft:async function(step,mode){        
@@ -950,13 +951,15 @@ $('[name=step1-lowcarbon]').on('click', function(){
 
 // Step 2
 $('#step2-siteNameTh').on('keyup change input', function(){ 
-    register.formData.step2.siteNameTh = $(this).val();
+    const value = $(this).val().replace(/[^ก-๙\d\s]/g, '');
+    $(this).val(value);
+    register.formData.step2.siteNameTh = value;
      register.change = true;
      register.checkComplete();
 });
 
 $('#step2-siteNameEng').on('keyup change input', function(){ 
-    let value = $(this).val().replace(/[^a-zA-Z0-9\s]/g,'');
+    const value = $(this).val().replace(/[^a-zA-Z0-9\s]/g,'');
     $(this).val(value);
     register.formData.step2.siteNameEng = value; 
     register.change = true;
@@ -1174,7 +1177,9 @@ $('[name=step5-t2-buildExt]').on('click', function(){
 });
 
 $('#step5-t2-bussLicense').on('keyup change input', function(){ 
-    register.formData.step5.bussLicense = $(this).val(); 
+    const value = $(this).val().replace(/[^0-9]/g,'');
+    $(this).val(value)
+    register.formData.step5.bussLicense = value; 
     register.change = true;
     register.checkComplete();
 });
@@ -1186,7 +1191,9 @@ $('[name=step5-t2-bussCkRoom]').on('click', function(){
 });
 
 $('#step5-t3-bussLicense').on('keyup change input', function(){ 
-    register.formData.step5.bussLicenseT3 = $(this).val(); 
+    const value = $(this).val().replace(/[^0-9]/g,'');
+    $(this).val(value)
+    register.formData.step5.bussLicenseT3 = value; 
     register.change = true;
     register.checkComplete();
 });
@@ -1215,8 +1222,10 @@ $('[name=step5-t3-outlander]').on('click', function(){
     register.checkComplete();
 });
 
-$('#step5-t4-bussLicense').on('keyup change input', function(){ 
-    register.formData.step5.bussLicenseT4 = $(this).val(); 
+$('#step5-t4-bussLicense').on('keyup change input', function(){  
+    const value = $(this).val().replace(/[^0-9]/g,'');
+    $(this).val(value)
+    register.formData.step5.bussLicenseT4 = value; 
     register.change = true;
     register.checkComplete();
 });

@@ -22,7 +22,7 @@ class ApplicationController extends BaseController
             'facebook','instagram','line_id','other_social','google_map'],
         '3' => ['company_name','company_addr_no','company_addr_road','company_addr_sub_district',
             'company_addr_district','company_addr_province','company_addr_zipcode','company_setaddr',
-            'mobile','email','line_id'],
+            'mobile','email','company_line'],
         '4' => ['knitter_name','knitter_position','knitter_tel','knitter_email',
             'knitter_line'],
         '5' => ['year_open','year_total','manage_by','buss_license','buss_ckroom','buss_buildExt',
@@ -257,6 +257,11 @@ class ApplicationController extends BaseController
                 }
                     
                 $this->appForm->update($app_id,$updd);
+                
+                helper('semail');
+                send_email_frontend((object)[
+                    'user_id' => $this->myId
+                ],'app-wait');
 
                 save_log_activety([
                     'module' => 'user_application',
@@ -275,29 +280,6 @@ class ApplicationController extends BaseController
                     'datetime' => date('Y-m-d H:i:s'),
                     'data' => 'ผู้ประกอบการกดส่งใบสมัครประกวด'
                 ]);
-
-                $form = $this->appForm->where('id',$app_id)
-                    ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
-                    ->first();
-
-                set_multi_noti(
-                    get_receive_admin(),
-                    (object) [
-                        'bank' => 'backend'
-                    ],
-                    (object) [
-                        'message' => $form->place_name.' ได้ทำการส่งใบสมัครเข้าสู่ระบบ กรุณาทำการตรวจสอบใบสมัคร',
-                        'link' => base_url('awards/result'),
-                        'send_date' => date('Y-m-d H:i:s'),
-                        'send_by' => $form->place_name
-                    ]
-                );
-                
-                helper('semail');
-                send_email_frontend((object)[
-                    'email' => session()->get('account'),
-                    'tycon' => session()->get('user')
-                ],'app-wait');
             }
 
             $result = ['result' => 'success', 'message' => 'บันทึกข้อมูลเรียบร้อยแล้ว'];

@@ -299,8 +299,8 @@ height: 100%;
     line-height: 1;
 }
 .btn-banner:link,.btn-banner:visited {
-    background-color: #0d2c55;
-    border-bottom: 3px solid #08244a;
+    background-color: #2a6118;
+    border-bottom: 3px solid #205010;
     display: table;
     margin: 40px auto 0 auto;
     padding: 10px 30px;
@@ -435,7 +435,7 @@ min-height: 50vh;
 }
 
 .container.footer {
-    background-color: #0d2c55;
+    background-color: #2a6118;
     border-top: 3px solid #cca22a;
     color: #FFF;
     font-size: 0.85em;
@@ -450,7 +450,7 @@ margin: 40px 0;
 padding: 0;
 }
 .container.copyright{
-background-color: #0e233f;
+background-color: #1b510a;
 color:#FFF;
 font-size: 0.85em;
 }
@@ -543,7 +543,7 @@ color: #FFF;
     height: auto;
     flex-direction: column;
     width: 300px;
-    border-bottom: 3px solid #08244a;
+    border-bottom: 3px solid #205010;
     box-shadow: 0 0 5px rgba(0,0,0,0.75);
     border-radius: 10px;
     overflow: hidden;
@@ -565,7 +565,7 @@ color: #FFF;
     padding: 0;
     line-height: normal;
     text-align: left;
-    border-bottom: 1px solid #08244a;
+    border-bottom: 1px solid #205010;
     padding-bottom: 0!important;
 }
 
@@ -584,7 +584,7 @@ transition: all 0.5s;
 border-bottom: 0;
 }
 .header-box-col.menu ul li.item-with-ul ul li a:hover{
-background-color: #08244a;
+background-color: #205010;
 }
 
 .header-box-col.menu ul li.item-with-ul ul li a:before {
@@ -613,7 +613,7 @@ color: #cca22a;
 .main-title-txt h2 {
     font-size: 1.9rem;
     font-weight: bold;
-    color: #0d2c55;
+    color: #2a6118;
     margin: 10px 0;
     line-height: 1.2;
 }
@@ -627,7 +627,7 @@ text-align: center;
 max-height: 50px;
 }
 .txt-banner {
-    background-color: #0d2c55;
+    background-color: #2a6118;
     padding: 80px 20px;
     display: flex;
     align-items: center;
@@ -643,8 +643,8 @@ max-height: 50px;
 }
 .judge-title {
     font-size: 40px;
-    color: #0d2c55;
-    border-bottom: 2px solid #0d2c55;
+    color: #2a6118;
+    border-bottom: 2px solid #1b510a;
     padding-bottom: 20px;
 }
 .judge-list{
@@ -685,7 +685,7 @@ margin-bottom: 20px;
 }
 
 .judge-name{
-color: #0d2c55;
+color: #2a6118;
 font-weight: bold;
 }
 .award-list {
@@ -744,7 +744,7 @@ list-style-type: none;
 }
 .award-list ol li::after {
     content: "";
-    background-color: #0d2c55;
+    background-color: #cca22a;
     width: 24px;
     height: 24px;
     display: block;
@@ -778,7 +778,7 @@ align-items: center;
 .award-list-name {
     font-size: 20px;
     font-weight: bold;
-    color: #0d2c55;
+    color: #1b510a;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -857,14 +857,14 @@ justify-content: center;
     margin: 0;
 }
 .container.tourismaward .row{
-    border-bottom: 2px solid #0d2c55;
+    border-bottom: 2px solid #1b510a;
 }
 .container.tourismaward .row:last-of-type{
     border-bottom: 0;
 }
 .award-winner-name {
     font-size: 20px;
-    color: #0d2c55;
+    color: #205010;
     text-align: left;
     margin-bottom: 20px;
     font-weight: bold;
@@ -911,7 +911,7 @@ width: 50%;
     text-align: center;
 }
 .awardsection-list li a.active {
-    background-color: #0d2c55;
+    background-color: #2a6118;
     color: #FFF;
 }
 .container_box.awardsection{
@@ -1015,7 +1015,7 @@ position: absolute;
 left: 0;
 }
 .news-subject i::before{
-color: #0d2c55;
+color: #205010;
 }
 .news-date, .news-name {
     padding: 0 20px 0 30px;
@@ -1049,7 +1049,7 @@ padding: 10px;
 border: 1px solid #CCC;
 }
 .news-content-social i:hover:before{
-background-color: #0d2c55;
+background-color: #205010;
 color: #FFF;
 }
 .contact-map{
@@ -1093,7 +1093,7 @@ padding: 10px;
     box-shadow: 0 0 5px rgb(0 0 0 / 15%);
 }
 .contact-subject{
-color: #0d2c55;
+color: #2a6118;
 font-weight: bold;
 margin: 10px 0;
 }
@@ -1152,8 +1152,8 @@ width: 50%;
     margin-top: 40px;
 }
 .btn-save {
-    background-color: #152a54;
-    border-bottom: 3px solid #08244a;
+    background-color: #2a6118;
+    border-bottom: 3px solid #205010;
     color: #FFF;
     transition: all 0.3s;   
     margin: 5px;
@@ -1163,7 +1163,7 @@ width: 50%;
     color: #FFF;
 }
 .privacy h3{
-color: #0d2c55;
+color: #205010;
 }
 .awardyear {
     display: flex;
@@ -1299,7 +1299,9 @@ line-height: 0;
 
 .award-list [class^="btn"]{
 transition: all 0.2s;
-border-bottom: 3px solid #08244a;
+background-color: #2a6118;
+border: 0;
+border-bottom: 3px solid #205010;
 }
 .award-list [class^="btn"]:hover {
     position: relative;

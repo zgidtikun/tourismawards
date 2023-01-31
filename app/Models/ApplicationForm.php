@@ -25,7 +25,7 @@ class ApplicationForm extends Model
     'buss_ckroom', 'buss_buildExt', 'buss_cites', 'admin_nominee', 'has_outlander', 'current_step', 
     'status', 'approve_by', 'approve_name', 'approve_time', 'judge_comment', 'pack_file', 
     'created_by', 'updated_by', 'send_date', 'request_time', 'require_lowcarbon', 
-    'has_effluent'];
+    'has_effluent', 'company_line'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

@@ -34,7 +34,7 @@ height: 100%;
     transform: translateY(-50%);
 }
 .branch_title {
-    color: #6d2324;
+    color: #2a6118;
     text-align: center;
     font-size: 24px;
     font-weight: bold;
@@ -47,8 +47,8 @@ margin: 20px 0;
 text-align: center;
 color: #FFF;
 padding: 5px 20px;
-background-color: #c69432;
-border-bottom: 3px solid #B59100;
+background-color: #2a6118;
+border-bottom: 3px solid #205010;
 display: table;
 margin: 10px auto 0 auto;
 transition: all 0.2s;
@@ -58,7 +58,7 @@ position: relative;
 transform: translateY(-5px);
 }
 .container.claimawards{
-background-color: #0d2c55;
+background-color: #2a6118;
 color: #FFF;
 }
 
@@ -124,7 +124,7 @@ top: -3px;
 background-color: #c79533;
 }
 .btn-ruledblue{
-background-color: #0e233f;
+background-color: #1b510a;
 }
 .claim_img_box{
 position: relative;
@@ -161,8 +161,9 @@ display: flex;
 flex-wrap: wrap;
 margin: -10px;
 }
-.container.directoraward .hilight{
-display: flex;
+.container.directoraward .hilight {
+    display: flex;
+    padding: 0;
 }
 .hilight .judge_box{
 margin: 0;
@@ -185,15 +186,11 @@ width: 100%;
     position: relative;
     padding-top: 0;
     overflow: hidden;
-    padding-left: 0;
-    padding-right: 0;
 }
 .judge_img {
     position: relative;
     padding-top: 75%;
     overflow: hidden;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 .judge_img_scale {
     position: absolute;
@@ -419,7 +416,7 @@ max-height: 150px;
 }
 .branch_img {
     position: relative;
-    width: 40%;
+    width: 50%;
     flex: none;
     margin-bottom: 0;
 }
@@ -583,8 +580,12 @@ font-size: 16px;
     flex: auto;
     padding-left: 0;
 }
-.container.directoraward [class^="col"]{
-width: 100%;
+.container.directoraward [class^="col"] {
+    width: 100%;
+}
+.container.directoraward .hilight {
+    padding: 0 20px;
+    justify-content: center;
 }
 .hilight .judge_box .judge_img {
     width: 100%;
@@ -598,11 +599,17 @@ width: 100%;
 .judge_box {
     display: flex;
     flex-wrap: wrap;
-    margin: 10px -10px;
+    margin: 0 -10px;
 }
 .judge_box_col {
     width: 100%;
     position: relative;
+}
+.hilight .judge_box {
+    margin: 0;
+}
+.hilight .judge_box .judge_box_col {
+    padding: 10px 0;
 }
 .award-section-col {
     width: 100%;

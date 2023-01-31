@@ -137,14 +137,14 @@
                 <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
                 <textarea rows="6" id="field" onkeyup="countChar(this)"><?= $result->highlights ?></textarea>
                 <script>
-                  function countChar(val) {
-                    var len = val.value.length;
+                  function countChar(elm) {
+                    var len = elm.value.replace(/\r/g, '').length;
                     if (len >= 1000) {
-                      val.value = val.value.substring(0, 1000);
+                      $('#charNum').text('0');
                     } else {
-                      $('#charNum').text(1000 - len);
+                      $('#charNum').text((1000 - len).toLocaleString("en"));
                     }
-                  };
+                  }
                 </script>
               </div>
 

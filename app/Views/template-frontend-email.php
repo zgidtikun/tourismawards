@@ -177,12 +177,12 @@
                     <div style="height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;">
                       <!--<![endif]-->
 
-                      <table id="u_content_text_6" style="font-family:'Montserrat',sans-serif;background-color: #142c52" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+                      <table id="u_content_text_6" style="font-family:'Montserrat',sans-serif;background-color: #2a6118" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
                         <tbody>
                           <tr>
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;" align="left">
 
-                              <div style="color: #34495e; line-height: 120%; height: 50px; text-align: left; word-wrap: break-word;">
+                              <div style="color: #1b510a; line-height: 120%; height: 50px; text-align: left; word-wrap: break-word;">
 
                               </div>
 
@@ -214,7 +214,7 @@
                           <tr>
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:60px 10px 10px;font-family:'Montserrat',sans-serif;" align="left">
 
-                              <h2 class="v-font-size" style="margin: 0px; color: #34495e; line-height: 120%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: helvetica,sans-serif; font-size: 20px;">
+                              <h2 class="v-font-size" style="margin: 0px; color: #1b510a; line-height: 120%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: helvetica,sans-serif; font-size: 20px;">
                                 <strong><?=$_header?></strong>
                               </h2>
 
@@ -236,12 +236,12 @@
                           </tr>
                         </tbody>
                       </table>
-                      <table id="u_content_text_7" style="font-family:'Montserrat',sans-serif;background-color: #142c52;border-top: 3px solid #cca22a;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+                      <table id="u_content_text_7" style="font-family:'Montserrat',sans-serif;background-color: #2a6118;border-top: 3px solid #cca22a;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
                         <tbody>
                           <tr>
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;" align="left">
 
-                              <div style="color: #34495e; line-height: 140%; text-align: left; word-wrap: break-word;">
+                              <div style="color: #1b510a; line-height: 140%; text-align: left; word-wrap: break-word;">
                                 <p style="font-size: 14px; line-height: 140%;">
                                   <span style="color: #fff; font-size: 14px; line-height: 19.6px;">การท่องเที่ยวแห่งประเทศไทย (สำนักงานใหญ่)</span><br/>
                                   <span style="color: #fff; font-size: 14px; line-height: 19.6px;">1600 ถ.เพชรบุรีตัดใหม่ แขวงมักกะสัน เขตราชเทวี กรุงเทพฯ</span><br/>

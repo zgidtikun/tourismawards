@@ -305,7 +305,7 @@ const removeFile = async(input, setting) => {
 const downloadFile = (input) => {
     let id, url, pointer,
         emptyFile = false;
-        ref = referance.find(el => el.input == input);
+    const ref = referance.find(el => el.input == input);
 
     if (ref.app == 'awards/application') {
         if(register.count[ref.pointer[1]] > 0){
@@ -348,8 +348,8 @@ const downloadFile = (input) => {
 
 const showFiles = {
     tycoon: function(input, files) {
-        let ref = referance.find(el => el.input == input),
-            html;
+        const ref = referance.find(el => el.input == input);
+        let html;
             
         if (ref.app == 'awards/pre-screen' && psc.status == 'reject' && ref.path == 'images') {
             html = [];
@@ -415,47 +415,86 @@ const showFiles = {
                 }
             }
         } else {
-            $(ref.show).html(html);
-            if(html == ''){
-                setBtnUploadFile(ref.input)
-                clearBtnRemoveFile('by-input',ref.app,ref.input);
+            if(
+                (ref.app == 'awards/application' && register.complete) ||
+                (ref.app == 'awards/pre-screen' && psc.complete) ||
+                (
+                    ref.app == 'estimate/onsite' && (
+                        $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
+                        || getIsFinish() == 'finish'
+                    )
+                )
+            ){
+                if(html == ''){
+                    html = `<div class="col-12 text-center">ไม่มีไฟล์แนบ</div>`;
+                }
+
+                $(ref.ablum).html(html);
             } else {
-                setBtnUploadFile(ref.input)
-                clearBtnRemoveFile('show-input',ref.app,ref.input);
+                $(ref.show).html(html);
+
+                if(html == ''){
+                    setBtnUploadFile(ref.input)
+                    clearBtnRemoveFile('by-input',ref.app,ref.input);
+                } else {
+                    setBtnUploadFile(ref.input)
+                    clearBtnRemoveFile('show-input',ref.app,ref.input);
+                }
             }
         }
 
 
     },
     setFile(input, setting) {
-        let html, onclick, id, img,
-            ref = referance.find(el => el.input == input);
+        let html, file_name, onclick, id, img, status;
+        const ref = referance.find(el => el.input == input);
 
-        if (ref.app == 'awards/application') { id = register.id; }
+        if (ref.app == 'awards/application') { 
+            id = register.id; 
+            status = register.complete ? 'finish' : 'unfinish';
+        }
 
         if (
             $.inArray(ref.app, ['awards/application', 'awards/pre-screen', 'estimate/onsite']) !== -1 &&
             ref.path == 'paper'
         ) {
-            onclick = 'onclick="removeFile(\'' + input + '\',{';
+            onclick = '';
 
-            if (ref.app == 'awards/application') {
-                onclick += 'id: ' + id + ','
+            if(
+                (ref.app == 'awards/application' && status == 'finish') ||
+                (ref.app == 'awards/pre-screen' && psc.complete) ||                
+                (
+                    ref.app == 'estimate/onsite' && (
+                        $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
+                        || getIsFinish() == 'finish'
+                    )
+                )
+            ){
+                const file_link = getBaseUrl() + '/' + setting.file_path;
+                onclick = '';
+                
+                file_name = `<a href="${file_link}" target="_blank">
+                    <span class="fs-file-name">${setting.file_original}</span></a>`;
+
+            } else {
+                file_name = `<span class="fs-file-name">${setting.file_original}
+                    <br>(${setting.file_size}MB)</span>`;
+
+                onclick = `<a class="fs-file-remove float-end" 
+                    href="javascript:removeFile('${input}',{
+                    ${!empty(id) ? `id: ${id} ` : ``}, 
+                    file_name: '${setting.file_name}',
+                    file_path: '${setting.file_path}', remove: 'fixed'})">
+                        <i class="bi bi-trash-fill"></i> ลบ
+                    </a>`;
             }
-
-            onclick += "file_name: '" + setting.file_name + "',";
-            onclick += "file_path: '" + setting.file_path + "',";
-            onclick += 'remove: \'fixed\'})"';
 
             html = '<div class="col-12">'
                         + '<div class="card card-body-muted">'
                             + '<div class="bs-row">'
                                 + '<div class="col-12">'
-                                    + '<span class="fs-file-name">' + setting.file_original + ' '
-                                    + '<br>(' + setting.file_size + 'MB)</span>'
-                                    + '<a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">'
-                                        + '<i class="bi bi-trash-fill"></i> ลบ'
-                                    + '</a>'
+                                    + file_name
+                                    + onclick
                                 + '</div>'
                             + '</div>'
                         + '</div>'
@@ -639,6 +678,7 @@ const referance = [{
         btn: '#step1-paper-btn',
         btnrm: '#step1-paper-remove',
         show: '#step1-paper-list',
+        ablum: '#attach-file-step1-paper',
         label: '#step1-paper-label',
         api: '/inner-api/app/upload',
         position: 'paperFiles',
@@ -653,6 +693,7 @@ const referance = [{
         btn: '#step1-detail-btn',
         btnrm: '#step1-detail-remove',
         show: '#step1-detail-list',
+        ablum: '#attach-file-step1-detail',
         label: '#step1-detail-label',
         api: '/inner-api/app/upload',
         position: 'detailFiles',
@@ -683,6 +724,7 @@ const referance = [{
         btn: '#step5-landOwner-btn',
         btnrm: '#step5-landOwner-remove',
         show: '#step5-landOwner-list',
+        ablum: '#attach-file-step5-landOwner',
         label: '#step5-landOwner-label',
         api: '/inner-api/app/upload',
         position: 'landOwnerFiles',
@@ -698,6 +740,7 @@ const referance = [{
         btn: '#step5-businessCert-btn',
         btnrm: '#step5-businessCert-remove',
         show: '#step5-businessCert-list',
+        ablum: '#attach-file-step5-businessCert',
         label: '#step5-businessCert-label',
         api: '/inner-api/app/upload',
         position: 'businessCertFiles',
@@ -713,6 +756,7 @@ const referance = [{
         btn: '#step5-otherCert-btn',
         btnrm: '#step5-otherCert-remove',
         show: '#step5-otherCert-list',
+        ablum: '#attach-file-step5-otherCert',
         label: '#step5-otherCert-label',
         api: '/inner-api/app/upload',
         position: 'otherCertFiles',
@@ -727,6 +771,7 @@ const referance = [{
         btn: '#step5-bussLicenseFiles-btn',
         btnrm: '#step5-bussLicenseFiles-remove',
         show: '#step5-bussLicenseFiles-list',
+        ablum: '#attach-file-step5-bussLicenseFiles',
         label: '#step5-bussLicenseFiles-label',
         api: '/inner-api/app/upload',
         position: 'bussLicenseFiles',
@@ -742,6 +787,7 @@ const referance = [{
         btn: '#step5-EIAreport-btn',
         btnrm: '#step5-EIAreport-remove',
         show: '#step5-EIAreport-list',
+        ablum: '#attach-file-step5-EIAreport',
         label: '#step5-EIAreport-label',
         api: '/inner-api/app/upload',
         position: 'EIAreportFiles',
@@ -757,6 +803,7 @@ const referance = [{
         btn: '#step5-buildExt-btn',
         btnrm: '#step5-buildExt-remove',
         show: '#step5-buildExt-list',
+        ablum: '#attach-file-step5-buildExt',
         label: '#step5-buildExt-label',
         api: '/inner-api/app/upload',
         position: 'buildExtFiles',
@@ -772,6 +819,7 @@ const referance = [{
         btn: '#step5-otherT2Cert-btn',
         btnrm: '#step5-otherT2Cert-remove',
         show: '#step5-otherT2Cert-list',
+        ablum: '#attach-file-step5-otherT2Cert',
         label: '#step5-otherT2Cert-label',
         api: '/inner-api/app/upload',
         position: 'otherT2CertFiles',
@@ -786,6 +834,7 @@ const referance = [{
         btn: '#step5-spaCert-btn',
         btnrm: '#step5-spaCert-remove',
         show: '#step5-spaCert-list',
+        ablum: '#attach-file-step5-spaCert',
         label: '#step5-spaCert-label',
         api: '/inner-api/app/upload',
         position: 'spaCertFiles',
@@ -801,6 +850,7 @@ const referance = [{
         btn: '#step5-effluent-btn',
         btnrm: '#step5-effluent-remove',
         show: '#step5-effluent-list',
+        ablum: '#attach-file-step5-effluent',
         label: '#step5-effluent-label',
         api: '/inner-api/app/upload',
         position: 'effluentFiles',
@@ -815,6 +865,7 @@ const referance = [{
         btn: '#step5-wellnessCert-btn',
         btnrm: '#step5-wellnessCert-remove',
         show: '#step5-wellnessCert-list',
+        ablum: '#attach-file-step5-wellnessCert',
         label: '#step5-wellnessCert-label',
         api: '/inner-api/app/upload',
         position: 'wellnessCertFiles',
@@ -830,6 +881,7 @@ const referance = [{
         btn: '#step5-spaManger-btn',
         btnrm: '#step5-spaManger-remove',
         show: '#step5-spaManger-list',
+        ablum: '#attach-file-step5-spaManger',
         label: '#step5-spaManger-label',
         api: '/inner-api/app/upload',
         position: 'spaMangerFiles',
@@ -845,6 +897,7 @@ const referance = [{
         btn: '#step5-titleDeed-btn',
         btnrm: '#step5-titleDeed-remove',
         show: '#step5-titleDeed-list',
+        ablum: '#attach-file-step5-titleDeed',
         label: '#step5-titleDeed-label',
         api: '/inner-api/app/upload',
         position: 'titleDeedFiles',
@@ -859,6 +912,7 @@ const referance = [{
         btn: '#step5-outlander-btn',
         btnrm: '#step5-outlander-remove',
         show: '#step5-outlander-list',
+        ablum: '#attach-file-step5-outlander',
         label: '#step5-outlander-label',
         api: '/inner-api/app/upload',
         position: 'outlanderFiles',
@@ -874,6 +928,7 @@ const referance = [{
         btn: '#step5-guideCert-btn',
         btnrm: '#step5-guideCert-remove',
         show: '#step5-guideCert-list',
+        ablum: '#attach-file-step5-guideCert',
         label: '#step5-guideCert-label',
         api: '/inner-api/app/upload',
         position: 'guideCertFiles',
@@ -889,6 +944,7 @@ const referance = [{
         btn: '#step5-otherT3-btn',
         btnrm: '#step5-otherT3-remove',
         show: '#step5-otherT3-list',
+        ablum: '#attach-file-step5-otherT3',
         label: '#step5-otherT3-label',
         api: '/inner-api/app/upload',
         position: 'otherT3Files',
@@ -903,6 +959,7 @@ const referance = [{
         btn: '#step5-EffluentT3-btn',
         btnrm: '#step5-EffluentT3-remove',
         show: '#step5-EffluentT3-list',
+        ablum: '#attach-file-step5-EffluentT3',
         label: '#step5-EffluentT3-label',
         api: '/inner-api/app/upload',
         position: 'EffluentT3Files',
@@ -912,22 +969,36 @@ const referance = [{
         maxSize: 15
     },
     {
-        input: '#step5-guideOldCert', pointer: ['step5','guideOldCert',4],
-        btn: '#step5-guideOldCert-btn', btnrm: '#step5-guideOldCert-remove',
-        show: '#step5-guideOldCert-list', label: '#step5-guideOldCert-label',
-        api: '/inner-api/app/upload', position: 'guideOldCertFiles',
+        input: '#step5-guideOldCert', 
+        pointer: ['step5','guideOldCert',4],
+        btn: '#step5-guideOldCert-btn', 
+        btnrm: '#step5-guideOldCert-remove',
+        show: '#step5-guideOldCert-list', 
+        ablum: '#attach-file-step5-guideOldCert',
+        label: '#step5-guideOldCert-label',
+        api: '/inner-api/app/upload', 
+        position: 'guideOldCertFiles',
         require: true,
-        path: 'paper', app: 'awards/application',
-        maxUpload: 5, maxSize: 15
+        path: 'paper', 
+        app: 'awards/application',
+        maxUpload: 5, 
+        maxSize: 15
     },
     {
-        input: '#step5-titleDeedT4', pointer: ['step5','titleDeedT4',4],
-        btn: '#step5-titleDeedT4-btn', btnrm: '#step5-titleDeedT4-remove',
-        show: '#step5-titleDeedT4-list', label: '#step5-titleDeedT4-label',
-        api: '/inner-api/app/upload', position: 'gtitleDeedT4Files',
+        input: '#step5-titleDeedT4', 
+        pointer: ['step5','titleDeedT4',4],
+        btn: '#step5-titleDeedT4-btn', 
+        btnrm: '#step5-titleDeedT4-remove',
+        show: '#step5-titleDeedT4-list', 
+        ablum: '#attach-file-step5-titleDeedT4',
+        label: '#step5-titleDeedT4-label',
+        api: '/inner-api/app/upload', 
+        position: 'gtitleDeedT4Files',
         require: true,
-        path: 'paper', app: 'awards/application',
-        maxUpload: 5, maxSize: 15
+        path: 'paper', 
+        app: 'awards/application',
+        maxUpload: 5, 
+        maxSize: 15
     },
     {
         input: '#step5-otherT4Cert',
@@ -935,6 +1006,7 @@ const referance = [{
         btn: '#step5-otherT4Cert-btn',
         btnrm: '#step5-otherT4Cert-remove',
         show: '#step5-otherT4Cert-list',
+        ablum: '#attach-file-step5-otherT4Cert',
         label: '#step5-otherT4Cert-label',
         api: '/inner-api/app/upload',
         position: 'otherT4CertFiles',
@@ -965,25 +1037,8 @@ const referance = [{
         btn: '#file-btn',
         btnrm: '#file-remove',
         show: '#file-list',
+        ablum: '#attach-file-list',
         label: '#file-label',
-        api: '/inner-api/answer/upload',
-        position: 'paper',
-        path: 'paper',
-        app: 'awards/pre-screen',
-        maxUpload: 5,
-        maxSize: 15
-    },
-    {
-        input: '#file',
-        area: '#file-input',
-        pointer: ['', 'paper'],
-        btn: '#file-btn',
-        btnrm: '#file-remove',
-        show: '#file-list',
-        label: {
-            input: '#file-input',
-            progress: '#file-progress'
-        },
         api: '/inner-api/answer/upload',
         position: 'paper',
         path: 'paper',
@@ -1028,6 +1083,7 @@ const referance = [{
         btn: '#etm-file-btn',
         btnrm: '#etm-file-remove',
         show: '#etm-file-list',
+        ablum: '#attach-etm-file-list',
         label: '#etm-file-label',
         api: '/inner-api/estimate/onsite/files/upload',
         position: 'paper',
@@ -1071,8 +1127,21 @@ const checkRequireFiles = (app) => {
                         }
                         else if(rv.pointer[2] == 2){
                             if(rv.pointer[1] == 'buildExtF'){
-                                let buildExt = Number(register.formData.step5.buildExt);
+                                const buildExt = Number(register.formData.step5.buildExt);
                                 if(buildExt == 1){
+                                    if(register.count[rv.pointer[1]] <= 0){
+                                        check = false;
+                                    }
+                                }
+                            }
+                            else if(register.count[rv.pointer[1]] <= 0){
+                                check = false;
+                            }
+                        }
+                        else if(rv.pointer[2] == 3){
+                            if(rv.pointer[1] == 'outlander'){
+                                const inpOutlander = Number(register.formData.step5.inpOutlander);
+                                if(inpOutlander == 1){
                                     if(register.count[rv.pointer[1]] <= 0){
                                         check = false;
                                     }

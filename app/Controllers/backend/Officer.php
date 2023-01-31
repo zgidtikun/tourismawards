@@ -19,7 +19,7 @@ class Officer extends BaseController
             // $where['surname'] = $_GET['keyword'];
             // $where['email'] = $_GET['keyword'];
         }
-        $data['result']  = $this->db->table('users')->where('role_id', 3)->like($where, 'match', 'both')->get()->getResultObject();
+        $data['result']  = $this->db->table('users')->where('role_id', 3)->like($where, 'match', 'both')->orderBy('created_at', 'desc')->get()->getResultObject();
 
         // $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('award_type AT', 'AT.id = U.award_type', 'left')->join('assessment_group AG', 'AG.id = U.assessment_group', 'left')->where('U.member_type = 3 AND U.status = 1')->orWhere($where)->orderBy('U.id', 'desc')->get()->getResultObject();
 
@@ -242,7 +242,7 @@ class Officer extends BaseController
             // $where['surname'] = $_GET['keyword'];
             // $where['email'] = $_GET['keyword'];
         }
-        $data['result']  = $this->db->table('admin')->where('role_id', 2)->like($where, 'match', 'both')->get()->getResultObject();
+        $data['result']  = $this->db->table('admin')->where('role_id', 2)->like($where, 'match', 'both')->orderBy('created_at', 'desc')->get()->getResultObject();
 
         // $data['result'] = $this->db->table('admin A')->select('A.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = A.member_type', 'left')->join('award_type AT', 'AT.id = A.award_type', 'left')->join('assessment_group AG', 'AG.id = A.assessment_group', 'left')->where("A.member_type = 2 AND A.status = 1 AND $or_where")->orderBy('A.id', 'desc')->get()->getResultObject();
         // pp_sql();

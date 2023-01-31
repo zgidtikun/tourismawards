@@ -161,14 +161,14 @@
                 <span class="commentrequired">(จำนวนตัวอักษรคงเหลือ <span id="charNum">1,000</span>/1,000)</span>
                 <textarea rows="6" id="field" onkeyup="countChar(this)" readonly><?= $result->highlights ?></textarea>
                 <script>
-                  function countChar(val) {
-                    var len = val.value.length;
+                  function countChar(elm) {
+                    var len = elm.value.replace(/\r/g, '').length;
                     if (len >= 1000) {
-                      val.value = val.value.substring(0, 1000);
+                      $('#charNum').text('0');
                     } else {
-                      $('#charNum').text(1000 - len);
+                      $('#charNum').text((1000 - len).toLocaleString("en"));
                     }
-                  };
+                  }
                 </script>
               </div>
 
@@ -295,8 +295,8 @@
               </div>
 
               <div class="regis-form-data-col2">
-                <h4>จังหวัด<span class="required">*</span></h4>
-                <input value="<?= $result->address_province ?>" readonly>
+                <h4>ตำบล<span class="required">*</span></h4>
+                <input value="<?= $result->address_sub_district ?>" readonly>
               </div>
 
               <div class="regis-form-data-col2">
@@ -305,8 +305,8 @@
               </div>
 
               <div class="regis-form-data-col2">
-                <h4>ตำบล<span class="required">*</span></h4>
-                <input value="<?= $result->address_sub_district ?>" readonly>
+                <h4>จังหวัด<span class="required">*</span></h4>
+                <input value="<?= $result->address_province ?>" readonly>
               </div>
 
               <div class="regis-form-data-col2">
@@ -326,7 +326,7 @@
 
               <div class="regis-form-data-col2">
                 <h4>Line ID</h4>
-                <input value="<?= $result->line_id ?>" readonly>
+                <input value="<?= $result->company_line ?>" readonly>
               </div>
 
               <div class="regis-form-data-col2">
@@ -389,8 +389,8 @@
                 </div>
 
                 <div class="regis-form-data-col2">
-                  <h4>จังหวัด</h4>
-                  <input value="<?= $result->company_addr_province ?>" readonly>
+                  <h4>ตำบล</h4>
+                  <input value="<?= $result->company_addr_sub_district ?>" readonly>
                 </div>
 
                 <div class="regis-form-data-col2">
@@ -399,8 +399,8 @@
                 </div>
 
                 <div class="regis-form-data-col2">
-                  <h4>ตำบล</h4>
-                  <input value="<?= $result->company_addr_sub_district ?>" readonly>
+                  <h4>จังหวัด</h4>
+                  <input value="<?= $result->company_addr_province ?>" readonly>
                 </div>
 
                 <div class="regis-form-data-col2">
@@ -409,13 +409,13 @@
                 </div>
 
                 <div class="regis-form-data-col2">
-                  <h4>Facebook</h4>
-                  <input value="<?= $result->facebook ?>" readonly>
+                  <h4>หมายเลขโทรศัพท์</h4>
+                  <input value="<?= $result->mobile ?>" readonly>
                 </div>
 
                 <div class="regis-form-data-col2">
-                  <h4>Instagram</h4>
-                  <input value="<?= $result->instagram ?>" readonly>
+                  <h4>อีเมล</h4>
+                  <input value="<?= $result->email ?>" readonly>
                 </div>
 
                 <div class="regis-form-data-col2">

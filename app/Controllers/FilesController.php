@@ -289,8 +289,7 @@ class FilesController extends BaseController
         foreach($files as $file){
             if($file->file_position == $position){
                 $file_fullpath = FCPATH.$file->file_path;
-                $download_file = file_get_contents($file_fullpath);
-                $zip->addFromString($file->file_original,$download_file);
+                $zip->addFromString($file->file_original,$file_fullpath);
             }
         }
 

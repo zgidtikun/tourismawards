@@ -40,14 +40,17 @@ class VerifyPassword extends BaseController
                 show_404();
             }
 
+            $data['title_name']     = 'ยืนยันตัวตน';
+            if (!empty($token[2])) {
+                $data['title_name'] = 'แก้ไขรหัสผ่าน';
+            }
+
             $data['type']   = $token[0];
             $data['code']   = $token[1];
 
-            $data['title_name']  = 'ยืนยันการลงทะบียน';
-
-            $data['title']  = 'Tourist Award | Verify Password';
-            $data['view']   = 'administrator/verify/index';
-            $data['ci']     = $this;
+            $data['title']          = 'Tourist Award';
+            $data['view']           = 'administrator/verify/index';
+            $data['ci']             = $this;
 
             return view('administrator/template_blank', $data);
         } else {
@@ -76,8 +79,40 @@ class VerifyPassword extends BaseController
             $this->session->setFlashdata(['success' => 'ระบบได้ทำการบันทึกรหัสผ่านเรียบร้อย กรุณาเข้าสู่ระบบ']);
 
             if ($post['type'] == 'users') {
-                return redirect()->to(base_url('login'));
+                $data['users'] = $this->db->table('users')->where('username', $post['username'])->get()->getRowObject();
+                $email_data = [
+                    '_header' => 'เรียนคุณ ' . $data['users']->name . ' ' . $data['users']->surname,
+                    '_content' => 'ท่านได้ทำการเปลี่ยนรหัสผ่านสำเร็จแล้ว ขณะนี้สามารถทำการล็อกอินเข้าสู่เว็บไซต์ด้วยรหัสผ่านใหม่ของท่านได้ทันที *รหัสผ่านของท่านเป็นความลับ จึงไม่ควรเปิดเผยต่อผู้อื่นทราบ',
+                ];
+                $requestEmail = [
+                    'to' => $data['users']->email,
+                    'subject' => 'แก้ไขรหัสผ่านเรียบร้อย',
+                    'message' => view('administrator/template_email', $email_data),
+                    // 'from' => $from,
+                    // 'cc' => [],
+                    // 'bcc' => []
+                ];
+        
+                send_email($requestEmail);
+
+                return redirect()->to(base_url());
             } else if ($post['type'] == 'admin') {
+                $data['admin'] = $this->db->table('admin')->where('username', $post['username'])->get()->getRowObject();
+                $email_data = [
+                    '_header' => 'เรียนคุณ ' . $data['admin']->name . ' ' . $data['admin']->surname,
+                    '_content' => 'ท่านได้ทำการเปลี่ยนรหัสผ่านสำเร็จแล้ว ขณะนี้สามารถทำการล็อกอินเข้าสู่เว็บไซต์ด้วยรหัสผ่านใหม่ของท่านได้ทันที *รหัสผ่านของท่านเป็นความลับ จึงไม่ควรเปิดเผยต่อผู้อื่นทราบ',
+                ];
+                $requestEmail = [
+                    'to' => $data['admin']->email,
+                    'subject' => 'แก้ไขรหัสผ่านเรียบร้อย',
+                    'message' => view('administrator/template_email', $email_data),
+                    // 'from' => $from,
+                    // 'cc' => [],
+                    // 'bcc' => []
+                ];
+        
+                send_email($requestEmail);
+
                 return redirect()->to(base_url('administrator'));
             }
         } else {
@@ -127,16 +162,14 @@ class VerifyPassword extends BaseController
 
     public function sendMail($data)
     {
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code)) . '"  target="_blank">ยืนยันตัวตน</a></b>';
+        $text = 'กรุณากดปุ่มเพื่อทำการเปลี่ยนรหัสผ่าน <b><a href="' . base_url('administrator/verify-password?t=' . vEncryption('admin-' . $data['admin']->verify_code . '-reset')) . '"  target="_blank">เปลี่ยนรหัส</a></b>';
         $email_data = [
-            '_header' => 'มีการแก้ไขข้อมูลผู้ใช้งานบนเว็บไซต์',
-            '_content' => 'เรียนคุณ ' . $data['admin']->name . ' ' . $data['admin']->surname . ' ท่านได้ส่งคำร้องขอในการเปลี่ยนรหัสผ่าน '
-                . 'ด้วยอีเมล ' . $data['admin']->email . ' '
-                . $text
+            '_header' => 'เรียนคุณ ' . $data['admin']->name . ' ' . $data['admin']->surname,
+            '_content' => 'ท่านได้ส่งคำร้องขอในการเปลี่ยนรหัสผ่าน ' . $text
         ];
         $requestEmail = [
             'to' => $data['admin']->email,
-            'subject' => 'มีการแก้ไขข้อมูลผู้ใช้งานบนเว็บไซต์',
+            'subject' => 'แก้ไขรหัสผ่าน',
             'message' => view('administrator/template_email', $email_data),
             // 'from' => $from,
             // 'cc' => [],

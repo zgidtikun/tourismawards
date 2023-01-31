@@ -110,8 +110,6 @@ display: none;
     font-size: 30px;
 }
 .btn-banner:link {
-    background-color: #0d2c55;
-    border-bottom: 3px solid #08244a;
     display: table;
     margin: 0 auto;
     padding: 10px 30px;
@@ -338,12 +336,11 @@ display: none;
     transition: all 0.3s;
 }
 .award-list li {
-    padding: 20px 0;
+    padding: 20px;
     margin: 0;
     width: 100%;
 }
 .txt-banner {
-    background-color: #0d2c55;
     padding: 40px 20px;
     display: flex;
     align-items: center;
@@ -356,7 +353,6 @@ display: none;
 .main-title-txt h2 {
     font-size: 24px;
     font-weight: bold;
-    color: #0d2c55;
     margin: 10px 0;
     line-height: normal;
 }
@@ -382,7 +378,7 @@ display: none;
     padding: 0 0 0 20px;
     margin: 0 -10px 0 0;
     position: relative;
-    scroll-snap-align: start;
+    scroll-snap-align: end;
     flex: none;
     color: #222;
     align-content: flex-start;

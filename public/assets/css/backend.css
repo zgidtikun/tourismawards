@@ -603,11 +603,12 @@ max-width: 300px;
     width: auto;
     justify-content: center;
     padding: 0;
+    column-gap: 5px;
 }
 
 .form-table-col.edit a {
     padding: 5px;
-    margin: 0 2px;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1194,16 +1195,16 @@ a.btn-cancle {
 
 .hidebox-login-close {
     position: absolute;
-    right: 20px;
-    top: 20px;
+    right: 10px;
+    top: 10px;
     line-height: 1;
-    background-color: #eee;
+    background-color: #a00;
     border-radius: 5px;
     z-index: 2;
 }
 
 .hidebox-login-close i:before {
-    color: #999;
+    color: #FFF;
     font-size: 26px;
 }
 
@@ -1570,9 +1571,8 @@ cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin: 20px 0 0 0;
-    border-bottom: 1px solid #EEE;
-    padding-bottom: 20px;
+    margin: 10px 0;
+    padding: 0;
 }
 
 .data-title h3 {
@@ -1583,22 +1583,43 @@ cursor: pointer;
 .data-score-row {
     display: flex;
 }
+.data-score-row.total{
+    border-top: 1px solid #555;
+}
 
 .data-score-row.header {
     font-weight: bold;
-    border-bottom: 1px solid #EEE;
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #555;
 }
 
 .data-score-col {
     flex: 1;
-    font-size: 18px;
+    font-size: 16px;
     padding: 10px;
     text-align: center;
+    line-height: 24px;
+    border-left: 1px solid #555;
+}
+.data-score-col:first-child{
+    border-left: 0;
+}
+.data-score-col label{
+position: absolute;
+left: 0;
+font-weight: bold;
 }
 
 .data-score-col.no {
     flex: auto;
     text-align: left;
+    padding-left: 30px;
+}
+.header .data-score-col.no {
+    padding-left: 0;
+}
+.total .data-score-col.no{
+    text-align: right;
 }
 
 .data-score-col.oldscore,
@@ -1617,8 +1638,7 @@ cursor: pointer;
 .hidebox-login-content.requireinpt .hidebox-login-txt {
     text-align: left;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    height: auto;
 }
 
 .judgescore .hidebox-login-content {
@@ -1626,17 +1646,21 @@ cursor: pointer;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgb(0 0 0 / 35%);
-    position: fixed;
-    bottom: 50%;
-    transform: translateY(50%);
+    position: relative;
+    bottom: -50%;
+    transform: translateY(-50%);
     left: 0;
     right: 0;
     width: 95vw;
-    max-width: 800px;
+    max-width: 876px;
     height: auto;
-    max-height: 70%;
+    max-height: 97.5%;
     margin: 0 auto;
     overflow: hidden;
+    display: flex;
+    text-align: left;
+    justify-content: initial;
+    align-items: initial;
 }
 
 .data-totalscore {
@@ -2067,11 +2091,10 @@ tfoot {
     border: 0;
     width: 100%;
     height: 100%;
-    margin-bottom: 20px;
 }
 
 .data-totalscore {
-    background-color: #5ec3bc;
+    background-color: #b69430;
     padding: 10px;
     color: #FFF;
     font-weight: bold;
@@ -2080,6 +2103,14 @@ tfoot {
     width: 100%;
     display: flex;
     flex-direction: column;
+}
+.data-totalscore.lowcarbon{
+    background-color: #4c853e;
+}
+.totalchoice{
+    padding: 0 5px;
+    color: #FFF;
+    background-color: #4c853e;
 }
 
 ul.list-report {
@@ -2675,6 +2706,43 @@ font-family: 'TATSana-Chon' ;
 .content5 .regis-form-data-row .attachinp .card-body{
 margin: 10px 0;
 }
+.logo-title img{
+max-height: 70px;
+}
+.hidebox-content {
+    overflow: auto;
+    width: 100%;
+    display: block;
+    padding: 0;
+    line-height: 24px;
+}
+
+.goldaward-text{
+    font-weight: bold;
+    color: #b69430;
+    padding: 10px 0;
+    border-bottom: 2px solid #b69430;
+    font-size: 20px;
+}
+.lowcarbon{
+font-size: 16px;
+margin-top: 20px ;
+}
+.lowcarbon-row p {
+    padding-left: 30px;
+    margin: 10px 0;
+}
+.lowcarbon-row label{
+position: absolute;
+left: 0;
+font-weight: bold;
+}
+.lowcarbon-row.total{
+font-weight: bold;
+}
+.lowcarbon-row.total p{
+padding-left: 0;
+}
 
 @media screen and (max-width:1600px) {
 .regis-form-step {
@@ -2844,7 +2912,7 @@ flex-wrap: wrap;
 
     .form-table-col.edit a {
         padding: 5px;
-        margin: 0 2px;
+        margin: 0;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -3296,13 +3364,17 @@ right: 10px;
     .data-score-row {
         display: flex;
         flex-wrap: wrap;
-        border-bottom: 1px solid #ebebeb;
+        border-bottom: 1px solid #555;
         padding-bottom: 10px;
     }
-    .data-score-row:last-of-type {
-        border-bottom: 0;
-        padding-bottom: 0;
-    }
+
+.data-score-row.total .data-score-col.no{
+display: none;
+}
+.data-score-row.total {
+    border-bottom: 0;
+    padding-top: 10px;
+}
     .data-score-row.header {
         padding-bottom: 0;
     }
@@ -3313,16 +3385,10 @@ right: 10px;
         width: 100%;
         display: flex;
         justify-content: space-between;
-        padding: 5px 20px;
+        padding: 5px 0;
+    border-left: 0;
     }
-    .judgescore .hidebox-login-content {
-        align-items: flex-start;
-        width: 95vw;
-        padding: 0;
-        height: calc(100vh - 20vw);
-        max-height: 85%;
-        overflow: hidden;
-    }
+
     .form-table {
         width: 100%;
         margin: 40px 0 0 0;
@@ -3376,6 +3442,14 @@ margin: 10px 0 0 0;
     .data-score-col.totalscore label {
         display: block;
     }
+.data-score-col label {
+    position: relative;
+    left: 0;
+    font-weight: bold;
+}
+.data-score-col.no label{
+    position: absolute;
+}
     .data-title h3 {
         color: #000;
         padding-left: 0;
@@ -3388,31 +3462,9 @@ margin: 10px 0 0 0;
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-        margin: 0;
-        border-bottom: 1px solid #EEE;
-        padding: 20px;
+        border-bottom: 0;
     }
-    .data-score {
-        border: 0;
-        width: 100%;
-        height: 100%;
-        margin-bottom: 0;
-        padding-bottom: 10em;
-        overflow-y: scroll;
-    }
-    .data-totalscore {
-        background-color: #5ec3bc;
-        padding: 10px;
-        color: #FFF;
-        font-weight: bold;
-        line-height: 1;
-        bottom: 0;
-        width: 100%;
-        position: fixed;
-        flex-direction: row;
-        align-items: baseline;
-        justify-content: space-between;
-    }
+
     ul.list-report {
         list-style: none;
         padding: 0;
@@ -3586,56 +3638,6 @@ padding: 0;
         color: #000;
         padding-left: 0;
         font-size: 20px;
-    }
-    .data-score-col {
-        font-size: 16px;
-    }
-    .data-title {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        margin: 0;
-        border-bottom: 1px solid #EEE;
-        padding: 20px;
-    }
-    .judgescore .hidebox-login-content {
-        align-items: flex-start;
-        width: 95vw;
-        max-width: 800px;
-        padding: 0;
-        height: 80vh;
-        max-height: none;
-        overflow: hidden;
-    }
-    .data-totalscore {
-        background-color: #5ec3bc;
-        padding: 10px;
-        color: #FFF;
-        font-weight: bold;
-        line-height: 1;
-        bottom: 0;
-        width: 100%;
-        position: fixed;
-        flex-direction: row;
-        align-items: baseline;
-        justify-content: space-between;
-    }
-    .data-score {
-        border: 0;
-        width: 100%;
-        height: 100%;
-        margin-bottom: 0;
-        padding-bottom: 8em;
-        overflow-y: scroll;
-    }
-    .hide-choice-box {
-        width: 95vw;
-        max-width: 800px;
-        padding: 20px;
-        height: 75vh;
-        max-height: none;
-        overflow-y: hidden;
-    }
 }
-
-/*GD-02-V.25012566*/
+}
+/*GD-02-V.30012566*/

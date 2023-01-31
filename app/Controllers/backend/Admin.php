@@ -21,7 +21,7 @@ class Admin extends BaseController
             $where['email']     = $_GET['keyword'];
             $where['mobile']    = $_GET['keyword'];
         }
-        $data['result']  = $this->db->table('admin')->where('member_type', 4)->orLike($where, 'match', 'both')->get()->getResultObject();
+        $data['result']  = $this->db->table('admin')->where('member_type', 4)->orLike($where, 'match', 'both')->orderBy('created_at', 'desc')->get()->getResultObject();
         // $data['result'] = $this->db->table('admin A')->select('A.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = A.member_type', 'left')->join('award_type AT', 'AT.id = A.award_type', 'left')->join('assessment_group AG', 'AG.id = A.assessment_group', 'left')->where('A.member_type = 4')->orLike($where, 'match', 'both')->orderBy('A.id', 'desc')->get()->getResultObject();
         // pp_sql();
         // px($data['result']);

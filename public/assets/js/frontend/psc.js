@@ -381,22 +381,7 @@ const psc = {
                     $('#images-ablum').html('ไม่มีรูปแนบ');
                 }
                 
-                const button = $(`button[onclick="downloadFile('#file')"]`);
-
-                if(question.paper < 1){
-                    button.prop('disabled',true);
-                    button.removeClass('btn-primary');
-                    button.addClass('btn-transparent');
-                    button.css('color','#000');
-                    button.css('opacity','1');
-                    button.html('ไม่มีไฟล์แนบ');
-                } else {
-                    button.prop('disabled',false);
-                    button.removeClass('btn-transparent');
-                    button.addClass('btn-primary');
-                    button.css('color','#fff');
-                    button.html('<i class="bi bi-download mr-2"></i> ดาวน์โหลดไฟล์แนบ');
-                }
+                showFiles.tycoon('#file',question.paper);
             }
 
             if(!empty(question.remark)){

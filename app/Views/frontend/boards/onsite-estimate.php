@@ -341,7 +341,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-body attach-file">
-                                                <div class="bs-row">
+                                                <div class="bs-row" id="attach-etm-file-list">
                                                     <div class="d-grid">
                                                         <button class="btn btn-primary" type="button"
                                                         onclick="downloadFile('#etm-file')">

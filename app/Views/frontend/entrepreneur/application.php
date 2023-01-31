@@ -135,7 +135,7 @@
                 </div>
             </div>
 
-            <div class="formmainbox">
+            <div class="formmainbox" id="main-focus">
                 <div class="regis-form-step">
                     <a id="tab-s1" href="javascript:register.setStep(1);" class="btn-form-step active">
                         1. ประเภทการสมัคร
@@ -222,9 +222,8 @@
                                                 <span class="text-muted" style="font-size: 14px;">จำกัดแค่ไฟล์ .PDF เท่านั้น ขนาดไฟล์ไม่เกิน 15MB และอัพโหลดได้ไม่เกิน 5 ไฟล์</span>
                                             </div>
                                         </div>
-
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step1-detail">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step1-detail')">
@@ -261,7 +260,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step1-paper">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step1-paper')">
@@ -603,7 +602,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body attach-file">
-                                        <div class="bs-row">
+                                        <div class="bs-row" id="attach-file-step5-landOwner">
                                             <div class="d-grid">
                                                 <button class="btn btn-primary" type="button"
                                                 onclick="downloadFile('#step5-landOwner')">
@@ -642,7 +641,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body attach-file">
-                                        <div class="bs-row">
+                                        <div class="bs-row" id="attach-file-step5-businessCert">
                                             <div class="d-grid">
                                                 <button class="btn btn-primary" type="button"
                                                 onclick="downloadFile('#step5-businessCert')">
@@ -681,7 +680,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body attach-file">
-                                        <div class="bs-row">
+                                        <div class="bs-row" id="attach-file-step5-otherCert">
                                             <div class="d-grid">
                                                 <button class="btn btn-primary" type="button"
                                                 onclick="downloadFile('#step5-otherCert')">
@@ -700,7 +699,7 @@
                                 เลขที่ใบอนุญาตประกอบธุรกิจ 
                                 <span class="required">*</span>
                             </h4>
-                            <input type="text" class="form-control" id="step5-t2-bussLicense">
+                            <input type="text" class="form-control" id="step5-t2-bussLicense" maxlength="10">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>               
                         <div class="bs-row">
@@ -736,7 +735,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-bussLicenseFiles">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-bussLicenseFiles')">
@@ -787,7 +786,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-EIAreport">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-EIAreport')">
@@ -829,7 +828,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-body attach-file">
-                                                <div class="bs-row">
+                                                <div class="bs-row" id="attach-file-step5-buildExt">
                                                     <div class="d-grid">
                                                         <button class="btn btn-primary" type="button"
                                                         onclick="downloadFile('#step5-buildExt')">
@@ -872,7 +871,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-otherT2Cert">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-otherT2Cert')">
@@ -892,7 +891,7 @@
                                 เลขที่ใบอนุญาตประกอบธุรกิจ 
                                 <span class="required">*</span>
                             </h4>
-                            <input type="text" class="form-control" id="step5-t3-bussLicense">
+                            <input type="text" class="form-control" id="step5-t3-bussLicense" maxlength="10">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>
                         <div class="regis-form-data-col1">
@@ -942,7 +941,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-spaCert">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-spaCert')">
@@ -991,7 +990,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-effluent">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-effluent')">
@@ -1030,7 +1029,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-wellnessCert">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-wellnessCert')">
@@ -1069,7 +1068,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-spaManger">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-spaManger')">
@@ -1108,7 +1107,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-titleDeed">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-titleDeed')">
@@ -1146,7 +1145,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-otherT3">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-otherT3')">
@@ -1197,7 +1196,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-outlander">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-outlander')">
@@ -1216,7 +1215,7 @@
                             <h4>
                                 เลขที่ใบอนุญาตประกอบธุรกิจ <span class="required">*</span>
                             </h4>
-                            <input type="text" class="form-control" id="step5-t4-bussLicense">
+                            <input type="text" class="form-control" id="step5-t4-bussLicense" maxlength="10">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>
                         <div class="bs-row">
@@ -1251,7 +1250,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-guideCert">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-guideCert')">
@@ -1291,7 +1290,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-guideOldCert">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-guideOldCert')">
@@ -1331,7 +1330,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-titleDeedT4">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-titleDeedT4')">
@@ -1372,7 +1371,7 @@
                                             </div>
                                         </div>
                                         <div class="card-body attach-file">
-                                            <div class="bs-row">
+                                            <div class="bs-row" id="attach-file-step5-otherT4Cert">
                                                 <div class="d-grid">
                                                     <button class="btn btn-primary" type="button"
                                                     onclick="downloadFile('#step5-otherT4Cert')">

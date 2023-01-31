@@ -134,8 +134,13 @@ class EstimateRequestController extends BaseController
         }
     }
 
-    public function respond_request($user_id)
+    public function respond_request($user_id,$place_n)
     {
+        $judges = $this->obj->where('application_of',$user_id)
+        ->where('request_status',1)
+        ->select('application_id,request_by')
+        ->findAll();
+
         $this->obj->where('application_of',$user_id)
         ->whereIn('request_status',[1,4])
         ->set([
@@ -143,6 +148,24 @@ class EstimateRequestController extends BaseController
             'request_update' => date('Y-m-d H:i:s')
         ])
         ->update();
+
+        if(!empty($judges)){
+            foreach($judges as $judge){
+                set_noti(
+                    (object) [
+                        'user_id' => $judge->request_by,
+                        'bank' => 'frontend'
+                    ],
+                    [
+                        'message' => "$place_n ได้ส่งคำตอบการประเมินเบื้องต้น (Pre-Screen) เพิ่มเติมกลับมาเรียบร้อยแล้ว 
+                            กรุณาทำการประเมินเบื้องต้น (Pre-Screen) อีกครั้ง",
+                        'link' => base_url('boards/estimate/pre-screen/'.$judge->application_id),
+                        'send_date' => date('Y-m-d H:i:s'),
+                        'send_by' => $place_n
+                    ]
+                );
+            }
+        }
     }
 
     public function complete_request($app_id,$judge_id)

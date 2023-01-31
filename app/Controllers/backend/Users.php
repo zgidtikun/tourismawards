@@ -20,7 +20,7 @@ class Users extends BaseController
             $where['email']     = $_GET['keyword'];
             $where['mobile']    = $_GET['keyword'];
         }
-        $data['result']  = $this->db->table('users')->where('role_id', 1)->orLike($where, 'match', 'both')->orderBy('status', 'desc')->get()->getResultObject();
+        $data['result']  = $this->db->table('users')->where('role_id', 1)->orLike($where, 'match', 'both')->orderBy('status', 'desc')->orderBy('created_at', 'desc')->get()->getResultObject();
 
         // $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name, R.user_groups AS role_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('award_type AT', 'AT.id = U.award_type', 'left')->join('assessment_group AG', 'AG.id = U.assessment_group', 'left')->where('U.member_type = 1 AND status_delete = 1')->join('role R', 'R.id = U.role_id', 'left')->orderBy('U.id', 'desc')->get()->getResultObject();
 
@@ -134,7 +134,7 @@ class Users extends BaseController
             $data = [];
             $data['users'] = $this->db->table('users')->where('id', $insert_id)->get()->getRowObject();
             $this->sendMail($data);
-            
+
             // เก็บข้อมูลการเปลี่ยนแปลง
             // @mkdir(FCPATH . 'logs/backend-users', 0777, true);
             // $fp = fopen(FCPATH . 'logs/backend-users/users_id_' . $insert_id . '.txt', 'a+');
@@ -207,7 +207,7 @@ class Users extends BaseController
         // }
         $result = $this->db->table('users')->where('id', $post['insert_id'])->update($data);
         if ($result) {
-            
+
             // เก็บข้อมูลการเปลี่ยนแปลง
             // @mkdir(FCPATH . 'logs/backend-users', 0777, true);
             // $fp = fopen(FCPATH . 'logs/backend-users/users_id_' . $post['insert_id'] . '.txt', 'a+');
@@ -257,17 +257,17 @@ class Users extends BaseController
                     'bank' => 'frontend'
                 ],
                 (object)[
-                    'message' => 'ระบบได้ทำการยืนยันการสมัครสมาชิกเรียบร้อยแล้ว',
+                    'message' => "มีการยืนยันตัวตนให้กับผู้ประกอบการ โดย " . session()->account,
                     'link' => base_url('awards/application'),
                     'send_date' => date('Y-m-d H:i:s'),
                     'send_by' => session()->account,
                 ]
             );
-            
+
             // เก็บข้อมูลการเปลี่ยนแปลง
             @mkdir(FCPATH . 'logs/backend-users', 0777, true);
             $fp = fopen(FCPATH . 'logs/backend-users/users_id_' . $id . '.txt', 'a+');
-            fwrite($fp, "มีการยืนยันตัวตนให้กับผู้ประกอบการ โดย " . session()->account ." \n");
+            fwrite($fp, "มีการยืนยันตัวตนให้กับผู้ประกอบการ โดย " . session()->account . " \n");
             fwrite($fp, "เวลา : " . date('Y-m-d H:i:s') . "\n\n");
             fclose($fp);
 
@@ -300,22 +300,19 @@ class Users extends BaseController
     public function sendMail($data)
     {
         // pp($data);
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . vEncryption('users-' . $data['users']->verify_code)) . '"  target="_blank">ยืนยันตัวตน</a></b>';
+        $text = 'ชื่อผู้ใช้งาน : ' . $data['users']->email . ' กรุณากำหนดรหัสผ่านของท่าน เพื่อใช้ในการล็อกอินเข้าสู่เว็บไซต์ <b><a href="' . base_url('administrator/verify-password?t=' . vEncryption('users-' . $data['users']->verify_code)) . '"  target="_blank">ยืนยันรหัสผ่าน</a></b>';
         if ($data['users']->password != "") {
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }
         // px($data['users']);
         $email_data = [
-            '_header' => 'สถานะการอนุมัติการเข้าร่วมประกวด',
-            '_content' => 'คุณ ' . $data['users']->name . ' ' . $data['users']->surname . ' ได้รับการอนุมัติลงทะเบียนเข้าประกวดรางวัล '
-                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
-                . 'ด้วยอีเมล ' . $data['users']->email . ' '
-                . $text
+            '_header' => 'เรียนคุณ ' . $data['users']->name . ' ' . $data['users']->surname,
+            '_content' => $text
         ];
         // px($email_data);
         $requestEmail = [
             'to' => $data['users']->email,
-            'subject' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
+            'subject' => 'กำหนดรหัสผ่านของท่าน',
             'message' => view('administrator/template_email', $email_data),
             // 'from' => $from,
             // 'cc' => [],

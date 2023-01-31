@@ -91,7 +91,11 @@ function set_noti($target,$data)
         } else {
             if(!empty($us_noti->pack_noti)){
                 $temp = json_decode($us_noti->pack_noti,true);
-                array_push($temp,json_decode(json_encode($data),true));
+                if(is_array($temp)){
+                    array_push($temp,(array)$data);
+                } else {
+                    $temp = [ 0 => $data];
+                }
             } else {
                 $temp = [ 0 => $data];
             }
@@ -103,7 +107,24 @@ function set_noti($target,$data)
 
         return ['result' => true];
     } catch(Exception $e){
-        return ['result' => false, 'message' => $e->getMessage()];
+        helper('log');
+        save_log_error([
+            'module' => 'send_noti',
+            'input_data' => [
+                'target' => $target, 
+                'data' => $data,
+                'data_noti' => !empty($us_noti) ? $us_noti : ''
+            ],
+            'error_date' => date('Y-m-d H:i:s'),
+            'error_msg' => [
+                'error_file' => $e->getFile(),
+                'error_line' => $e->getLine(),
+                'error_code' => $e->getCode(),
+                'error_msg' => $e->getMessage()
+            ]
+        ]);
+
+        return ['result' => true, 'message' => ''];
     }
 }
 
