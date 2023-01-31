@@ -1437,13 +1437,13 @@
             onSelect:function(dp,input){    
                 const yearT = new Date(dp).getFullYear()-0;  
                 const yearTH = yearT+543;
-                const fulldate = dp;    
-                const fulldateTH = fulldate.replace(yearT,yearTH);
+                const dpdate = dp;    
+                const fulldateTH = dpdate.replace(yearT,yearTH);
                 $('#step5-openYear').val(fulldateTH);
-                $('#step5-hiddenDate').val(fulldate);    
+                $('#step5-hiddenDate').val(dpdate);    
 
                 if(!empty(dp)){
-                    const date = new Date();
+                    const date = new Date(register.configRegisDate);
                     const fulldate = $(this).val().split('/');
                     const from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0];
                     const to = String(date.getMonth()+1).padStart(2, '0')+'/'+String(date.getDate()).padStart(2, '0')+'/'+date.getFullYear();
@@ -1477,7 +1477,10 @@
     } );
 
     $(document).ready(function() {
-        register.init('<?=$duedate->expired_sts ? 'Expired' : 'Unexpired'?>');        
+        register.init(
+            '<?=$duedate->expired_sts ? 'Expired' : 'Unexpired'?>',
+            '<?=$config_date?>'
+        );        
     });
 
     $.Thailand({

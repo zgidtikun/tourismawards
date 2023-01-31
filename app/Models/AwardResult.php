@@ -15,7 +15,8 @@ class AwardResult extends Model
     protected $useSoftDeletes = false;
 
     protected $allowedFields = ['application_id', 'user_id', 'app_type_id', 
-    'app_type_sub_id', 'award_persent', 'award_type', 'award_status'];
+    'app_type_sub_id', 'award_persent', 'award_type', 'award_status', 
+    'award_name'];
 
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';

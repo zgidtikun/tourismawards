@@ -3,8 +3,8 @@ const mf = [
     { ip: '#p-name', id: 'p-name', iv: '#nvalid-p-name', ps: 'form', api: 'name', validate: true },
     { ip: '#p-surname', id: 'p-surname', iv: '#nvalid-p-surname', ps: 'form', api: 'surname', validate: true },
     { ip: '#p-mobile', id: 'p-mobile', iv: '#nvalid-p-mobile', ps: 'form', api: 'mobile', validate: true },
-    { ip: '#p-email', id: 'p-email', iv: '#nvalid-p-email', ps: 'form', api: 'email', validate: true },
-    { ip: '#p-email', id: 'p-email', iv: null, ps: 'form', api: 'username', validate: false },
+    { ip: '#p-email', id: 'p-email', iv: '#nvalid-p-email', ps: 'none', api: 'email', validate: true },
+    { ip: '#p-email', id: 'p-email', iv: null, ps: 'none', api: 'username', validate: false },
     { ip: '#p-uimage', id: 'p-uimage', src: '#p-image', ps: 'file', s: 10 },
 ];
 

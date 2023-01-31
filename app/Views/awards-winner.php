@@ -27,14 +27,15 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                     </div>
                 </div>
 
-                <p class="txt-center">
+                <!-- <p class="txt-center">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                     eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse
                     ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. 
-                </p>
+                </p> -->
 
                 <div class="award-section">
-                    <div class="award-section-col" onclick="toAwardsWinner('attraction')">
+                    <!-- <div class="award-section-col" onclick="toAwardsWinner('attraction')"> -->
+                    <div class="award-section-col">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
                                 <img src="<?= base_url('assets/images/award_01.jpg') ?>" 
@@ -46,7 +47,8 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                         </div>
                     </div>
 
-                    <div class="award-section-col" onclick="toAwardsWinner('accommodation')">
+                    <!-- <div class="award-section-col" onclick="toAwardsWinner('accommodation')"> -->
+                    <div class="award-section-col">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
                                 <img src="<?= base_url('assets/images/award_02.jpg') ?>" 
@@ -58,7 +60,8 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                         </div>
                     </div>
 
-                    <div class="award-section-col" onclick="toAwardsWinner('health-and-wellness-tourism')">
+                    <!-- <div class="award-section-col" onclick="toAwardsWinner('health-and-wellness-tourism')"> -->
+                    <div class="award-section-col">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
                                 <img src="<?= base_url('assets/images/award_03.jpg') ?>" 
@@ -70,7 +73,8 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                         </div>
                     </div>
 
-                    <div class="award-section-col" onclick="toAwardsWinner('tourism-program')">
+                    <!-- <div class="award-section-col" onclick="toAwardsWinner('tourism-program')"> -->
+                    <div class="award-section-col">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
                                 <img src="<?= base_url('assets/images/award_04.jpg') ?>" 

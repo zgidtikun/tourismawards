@@ -858,14 +858,22 @@ class EstimateController extends BaseController
         foreach($score->getResult() as $v){
             $judge = $app->JudgingCriteriaScore;
 
-            if( $v->score_tt >= $judge->ttg->low )
+            if( $v->score_tt >= $judge->ttg->low ){
                 $award_s = 1;
-            elseif( $v->score_tt >= $judge->tta->low && $v->score_tt <= $judge->tta->max )
+                $award_n = 'Thailand Tourism Gold Award';
+            }
+            elseif( $v->score_tt >= $judge->tta->low && $v->score_tt <= $judge->tta->max ){
                 $award_s = 2;
-            elseif( $v->score_tt >= $judge->ttc->low && $v->score_tt <= $judge->ttc->max )
+                $award_n = 'Thailand Tourism Gold Award';
+            }
+            elseif( $v->score_tt >= $judge->ttc->low && $v->score_tt <= $judge->ttc->max ){
                 $award_s = 3;
-            else $award_s = 0;
-            
+                $award_n = 'Thailand Tourism Certificate';
+            }
+            else {
+                $award_s = 0; 
+                $award_n = 'No Award';     
+            }      
 
             $temp = [
                 'application_id' => $v->app_id,
@@ -873,6 +881,7 @@ class EstimateController extends BaseController
                 'app_type_id' => $v->type_id,
                 'app_type_sub_id' => $v->sub_id,
                 'award_persent' => $v->score_tt,
+                'award_name' => $award_n,
                 'award_type' => $award_s,
                 'award_status' => 0,
             ];
@@ -885,8 +894,9 @@ class EstimateController extends BaseController
     {
         $gold = [];
         $silver = [];
+        $certificate = [];
         $input =  (object) $this->input->getVar();
-        $where_type = [1,2];
+        $where_type = [1,2,3];
 
         foreach($where_type as $type){
             $builder = $this->db->table('award_result ar')
@@ -895,8 +905,11 @@ class EstimateController extends BaseController
                     "IFNULL(af.attraction_name_th, af.attraction_name_en) place_name,
                     af.address_province province, af.address_no, af.address_road, 
                     af.address_sub_district, af.address_district, af.address_province, 
-                    af.address_zipcode, mobile, af.other_social web, af.facebook fb,
-                    af.google_map gps"
+                    af.address_zipcode, 
+                    IFNULL(af.mobile,'') mobile, 
+                    IFNULL(af.other_social,'') web, 
+                    IFNULL(af.facebook,'') fb,
+                    IFNULL(af.google_map,'') gps"
                 ,false)
                 ->where([
                     'app_type_id' => $input->type,
@@ -906,12 +919,21 @@ class EstimateController extends BaseController
                 ->get();
 
             foreach($builder->getResult() as $v){
+                $v->address = '';
+                $v->address .= !empty($v->address_no) ? $v->address_no : '';
+                $v->address .= !empty($v->address_road) ? " $v->address_road" : '';
+                $v->address .= !empty($v->address_sub_district) ? " $v->address_sub_district" : '';
+                $v->address .= !empty($v->address_district) ? " $v->address_district" : '';
+                $v->address .= !empty($v->address_province) ? " $v->address_province" : '';
+                $v->address .= !empty($v->address_zipcode) ? " $v->address_zipcode" : '';
+
                 if($type == 1) array_push($gold,$v);
-                else array_push($silver,$v);
+                elseif($type == 2) array_push($silver,$v);
+                else array_push($certificate,$v);
             }
         }
 
-        $result = ['gold' => $gold, 'silver' => $silver];
+        $result = ['gold' => $gold, 'silver' => $silver, 'certificate' => $certificate];
         return $this->response->setJSON($result);
     }
 }

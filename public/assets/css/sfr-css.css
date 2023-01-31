@@ -46,3 +46,7 @@
     font-weight: 400;
     color: #000;
 }
+
+.formstep-col.active a {
+    color: #2a6118;
+}

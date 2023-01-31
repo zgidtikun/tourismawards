@@ -53,7 +53,8 @@ class ApplicationController extends BaseController
         $data = [
             'title' => 'Application Form',
             'view' => 'frontend/entrepreneur/application',
-            'duedate' => $duedate
+            'duedate' => $duedate,
+            'config_date' => $app->config_regis_date
         ];
 
         return view('frontend/entrepreneur/_template',$data);

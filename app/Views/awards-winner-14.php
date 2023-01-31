@@ -85,52 +85,39 @@
         setTabs('#selectsec-1');
     });
 
-    const setTabs = (tab) => {
+    const setTabs = async(tab) => {
         const htmltab = $(tab).html();
         const typeId = $('.banner-box').attr('data-id');
         const subId = $(tab).attr('data-id');
-
-        let temp = htmltab.split('<br>');
-        let title = '<h2>' + temp[0].trim() + '</h2>'
-            + temp[1].trim();
+        const temp = htmltab.split('<br>');
+        const title = `<h2>${temp[0].trim()}</h2>${temp[1].trim()}`;
 
         $('.btn-selectsec').removeClass('active');
         $(tab).addClass('active');
-        $('.main-title-txt').html(title);        
+        $('.main-title-txt').html(title);   
         
-        setListDefault().then((rs) => {
-            <?php if($duedate) : ?>
-            $.ajax({
-                type: 'post',
-                url: '<?=base_url('get-awards-winner')?>',
-                async: false,
-                data: {
-                    type: typeId,
-                    sub: subId
-                },
-                dataType: 'json',
-                success: res => {
-                    let content_g = '',
-                        content_s = '';
-                    
-                    if(res.gold.length > 0){
-                        $.each(res.gold,(gk, gv) => {
-                            content_g += setListContent(gv);
-                        });
-                    }
-                    
-                    if(res.silver.length > 0){
-                        $.each(res.silver,(sk, sv) => {
-                            content_s += setListContent(sv);
-                        });
-                    }
+        await setListDefault();
+        <?php //if($duedate) : ?>        
+        <?php //endif; ?>
+        const awards = await getAward(typeId,subId);
 
-                    lga.html(content_g);
-                    lsa.html(content_s);
-                }
+        let content_g = '',
+            content_s = '';
+        
+        if(awards.gold.length > 0){
+            $.each(awards.gold,(gk, gv) => {
+                content_g += setListContent(gv);
             });
-            <?php endif; ?>
-        });
+        }
+        
+        if(awards.silver.length > 0){
+            $.each(awards.silver,(sk, sv) => {
+                content_s += setListContent(sv);
+            });
+        }
+
+        lga.html(content_g);
+        lsa.html(content_s);
     };
 
     const setListDefault = () => {
@@ -147,10 +134,26 @@
             lga.html(content);
             lsa.html(content);
 
-            resolve({
-                result: true,
+            resolve({result: true});
+        });
+    }
+
+    const getAward = (typeId,subId) => {
+        return new Promise(function(resolve, reject){            
+            $.ajax({
+                type: 'post',
+                url: '<?=base_url('get-awards-winner')?>',
+                async: false,
+                data: {
+                    type: typeId,
+                    sub: subId
+                },
+                dataType: 'json',
+                success: response => {
+                    resolve(response);
+                }
             });
-    });
+        });
     }
 
     const setListContent = (data) => {
@@ -166,7 +169,7 @@
                     + '<p><label>จังหวัด: '+data.province+'</label> </p>'
                     + '<p><label>ที่อยู่: '+data.address+'</label> </p>'
                     + '<p><label>พิกัด: '+data.gps+'</label> </p>'
-                    + '<p><label>เบอร์ติดต่อ: '+data.tel+'</label> </p>'
+                    + '<p><label>เบอร์ติดต่อ: '+data.mobile+'</label> </p>'
                     + '<p><label>เว็บไซต์: '+data.web+'</label> </p>'
                     + '<p><label>Facebook: '+data.fb+'</label> </p>'
                 + '</div>'

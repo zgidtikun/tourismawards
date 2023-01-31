@@ -483,12 +483,15 @@ class App extends BaseConfig
     public $JudgingCriteriaOnst = 57;
     public $JudgingCriteriaScore;
     public $script_v = 1;
+    public $config_regis_date;
 
     public function __construct()
     {
         if(getenv('CI_ENVIRONMENT') != 'production'){
             $this->script_v = date('YmdHis');
         }
+
+        $this->config_regis_date = date('Y-m-d');
 
         $this->JudgingCriteriaScore = (object) [
             'ttg' => (object) [

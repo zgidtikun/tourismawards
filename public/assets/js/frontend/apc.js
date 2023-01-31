@@ -111,10 +111,12 @@ const register = {
     passYearCount: '',
     complete: false,
     ExpiredOpenDate: null,
-    init:async function(expired){        
+    configRegisDate: null,
+    init:async function(expired,configDate){        
         await loading('show');
         this.expired = expired == 'Expired' ? true : false;
         this.currentDate = getCurrentDate();
+        this.configRegisDate = configDate;
         this.getAppType().then(function(appType){
             register.appType.main = appType.main;
             register.appType.sub = appType.sub;
@@ -765,7 +767,7 @@ const register = {
             $('#error-open-year').html('เปิดรับสมัครสําหรับผู้ประกอบการที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป');
             bool_input = false;
         } else {
-            const date = new Date();
+            const date = new Date(register.configRegisDate);
             const fulldate = $('#step5-hiddenDate').val().split('/');
 
             const from = fulldate[1]+'/'+fulldate[2]+'/'+fulldate[0];
