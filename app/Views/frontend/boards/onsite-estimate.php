@@ -7,6 +7,9 @@
     #qSco {
         margin-top: 1rem;
     }
+    #qSco p {
+        color: #000;
+    }
     .regis-form-data-col1 ol{
         padding-left: 25px;
         font-size: 18px;
@@ -61,48 +64,48 @@
                 <div class="regis-form-data judge-form-data">
                     <div class="bs-row" style="font-size: 16px;">
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class="fw-semibold text-base-main">
+                            <span class="fw-semibold text-dark">
                                 รหัสใบสมัคร : <span class="fw-normal" id="tyCode"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class=" fw-semibold text-base-main">
-                            ประเภท : <span class="fw-normal" id="tyType"></span>
+                            <span class=" fw-semibold text-dark">
+                            ประเภท : <span class="fw-normal text-dark" id="tyType"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class=" fw-semibold text-base-main">
-                            ชื่อ-นามสกุล : <span class="fw-normal" id="tyName"></span>
+                            <span class=" fw-semibold text-dark">
+                            ชื่อ-นามสกุล : <span class="fw-normal text-dark" id="tyName"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class=" fw-semibold text-base-main">
-                            ชื่อสถานประกอบการ : <span class="fw-normal" id="tyAttnTh"></span>
+                            <span class=" fw-semibold text-dark">
+                            ชื่อสถานประกอบการ : <span class="fw-normal text-dark" id="tyAttnTh"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class=" fw-semibold text-base-main">
+                            <span class=" fw-semibold text-dark">
                             สาขา : <span class="fw-normal" id="tyTSbu"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class=" fw-semibold text-base-main">
-                            อีเมล : <span class="fw-normal" id="tyEmail"></span>
+                            <span class=" fw-semibold text-dark">
+                            อีเมล : <span class="fw-normal text-dark" id="tyEmail"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class=" fw-semibold text-base-main">
-                            Establishment : <span class="fw-normal" id="tyAttnEn"></span>
+                            <span class=" fw-semibold text-dark">
+                            Establishment : <span class="fw-normal text-dark" id="tyAttnEn"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class=" fw-semibold text-base-main">
-                            วันที่ส่งใบสมัคร : <span class="fw-normal" id="tyUdat"></span>
+                            <span class=" fw-semibold text-dark">
+                            วันที่ส่งใบสมัคร : <span class="fw-normal text-dark" id="tyUdat"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class=" fw-semibold text-base-main">
-                            เบอร์ติดต่อ : <span class="fw-normal" id="tyTel"></span>
+                            <span class=" fw-semibold text-dark">
+                            เบอร์ติดต่อ : <span class="fw-normal text-dark" id="tyTel"></span>
                             </span>
                         </div>
                     </div>
@@ -408,7 +411,7 @@
             </div>
 
             <div class="judge-memo is-estimate">
-                <h4>บันทึกส่วนตัว (Private Memo)</h4>
+                <h4 class="text-base-main">บันทึกส่วนตัว (Private Memo)</h4>
                 <textarea class="form-control" id="note" rows="6"></textarea>
                 <p style="text-align: right">
                     <a href="javascript:void(0)" class="btn-memosave">บันทึก</a>

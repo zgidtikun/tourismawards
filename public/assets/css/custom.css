@@ -30,7 +30,8 @@
     --bs-danger: #dc3545;
     --bs-light: #f8f9fa;
     --bs-dark: #212529;
-    --bs-main-base-rbg: 13, 44, 85;
+    --bs-main-base-rbg: 27, 81, 10;
+    /* --bs-main-base-rbg: 13, 44, 85; */
     --bs-primary-rgb: 13, 110, 253;
     --bs-secondary-rgb: 108, 117, 125;
     --bs-success-rgb: 25, 135, 84;
@@ -5831,10 +5832,6 @@ padding: 0;
 #step5-type3 .bs-row .col-sm-12 {
     width: 100%!important;
     padding: 0;
-}
-#step5-type3 .bs-row .col-sm-12 .card {
-  margin-top: 20px;
-  width: 50%;
 }
 #step5-type3 .bs-row .col-sm-12 .card .d-grid{
 padding: 0;
