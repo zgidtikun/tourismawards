@@ -906,6 +906,7 @@ class EstimateController extends BaseController
                     af.address_province province, af.address_no, af.address_road, 
                     af.address_sub_district, af.address_district, af.address_province, 
                     af.address_zipcode, 
+                    af.pack_file,
                     IFNULL(af.mobile,'') mobile, 
                     IFNULL(af.other_social,'') web, 
                     IFNULL(af.facebook,'') fb,
@@ -926,6 +927,12 @@ class EstimateController extends BaseController
                 $v->address .= !empty($v->address_district) ? " $v->address_district" : '';
                 $v->address .= !empty($v->address_province) ? " $v->address_province" : '';
                 $v->address .= !empty($v->address_zipcode) ? " $v->address_zipcode" : '';
+
+                if(!empty($v->pack_file)){
+                    $v->pack_file = json_decode($v->pack_file);
+                } else {
+                    $v->pack_file = [];
+                }
 
                 if($type == 1) array_push($gold,$v);
                 elseif($type == 2) array_push($silver,$v);

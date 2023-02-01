@@ -32,8 +32,8 @@ class Estimate extends BaseController
         // $like['status'] = 0;
         // $like['status'] = 4;
         if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
-            // $like['attraction_name_th'] = $_GET['keyword'];
-            $like['company_name'] = $_GET['keyword'];
+            $like['attraction_name_th'] = $_GET['keyword'];
+            // $like['company_name'] = $_GET['keyword'];
         }
         if (!empty($_GET['application_type_id']) && $_GET['application_type_id'] != "") {
             $where['application_type_id'] = $_GET['application_type_id'];
@@ -281,8 +281,8 @@ class Estimate extends BaseController
         // $like['status'] = 0;
         // $like['status'] = 4;
         if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
-            // $like['attraction_name_th'] = $_GET['keyword'];
-            $like['company_name'] = $_GET['keyword'];
+            $like['attraction_name_th'] = $_GET['keyword'];
+            // $like['company_name'] = $_GET['keyword'];
         }
         if (!empty($_GET['application_type_id']) && $_GET['application_type_id'] != "") {
             $where['application_type_id'] = $_GET['application_type_id'];

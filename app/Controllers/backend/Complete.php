@@ -33,8 +33,9 @@ class Complete extends BaseController
         // $like['status'] = 0;
         // $like['status'] = 4;
         if (!empty($_GET['keyword']) && $_GET['keyword'] != "") {
-            // $like['attraction_name_th'] = $_GET['keyword'];
-            $like['company_name'] = $_GET['keyword'];
+            $like['attraction_name_th'] = $_GET['keyword'];
+            // $like['company_name'] = $_GET['keyword'];
+            // $like['code'] = $_GET['keyword'];
         }
         if (!empty($_GET['application_type_id']) && $_GET['application_type_id'] != "") {
             $where['application_type_id'] = $_GET['application_type_id'];
@@ -56,7 +57,7 @@ class Complete extends BaseController
             $sub_id = session()->award_type;
         }
 
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, ES.score_prescreen_tt, ES.score_onsite_tt')->join('users_stage US', 'US.user_id = AP.created_by AND US.status >= 6', 'left')->join('estimate_score ES', 'ES.application_id = AP.id', 'left')->where('US.stage', 2)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', $sort)->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, ES.score_prescreen_tt, ES.score_onsite_tt')->join('users_stage US', 'US.user_id = AP.created_by AND US.status >= 6', 'left')->join('estimate_score ES', 'ES.application_id = AP.id', 'left')->where('US.stage', 2)->where($where)->like($like, 'match', 'both')->orderBy('AP.created_at', $sort)->get()->getResultObject();
 
         // pp_sql();
         // px($data['result']);

@@ -83,6 +83,7 @@
                 <?php
                 if (!empty($result)) :
                   foreach ($result as $key => $value) :
+                    $status = '';
                     if ($value->users_stage_status == 1) {
                       $status = '<div class="userstatus trader">รอดำเนินการ</div>';
                     } else if ($value->users_stage_status == 2) {

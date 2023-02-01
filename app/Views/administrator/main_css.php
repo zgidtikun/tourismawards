@@ -231,4 +231,26 @@
     background-color: #EEEEEE;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
   }
+
+  /* ----------------- slim scrollbar ----------------- */
+  /* width */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888888;
+    border-radius: 7px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+  }
 </style>

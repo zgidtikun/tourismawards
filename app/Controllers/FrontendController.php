@@ -173,20 +173,13 @@ class FrontendController extends BaseController
                     $data->result->sts_title = 'สรุปผลการประกาศรางวัลเรียบร้อยแล้ว';   
                     $data->result->sts_content = 'ระบบได้แจ้งสรุปผลการประกาศรางวัลของท่านเรียบร้อยแล้ว';     
                     $data->result->title = 'ประกาศผลรางัล';
-                    $data->result->img = base_url('assets/images/logo.png');    
+                    $data->result->img = base_url('assets/images/logo.png');   
 
-                    $award_obj = new \App\Models\AwardResult();
-                    $award = $award_obj->where('user_id',$this->myId)
-                        ->select('award_type type')->first();
+                    $award = $this->getAwardResult($this->myId);
 
-                    if($award && $award->type !== 0){
-                        $data->result->content = 'ขอแสดงความยินดีด้วย ท่านได้รับรางวัล ';
-
-                        switch($award->type){
-                            case 1: $data->result->content .= 'รางวัลยอดเยี่ยม (Thailand Tourism Gold Award)'; break;
-                            case 2: $data->result->content .= 'รางวัลดีเด่น (Thailand Tourism Silver Award)'; break;
-                            case 3: $data->result->content .= 'เกียรติบัตรรางวัลอุตสาหกรรมท่องเที่ยวไทย (Thailand Tourism Certificate)'; break;
-                        }
+                    if($award->type !== 0){
+                        $data->result->content = 'ขอแสดงความยินดีด้วย ท่านได้รับรางวัล<br>';
+                        $data->result->content .= $award->name;
                     } else {
                         $data->result->content = 'ท่านไม่ผ่านเกณฑ์ประเมินการได้รับรางวัล<br>
                         หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ<br>
@@ -261,6 +254,41 @@ class FrontendController extends BaseController
         
         return view('frontend/entrepreneur/_template',(array) $data);
 
+    }
+
+    private function getAwardResult($id)
+    {
+        $app = new \Config\App();
+        $criteria = $app->JudgingCriteriaScore;
+        $obj = new \App\Models\EstimateScore();
+
+        $score = $obj->where(
+            "application_id = (
+                SELECT id FROM application_form
+                WHERE created_by = $id
+            )",NULL,false
+        )
+        ->select('(score_prescreen_tt + score_onsite_tt) total')
+        ->first();
+
+        if( $score->total >= $criteria->ttg->low ){
+            $award_s = 1;
+            $award_n = 'รางวัลยอดเยี่ยม (Thailand Tourism Gold Award)';
+        }
+        elseif( $score->total >= $criteria->tta->low && $score->total <= $criteria->tta->max ){
+            $award_s = 2;
+            $award_n = 'รางวัลดีเด่น (Thailand Tourism Silver Award)';
+        }
+        elseif( $score->total >= $criteria->ttc->low && $score->total <= $criteria->ttc->max ){
+            $award_s = 3;
+            $award_n = 'เกียรติบัตรรางวัลอุตสาหกรรมท่องเที่ยวไทย<br>(Thailand Tourism Certificate';
+        }
+        else {
+            $award_s = 0; 
+            $award_n = 'No Award';     
+        }    
+
+        return (object) ['type' => $award_s, 'name' => $award_n];
     }
 
     public function updateProfile()

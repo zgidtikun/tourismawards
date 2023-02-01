@@ -83,7 +83,7 @@
                     <?php endif; ?>
                     <img src="<?=$result->img?>" 
                     <?php if($result->award_result) : ?>
-                        style="width: 300px !important;padding-bottom: 2rem !important;<?=$img_padding_top?>"
+                        style="width: 300px !important;padding-bottom: 2rem !important;"
                     <?php endif; ?>                    
                     <?php if(empty($result->title)) : ?>
                         style="padding-top: 0 !important;"

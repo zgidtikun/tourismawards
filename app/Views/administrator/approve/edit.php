@@ -326,7 +326,7 @@
 
               <div class="regis-form-data-col2">
                 <h4>Line ID</h4>
-                <input value="<?= $result->company_line ?>" readonly>
+                <input value="<?= $result->line_id ?>" readonly>
               </div>
 
               <div class="regis-form-data-col2">
@@ -420,7 +420,7 @@
 
                 <div class="regis-form-data-col2">
                   <h4>Line ID</h4>
-                  <input value="<?= $result->line_id ?>" readonly>
+                  <input value="<?= $result->company_line ?>" readonly>
                 </div>
 
               </div>

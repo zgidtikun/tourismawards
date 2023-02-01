@@ -25,6 +25,22 @@ class MarkTest extends BaseController
 
     public function index()
     {
+        show_404();
+        $data = $this->db->table('admin')->where('id', 13)->get()->getRowObject();
+        // px($data);
+        $email_data = [
+            '_header' => 'เรียนคุณ ' . $data->name . ' ' . $data->surname,
+            '_content' => 'คุณได้รับการเพิ่มให้เป็นผู้ดูแลระบบ (Admin) อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) ด้วยอีเมล ' . $data->email
+        ];
+        $requestEmail = [
+            'to' => $data->email,
+            'subject' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
+            'message' => view('administrator/template_email', $email_data),
+            // 'from' => $from,
+            // 'cc' => [],
+            // 'bcc' => []
+        ];
+        px($requestEmail);
         // pp();
         // pp(PasswordEncrypt('637cec9879aaa569c44e277a'));
         // px(PasswordDecrypt(PasswordEncrypt('637cec9879aaa569c44e277a')));
@@ -157,6 +173,7 @@ class MarkTest extends BaseController
 
     public function Mail()
     {
+
         // $mail_config['mailpath']     = "/usr/bin/sendmail"; // or "/usr/sbin/sendmail"
         // $mail_config['protocol']     = "smtp"; //use 'mail' instead of 'sendmail or smtp'
         // $mail_config['smtp_host']    = "mail.tennis.in.th";
@@ -173,30 +190,30 @@ class MarkTest extends BaseController
 
         // $this->email->initialize($mail_config);
 
-        $email_data = [];
+        // $email_data = [];
 
-        $subject = 'Test การส่งเมล';
-        // $body = view('template_email', $email_data);
-        $body = '123454564asdadddas';
-        $this->email->setFrom($_ENV['email.SMTPUser'], 'ส่งจาก');
-        // $this->email->setFrom($mail_config['smtp_user'], 'ส่งจาก');
-        $this->email->setTo('diaryads0@gmail.com');
-        // $this->email->setBCC('kritsana@chaiyohosting.com,napapat@chaiyohosting.com');
+        // $subject = 'Test การส่งเมล';
+        // // $body = view('template_email', $email_data);
+        // $body = '123454564asdadddas';
+        // $this->email->setFrom($_ENV['email.SMTPUser'], 'ส่งจาก');
+        // // $this->email->setFrom($mail_config['smtp_user'], 'ส่งจาก');
+        // $this->email->setTo('diaryads0@gmail.com');
+        // // $this->email->setBCC('kritsana@chaiyohosting.com,napapat@chaiyohosting.com');
 
-        $this->email->setSubject($subject);
-        $this->email->setMessage($body);
+        // $this->email->setSubject($subject);
+        // $this->email->setMessage($body);
 
-        pp($_ENV);
-        pp($this->email);
-        try {
-            // pp(1221);
-            pp($this->email->send());
-            echo $this->email->printDebugger(['header']);
-            // pp(222);
-        } catch (\Throwable $th) {
-            // pp($th);
-            pp($th->getMessage());
-        }
+        // pp($_ENV);
+        // pp($this->email);
+        // try {
+        //     // pp(1221);
+        //     pp($this->email->send());
+        //     echo $this->email->printDebugger(['header']);
+        //     // pp(222);
+        // } catch (\Throwable $th) {
+        //     // pp($th);
+        //     pp($th->getMessage());
+        // }
 
         // return view('template_email');
     }
