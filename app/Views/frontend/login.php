@@ -89,12 +89,12 @@
         },
         validation: function() {
             if ($('#username').val() == '') {
-                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'Plase enter a usernamne.');
+                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'กรุณากรอก อีเมล');
                 return false;
             }
 
             if ($('#password').val() == '') {
-                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'Plase enter a password.');
+                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'กรุณากรอก รหัสผ่าน');
                 return false;
             }
 

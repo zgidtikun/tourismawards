@@ -36,7 +36,7 @@
         token: null,
         validate: function(){
             if($('#email').val() == ''){
-                alert.show('error','Oops...!','กรุณากรอกอีเมล');
+                alert.show('error','ไม่สามารถรีเซ็ทรหัสผ่าน','กรุณากรอกอีเมล');
                 return false;
             } else return true;
         },
@@ -74,7 +74,7 @@
                                     $('#email').val('');
                                 }
                             } else {
-                                alert.show('error','Oops...!',response.message);
+                                alert.show('error','ไม่สามารถรีเซ็ทรหัสผ่าน',response.message);
                                 return;
                             }
                         }

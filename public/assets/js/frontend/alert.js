@@ -47,6 +47,10 @@ const alert = {
             html: 'เวลาการเข้าสู่ระบบของคุณหมดลงแล้ว<br>กรุณาเข้าสู่ระบบใหม่',
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'เข้าสู่ระบบ',
+            customClass: {
+                confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false
         }).then((result) => {
             let origin = window.location.origin;
             window.location.href =  origin+'/login';

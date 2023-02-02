@@ -136,13 +136,7 @@ class semail {
     public function SetEmailFrontend($dataset, $by)
     {
         try {
-    
-            if(getenv('CI_ENVIRONMENT') != 'production'){
-                $email_ct = 'gidtikun@chaiyohosting.com';
-            } else {
-                $email_ct = 'tourismawards14@gmail.com';
-            }
-
+            $email_ct = 'tourismawards14@gmail.com';
             $email_sys = [
                 'email' => $this->config->SenderEmail,
                 'name'  => $this->config->SenderName
@@ -229,14 +223,7 @@ class semail {
                     $_to = $user->email;
                     $_from = $email_sys;
                     $_cc = [];
-                    $_bcc = [$this->mail_bcc];
-                    
-                    $file_content = 'Send - Time :: '.date('H:i:s')."\n";
-                    $file_content .= 'From :: '.$email_sys['email']."\n";
-                    $file_content .= 'To :: '.$user->email."\n";
-                    $file_content .= 'Subject :: '.$_subject."\n";
-                    $file_content .= 'Header :: '.$_header."\n";
-                    $file_content .= 'Content :: '.$_content."\n";                    
+                    $_bcc = [$this->mail_bcc];                   
                 break;
                 case 'app': 
                     $tycoon = $this->getTycoon($dataset->app_id);
@@ -442,15 +429,6 @@ class semail {
             ];
             
             $_status = $this->SendMail($_set);
-
-            if(!empty($file_content)){
-                helper('log');
-                $path_log = 'log-email';
-                $file_name = '/send_email_'.date('Ymd').'.txt';
-                $file_content .= 'Result :: '.$_status ? 'success' : 'error'."\n";  
-
-                create_log_file($path_log,$file_name,$file_content);
-            }
 
             $result = [ 'result' => $_status ? 'success' : 'error' ];
             

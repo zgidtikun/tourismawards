@@ -1,64 +1,56 @@
 const onFileHandle = (setting, input, type) => {
-    let handle = $(input)[0].files,
-        filter = accept[type],
-        ref = referance.find(el => el.input == input),
-        check = true,
-        error, total;
+    const handle = $(input)[0].files;
+    const filter = accept[type];
+    const ref = referance.find(el => el.input == input);
+    let check = true;
+    let error, total;
         
     if (handle.length > 0) {
-        switch (ref.app) {
-            case 'awards/application':
-            case 'awards/pre-screen':
-            case 'estimate/onsite':
+        if (ref.app == 'awards/application') {
+            total = Number(register.count[ref.pointer[1]]) + Number(handle.length);                    
+        } else if (ref.app == 'awards/pre-screen') {
+            const length = psc.questions[setting.cate].question[setting.seg][ref.position].length;
+            total = Number(length) + Number(handle.length);
+        } else if (ref.app == 'estimate/onsite') {
+            const length = dataset[setting.cate].question[setting.seg].estFiles[ref.position].length;
+            total = Number(length) + Number(handle.length);
+        }
+        
+        if (Number(total) > Number(ref.maxUpload)) {
+            alert.show('warning', 'ไม่สามารถอัพโหลดไฟล์ได้', `คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน ${ref.maxUpload} ไฟล์เท่านั้น`);
+            return false
+        }
+        
+        $.each(handle, (key, val) => {
+            const mb = (val.size / (1024 * 1024)).toFixed(2);
 
-                if (ref.app == 'awards/application') {
-                    total = Number(register.count[ref.pointer[1]]) + Number(handle.length);                    
-                } else if (ref.app == 'awards/pre-screen') {
-                    let length = psc.questions[setting.cate].question[setting.seg][ref.position].length;
-                    total = Number(length) + Number(handle.length);
-                } else if (ref.app == 'estimate/onsite') {
-                    let length = dataset[setting.cate].question[setting.seg].estFiles[ref.position].length;
-                    total = Number(length) + Number(handle.length);
-                }
-                
-                if (Number(total) > Number(ref.maxUpload)) {
-                    alert.show('warning', 'ไม่สามารถอัพโหลดไฟล์ได้', 'คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน ' + ref.maxUpload + ' ไฟล์เท่านั้น');
-                    return false
-                }
-                
-                $.each(handle, function(key, val) {
-                    let mb = (val.size / (1024 * 1024)).toFixed(2);
+            if ($.inArray(val.type, filter) === -1) {
+                check = false;
+                error = 'outType';
+                return false;
+            }
 
-                    if ($.inArray(val.type, filter) === -1) {
-                        check = false;
-                        error = 'outType';
-                        return false;
-                    }
+            if (mb > ref.maxSize) {
+                check = false;
+                error = 'outSize';
+                return false
+            }
+        });
 
-                    if (mb > ref.maxSize) {
-                        check = false;
-                        error = 'outSize';
-                        return false
-                    }
-                });
+        if (!check) {
+            let error_title, error_text;
+            error_title = type == 'paper' ? 'ไม่สามารถอัพโหลดไฟล์ได้' : 'ไม่สามารถอัพโหลดรูปได้';
 
-                if (!check) {
-                    let error_title, error_text;
-                    error_title = type == 'paper' ? 'ไม่สามารถอัพโหลดไฟล์ได้' : 'ไม่สามารถอัพโหลดรูปได้';
+            if (error == 'outType') {
+                error_text = type == 'paper' ? 'กรุณาเลือกเป็นไฟล์ .pdf เท่านั้น' : 'กรุณาเลือกเป็นไฟล์ .jpeg, .jpg, .png เท่านั้น';
+            } else if (error == 'outSize') {
+                error_text = `กรุณาเลือกขนาดไฟล์ไม่เกิน ${ref.maxSize}MB.`;
+            }
 
-                    if (error == 'outType') {
-                        error_text = type == 'paper' ? 'กรุณาเลือกเป็นไฟล์ .pdf เท่านั้น' : 'กรุณาเลือกเป็นไฟล์ .jpeg, .jpg, .png เท่านั้น';
-                    } else if (error == 'outSize') {
-                        error_text = 'กรุณาเลือกขนาดไฟล์ไม่เกิน ' + ref.maxSize + ' MB.'
-                    }
-
-                    alert.show('warning', error_title, error_text);
-                    return false;
-                } else {                
-                    uploadFile(setting, input, 'input');
-                }
-
-                break;
+            alert.show('warning', error_title, error_text);
+            return false;
+        } else {                
+            uploadFile(setting, input, 'input');
         }
     }
 };
@@ -84,10 +76,11 @@ const lockUpload = (label,btn,action) => {
 }
 
 const uploadFile = async(setting, input, handleBy) => {
-    let formData = new FormData(),
-        ref = referance.find(el => el.input == input),
-        handle = handleBy == 'input' ? $(input)[0].files : setting.files,
-        api_setting = {};
+    const formData = new FormData();
+    const ref = referance.find(el => el.input == input);
+    const handle = handleBy == 'input' ? $(input)[0].files : setting.files;
+    let api_setting = {};
+    let callback;
 
     if(ref.app == 'awards/application'){
         await register.waitUpload('lock',input);
@@ -104,105 +97,105 @@ const uploadFile = async(setting, input, handleBy) => {
             formData.append('id', setting.id);
             formData.append('position', ref.position);
             formData.append('path', ref.path);
+
             api_setting.method = 'action';
             api_setting.url = ref.api;
             api_setting.data = formData;
 
-            api(api_setting).then(async function(response) {
-                let res = response;
+            callback = await api(api_setting);
 
-                if (res.result == 'error_login') {
-                    alert.login();                    
-                    await register.waitUpload('unlock',input);
-                } else if (res.result == 'success') {
-                    let countFile = 0; 
-                    $.each(res.files, function(key, file) {
-                        register.formData[ref.pointer[0]][ref.pointer[1]].push(file);
-                        countFile++;
-                    });
-                    
-                    $(input).val('');
-                    register.count[ref.pointer[1]] = await register.count[ref.pointer[1]] + Number(countFile);
-                    showFiles.tycoon(ref.input, register.formData[ref.pointer[0]][ref.pointer[1]]);
-                    await register.waitUpload('unlock',input);
-                    register.checkComplete();
-                } else {                    
-                    $(input).val('');
-                    await register.waitUpload('unlock',input);
-                    alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
-                }
-            });
-            break;
+            if (callback.result == 'error_login') {
+                alert.login();                    
+                await register.waitUpload('unlock',input);
+            } else if (callback.result == 'success') {
+                let countFile = 0; 
+                $.each(callback.files, function(key, file) {
+                    register.formData[ref.pointer[0]][ref.pointer[1]].push(file);
+                    countFile++;
+                });
+                
+                $(input).val('');
+                register.count[ref.pointer[1]] = await register.count[ref.pointer[1]] + Number(countFile);
+                showFiles.tycoon(ref.input, register.formData[ref.pointer[0]][ref.pointer[1]]);
+                await register.waitUpload('unlock',input);
+                register.checkComplete();
+            } else {                    
+                $(input).val('');
+                await register.waitUpload('unlock',input);
+                alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
+            }
+        break;
         case 'awards/pre-screen':
+            const answer = psc.questions[setting.cate].question[setting.seg];
+            const setAction = !empty(answer.reply_id) ? 'update' : 'create';
 
-            let answer = psc.questions[setting.cate].question[setting.seg];
-            let setAction = !empty(answer.reply_id) ? 'update' : 'create';
             formData.append('qid', answer.id);
             formData.append('aid', !empty(answer.reply_id) ? answer.reply_id : '');
             formData.append('action', setAction);
             formData.append('position', ref.position);
             formData.append('path', ref.path);
+
             api_setting.method = 'action';
             api_setting.url = ref.api;
             api_setting.data = formData;
+
             await psc.waitDraft('wait');
 
-            api(api_setting).then(async(response) => {
-                let res = response;
+            callback = await api(api_setting);
 
-                if (res.result == 'error_login') {
-                    alert.login();
-                } else if (res.result == 'success') {
-                    if(setAction == 'create'){
-                        psc.questions[setting.cate].question[setting.seg].reply_id = res.id;
-                    }
-
-                    $(input).val('');
-                    psc.questions[setting.cate].question[setting.seg][ref.position] = res.files;
-                    showFiles.tycoon(ref.input, psc.questions[setting.cate].question[setting.seg][ref.position]);
-                    await lockUpload(ref.label,ref.btn,'unlock');
-                } else {
-                    $(input).val('');
-                    await lockUpload(ref.label,ref.btn,'unlock');
-                    await psc.waitDraft('finish');
-                    alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
+            if (callback.result == 'error_login') {
+                alert.login();
+            } else if (callback.result == 'success') {
+                if(setAction == 'create'){
+                    psc.questions[setting.cate].question[setting.seg].reply_id = callback.id;
                 }
-            });
-            break;
+
+                $(input).val('');
+                psc.questions[setting.cate].question[setting.seg][ref.position] = callback.files;
+                showFiles.tycoon(ref.input, psc.questions[setting.cate].question[setting.seg][ref.position]);
+                await lockUpload(ref.label,ref.btn,'unlock');
+            } else {
+                $(input).val('');
+                await lockUpload(ref.label,ref.btn,'unlock');
+                await psc.waitDraft('finish');
+                alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
+            }
+        break;
         case 'estimate/onsite':
-            let estimate = dataset[setting.cate].question[setting.seg];
+            const estimate = dataset[setting.cate].question[setting.seg];
             const est_id = !empty(estimate.est_id) ? estimate.est_id : '';
+
             formData.append('app_id',appid);
             formData.append('answer_id',estimate.reply_id);
             formData.append('estimate_id',est_id);
             formData.append('question_id',estimate.id);
             formData.append('position',ref.position);
             formData.append('path', ref.path);
+
             api_setting.method = 'action';
             api_setting.url = ref.api;
             api_setting.data = formData;
+
             await waitDraft('wait');
 
-            api(api_setting).then(async(response) => {
-                let res = response;
+            callback = await api(api_setting);
 
-                if (res.result == 'error_login') {
-                    await lockUpload(ref.label,ref.btn,'unlock');
-                    alert.login();
-                } else if (res.result == 'success') {
-                    $(input).val('');
-                    dataset[setting.cate].question[setting.seg].est_id = response.estimate_id;
-                    dataset[setting.cate].question[setting.seg].estFiles[ref.position] = res.files;
-                    showFiles.tycoon(ref.input, dataset[setting.cate].question[setting.seg].estFiles[ref.position]);
-                    await lockUpload(ref.label,ref.btn,'unlock');
-                } else {
-                    $(input).val('');
-                    await lockUpload(ref.label,ref.btn,'unlock');
-                    alert.show(res.result, 'ไม่สามารถอัพโหลดไฟล์ได้', res.message);
-                    await waitDraft('finish');
-                }
-            });
-            break;
+            if (callback.result == 'error_login') {
+                await lockUpload(ref.label,ref.btn,'unlock');
+                alert.login();
+            } else if (res.result == 'success') {
+                $(input).val('');
+                dataset[setting.cate].question[setting.seg].est_id = callback.estimate_id;
+                dataset[setting.cate].question[setting.seg].estFiles[ref.position] = callback.files;
+                showFiles.tycoon(ref.input, dataset[setting.cate].question[setting.seg].estFiles[callback.position]);
+                await lockUpload(ref.label,ref.btn,'unlock');
+            } else {
+                $(input).val('');
+                await lockUpload(ref.label,ref.btn,'unlock');
+                alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
+                await waitDraft('finish');
+            }
+        break;
     }
 
 }

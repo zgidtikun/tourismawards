@@ -436,7 +436,7 @@ min-height: 50vh;
 
 .container.footer {
     background-color: #2a6118;
-    border-top: 3px solid #cca22a;
+    border-top: 3px solid #b6932f;
     color: #FFF;
     font-size: 0.85em;
 }
@@ -492,7 +492,7 @@ display: block;
 color: #FFF;
 }
 .footermenu li a:hover{
-color: #cca22a;
+color: #b6932f;
 }
 .upper-txt {
     font-size: 10px;
@@ -603,7 +603,7 @@ font-family: 'TATSana-Chon' ;
 line-height: 40px;
 }
 .txt-yellow{
-color: #cca22a;
+color: #b6932f;
 }
 .main-title {
     text-align: center;
@@ -618,7 +618,7 @@ color: #cca22a;
     line-height: 1.2;
 }
 .link_yellow:link,.link_yellow:visited{
-color: #cca22a;
+color: #b6932f;
 }
 .catagory-txt{
 text-align: center;
@@ -642,10 +642,11 @@ max-height: 50px;
     text-align: center;
 }
 .judge-title {
-    font-size: 40px;
+    font-size: 1.5em;
     color: #2a6118;
     border-bottom: 2px solid #1b510a;
     padding-bottom: 20px;
+    font-weight: bold;
 }
 .judge-list{
 margin: 40px 0;
@@ -744,7 +745,7 @@ list-style-type: none;
 }
 .award-list ol li::after {
     content: "";
-    background-color: #cca22a;
+    background-color: #b6932f;
     width: 24px;
     height: 24px;
     display: block;
@@ -850,7 +851,7 @@ display: flex;
 justify-content: center;
 }
 .gold-award h2 {
-    background-color: #cca22a;
+    background-color: #b6932f;
     color: #FFF;
     padding: 10px 20px;
     text-align: center;
@@ -1291,10 +1292,8 @@ line-height: 0;
     font-weight: 600;
     transition: .5s ease;
     width: auto;
-    border-top-right-radius: 10px;
     line-height: 20px;
-    width: 85%;
-    text-shadow: 0px 0px 5px rgba(0,0,0,1);
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .award-list [class^="btn"]{
@@ -1328,5 +1327,9 @@ max-height: 300px;
 .txt-green,
 a.txt-green{
 color: #2a6118;
+}
+
+.container.footer a:link,.container.footer a:visited{
+    color: #FFF;
 }
 /*GD-02-V.02022566*/
