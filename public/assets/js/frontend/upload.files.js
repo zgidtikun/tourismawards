@@ -201,9 +201,9 @@ const uploadFile = async(setting, input, handleBy) => {
 }
 
 const removeFile = async(input, setting) => {
+    const ref = referance.find(el => el.input == input);
     let api_setting = {},
-        pointer,
-        ref = referance.find(el => el.input == input);
+        pointer;
         
     $(ref.btnrm).prop('disabled', true);
     $(ref.btnrm).html(setSpinner('Removing...'));

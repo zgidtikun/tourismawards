@@ -794,6 +794,6 @@ esCmm.on('keypu change',() => {
 
 esNote.on('keypu change',() => {
     const point = getPointer();
-    dataset[point.cate].question[point.seg].note_onsite = esCmm.val();
+    dataset[point.cate].question[point.seg].note_onsite = esNote.val();
     dataset[point.cate].question[point.seg].estimate = true;
 });

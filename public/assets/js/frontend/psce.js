@@ -486,7 +486,7 @@ const setQuestion = (cate,seg) => {
         } else {
             qTitle.html(question.criteria_topic);
         }
-        
+        console.log(question)
         qTitle.attr('data-id',question.reply_id);
         qSum.html(category.question.length);
         mSum.html(category.question.length);
@@ -891,7 +891,7 @@ esCmm.on('keypu change',() => {
 
 esNote.on('keypu change',() => {
     const point = getPointer();
-    dataset[point.cate].question[point.seg].note_pre = esCmm.val();
+    dataset[point.cate].question[point.seg].note_pre = esNote.val();
     dataset[point.cate].question[point.seg].estimate = true;
 });
 
