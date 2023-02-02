@@ -1146,6 +1146,7 @@ width: 100%;
 .contact-form-col2{
 width: 50%;
 }
+
 .btn-form-row {
     justify-content: center;
     display: flex;
@@ -1288,13 +1289,12 @@ line-height: 0;
     color: #FFF;
     font-size: 18px;
     font-weight: 600;
-    background: rgb(0, 0, 0);
-    background: rgba(0, 0, 0, 0.5);
     transition: .5s ease;
     width: auto;
     border-top-right-radius: 10px;
     line-height: 20px;
     width: 85%;
+    text-shadow: 0px 0px 5px rgba(0,0,0,1);
 }
 
 .award-list [class^="btn"]{
@@ -1315,4 +1315,18 @@ background-size: cover;
 .main-title-g h2{
 margin-top: 0;
 }
-/*GD-02-V.19122565*/
+.qrcontact{
+background-color: #f5f4f0;
+font-size: 1.35rem;
+}
+.col12.qrcode{
+text-align: center;
+}
+.col12.qrcode img{
+max-height: 300px;
+}
+.txt-green,
+a.txt-green{
+color: #2a6118;
+}
+/*GD-02-V.02022566*/

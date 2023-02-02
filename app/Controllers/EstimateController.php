@@ -113,8 +113,8 @@ class EstimateController extends BaseController
                     'bank' => 'frontend'
                 ],
                 (object) [
-                    'message' => 'มีการร้องขอข้อมูลข้อมูลเพิ่มเติมใน แบบประเมินขั้นต้น (Pre-screen) '
-                    .'โปรดดูรายละเอียด เพื่อแก้ไขและส่งใบสมัครอีกครั้ง',
+                    'message' => 'มีการขอข้อมูลเพิ่มเติมใน แบบประเมินขั้นต้น (Pre-screen) โปรดดูรายละเอียด 
+                        เพื่อแก้ไขและส่งแบบประเมินอีกครั้ง ภายใน 72 ชั่วโมง',
                     'link' => base_url('awards/pre-screen'),
                     'send_date' => date('Y-m-d H:i:s'),
                     'send_by' => 'คณะกรรมการ'
@@ -833,6 +833,8 @@ class EstimateController extends BaseController
     {
         $app = new \Config\App();
         $award = new \App\Models\AwardResult();
+
+        $this->db->table('award_result')->truncate();
 
         $subQuery = $this->db->table('users_stage us')
             ->select(

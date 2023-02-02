@@ -482,7 +482,7 @@ const showFiles = {
 
                 onclick = `<a class="fs-file-remove float-end" 
                     href="javascript:removeFile('${input}',{
-                    ${!empty(id) ? `id: ${id} ` : ``}, 
+                    ${!empty(id) ? `id: ${id}, ` : ``}
                     file_name: '${setting.file_name}',
                     file_path: '${setting.file_path}', remove: 'fixed'})">
                         <i class="bi bi-trash-fill"></i> ลบ

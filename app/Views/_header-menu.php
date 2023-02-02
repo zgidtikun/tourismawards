@@ -167,39 +167,39 @@
                <nav>
                   <ul class="flexnav">
                      <li><a id="menu-home" href="<?=base_url('home')?>">หน้าแรก</a></li>
-                     <li><a href="javascript:void(0)" id="aboutmenu">เกี่ยวกับโครงการ</a>
+                     <li><a href="javascript:void(0)" id="aboutmenu">เกี่ยวกับโครงการฯ</a>
                         <ul>
-                           <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ /ความเป็นมา/วัตถุประสงค์</a></li>
+                           <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ</a></li>
                            <li><a href="<?=base_url('judge')?>">กรรมการที่ปรึกษา</a></li>
                            <li><a href="<?=base_url('judge')?>">กรรมการตัดสินแต่ละประเภท</a></li>
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="informationmenu">ข้อมูลการประกวดรางวัล</a>
                         <ul>
-                           <li><a href="<?=base_url('awards-infomation')?>?p=Attraction">แหล่งท่องท่องเที่ยว 6 สาขา</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>?p=Accommodation">ที่พักนักท่องเที่ยว 4 สาขา</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>?p=HealthAndWellness">การท่องเที่ยวเชิงสุขภาพ 4 สาขา</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>?p=TourProgram">รายการนำเที่ยว</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>?p=Judge">เกณฑ์การให้คะแนนตัดสิน</a></li>
-                           <li><a href="<?=base_url('awards-infomation')?>?p=Benefits">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
+                           <li><a href="javascript:;">ประเภทแหล่งท่องเที่ยว</a></li>
+                           <li><a href="javascript:;">ประเภทที่พักนักท่องเที่ยว</a></li>
+                           <li><a href="javascript:;">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                           <li><a href="javascript:;">ประเภทรายการนำเที่ยว</a></li>
+                           <li><a href="javascript:;">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</a></li>
                         </ul>
                      </li>
-                     <li><a href="javascript:void(0)" id="regismenu">คู่มือการสมัคร</a>
+                     <li><a href="javascript:void(0)" id="regismenu">ข้อมูลการใช้งานระบบ</a>
                         <ul>
-                           <li><a href="<?=base_url('application-guide')?>?p=manual">คู่มือการลงทะเบียนประกวดรางวัล</a></li>
-                           <li><a href="<?=base_url('application-guide')?>?p=duedate">กำหนดการรับสมัคร</a></li>
-                           <li><a href="<?=base_url('application-guide')?>?p=register">สมัครเข้าร่วมประกวดรางวัล</a></li>
+                           <li><a href="javascript:;">ประเภทแหล่งท่องเที่ยว</a></li>
+                           <li><a href="javascript:;">ประเภทที่พักนักท่องเที่ยว</a></li>
+                           <li><a href="javascript:;">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                           <li><a href="javascript:;">ประเภทรายการนำเที่ยว</a></li>
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="awardmenu">ผลงานที่ได้รับรางวัล</a>
                         <ul>
-                           <!-- <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14</a></li> -->
-                           <li><a href="<?=base_url('awards-winner-13')?>">ครั้งที่ 13</a></li>
+                           <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li>
+                           <li><a href="<?=base_url('last-awards-winner')?>">ปีที่ผ่านมา</a></li>
                         </ul>
                      </li>
-                     <li>
+                     <!-- <li>
                         <a href="<?=base_url('new')?>" id="newsmenu">ข่าวประชาสัมพันธ์</a>
-                     </li>
+                     </li> -->
                      <li><a href="<?=base_url('contact-us')?>" id="contactmenu">ติดต่อเรา</a>
                      </li>
                      <!-- <li class="search">
@@ -228,10 +228,10 @@
                </div>
                <ul>
                   <li><a href="<?=base_url('home')?>">หน้าแรก</a></li>
-                  <li><a href="javascript:" class="btn-submenu" data-tab="1">เกี่ยวกับโครงการ</a></li>
+                  <li><a href="javascript:" class="btn-submenu" data-tab="1">เกี่ยวกับโครงการฯ</a></li>
                   <div class="submenubox-list" data-tab="1" style="display: none;">
                      <ul>
-                        <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ /ความเป็นมา/วัตถุประสงค์</a></li>
+                        <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ</a></li>
                         <li><a href="<?=base_url('judge')?>">กรรมการที่ปรึกษา</a></li>
                         <li><a href="<?=base_url('judge')?>">กรรมการตัดสินแต่ละประเภท</a></li>
                      </ul>
@@ -240,31 +240,31 @@
                   <li><a href="javascript:" data-tab="2" class="btn-submenu">ข้อมูลการประกวดรางวัล</a></li>
                   <div class="submenubox-list" data-tab="2" style="display: none;">
                      <ul>
-                        <li><a href="<?=base_url('awards-infomation')?>?p=Attraction">แหล่งท่องท่องเที่ยว 6 สาขา</a></li>
-                        <li><a href="<?=base_url('awards-infomation')?>?p=Accommodation">ที่พักนักท่องเที่ยว 4 สาขา</a></li>
-                        <li><a href="<?=base_url('awards-infomation')?>?p=HealthAndWellness">การท่องเที่ยวเชิงสุขภาพ 4 สาขา</a></li>
-                        <li><a href="<?=base_url('awards-infomation')?>?p=TourProgram">รายการนำเที่ยว</a></li>
-                        <li><a href="<?=base_url('awards-infomation')?>?p=Judge">เกณฑ์การให้คะแนนตัดสิน</a></li>
-                        <li><a href="<?=base_url('awards-infomation')?>?p=Benefits">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
+                        <li><a href="javascript:;">ประเภทแหล่งท่องเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทที่พักนักท่องเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                        <li><a href="javascript:;">ประเภทรายการนำเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</a></li>
                      </ul>
                   </div>
 
-                  <li><a href="javascript:" data-tab="3" class="btn-submenu">คู่มือการสมัคร</a></li>
+                  <li><a href="javascript:" data-tab="3" class="btn-submenu">ข้อมูลการใช้งานระบบ</a></li>
                   <div class="submenubox-list" data-tab="3" style="display: none;">
                      <ul>
-                        <li><a href="<?=base_url('application-guide')?>?p=manual">คู่มือการลงทะเบียนประกวดรางวัล</a></li>
-                        <li><a href="<?=base_url('application-guide')?>?p=duedate">กำหนดการรับสมัคร</a></li>
-                        <li><a href="<?=base_url('application-guide')?>?p=register">สมัครเข้าร่วมประกวดรางวัล</a></li>
+                        <li><a href="javascript:;">ประเภทแหล่งท่องเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทที่พักนักท่องเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                        <li><a href="javascript:;">ประเภทรายการนำเที่ยว</a></li>
                      </ul>
                   </div>
                   <li><a href="javascript:" data-tab="4" class="btn-submenu">ผลงานที่ได้รับรางวัล</a></li>
                   <div class="submenubox-list" data-tab="4" style="display: none;">
                      <ul>
-                        <!-- <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14</a></li> -->
-                        <li><a href="<?=base_url('awards-winner-13')?>">ครั้งที่ 13</a></li>
+                        <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li>
+                        <li><a href="<?=base_url('last-awards-winner')?>">ปีที่ผ่านมา</a></li>
                      </ul>
                   </div>
-                  <li><a href="<?=base_url('new')?>">ข่าวประชาสัมพันธ์</a></li>
+                  <!-- <li><a href="<?=base_url('new')?>">ข่าวประชาสัมพันธ์</a></li> -->
                   <li><a href="<?=base_url('contact-us')?>">ติดต่อเรา</a></li>
                </ul>
             </div>

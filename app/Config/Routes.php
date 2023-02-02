@@ -45,7 +45,7 @@ $routes->get('judge', 'Home::judge');
 $routes->post('get-awards-winner', 'EstimateController::getAwardResut');
 $routes->get('awards-infomation', 'Home::winnerinfo');
 $routes->get('awards-winner', 'Home::winneraward');
-$routes->get('awards-winner-13', 'Home::winneraward13');
+$routes->get('last-awards-winner', 'Home::winneraward13');
 $routes->get('awards-winner/(:any)', 'Home::winneraward14/$1');
 $routes->get('awards-winner-14/(:any)', 'Home::winneraward14/$1');
 $routes->get('application-guide', 'Home::appguide');

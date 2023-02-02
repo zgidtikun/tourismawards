@@ -36,7 +36,7 @@ height: 100%;
 .branch_title {
     color: #2a6118;
     text-align: center;
-    font-size: 24px;
+    font-size: 1.2rem;
     font-weight: bold;
 }
 .branch_txt{
@@ -121,7 +121,7 @@ position: relative;
 top: -3px;
 }
 .btn-ruleyellow{
-background-color: #c79533;
+background-color: #850309;
 }
 .btn-ruledblue{
 background-color: #1b510a;
@@ -390,6 +390,11 @@ img.contentlogo {
 max-height: 150px;
 }
 
+.branchawards .col4,.branchawards .col6{
+    padding: 20px;
+}
+
+
 @media screen and (max-width:1700px) {
 .container.commentaward .main-title {
     max-width: 1700px;
@@ -416,9 +421,8 @@ max-height: 150px;
 }
 .branch_img {
     position: relative;
-    width: 50%;
+    width: 100%;
     flex: none;
-    margin-bottom: 0;
 }
 
 .claim_img {
@@ -430,7 +434,7 @@ max-height: 150px;
 .branch_content,
 .claim_content{
 flex: auto;
-padding-left: 40px;
+padding-left: 0;
 }
 .comment_slide .slick-list {
     margin: 0;
@@ -486,17 +490,16 @@ margin: 0 0 20px 0;
     flex: auto;
     padding-left: 20px;
 }
-.branch_title {
-    color: #6d2324;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-}
+
 .claim_title {
     font-size: 20px;
     color: #FFF;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
+}
+.claim_txt {
+    text-align: left;
+    margin: 20px 0;
 }
 .news_box_title {
     font-size: 20px;
@@ -516,7 +519,12 @@ max-height: 100px;
 .winner-title {
     font-size: 4.5em;
 }
-
+.branchawards .row{
+margin: 0 -10px;
+}
+.branchawards .row [class^="col"]{
+padding: 10px;
+}
 }
 
 @media screen and (max-width:767px) and (orientation:portrait){

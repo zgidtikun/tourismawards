@@ -11,36 +11,38 @@
                 การท่องเที่ยวแห่งประเทศไทย (สำนักงานใหญ่)<br>
                 1600 ถ.เพชรบุรีตัดใหม่ แขวงมักกะสัน เขตราชเทวี กรุงเทพฯ<br>
                 10400 ประเทศไทย<br><br>
-                โทร 02-250-5500
+                โทร 02-250-5500<br>
+                อีเมล tourismawards14@gmail.com
                 </p>
             </div>
             <div class="col8 footermenu">
 
                 <div class="footermenu_col">
-                    <p class="footermenutitle" data-tab="1">ข้อมูลการประกวดรางวัล</p>
-                    <ul data-tab="1">
-                        <li><a href="<?= base_url('awards-winner') ?>" title="ประเภทรางวัล TTA 14TH">ประเภทรางวัล TTA 14<span class="upper-txt">th</span></a></li>
-                        <li><a href="<?= base_url('awards-infomation') ?>?p=Judge" title="เกณฑ์การให้คะแนนตัดสิน">เกณฑ์การให้คะแนนตัดสิน</a></li>
-                        <li><a href="<?= base_url('awards-infomation') ?>?p=Benefits" title="สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล">สิทธิประโยชน์สำหรับผู้ที่ได้รับรางวัล</a></li>
-                        <li><a href="<?= base_url('awards-infomation') ?>?p=Judge" title="หลักเกณฑ์การสมัครเข้าร่วมประกวดรางวัล">หลักเกณฑ์การสมัครเข้าร่วมประกวดรางวัล</a></li>
+                    <p class="footermenutitle" data-tab="1">เกี่ยวกับโครงการฯ</p>
+                    <ul data-tab="1">                        
+                        <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ</a></li>
+                        <li><a href="<?=base_url('judge')?>">คณะกรรมการ</a></li>
                     </ul>
                 </div>
 
                 <div class="footermenu_col">
-                    <p class="footermenutitle" data-tab="2">คู่มือการสมัคร</p>
+                    <p class="footermenutitle" data-tab="2">ข้อมูลการประกวดรางวัล</p>
                     <ul data-tab="2">
-                        <li><a href="<?= base_url('application-guide') ?>?p=manual" title="คู่มือการลงทะเบียนประกวดรางวัล">คู่มือการลงทะเบียนประกวดรางวัล</a></li>
-                        <li><a href="<?= base_url('application-guide') ?>?p=duedate" title="กำหนดการรับสมัคร">กำหนดการรับสมัคร</a></li>
+                        <li><a href="javascript:;">ประเภทแหล่งท่องเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทที่พักนักท่องเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                        <li><a href="javascript:;">ประเภทรายการนำเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</a></li>
                     </ul>
                 </div>
 
                 <div class="footermenu_col">
-                    <p class="footermenutitle" data-tab="3">ข่าวประชาสัมพันธ์</p>
+                    <p class="footermenutitle" data-tab="3">ข้อมูลการใช้งานระบบ</p>
                     <ul data-tab="3">
-                        <li><a href="<?= base_url('new') ?>" title="บทความข่าวสารที่เกี่ยวข้องกับโครงการฯ">บทความข่าวสารที่เกี่ยวข้องกับโครงการฯ</a></li>
-                        <!-- <li><a href="javascript:void(0);" title="ภาพถ่าย">ภาพถ่าย</a></li>
-                        <li><a href="javascript:void(0);" title="วิดีโอ">วิดีโอ</a></li>
-                        <li><a href="javascript:void(0);" title="E-Book">E-Book</a></li> -->
+                        <li><a href="javascript:;">ประเภทแหล่งท่องเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทที่พักนักท่องเที่ยว</a></li>
+                        <li><a href="javascript:;">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                        <li><a href="javascript:;">ประเภทรายการนำเที่ยว</a></li>
                     </ul>
                 </div>
 
@@ -57,7 +59,7 @@
                     Copyright © <?=date('Y')?>
                     <ul>
                         <li><a href="<?= base_url('privacy-policy') ?>" title="Privacy Policy">Privacy Policy</a></li>
-                        <li><a href="<?= base_url('about-us') ?>" title="About Us">About Us</a></li>
+                        <!-- <li><a href="<?= base_url('about-us') ?>" title="About Us">About Us</a></li> -->
                         <li><a href="<?= base_url('contact-us') ?>" title="Contact Us">Contact Us</a></li>
                     </ul>
                 </div>

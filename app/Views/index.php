@@ -13,6 +13,38 @@
         text-align: center;
         opacity: 1;
     }
+    .btn-ruledblue{
+        background-color: #C79534;
+    }
+    .claim_title {
+        font-size: 24px;
+        color: #FFF;
+        text-align: center;
+        font-weight: 600;
+        background-color: #1b510a;
+        padding: 15px 15px;
+    }    
+    .claim_txt{
+        text-align: left;
+        margin: 20px 0;
+    }
+    .claim_txt ul{
+        list-style-position: inside;
+    }
+
+    .claim_txt ul li{
+        margin-bottom: 1rem;
+    }
+    @media screen and (max-width: 767px) and (orientation: portrait){
+        .branchawards [class^="col"] {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        .claimawards [class^="col"] {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+    }
 </style>
 <div class="container titlebox">
     <div class="container_box">
@@ -47,11 +79,11 @@
                     </picture>
                 </div>
                 <div class="main-title-txt">
-                    <h2>สาขารางวัลอุตสาหกรรมท่องเที่ยวไทย</h2>
+                    <h2>5 ประเภทรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566</h2>
                 </div>
             </div>
         </div>
-        <div class="col3 reveal">
+        <div class="col4 reveal">
             <div class="branch_img">
                 <div class="branch_img_box">
                     <div class="branch_img_scale">
@@ -61,16 +93,13 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="1">ประเภทแหล่งท่องเที่ยว</div>
-                <!-- <div class="branch_txt" data-tab="1">
-                </div> -->
-                <!-- <a href="<?=base_url('awards-winner/attraction')?>" class="btn-yellow"> -->
-                <a href="<?= base_url('awards-infomation') ?>?p=Attraction" class="btn-yellow">
-                    ENTER AWARD
+                <a href="<?=base_url('download/คุณสมบัติ_ประเภทแหล่งท่องเที่ยว.pdf')?>" class="btn-yellow" target="_blank">
+                คุณสมบัติ/เกณฑ์
                 </a>
             </div>
         </div>
 
-        <div class="col3 reveal">
+        <div class="col4 reveal">
             <div class="branch_img">
                 <div class="branch_img_box">
                     <div class="branch_img_scale">
@@ -80,16 +109,13 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="2">ประเภทที่พักนักท่องเที่ยว</div>
-                <!-- <div class="branch_txt" data-tab="2">
-                </div> -->
-                <!-- <a href="<?=base_url('awards-winner/accommodation')?>" class="btn-yellow"> -->
-                <a href="<?= base_url('awards-infomation') ?>?p=Accommodation" class="btn-yellow">
-                    ENTER AWARD
+                <a href="<?=base_url('download/คุณสมบัติ_ประเภทที่พัก.pdf')?>" class="btn-yellow" target="_blank">
+                คุณสมบัติ/เกณฑ์
                 </a>
             </div>
         </div>
 
-        <div class="col3 reveal">
+        <div class="col4 reveal">
             <div class="branch_img">
                 <div class="branch_img_box">
                     <div class="branch_img_scale">
@@ -99,15 +125,13 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="3">ประเภทการท่องเที่ยวเชิงสุขภาพ</div>
-                <!-- <div class="branch_txt" data-tab="3">
-                </div> -->
-                <!-- <a href="<?=base_url('awards-winner/health-and-wellness-tourism')?>" class="btn-yellow"> -->
-                <a href="<?= base_url('awards-infomation') ?>?p=HealthAndWellness" class="btn-yellow">
-                    ENTER AWARD
+                <a href="<?=base_url('download/คุณสมบัติ_ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>" class="btn-yellow" target="_blank">
+                คุณสมบัติ/เกณฑ์
                 </a>
             </div>
         </div>
-        <div class="col3 reveal">
+
+        <div class="col6 reveal">
             <div class="branch_img">
                 <div class="branch_img_box">
                     <div class="branch_img_scale">
@@ -117,11 +141,24 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="4">ประเภทรายการนำเที่ยว</div>
-                <!-- <div class="branch_txt" data-tab="4"> 
-                </div> -->
-                <!-- <a href="<?=base_url('awards-winner/tourism-program')?>" class="btn-yellow"> -->
-                <a href="<?= base_url('awards-infomation') ?>?p=TourProgram" class="btn-yellow">
-                    ENTER AWARD
+                <a href="<?=base_url('download/คุณสมบัติ_ประเภทรายการนำเที่ยว.pdf')?>" class="btn-yellow" target="_blank">
+                คุณสมบัติ/เกณฑ์
+                </a>
+            </div>
+        </div>
+
+        <div class="col6 reveal">
+            <div class="branch_img">
+                <div class="branch_img_box">
+                    <div class="branch_img_scale">
+                        <img src="<?= base_url('assets/images/award_05.jpg') ?>" width="443" height="315" alt="..." loading="lazy">
+                    </div>
+                </div>
+            </div>
+            <div class="branch_content">
+                <div class="branch_title" data-tab="4">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</div>
+                <a href="<?=base_url('download/คุณสมบัติ_ประเภท_low_carbon.pdf')?>" class="btn-yellow" target="_blank">
+                คุณสมบัติ/เกณฑ์
                 </a>
             </div>
         </div>
@@ -141,95 +178,62 @@
                             width="135" height="47" alt="..." loading="lazy">
                         </picture>
                     </div>
-                    <div class="main-title-txt">
-                        <h2>สิทธิประโยชน์สำหรับผู้ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทย</h2>
+                    <div class="main-title-txt" style="font-size: 20px;">
+                        <h2 style="margin-bottom:1rem;">สิทธิประโยชน์สำหรับผู้ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทยครั้งที่ 14 ประจำปี 2566</h2>
+                        ผลงานที่ได้รับรางวัลจะได้รับตราสัญลักษณ์กินรีเพื่อเป็นเครื่องหมายรับรองคุณภาพสินค้าและบริการทางการท่องเที่ยวด้วยมาตรฐานการท่องเที่ยวอย่างรับผิดชอบต่อสังคม
+                        และสิ่งแวดล้อมช่วยเพิ่มโอกาสทางการตลาดในการเสนอขายสินค้าและผลิตภัณฑ์ให้นักท่องเที่ยว และได้รับสิทธิประโยชน์ต่าง ๆ ดังต่อไปนี้
                     </div>
                 </div>
             </div>
-            <div class="col3 reveal">
-                <div class="claim_img">
-                    <div class="claim_img_box">
-                        <div class="claim_img_scale">
-                            <picture>
-                                <source srcset="<?= base_url('assets/images/claim_01.svg') ?>">
-                                <source srcset="<?= base_url('assets/images/claim_01.png') ?>">
-                                <img src="<?= base_url('assets/images/claim_01.png') ?>" 
-                                width="138" height="128" alt="..." loading="lazy">
-                            </picture>
-                        </div>
-                    </div>
-                </div>
+            <div class="col4 reveal">
                 <div class="claim_content">
-                    <div class="claim_title" data-tab="1">ส่งเสริมการขาย</div>
+                    <div class="claim_title" data-tab="1">ส่งเสริมการขายและการตลาด</div>
                     <div class="claim_txt" data-tab="1">
-                        ส่งเสริมการขายผ่านทางช่องทาง Online และ Offline ที่ ททท. 
-                        จัดขึ้นอยู่กับความเหมาะสมของแต่ละกลุ่มตลาดและเทรนด์การท่องเที่ยวในปีที่จัดงาน
+                        <ul>
+                            <li>
+                                ได้รับเชิญเข้าร่วมงานส่งเสริมการขายของ ททท. และพันธมิตรที่ ททท. สนับสนุนน อาทิ Trade Show, Road Show, Consumer Fair  
+                                <br>*ทั้งนี้ ขึ้นอยู่กับความเหมาะสมของแต่ละกลุ่มตลาด
+                            </li>
+                            <li>
+                                ได้รับสิทธิ์ส่วนลดค่าใช้จ่าย 50% ในการเข้าร่วมงานส่งเสริมการขายกับ ททท. ทั้งในประเทศและต่างประเทศ
+                                <br>*ทั้งนี้ขึ้นอยู่กับความเหมาะสมของแต่ละกลุ่มตลาด 
+                            </li>
+                            <li>
+                                ได้รับการนำเสนอข้อมูลขายผ่านสื่อการตลาดดิจิทัลของ ททท. ได้แก่ Video clip/E-Book/Digital Brochure  
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="col3 reveal">
-                <div class="claim_img">
-                    <div class="claim_img_box">
-                        <div class="claim_img_scale">
-                            <picture>
-                                <source srcset="<?= base_url('assets/images/claim_02.svg') ?>">
-                                <source srcset="<?= base_url('assets/images/claim_02.png') ?>">
-                                <img src="<?= base_url('assets/images/claim_02.png') ?>" 
-                                width="138" height="128" alt="..." loading="lazy">
-                            </picture>
-                        </div>
-                    </div>
-                </div>
+            <div class="col4 reveal">
                 <div class="claim_content">
                     <div class="claim_title" data-tab="2">ประชาสัมพันธ์</div>
                     <div class="claim_txt" data-tab="2">
-                        ประชาสัมพันธ์ผู้ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทยให้เป็นที่รู้จัก โดยผ่านสื่อต่าง ๆ 
-                        ในเครือข่ายและช่องทาง ของ ททท. รวมทั้ง ททท. สำนักงานในประเทศและต่างประเทศ
+                        <ul>
+                            <li>
+                                ประชาสัมพันธ์ผ่านสื่อออฟไลน์และออนไลน์ของ ททท. ได้แก่ เพจ Amazing Thailand และเพจ Thailand Tourism Awards/อนุสาร อสท.
+                            </li>
+                            <li>
+                                ประชาสัมพันธ์ผ่านเว็บไซต์ข่าวออนไลน์และสิ่งสิ่งพิมพ์ ได้แก่ ผู้จัดการออนไลน์/ข่าวสดออนไลน์/ ฐานเศรษฐกิจ/มติชนออนไลน์/เดลินิวส์/แนวหน้า
+                            </li>
+                            <li>
+                                ประชาสัมพันธ์ผ่าน Blog/สื่อโซเชียลมีเดียท่องเที่ยวที่มีชื่อเสียง
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="col3 reveal">
-                <div class="claim_img">
-                    <div class="claim_img_box">
-                        <div class="claim_img_scale">
-                            <picture>
-                                <source srcset="<?= base_url('assets/images/claim_03.svg') ?>">
-                                <source srcset="<?= base_url('assets/images/claim_03.png') ?>">
-                                <img src="<?= base_url('assets/images/claim_03.png') ?>" 
-                                width="138" height="128" alt="..." loading="lazy">
-                            </picture>
-                        </div>
-                    </div>
-                </div>
+            <div class="col4 reveal">
                 <div class="claim_content">
-                    <div class="claim_title" data-tab="3">สิทธิพิเศษในการแจ้งข้อมูลข่าวสาร</div>
+                    <div class="claim_title" data-tab="3">ยกระดับพัฒนาองค์กร Upskill-Re skil</div>
                     <div class="claim_txt" data-tab="3">
-                        ได้รับสิทธิพิเศษในการแจ้งข้อมูลข่าวสารการเปิดรับสมัครหรือเข้าร่วมงานส่งเสริมการขายต่าง ๆ 
-                        ของ ททท
-                    </div>
-                </div>
-            </div>
-
-            <div class="col3 reveal">
-                <div class="claim_img">
-                    <div class="claim_img_box">
-                        <div class="claim_img_scale">
-                            <picture>
-                                <source srcset="<?= base_url('assets/images/claim_04.svg') ?>">
-                                <source srcset="<?= base_url('assets/images/claim_04.png') ?>">
-                                <img src="<?= base_url('assets/images/claim_04.png') ?>" 
-                                width="138" height="128" alt="..." loading="lazy">
-                            </picture>
-                        </div>
-                    </div>
-                </div>
-                <div class="claim_content">
-                    <div class="claim_title" data-tab="4">สิทธิ์การเข้าร่วมอบรม</div>
-                    <div class="claim_txt" data-tab="4">
-                        ได้รับสิทธิ์การเข้าร่วมการอบรมหรือกิจกรรมพัฒนาศักยภาพด้านการตลาดการท่องเที่ยว 
-                        ที่จัดโดย ททท
+                        <ul>
+                            <li>
+                                ได้รับสิทธิ์ร่วมกิจกรรม Seminar/Workshop เช่น Digital Marketing Workshop  งานสัมมนาเจ้าบ้านที่ดี 2566
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -240,7 +244,7 @@
 <div class="ruleawards">
     <div class="row">
         <div class="col6 btn-ruleyellow reveal">
-            <a href="<?= base_url('awards-infomation') ?>?p=property" title="คุณสมบัติและวิธีการเข้าร่วมประกวด">คุณสมบัติและวิธีการเข้าร่วมประกวด 
+            <a href="javascript:;" title="กำหนดการโครงการฯ">กำหนดการโครงการฯ 
                 <picture>
                     <source srcset="<?= base_url('assets/images/arrow_next.svg') ?>">
                     <img src="<?= base_url('assets/images/arrow_next.png') ?>" width="24" height="24" alt="...">
@@ -248,7 +252,7 @@
             </a>
         </div>
         <div class="col6 btn-ruledblue reveal">
-            <a href="<?= base_url('awards-infomation') ?>?p=Judge" title="เกณฑ์การให้คะแนนและตัดสิน">เกณฑ์การให้คะแนนและตัดสิน 
+            <a href="<?= base_url('register') ?>" title="ลงทะเบียนเข้าสู่ระบบ">ลงทะเบียนเข้าสู่ระบบ 
                 <picture>
                     <source srcset="<?= base_url('assets/images/arrow_next.svg') ?>">
                     <img src="<?= base_url('assets/images/arrow_next.png') ?>" width="24" height="24" alt="...">
@@ -336,16 +340,6 @@
         cursor: pointer;
     }
 
-    .award-section-txt {
-        color: #FFF;
-        font-size: 20px !important;
-        font-weight: 600;
-        background: rgb(0, 0, 0);
-        background: rgba(0, 0, 0, 0.5);
-        transition: .5s ease;
-        width: auto;
-        border-top-right-radius: 10px;
-    }
 </style>
 <div class="container reveal"
 style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?>');">
@@ -421,155 +415,47 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
         window.open(url,'_blank');
     }
 </script>
-<!-- 
-<div class="container winnneraward reveal">
-    <img src="<?= base_url('assets/images/winner.jpg') ?>" alt="..." loading="lazy">
-</div>
 
-<div class="container commentaward">
-    <div class="row">
-        <div class="col12 reveal">
-            <div class="main-title">
-                <div class="catagory-txt">
-                    <picture>
-                        <source srcset="<?php //base_url('assets/images/traveller.svg') ?>">
-                        <source srcset="<?php //base_url('assets/images/traveller.png') ?>">
-                        <img src="<?php //base_url('assets/images/traveller.png') ?>" 
-                        width="145" height="36" alt="..." loading="lazy">
-                    </picture>
-                </div>
-                <div class="main-title-txt">
-                    <h2>ความคิดนักท่องเที่ยวที่มีต่อสถานที่ที่ได้รับรางวัล</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
-                        nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. nsectetuer adipiscing
-                        lit, sed diam nonummy ibh euismod tincidunt ut laoreet dolore magn</p>
+<div class="container qrcontact">
+    <div class="container_box">
+        <div class="row">
+            <div class="col12 reveal">
+                <div class="main-title">
+                    <div class="catagory-txt">
+                        <picture>
+                            <source srcset="<?= base_url('assets/images/contact.svg') ?>" />
+                            <source srcset="<?= base_url('assets/images/contact.png') ?>" />
+                            <img src="<?= base_url('assets/images/contact.png') ?>" width="145" height="36" alt="..." loading="lazy" />
+                        </picture>
+                    </div>
+                    <div class="main-title-txt">
+                        <h2>ติดต่อโครงการฯ</h2>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col12 reveal">
-            <section class="comment_slide slider" style="display: none;">
-                <div>
-                    <div class="comment_box">
-                        <div class="comment_txt">
-                            I want to talk about to things that are quite important to me. There are love and one my personal
-                            inadequacies. The thing is that I’m quite fond of love
-                        </div>
-                        <div class="comment_name">
-                            <div class="comment_img">
-                                <div class="trvel_img">
-                                    <div class="trvel_img_scale">
-                                        <img src="<?php //base_url('assets/images/traveller_01.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="trvel_name">คุณจันทรรัสม์ แก้วสมบุญ</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col12 reveal qrcode">
+                <p>
+                    <a href="https://lin.ee/KhaHCpd" target="_blank">
+                        <img src="<?= base_url('assets/images/qrcode.png') ?>" width="540" height="540" alt="..." loading="lazy">
+                    </a>
+                </p>
+            </div>
 
-                <div>
-                    <div class="comment_box">
-                        <div class="comment_txt">
-                            I want to talk about to things that are quite important to me. There are love and one my personal
-                            inadequacies. The thing is that I’m quite fond of love
-                        </div>
-                        <div class="comment_name">
-                            <div class="comment_img">
-                                <div class="trvel_img">
-                                    <div class="trvel_img_scale">
-                                        <img src="<?php //base_url('assets/images/traveller_02.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="trvel_name">คุณจันทรรัสม์ แก้วสมบุญ</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col12 reveal txt-center">
+                <p>
+                    <b>Line OA: <a href="https://lin.ee/KhaHCpd" target="_blank" class="txt-green">@touirsmawards</a></b>
+                </p>
+                <p>
+                    <b>ติดต่อสอบถามข้อมูลโครงการ<br><a href="tel:0641043958" class="txt-green">โทร. 064-104-3958</a></b>
+                </p>
+            </div>
 
-                <div>
-                    <div class="comment_box">
-                        <div class="comment_txt">
-                            I want to talk about to things that are quite important to me. There are love and one my personal
-                            inadequacies. The thing is that I’m quite fond of love
-                        </div>
-                        <div class="comment_name">
-                            <div class="comment_img">
-                                <div class="trvel_img">
-                                    <div class="trvel_img_scale">
-                                        <img src="<?php //base_url('assets/images/traveller_03.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="trvel_name">คุณจันทรรัสม์ แก้วสมบุญ</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="comment_box">
-                        <div class="comment_txt">
-                            I want to talk about to things that are quite important to me. There are love and one my personal
-                            inadequacies. The thing is that I’m quite fond of love
-                        </div>
-                        <div class="comment_name">
-                            <div class="comment_img">
-                                <div class="trvel_img">
-                                    <div class="trvel_img_scale">
-                                        <img src="<?php //base_url('assets/images/traveller_01.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="trvel_name">คุณจันทรรัสม์ แก้วสมบุญ</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="comment_box">
-                        <div class="comment_txt">
-                            I want to talk about to things that are quite important to me. There are love and one my personal
-                            inadequacies. The thing is that I’m quite fond of love
-                        </div>
-                        <div class="comment_name">
-                            <div class="comment_img">
-                                <div class="trvel_img">
-                                    <div class="trvel_img_scale">
-                                        <img src="<?php //base_url('assets/images/traveller_02.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="trvel_name">คุณจันทรรัสม์ แก้วสมบุญ</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="comment_box">
-                        <div class="comment_txt">
-                            I want to talk about to things that are quite important to me. There are love and one my personal
-                            inadequacies. The thing is that I’m quite fond of love
-                        </div>
-                        <div class="comment_name">
-                            <div class="comment_img">
-                                <div class="trvel_img">
-                                    <div class="trvel_img_scale">
-                                        <img src="<?php //base_url('assets/images/traveller_03.jpg') ?>" width="200" height="200" alt="..." loading="lazy">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="trvel_name">คุณจันทรรัสม์ แก้วสมบุญ</div>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
         </div>
     </div>
+</div>
 
-</div> -->
-
-<div class="container newsaward">
+<div class="container newsaward" style="display: none;">
     <div class="container_box">
         <div class="row">
             <div class="col12 reveal">
@@ -658,6 +544,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
 
     </div>
 </div>
+
 <script type="text/javascript">
     jQuery(document).ready(function($) {
 
@@ -738,28 +625,28 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
             // });
             // $('.branch_txt').css("height", branchtxtheight + 20);
             //----------------------------------------------------------------------------------//
-            var claimtitle = $('.claim_title').length;
-            var claimtitletab = [];
-            for (var i = 1; i <= claimtitle;) {
-                claimtitletab[i] = $('.claim_title[data-tab="' + i + '"]').height();
-                i++
-            }
-            var claimtitleheight = claimtitletab.reduce(function(a, b) {
-                return Math.max(a, b);
-            });
-            $('.claim_title').css("height", claimtitleheight);
+            // var claimtitle = $('.claim_title').length;
+            // var claimtitletab = [];
+            // for (var i = 1; i <= claimtitle;) {
+            //     claimtitletab[i] = $('.claim_title[data-tab="' + i + '"]').height();
+            //     i++
+            // }
+            // var claimtitleheight = claimtitletab.reduce(function(a, b) {
+            //     return Math.max(a, b);
+            // });
+            // $('.claim_title').css("height", claimtitleheight);
 
             //----------------------------------------------------------------------------------//
-            var claimtxt = $('.claim_txt').length;
-            var claimtxttab = [];
-            for (var i = 1; i <= claimtxt;) {
-                claimtxttab[i] = $('.claim_txt[data-tab="' + i + '"]').height();
-                i++
-            }
-            var claimtxtheight = claimtxttab.reduce(function(a, b) {
-                return Math.max(a, b);
-            });
-            $('.claim_txt').css("height", claimtxtheight);
+            // var claimtxt = $('.claim_txt').length;
+            // var claimtxttab = [];
+            // for (var i = 1; i <= claimtxt;) {
+            //     claimtxttab[i] = $('.claim_txt[data-tab="' + i + '"]').height();
+            //     i++
+            // }
+            // var claimtxtheight = claimtxttab.reduce(function(a, b) {
+            //     return Math.max(a, b);
+            // });            
+            // $('.claim_txt').css("height", `${claimtxtheight}px`);
 
         } else if (screen_w >= 768) {
             $(".comment_slide").css("display", "block");
@@ -770,6 +657,18 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                 slidesToShow: 2,
                 slidesToScroll: 2
             });
+            //----------------------------------------------------------------------------------//
+            var branchtitle = $('.branch_title').length;
+            var branchtitletab = [];
+            for (var i = 1; i <= branchtitle;) {
+                branchtitletab[i] = $('.branch_title[data-tab="' + i + '"]').height();
+                i++
+            }
+            var branchtitleheight = branchtitletab.reduce(function(a, b) {
+                return Math.max(a, b);
+            });
+            $('.branch_title').css("height", branchtitleheight);
+            //----------------------------------------------------------------------------------//
         } else if (screen_w < 768) {
             $(".comment_slide").css("display", "block");
             $(".comment_slide").slick({

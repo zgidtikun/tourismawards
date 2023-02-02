@@ -241,7 +241,8 @@ class FrontendController extends BaseController
                     </button>
                     <br><br>
                     ส่งผลงานได้ที่ E-mail : tourismawards14@gmail.com
-                    <br>โดยระบุชื่อเรื่อง : ประเภท สาขาที่สมัคร + ชื่อที่ท่านส่งเข้าประกวด';
+                    <br>โดยระบุชื่อเรื่อง : ประเภท สาขาที่สมัคร + ชื่อที่ท่านส่งเข้าประกวด
+                    <br>ภายในวันที่ 2 - 11 มิถุนายน 2566';
             } else {
                 $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
                 $data->result->content = 'ขอขอบพระคุณผู้ประกอบการที่เข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566'

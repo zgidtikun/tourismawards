@@ -169,8 +169,8 @@
         </div>
 
         <div class="text-end">
-          <?php if (!empty($result->approve_time)) : ?>
-            ผู้อนุมัติ: <?= $result->approve_name ?> อัพเดทวันที่ <?= docDate($result->approve_time, 3) ?> <?= date('H:i', strtotime($result->approve_time)) ?> น.
+          <?php if (!empty($committees->created_at)) : ?>
+            ผู้มอบหมายกรรมการ : <?= adminName($committees->created_by) ?> วันที่ <?= docDate($committees->created_at, 3) ?> เวลา <?= date('H:i', strtotime($committees->created_at)) ?> น.
           <?php endif; ?>
         </div>
 

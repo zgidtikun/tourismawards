@@ -469,16 +469,16 @@ class App extends BaseConfig
     public $RECAPCHA_CK = false;
     public $RECAPCHA_KEY = '6LdC6vghAAAAANJyaGCqYGZ1eY6YrKgRb40B8Ay4';
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
-    public $Register_expired = '2023-03-01'; // วันหมดเขต Register
-    public $APPForm_expired = '2023-02-28'; // วันหมดเขตส่งใบสมัคร
-    public $Pre_open = '2021-03-05'; // วันเปิดแบบฟอร์มรอบ Pre-screen
-    public $Pre_expired = '2023-03-05'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
-    public $announcement_ons_date = '2022-01-01'; // วันที่ประกาศผล ลงพื้นที่
-    public $announcement_pre_date = '2022-01-01'; // วันที่ประกาศผล prescreen
-    public $announcement_date = '2022-01-01'; // วันที่ประกาศผลรางวัล
-    public $Estimate_pre_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ Pre-screen
+    public $Register_expired = '2023-04-30'; // วันหมดเขต Register
+    public $APPForm_expired = '2023-04-30'; // วันหมดเขตส่งใบสมัคร
+    public $Pre_open = '2023-01-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
+    public $Pre_expired = '2023-05-07'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
+    public $announcement_pre_date = '2023-06-01'; // วันที่ประกาศผล prescreen
+    public $announcement_ons_date = '2024-01-01'; // วันที่ประกาศผล ลงพื้นที่
+    public $announcement_date = '2024-01-01'; // วันที่ประกาศผลรางวัล
+    public $Estimate_require_date = '2023-05-15'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
+    public $Estimate_pre_date = '2023-05-25'; // วันหมดเขตการประเมินรอบ Pre-screen
     public $Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่
-    public $Estimate_require_date = '2023-05-06'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
     public $JudgingCriteriaPre = 18;
     public $JudgingCriteriaOnst = 57;
     public $JudgingCriteriaScore;
@@ -510,15 +510,15 @@ class App extends BaseConfig
 
         if(getenv('CI_ENVIRONMENT') == 'production'){
             $this->baseURL = 'http://tourismawards.tourismthailand.org';
-            $this->Register_expired = '2023-03-01'; // วันหมดเขต Register
-            $this->APPForm_expired = '2023-04-15'; // วันหมดเขตส่งใบสมัคร
+            $this->Register_expired = '2023-04-30'; // วันหมดเขต Register
+            $this->APPForm_expired = '2023-04-30'; // วันหมดเขตส่งใบสมัคร
             $this->Pre_open = '2023-03-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
-            $this->Pre_expired = '2023-04-23'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
-            $this->announcement_pre_date = '2023-05-19'; // วันที่ประกาศผล prescreen
+            $this->Pre_expired = '2023-05-07'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
+            $this->announcement_pre_date = '2023-06-01'; // วันที่ประกาศผล prescreen
             $this->announcement_ons_date = '2024-01-01'; // วันที่ประกาศผล ลงพื้นที่
             $this->announcement_date = '2024-01-01'; // วันที่ประกาศผลรางวัล
-            $this->Estimate_require_date = '2023-05-06'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
-            $this->Estimate_pre_date = '2023-05-10'; // วันหมดเขตการประเมินรอบ Pre-screen
+            $this->Estimate_require_date = '2023-05-15'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
+            $this->Estimate_pre_date = '2023-05-25'; // วันหมดเขตการประเมินรอบ Pre-screen
             $this->Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่
         }
         elseif(getenv('CI_ENVIRONMENT') == 'testing'){

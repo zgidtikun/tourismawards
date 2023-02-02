@@ -1,4 +1,12 @@
 <style>
+    .winner-title {
+        font-size: 5vw;
+    }
+
+    .winner-title-large {
+        font-size: 10vw;
+    }
+
     .award-section-col {
         cursor: pointer;
     }
@@ -6,8 +14,8 @@
     .award-section-txt {
         font-size: 20px !important;
         font-weight: 600;
-        background: rgb(0, 0, 0);
-        background: rgba(0, 0, 0, 0.5);
+        /* background: rgb(0, 0, 0);
+        background: rgba(0, 0, 0, 0.5); */
         transition: .5s ease;
         width: auto;
         border-top-right-radius: 10px;
@@ -26,12 +34,6 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                         2023
                     </div>
                 </div>
-
-                <!-- <p class="txt-center">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse
-                    ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. 
-                </p> -->
 
                 <div class="award-section">
                     <!-- <div class="award-section-col" onclick="toAwardsWinner('attraction')"> -->

@@ -475,16 +475,13 @@ class Officer extends BaseController
     {
         // px(vDecryption($data['verify_code']));
         // px($data);
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . $data['verify_code']) . '"  target="_blank">ยืนยันตัวตน</a></b>';
+        $text = 'กรุณายืนยันตัวตนของท่านผ่านทางอีเมล เพื่อทำการล็อกอินเข้าสู่เว็บไซต์ ท่านจำเป็นต้องยืนยันตัวตน โปรดกดที่ <b><a href="' . base_url('administrator/verify-password?t=' . $data['verify_code']) . '"  target="_blank">ยืนยันตัวตน</a></b>';
         if ($data['users']->password != "") {
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }
         $email_data = [
             '_header' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
-            '_content' => 'คุณได้รับการสมัครเป็นคณะกรรมการการตัดสิน '
-                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
-                . 'ด้วยอีเมล ' . $data['users']->email . ' '
-                . $text
+            '_content' => $text
         ];
         $requestEmail = [
             'to' => $data['users']->email,
@@ -502,20 +499,17 @@ class Officer extends BaseController
     {
         // px(vDecryption($data['verify_code']));
         // px($data);
-        $text = 'โปรดยืนยันตัวตนด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url('administrator/verify-password?t=' . $data['verify_code']) . '"  target="_blank">ยืนยันตัวตน</a></b>';
+        $text = 'กรุณายืนยันตัวตนของท่านผ่านทางอีเมล เพื่อทำการล็อกอินเข้าสู่เว็บไซต์ ท่านจำเป็นต้องยืนยันตัวตน โปรดกดที่ <b><a href="' . base_url('administrator/verify-password?t=' . $data['verify_code']) . '"  target="_blank">ยืนยันตัวตน</a></b>';
         if ($data['users']->password != "") {
             $text = 'โปรดเข้าสู่ระบบด้วยการกดที่ลิ้งนี้ <b><a href="' . base_url() . '" target="_blank">' . base_url() . '</a></b>';
         }
         $email_data = [
             '_header' => 'เรียนคุณ ' . $data['users']->name . ' ' . $data['users']->surname,
-            '_content' => 'คุณได้รับการสมัครเป็นเจ้าหน้าที่ ททท. '
-                . 'อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) '
-                . 'ด้วยอีเมล ' . $data['users']->email . ' '
-                . $text
+            '_content' => $text
         ];
         $requestEmail = [
             'to' => $data['users']->email,
-            'subject' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
+            'subject' => 'ยืนยันตัวตน',
             'message' => view('administrator/template_email', $email_data),
             // 'from' => $from,
             // 'cc' => [],

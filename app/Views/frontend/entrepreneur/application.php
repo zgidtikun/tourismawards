@@ -1428,6 +1428,7 @@
         $( "#step5-hiddenDate" ).datepicker({ 
             dateFormat: 'yy/mm/dd', 
             maxDate: '-1Y',
+            yearRange: "-100:+0",
             changeMonth: true,
             changeYear: true,
             dayNames: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],

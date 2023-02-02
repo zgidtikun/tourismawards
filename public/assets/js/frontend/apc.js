@@ -1179,7 +1179,7 @@ $('[name=step5-t2-buildExt]').on('click', function(){
 });
 
 $('#step5-t2-bussLicense').on('keyup change input', function(){ 
-    const value = $(this).val().replace(/[^0-9]/g,'');
+    const value = $(this).val().replace(/[^0-9\/]/g,'');
     $(this).val(value)
     register.formData.step5.bussLicense = value; 
     register.change = true;
@@ -1193,7 +1193,7 @@ $('[name=step5-t2-bussCkRoom]').on('click', function(){
 });
 
 $('#step5-t3-bussLicense').on('keyup change input', function(){ 
-    const value = $(this).val().replace(/[^0-9]/g,'');
+    const value = $(this).val().replace(/[^0-9\/]/g,'');
     $(this).val(value)
     register.formData.step5.bussLicenseT3 = value; 
     register.change = true;
@@ -1225,7 +1225,7 @@ $('[name=step5-t3-outlander]').on('click', function(){
 });
 
 $('#step5-t4-bussLicense').on('keyup change input', function(){  
-    const value = $(this).val().replace(/[^0-9]/g,'');
+    const value = $(this).val().replace(/[^0-9\/]/g,'');
     $(this).val(value)
     register.formData.step5.bussLicenseT4 = value; 
     register.change = true;

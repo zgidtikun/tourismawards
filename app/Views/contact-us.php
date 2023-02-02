@@ -49,9 +49,7 @@
                                     เบอร์โทรศัพท์
                                 </div>
                                 <div class="contact-txt">
-                                    <b>02-250-5500</b><br>
-                                    ศูนย์บริการข่าวสาร<br>
-                                    การท่องเที่ยว ททท. 1672
+                                    <b><a href="tel:0641043958">064-104-3958</a></b>
                                 </div>
                             </div>
                         </li>
@@ -61,15 +59,17 @@
                             <div class="contact-col">
                                 <div class="contact-img">
                                     <picture>
-                                        <source srcset="<?=base_url('assets/images/mail.svg')?>">
-                                        <img src="<?=base_url('assets/images/mail.png')?>">
+                                        <source srcset="<?=base_url('assets/images/line.svg')?>">
+                                        <img src="<?=base_url('assets/images/line.png')?>">
                                     </picture>
                                 </div>
                                 <div class="contact-subject">
-                                    อีเมล
+                                    Line Official Account 
+
                                 </div>
                                 <div class="contact-txt">
-                                    tourismawards14@gmail.com
+                                <a href="https://lin.ee/KhaHCpd
+" target="_blank">@tourismawards</a>
                                 </div>
                             </div>
                         </li>
@@ -112,7 +112,8 @@
                 </div>
 
                 <div class="contact-form">
-                    <div class="contact-form-row">
+                <div class="contact-form-row">
+
                         <div class="contact-form-col2 inputfield">
                             <label data-tab="1" id="lName">ชื่อ-นามสกุล<span class="required">*</span></label>
                             <input type="text" id="sName" data-tab="1">
