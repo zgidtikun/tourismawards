@@ -111,25 +111,25 @@
                     $judge = '';
                     if (!empty(json_decode($value->admin_id_tourism))) {
                       $judge .= '<p><small> ด้าน Tourism Excellence (Product/Service)</small></p>';
-                      foreach (json_decode($value->admin_id_tourism) as $key => $val) {
+                      foreach (json_decode($value->admin_id_tourism) as $k => $val) {
                         $judge .= '<p>' . usersName($val) . '</p>';
                       }
                     }
                     if (!empty(json_decode($value->admin_id_supporting))) {
                       $judge .= '<p><small> ด้าน Supporting Business & Marketing Factors</small></p>';
-                      foreach (json_decode($value->admin_id_supporting) as $key => $val) {
+                      foreach (json_decode($value->admin_id_supporting) as $k => $val) {
                         $judge .= '<p>' . usersName($val) . '</p>';
                       }
                     }
                     if (!empty(json_decode($value->admin_id_responsibility))) {
                       $judge .= '<p><small> ด้าน Responsibility and Safety & Health Administration</small></p>';
-                      foreach (json_decode($value->admin_id_responsibility) as $key => $val) {
+                      foreach (json_decode($value->admin_id_responsibility) as $k => $val) {
                         $judge .= '<p>' . usersName($val) . '</p>';
                       }
                     }
                     if (!empty(json_decode($value->admin_id_lowcarbon))) {
                       $judge .= '<p><small> ด้าน Low Carbon</small></p>';
-                      foreach (json_decode($value->admin_id_lowcarbon) as $key => $val) {
+                      foreach (json_decode($value->admin_id_lowcarbon) as $k => $val) {
                         $judge .= '<p>' . usersName($val) . '</p>';
                       }
                     }
@@ -342,23 +342,23 @@
 
       var total_lowcarbon_score = F2C(Number(DF2C(res.lowcarbon_score)) + Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs)));
       $('#lowcarbon_score').html(res.lowcarbon_score);
-      $('#reponsibility_lowcarbon_score').html(F2C(Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs))));
-      $('#total_lowcarbon_score').html(total_lowcarbon_score);
-      $('#total_score_lowcarbon').html(F2C(total_lowcarbon_score * 100 / 45));
+      // $('#reponsibility_lowcarbon_score').html(F2C(Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs))));
+      // $('#total_lowcarbon_score').html(total_lowcarbon_score);
+      // $('#total_score_lowcarbon').html(F2C(total_lowcarbon_score * 100 / 45));
 
       var total_tourism = Number(DF2C(res.score_prescreen_te)) + Number(DF2C(res.score_onsite_te));
       var total_supporting = Number(DF2C(res.score_prescreen_sb)) + Number(DF2C(res.score_onsite_sb));
       var total_reponsibility = Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs));
 
-      $('#total_tourism').html(F2C(total_tourism));
-      $('#total_supporting').html(F2C(total_supporting));
-      $('#total_reponsibility').html(F2C(total_reponsibility));
+      // $('#total_tourism').html(F2C(total_tourism));
+      // $('#total_supporting').html(F2C(total_supporting));
+      // $('#total_reponsibility').html(F2C(total_reponsibility));
 
       $('#sum_pre').html(F2C(Number(res.score_prescreen_te) + Number(res.score_prescreen_sb) + Number(res.score_prescreen_rs)));
       // $('#sum_onsite').html(F2C(Number(res.score_onsite_te) + Number(res.score_onsite_sb) + Number(res.score_onsite_rs)));
-      $('#sum_total').html(F2C(Number(total_tourism) + Number(total_supporting) + Number(total_reponsibility)));
+      // $('#sum_total').html(F2C(Number(total_tourism) + Number(total_supporting) + Number(total_reponsibility)));
 
-      $('#total_score').html(F2C(total_tourism + total_supporting + total_reponsibility));
+      // $('#total_score').html(F2C(total_tourism + total_supporting + total_reponsibility));
     }
 
     $('.hidebox-login').show().addClass('active');

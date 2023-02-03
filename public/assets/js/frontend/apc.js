@@ -283,7 +283,6 @@ const register = {
                             if(!app.request_expired){
                                 $('#comoment').html(app.judge_comment);
                                 $('#formstep-sts').addClass('notpass');
-                                let sts_html = $('#formstep-sts').html();
                                 $('#formstep-sts').html('ตอบกลับ ภายในวันที่ '+app.request_time_str);
                                 $('.form-main-title, .formstatus-comoment').removeClass('hide');
                                 $('#formstatus-uncomplete').removeClass('hide');
@@ -547,26 +546,7 @@ const register = {
                 if(map.require){
                     if(empty(register.formData['step'+tab.step][map.variant])){
                         checkRequire = false;
-                    } 
-                    // else {
-                    //     if(map.input == '#step2-zipcode'){
-                    //         if(register.formData['step'+tab.step][map.variant].length != 5){
-                    //             checkRequire = false;
-                    //         } else {
-                    //             $(map.input).removeClass('is-invalid');
-                    //         }
-                    //     } 
-                    //     else if(map.input == '#step4-email'){
-                    //         if(!pattern_email.test(register.formData['step'+tab.step][map.variant])){
-                    //             checkRequire = false;
-                    //         } else {
-                    //             $(map.input).removeClass('is-invalid');
-                    //         }
-                    //     }
-                    //     else {
-                    //         $(map.input).removeClass('is-invalid');
-                    //     }
-                    // }
+                    }  
                 }
             });
 

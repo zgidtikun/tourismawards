@@ -359,7 +359,7 @@
   function re_submit(user_id, app_id) {
     var option = {
       title: "Warning!",
-      text: "คุณต้องการยืนยันการตอบกลับเอกสารเพื่อให้กรรมการประเมินรอบลงพื้นที่ใหม่หรือไม่?",
+      text: "ยืนยันการเปิดสิทธิ์ให้กรรมการประเมินรอบลงพื้นที่ใหม่อีกครั้ง",
     }
     swal_confirm(option).done(function() {
       var res = main_post(BASE_URL_BACKEND + '/complete/reSubmit', {

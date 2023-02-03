@@ -105,7 +105,7 @@
                     }
                 ?>
                     <tr>
-                      <td><?= $key + 1 ?></td>
+                      <td><?= ($key + 1) ?></td>
                       <td class="text-center"><?= $value->code ?></td>
                       <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>

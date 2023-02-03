@@ -16,7 +16,7 @@ class FilesController extends BaseController
             $id = $this->input->getVar('id');
 
             if($images = $this->input->getFiles()){
-                $path = 'uploads/'.date('Y').'/'.date('m').'/'.date('d').'/images.';
+                $path = 'uploads/'.date('Y').'/'.date('m').'/'.date('d').'/images';
                 foreach($images['image'] as $image){
                     if($image->isValid() && !$image->hasMoved()){
                         $extension = $image->guessExtension();
@@ -41,7 +41,7 @@ class FilesController extends BaseController
                         }
                     }
                 }
-            };
+            }
         } catch(Exception $e){
             save_log_error([
                 'module' => 'profile_upload',

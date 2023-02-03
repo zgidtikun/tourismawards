@@ -214,7 +214,7 @@
                           <tr>
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:60px 10px 10px;font-family:'Montserrat',sans-serif;" align="left">
 
-                              <h2 class="v-font-size" style="margin: 0px; color: #1b510a; line-height: 120%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: helvetica,sans-serif; font-size: 20px;">
+                              <h2 class="v-font-size" style="margin: 0px; color: #b6932f; line-height: 120%; text-align: left; word-wrap: break-word; font-weight: normal; font-family: helvetica,sans-serif; font-size: 20px;">
                                 <strong><?=$_header?></strong>
                               </h2>
 
@@ -248,7 +248,7 @@
                                   <span style="color: #fff; font-size: 14px; line-height: 19.6px;">10400 ประเทศไทย</span>
                                 </p>
                                 <p style="font-size: 14px; line-height: 140%;">
-                                  <span style="color: #fff; font-size: 14px; line-height: 19.6px;">โทร : 02-250-5500</span><br/>
+                                  <span style="color: #fff; font-size: 14px; line-height: 19.6px;">โทร : 064-104-3958</span><br/>
                                   <!-- <span style="color: #fff; font-size: 14px; line-height: 19.6px;">อีเมล์ : tourismawards.tat@gmail.com</span> -->
                                 </p>
                               </div>

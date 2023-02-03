@@ -1,122 +1,99 @@
-const mf = [    
+const mapField = [    
     { ip: '#p-prefix', id: 'p-prefix', iv: '', ps: 'form', api: 'prefix', validate: true },
     { ip: '#p-name', id: 'p-name', iv: '#nvalid-p-name', ps: 'form', api: 'name', validate: true },
     { ip: '#p-surname', id: 'p-surname', iv: '#nvalid-p-surname', ps: 'form', api: 'surname', validate: true },
     { ip: '#p-mobile', id: 'p-mobile', iv: '#nvalid-p-mobile', ps: 'form', api: 'mobile', validate: true },
-    { ip: '#p-email', id: 'p-email', iv: '#nvalid-p-email', ps: 'none', api: 'email', validate: true },
-    { ip: '#p-email', id: 'p-email', iv: null, ps: 'none', api: 'username', validate: false },
-    { ip: '#p-uimage', id: 'p-uimage', src: '#p-image', ps: 'file', s: 10 },
+    { ip: '#p-uimage', id: 'p-uimage', src: '#p-image', ps: 'file', size: 10 },
 ];
 
 const getId = () => {
     return $('.container').attr('data-sess-id');
 };
 
-const pf = {
-    save(){
-        if(this.validation()){
-            let st = {
-                method: 'action',
-                url: '/inner-api/profile/update',
+const save = async() => {
+    if(validation()){
+        const setting = {
+            method: 'post',
+            url: '/inner-api/profile/update',
+            data : {
+                profile: {}
             }
-
-            let fd = new FormData();
-            fd.append('id',getId());
-
-            $.each(mf, function(k,v){
-                if(v.ps == 'form'){
-                    fd.append('profile['+v.api+']',$(v.ip).val());
-                }
-            });
-            
-            st.data = fd;
-
-            api(st).then(function(r){
-                let s = r;
-
-                if(s.result == 'error_login'){
-                    alert.login();
-                } else if(s.result == 'success'){
-                    alert.show(s.result,'อัพเดทข้อมูลเรียบร้อยแล้ว','').then(function(a){                        
-                        // window.location.reload();
-                    });
-                } else {
-                    alert.show(s.result,'ไม่สามารถอัพเดทข้อมูลได้',s.message);
-                }
-            });
         }
-    },
-    validation(){
-        let iv = true;
-        const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-        $.each(mf, function(k, m){
-            if(m.ps == 'form' && m.validate){
-                if(empty($(m.ip).val())){
-                    if(m.id == 'p-email'){
-                        $(m.iv).html('กรุณากรอก อีเมล');
-                    }
-
-                    $(m.ip).addClass('is-invalid');
-                    iv = false;
-                } else {
-                    if(m.id == 'p-email'){
-                        if(!pattern.test($(m.ip).val())){
-                            $(m.ip).addClass('is-invalid');
-                            $(m.iv).html('กรุณากรอก อีเมล ให้ถูกต้อง');
-                            iv = false;
-                        } else {
-                            $(m.ip).removeClass('is-invalid');
-                        }
-                    } else {
-                        $(m.ip).removeClass('is-invalid');
-                    }
-                }
+        $.each(mapField, (key,map) => {
+            if(map.ps == 'form'){
+                setting.data.profile[map.api] = $(map.ip).val();
             }
         });
-
-        return iv;
-    }
-};
-
-const onFileHandel = (id) => {
-    const a = ['image/jpg','image/jpeg','image/png'];
-    const s = mf.find(el => el.id == id);
-    const h = $(s.ip)[0].files[0];
-    
-    if(!empty(h)){
-        const mb = (h.size / (1024 * 1024)).toFixed(2);
         
-        if(mb > s.s){
-            alert.show('error','ไม่สามารถอัพโหลดรูปได้','ขนาดไฟล์ไม่เกิน '+s.s+' เท่านั้น');
+        const callback = await api(setting);        
+
+        if(callback.result == 'error_login'){
+            alert.login();
+        } 
+        else {
+            const title = callback.result == 'success' ? 'อัพเดทข้อมูลเรียบร้อยแล้ว' : 'ไม่สามารถอัพเดทข้อมูลได้';
+            const text = callback.result == 'success' ? '' : callback.message;
+            alert.show(callback.result,title,text);
+        }
+
+    }
+}
+
+const validation = () => {
+    let valid = true;
+
+    $.each(mapField, (key, map) => {
+        if(map.ps == 'form' && map.validate){
+            if(empty($(map.ip).val())){
+                $(map.ip).addClass('is-invalid');
+                valid = false;
+            }
+        }
+    });
+
+    return valid;
+}
+
+const onFileHandel = async(id) => {
+    const accept = ['image/jpg','image/jpeg','image/png'];
+    const map = mapField.find(el => el.id == id);
+    const handel = $(map.ip)[0].files[0];
+    
+    if(!empty(handel)){
+        const mb = (handel.size / (1024 * 1024)).toFixed(2);
+        
+        if(mb > map.size){
+            alert.show('error','ไม่สามารถอัพโหลดรูปได้','ขนาดไฟล์ไม่เกิน '+s.s+'MB เท่านั้น');
             return;
         }
 
-        if($.inArray(h.type,a) === -1){
+        if($.inArray(handel.type,accept) === -1){
             alert.show('error','ไม่สามารถอัพโหลดรูปได้','กรุณาเลือกเป็นไฟล์ .jpeg, .jpg, .png เท่านั้น');
+            return;
         }
 
-        let fd = new FormData();
-        fd.append('id',getId());
-        fd.append('image[]',h);
+        const formData = new FormData();
+        formData.append('id',getId());
+        formData.append('image[]',handel);
 
-        let st = {
+        const setting = {
             method: 'action',
             url: '/inner-api/profile/upload/image',
-            data: fd
+            data: formData
         }
 
-        api(st).then(function(r){
-            let ul = r;
+        const callback = await api(setting);
 
-            if(ul.result == 'error_login'){
-                alert.login();
-            } else if(ul.result == 'success'){
-                $('#header-img-profile').attr('src',ul.link);
-                $(s.src).attr('src',ul.link);
-            } else {
-                alert.show(ul.result,'ไม่สามารถอัพโหลดรูปได้',ul.message);
-            }
-        });
+        if(callback.result == 'error_login'){
+            alert.login();
+        } 
+        else if(callback.result == 'success'){
+            $('#header-img-profile').attr('src',callback.link);
+            $(map.src).attr('src',callback.link);
+        } 
+        else {
+            alert.show(callback.result,'ไม่สามารถอัพโหลดรูปได้',callback.message);
+        }
     }
 }

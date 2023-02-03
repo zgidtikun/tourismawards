@@ -1,7 +1,11 @@
+const getReferance = input => {
+    return referance.find(el => el.input == input);
+}
+
 const onFileHandle = (setting, input, type) => {
     const handle = $(input)[0].files;
     const filter = accept[type];
-    const ref = referance.find(el => el.input == input);
+    const ref = getReferance(input);
     let check = true;
     let error, total;
         
@@ -77,7 +81,7 @@ const lockUpload = (label,btn,action) => {
 
 const uploadFile = async(setting, input, handleBy) => {
     const formData = new FormData();
-    const ref = referance.find(el => el.input == input);
+    const ref = getReferance(input);
     const handle = handleBy == 'input' ? $(input)[0].files : setting.files;
     let api_setting = {};
     let callback;
@@ -201,7 +205,7 @@ const uploadFile = async(setting, input, handleBy) => {
 }
 
 const removeFile = async(input, setting) => {
-    const ref = referance.find(el => el.input == input);
+    const ref = getReferance(input);
     let api_setting = {},
         pointer;
         
@@ -231,79 +235,74 @@ const removeFile = async(input, setting) => {
 
         setting.position = ref.position;
         api_setting.data = setting;
-        
-        api(api_setting).then(async(response) => {
-            let res = response;
-            let wait;
 
-            if (res.result == 'error_login') {
-                alert.login();
-            } 
-            else if (res.result == 'success' && ref.app == 'awards/application') {
-                if (setting.remove == 'fixed') {
-                    register.formData[ref.pointer[0]][ref.pointer[1]] = [];
-                    register.count[ref.pointer[1]] = 0;
-                    wait = true;
+        const callback = await api(api_setting);
 
-                    $.each(res.files, function(key, file) {
-                        if (file.file_position == ref.position) {
-                            register.formData[ref.pointer[0]][ref.pointer[1]].push(file);
-                            register.count[ref.pointer[1]]++;
-                            wait = false;
-                        }
-                    });
-                } else {
-                    register.formData[ref.pointer[0]][ref.pointer[1]] = [];
-                    register.count[ref.pointer[1]] = 0;                    
-                }
-                register.checkComplete();
-                showFiles.tycoon(input, register.formData[ref.pointer[0]][ref.pointer[1]]);
-            } 
-            else if (res.result == 'success' && ref.app == 'awards/pre-screen') {
-                if (setting.remove == 'fixed') {
-                    psc.questions[pointer.cate].question[pointer.seg][ref.position] = res.files;
-                } else {
-                    psc.questions[pointer.cate].question[pointer.seg][ref.position] = [];
-                }
-                
-                showFiles.tycoon(input, psc.questions[pointer.cate].question[pointer.seg][ref.position]);
-            } 
-            else if (res.result == 'success' && ref.app == 'estimate/onsite') {
-                if (setting.remove == 'fixed') {
-                    dataset[pointer.cate].question[pointer.seg].estFiles[ref.position] = res.files;
-                } else {
-                    dataset[pointer.cate].question[pointer.seg].estFiles[ref.position] = [];
-                }
+        if (callback.result == 'error_login') {
+            alert.login();
+        } 
+        else if (callback.result == 'success' && ref.app == 'awards/application') {
+            if (setting.remove == 'fixed') {
+                register.formData[ref.pointer[0]][ref.pointer[1]] = [];
+                register.count[ref.pointer[1]] = 0;
 
-                showFiles.tycoon(input, dataset[pointer.cate].question[pointer.seg].estFiles[ref.position]);
-               
-            } 
-            else {
-                if(ref.app == 'awards/pre-screen'){
-                    await psc.waitDraft('finish');
-                }
-                else if(ref.app == 'estimate/onsite'){
-                    await waitDraft('finish');
-                }
-
-                alert.show(res.result, 'ไม่สามารถลบไฟล์ได้', res.message);
+                $.each(callback.files, function(key, file) {
+                    if (file.file_position == ref.position) {
+                        register.formData[ref.pointer[0]][ref.pointer[1]].push(file);
+                        register.count[ref.pointer[1]]++;
+                    }
+                });
+            } else {
+                register.formData[ref.pointer[0]][ref.pointer[1]] = [];
+                register.count[ref.pointer[1]] = 0;                    
+            }
+            register.checkComplete();
+            showFiles.tycoon(input, register.formData[ref.pointer[0]][ref.pointer[1]]);
+        } 
+        else if (callback.result == 'success' && ref.app == 'awards/pre-screen') {
+            if (setting.remove == 'fixed') {
+                psc.questions[pointer.cate].question[pointer.seg][ref.position] = callback.files;
+            } else {
+                psc.questions[pointer.cate].question[pointer.seg][ref.position] = [];
+            }
+            
+            showFiles.tycoon(input, psc.questions[pointer.cate].question[pointer.seg][ref.position]);
+        } 
+        else if (callback.result == 'success' && ref.app == 'estimate/onsite') {
+            if (setting.remove == 'fixed') {
+                dataset[pointer.cate].question[pointer.seg].estFiles[ref.position] = callback.files;
+            } else {
+                dataset[pointer.cate].question[pointer.seg].estFiles[ref.position] = [];
             }
 
-            $(ref.btnrm).prop('disabled', false);
-            $(ref.btnrm).html('Remove All');
-        });
+            showFiles.tycoon(input, dataset[pointer.cate].question[pointer.seg].estFiles[ref.position]);
+            
+        } 
+        else {
+            if(ref.app == 'awards/pre-screen'){
+                await psc.waitDraft('finish');
+            }
+            else if(ref.app == 'estimate/onsite'){
+                await waitDraft('finish');
+            }
+
+            alert.show(res.result, 'ไม่สามารถลบไฟล์ได้', res.message);
+        }
+
+        $(ref.btnrm).prop('disabled', false);
+        $(ref.btnrm).html('Remove All');
     }
 }
 
 const downloadFile = (input) => {
+    const ref = getReferance(input);
     let id, url, pointer,
         emptyFile = false;
-    const ref = referance.find(el => el.input == input);
 
     if (ref.app == 'awards/application') {
         if(register.count[ref.pointer[1]] > 0){
             id = register.id;
-            url = getBaseUrl() + '/inner-api/app/download/file';
+            url = `${getBaseUrl()}/inner-api/app/download/file`;
         } else {
             emptyFile = true;
         }
@@ -314,7 +313,7 @@ const downloadFile = (input) => {
 
         if(psc.questions[pointer.cate].question[pointer.seg].paper.length > 0){
             id = psc.questions[pointer.cate].question[pointer.seg].reply_id;
-            url = getBaseUrl() + '/inner-api/answer/download/file';
+            url = `${getBaseUrl()}/inner-api/answer/download/file`;
         } else {
             emptyFile = true;
         } 
@@ -325,14 +324,14 @@ const downloadFile = (input) => {
         
         if(dataset[pointer.cate].question[pointer.seg].estFiles[ref.position].length > 0){
             id = dataset[pointer.cate].question[pointer.seg].est_id;
-            url = getBaseUrl() + '/inner-api/estimate/onsite/files/download';
+            url = `${getBaseUrl()}/inner-api/estimate/onsite/files/download`;
         } else {
             emptyFile = true;
         } 
     }
 
     if(!emptyFile){
-        url += '/' + id + '/' + ref.position;
+        url += `/${id}/${ref.position}`;
         window.open(url, '_blank');
     } else {
         alert.show('warning','ไม่มีไฟล์ในรายการนี้','');
@@ -341,7 +340,7 @@ const downloadFile = (input) => {
 
 const showFiles = {
     tycoon: function(input, files) {
-        const ref = referance.find(el => el.input == input);
+        const ref = getReferance(input);
         let html;
             
         if (ref.app == 'awards/pre-screen' && psc.status == 'reject' && ref.path == 'images') {
@@ -440,7 +439,7 @@ const showFiles = {
     },
     setFile(input, setting) {
         let html, file_name, onclick, id, img, status;
-        const ref = referance.find(el => el.input == input);
+        const ref = getReferance(input);
 
         if (ref.app == 'awards/application') { 
             id = register.id; 
@@ -474,7 +473,7 @@ const showFiles = {
                     <br>(${setting.file_size}MB)</span>`;
 
                 onclick = `<a class="fs-file-remove float-end" 
-                    href="javascript:removeFile('${input}',{
+                    href="javascript:void(0);" onclick="removeFile('${input}',{
                     ${!empty(id) ? `id: ${id}, ` : ``}
                     file_name: '${setting.file_name}',
                     file_path: '${setting.file_path}', remove: 'fixed'})">
@@ -482,23 +481,23 @@ const showFiles = {
                     </a>`;
             }
 
-            html = '<div class="col-12">'
-                        + '<div class="card card-body-muted">'
-                            + '<div class="bs-row">'
-                                + '<div class="col-12">'
-                                    + file_name
-                                    + onclick
-                                + '</div>'
-                            + '</div>'
-                        + '</div>'
-                    + '</div>';
+            html = `<div class="col-12">
+                        <div class="card card-body-muted">
+                            <div class="bs-row">
+                                <div class="col-12">
+                                    ${file_name}
+                                    ${onclick}
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
 
             return html;
         } else if (
             $.inArray(ref.app, ['awards/application', 'awards/pre-screen', 'estimate/onsite']) !== -1 &&
             ref.path == 'images'
         ) {
-            img = getBaseUrl() + '/' + setting.file_path;
+            img = `${getBaseUrl()}/${setting.file_path}`;
 
             if (
                 (ref.app == 'awards/application' && $.inArray(Number(register.status), [1, 4]) !== -1) ||
@@ -512,89 +511,88 @@ const showFiles = {
                 )
             ) {
                 if(ref.app == 'estimate/onsite' && ref.position == 'camera'){
-                    html = '<div class="list">'
-                                + '<img src="' + img + '" onclick="zoomImages(this)">'
-                            + '</div>';
+                    html = `<div class="list">
+                                <img src="${img}" onclick="zoomImages(this)">
+                            </div>`;
                 } else {
-                    onclick = 'href="javascript:removeFile(\'' + input + '\',{';
+                    onclick = `onclick="removeFile('${input}',{`;
 
                     if (ref.app == 'awards/application') {
-                        onclick += 'id: ' + id + ','
+                        onclick += `id: '${id}',`;
                     }
 
-                    onclick += "file_name: '" + setting.file_name + "',";
-                    onclick += "file_path: '" + setting.file_path + "',";
-                    onclick += 'remove: \'fixed\'});"';
+                    onclick += `file_name: '${setting.file_name}',`;
+                    onclick += `file_path: '${setting.file_path}',`;
+                    onclick += `remove: 'fixed'});"`;
 
-                    html = '<div class="card card-left mt-1 mb-1">'
-                                + '<img src="' + img + '" class="card-img-left">'
-                                + '<div class="card-body">'
-                                    + '<div class="bs-row">'
-                                        + '<span class="fs-file-name fw-semibold">' 
-                                            + setting.file_original 
-                                        + '</span>'
-                                    + '</div>'
-                                    + '<div class="bs-row">'
-                                        + '<div class="col-12">'
-                                            + '<span style="font-size: 14px;" class="text-muted">' 
-                                                + setting.file_size 
-                                            + 'MB</span>'
-                                            + '<a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">'
-                                                + '<i class="bi bi-trash-fill"></i> ลบ'
-                                            + '</a>'
-                                        + '</div>'
-                                    + '</div>'
-                                + '</div>'
-                            + '</div>';
+                    html = `<div class="card card-left mt-1 mb-1">
+                                <img src="${img}" class="card-img-left">
+                                <div class="card-body">
+                                    <div class="bs-row">
+                                        <span class="fs-file-name fw-semibold">
+                                            ${setting.file_original}
+                                        </span>
+                                    </div>
+                                    <div class="bs-row">
+                                        <div class="col-12">
+                                            <span style="font-size: 14px;" class="text-muted">
+                                                ${setting.file_size}MB
+                                            </span>
+                                            <a href="javascript:void(0);" ${onclick} class="fs-file-remove float-end" title="ลบไฟล์">
+                                                <i class="bi bi-trash-fill"></i> ลบ
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
                 }
 
                 return html;
             } else if (ref.app == 'awards/pre-screen' && psc.status == 'reject') {
                 html = { input: '', ablum: '' };
+                
+                onclick = `onclick="removeFile('${input}',{`;
+                onclick += `file_name: '${setting.file_name}',`;
+                onclick += `file_path: '${setting.file_path}',`;
+                onclick += `remove: 'fixed'});"`;
 
-                onclick += "file_name: '" + setting.file_name + "',";
-                onclick += "file_path: '" + setting.file_path + "',";
-                onclick += 'remove: \'fixed\'});"';
-
-                html.input = '<div class="card card-left mt-1 mb-1">'
-                                + '<img src="' + img + '" class="card-img-left">'
-                                + '<div class="card-body">'
-                                    + '<div class="bs-row">'
-                                        + '<span class="fs-file-name fw-semibold">' 
-                                        + setting.file_original + '</span>'
-                                    + '</div>'
-                                    + '<div class="bs-row">'
-                                        + '<div class="col-12">'
-                                            + '<span style="font-size: 14px;" class="text-muted">' 
-                                                + setting.file_size + 'MB</span>'
-                                            + '<a ' + onclick + ' class="fs-file-remove float-end" title="ลบไฟล์">'
-                                                + '<i class="bi bi-trash-fill"></i> ลบ'
-                                            + '</a>'
-                                        + '</div>'
-                                    + '</div>'
-                                + '</div>'
-                            + '</div>';
+                html.input = `<div class="card card-left mt-1 mb-1">
+                                <img src="${img}" class="card-img-left">
+                                <div class="card-body">
+                                    <div class="bs-row">
+                                        <span class="fs-file-name fw-semibold">
+                                        ${setting.file_original}</span>
+                                    </div>
+                                    <div class="bs-row">
+                                        <div class="col-12">
+                                            <span style="font-size: 14px;" class="text-muted">
+                                                ${setting.file_size}MB</span>
+                                            <a href="javascript:void(0);" ${onclick} class="fs-file-remove float-end" title="ลบไฟล์">
+                                                <i class="bi bi-trash-fill"></i> ลบ
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
 
 
-                html.ablum = '<div class="ablumbox-col">'
-                                + '<div class="ablum-mainimg">'
-                                    + '<div class="ablum-mainimg-scale">'
-                                        + '<img src="' + img + '" '
-                                        + 'class="ablum-img" onclick="zoomImages(this)">'
-                                    + '</div>'
-                                + '</div>'
-                        + '</div>';
+                html.ablum = `<div class="ablumbox-col">
+                                <div class="ablum-mainimg">
+                                    <div class="ablum-mainimg-scale">
+                                        <img src="${img}" class="ablum-img" onclick="zoomImages(this)">
+                                    </div>
+                                </div>
+                            </div>`;
 
                 return html;
             } else {
-                html = '<div class="ablumbox-col">'
-                            + '<div class="ablum-mainimg">'
-                                + '<div class="ablum-mainimg-scale">'
-                                    + '<img src="' + img + '" '
-                                    + 'class="ablum-img" onclick="zoomImages(this)">'
-                                + '</div>'
-                            + '</div>'
-                        + '</div>';
+                html = `<div class="ablumbox-col">
+                            <div class="ablum-mainimg">
+                                <div class="ablum-mainimg-scale">
+                                    <img src="${img}" class="ablum-img" onclick="zoomImages(this)">
+                                </div>
+                            </div>
+                        </div>`;
                 return html;
             }
         }
@@ -614,18 +612,18 @@ const clearBtnRemoveFile = (target,app,input) => {
             });
         break;
         case 'by-input':
-            ref = referance.find(el => el.input == input);
+            ref = getReferance(input);
             $(ref.btnrm).hide();
         break;
         case 'show-input':
-            ref = referance.find(el => el.input == input);
+            ref = getReferance(input);
             $(ref.btnrm).show();
         break;
     }
 }
 
 const setBtnUploadFile = (input) => {
-    const ref = referance.find(el => el.input == input);
+    const ref = getReferance(input);
     const btn = ref.btn;
     const maxUpload = Number(ref.maxUpload);
     let length;

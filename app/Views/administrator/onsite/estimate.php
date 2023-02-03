@@ -2,7 +2,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายการแบบประเมินที่รอกรรมการส่งผลการประเมินรอบลงพื้นที่</h3>
+        <h3>รายการแบบประเมิน</h3>
       </div>
       <!-- <a href="javascript:" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
     </div>
@@ -110,31 +110,31 @@
                     $judge = '';
                     if (!empty(json_decode($value->admin_id_tourism))) {
                       $judge .= '<p><small> ด้าน Tourism Excellence (Product/Service)</small></p>';
-                      foreach (json_decode($value->admin_id_tourism) as $key => $val) {
+                      foreach (json_decode($value->admin_id_tourism) as $k => $val) {
                         $judge .= '<p>' . usersName($val) . '</p>';
                       }
                     }
                     if (!empty(json_decode($value->admin_id_supporting))) {
                       $judge .= '<p><small> ด้าน Supporting Business & Marketing Factors</small></p>';
-                      foreach (json_decode($value->admin_id_supporting) as $key => $val) {
+                      foreach (json_decode($value->admin_id_supporting) as $k => $val) {
                         $judge .= '<p>' . usersName($val) . '</p>';
                       }
                     }
                     if (!empty(json_decode($value->admin_id_responsibility))) {
                       $judge .= '<p><small> ด้าน Responsibility and Safety & Health Administration</small></p>';
-                      foreach (json_decode($value->admin_id_responsibility) as $key => $val) {
+                      foreach (json_decode($value->admin_id_responsibility) as $k => $val) {
                         $judge .= '<p>' . usersName($val) . '</p>';
                       }
                     }
                     if (!empty(json_decode($value->admin_id_lowcarbon))) {
                       $judge .= '<p><small> ด้าน Low Carbon</small></p>';
-                      foreach (json_decode($value->admin_id_lowcarbon) as $key => $val) {
+                      foreach (json_decode($value->admin_id_lowcarbon) as $k => $val) {
                         $judge .= '<p>' . usersName($val) . '</p>';
                       }
                     }
                 ?>
                     <tr>
-                      <td><?= $key + 1 ?></td>
+                      <td><?= ($key + 1) ?></td>
                       <td class="text-center"><?= $value->code ?></td>
                       <td class="text-start"><?= $value->attraction_name_th ?></td>
                       <td class="text-start"><?= applicationType($value->application_type_id) ?></td>

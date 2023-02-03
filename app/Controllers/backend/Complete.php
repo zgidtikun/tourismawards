@@ -114,9 +114,9 @@ class Complete extends BaseController
 
         if ($result) {
             $this->sendMail($post['user_id']);
-            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'ทำการดีดกลับเอกสารการประเมินสำเร็จ']);
+            echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'เปิดสิทธิ์ให้กรรมการประเมินรอบลงพื้นที่ใหม่สำเร็จ']);
         } else {
-            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'ทำการดีดกลับเอกสารการประเมินไม่สำเร็จ']);
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'เปิดสิทธิ์ให้กรรมการประเมินรอบลงพื้นที่ใหม่ไม่สำเร็จ']);
         }
     }
 
