@@ -100,7 +100,7 @@ class EstimateRequestController extends BaseController
             'estimate_by' => $judge_id,
             'request_status' => 1
         ])
-        ->set(['request_status' => 0])
+        ->set(['request_status' => 4])
         ->update();
 
         try {

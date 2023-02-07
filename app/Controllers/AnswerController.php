@@ -1,8 +1,6 @@
 <?php 
 
 namespace App\Controllers;
-use CodeIgniter\Files\File;
-use CodeIgniter\Files\FileCollection;
 use App\Controllers\BaseController;
 use App\Models\AssessmentGroup;
 use App\Models\Question;
@@ -49,17 +47,13 @@ class AnswerController extends BaseController
         }
 
         $myApp = $this->appForm->where('created_by',$this->myId)
-            ->select(
-                'id app_id,application_type_id type_id,
-                application_type_sub_id sub_id,
-                status')
-            ->first();
+        ->select(
+            'id app_id,application_type_id type_id,
+            application_type_sub_id sub_id,
+            status')
+        ->first();
             
-        if(!empty($myApp)){
-            if($myApp->status != 3){
-                return redirect()->to(base_url('awards/application'));
-            }
-        } else {
+        if(empty($myApp) || $myApp->status != 3){
             return redirect()->to(base_url('awards/application'));
         }
 
@@ -77,20 +71,19 @@ class AnswerController extends BaseController
         $requireLowCarbon = $instApp->checkRequireLowCarbon($myApp->app_id);
 
         $subQAns = $this->db->table('answer')
-            ->select('question_id')
-            ->where('reply_by',$this->myId)
-            ->getCompiledSelect();
+        ->select('question_id')
+        ->where('reply_by',$this->myId)
+        ->getCompiledSelect();
 
-        $queryQuestion = $this->db->table('question')
+        $myQuestion = $this->db->table('question')
         ->where([
             'application_type_id' => $myApp->type_id,
             'application_type_sub_id' => $myApp->sub_id
         ])
         ->where('id NOT IN ('.$subQAns.')')
         ->select('id')
-        ->get();
-        
-        $myQuestion = $queryQuestion->getResult();
+        ->get()
+        ->getResult();
         
         if(!empty($myQuestion)){
             foreach($myQuestion as $mq){
@@ -191,7 +184,7 @@ class AnswerController extends BaseController
         ->where('reply_by',$this->myId)
         ->getCompiledSelect();
         
-        foreach($group as $key=>$asse){
+        foreach($group as $asse){
             $counter = 0;
             $temp = ['group' => $asse, 'question' => []];
             
@@ -226,7 +219,7 @@ class AnswerController extends BaseController
                     $val->request = $instEstimate->where('answer_id',$val->reply_id)
                     ->whereIn('request_status',[1])    
                     ->select('request_list')
-                        ->findAll();
+                    ->findAll();
                 }
 
                 if(!empty($val->pack_file)){
@@ -519,7 +512,9 @@ class AnswerController extends BaseController
                         $files_up = array_merge($pack_file,$files_up);
                     }
 
-                    $this->ans->update($answer_id,['pack_file' => json_encode($files_up)]);
+                    $this->ans->where('id',$answer_id)
+                    ->set(['pack_file' => json_encode($files_up)])
+                    ->update();
                 }
 
                 $files_up = json_decode(json_encode($files_up),false);
@@ -607,7 +602,9 @@ class AnswerController extends BaseController
                         }
                     }
 
-                    $this->ans->update($answer_id,['pack_file' => json_encode($tmp)]);
+                    $this->ans->where('id',$answer_id)
+                    ->set(['pack_file' => json_encode($tmp)])
+                    ->update();
                 } else {
                     $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
                 }
@@ -622,7 +619,9 @@ class AnswerController extends BaseController
                     }
                 }
 
-                $this->ans->update($answer_id,['pack_file' => json_encode($tmp)]);
+                $this->ans->where('id',$answer_id)
+                ->set(['pack_file' => json_encode($tmp)])
+                ->update();
                 $result = ['result' => 'success', 'message' => ''];
             }
         } catch(\Exception $e){

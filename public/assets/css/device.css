@@ -168,9 +168,7 @@ width: 50%;
     margin: 0;
     width: 50%;
 }
-.award-section-txt {
-    font-size: 20px;
-}
+
 .contact-list li {
     width: 50%;
 }
@@ -390,12 +388,7 @@ display: none;
 .awardotherbranch .awardsection-list li:last-child{
 margin-right: 20px;
 }
-.award-othlist li {
-    width: 100%;
-    padding: 0 20px 0 35px;
-    margin: 5px 0;
-    position: relative;
-}
+
 .awardyear {
     margin: 0 0 40px 0;
 }
@@ -447,6 +440,34 @@ margin-right: 20px;
 .container.awardwinner .award-section-col {
     padding: 20px;
 }
+.tat_reg_type {
+    font-family: 'TATSana-Chon';
+    line-height: 40px;
+    font-size: 1.4rem;
+}
+.boxhide-content-col.colimg,
+.boxhide-content-col.colname {
+    width: 100%;
+    text-align: center;
+}
+.award-othlist ul {
+    column-count: 1;
+}
+.award-othlist li {
+    padding: 10px 0 10px 35px;
+}
+.login_list ul {
+    display: flex;
+    justify-content: space-between;
+    float: none;
+}
+.login_list li:first-child {
+    flex: none;
+    margin: 0;
+}
+.container.aboutus .col12 {
+    margin: 20px 0;
+}
 }
 
 @media screen and (max-width:1023px) and (orientation:landscape){
@@ -460,4 +481,4 @@ margin-right: 20px;
 }
 }
 
-/*GD-02-V.15122565*/
+/*GD-02-V.06022566*/

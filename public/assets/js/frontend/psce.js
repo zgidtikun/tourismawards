@@ -107,7 +107,7 @@ const setRequest = async() => {
 
         if(rs.result == 'success'){
             title = 'ส่งคำขอข้อมูลเพิ่มเติมแล้ว';
-            msg = 'กรุณารอผู้ประกอบการตอบกลับ (ภายใน 3 วัน)<br>ท่านจึงจะสามารถกลับมาประเมินต่อได้';
+            msg = 'กรุณารอผู้ประกอบการตอบกลับภายใน 72 ชั่วโมง<br>ท่านจึงจะสามารถกลับมาประเมินต่อได้';
         } else {
             title = 'ไม่สามารถส่งคำขอข้อมูลเพิ่มเติมได้';
             msg = rs.message;
@@ -246,6 +246,15 @@ const save = (cate,seg) => {
         if(seg == -1){ seg = 0; }
         
         const question = dataset[cate].question[seg];
+        
+        if(
+            $.inArray(Number(question.request_status),[2,4]) !== -1 &&
+            !empty(question.score_pre) && 
+            Number(question.pre_status) == 1
+        ){
+            question.request_status = null;
+            dataset[cate].question[seg].request_status = null;
+        }
 
         const st = {
             method: 'post',
@@ -274,9 +283,28 @@ const save = (cate,seg) => {
                 dataset[cate].question[seg].estimate_by = rs.by;
                 dataset[cate].question[seg].estimate = false;
 
-                if(!empty(dataset[cate].question[seg].score_pre)){
-                    $('#sl-'+seg).removeClass('active');
-                    $('#sl-'+seg).addClass('complete');
+                if(
+                    !empty(dataset[cate].question[seg].request_status) &&
+                    $.inArray(Number(dataset[cate].question[seg].request_status),[0,1,2,4]) !== -1
+                ){
+                    $('#sl-'+seg).removeClass('active')
+                    .removeClass('complete')
+                    .removeClass('respond')
+                    .addClass('request');
+                    setReqestFiled(dataset[cate].question[seg]);
+                }
+                else if(!empty(dataset[cate].question[seg].score_pre_origin)){
+                    $('#sl-'+seg)
+                    .removeClass('active')
+                    .removeClass('request')
+                    .removeClass('respond')
+                    .addClass('complete');
+                } else {
+                    $('#sl-'+seg)
+                    .removeClass('complete')
+                    .removeClass('request')
+                    .removeClass('respond')
+                    .addClass('active');
                 }
                 
                 alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'}); 
@@ -303,7 +331,16 @@ const draft = (cate,seg) => {
         
         const question = dataset[cate].question[seg];
 
-        if(question.estimate){
+        if(question.estimate){            
+        
+            if(
+                $.inArray(Number(question.request_status),[2,4]) !== -1 &&
+                !empty(question.score_pre) &&
+                Number(question.pre_status) == 1
+            ){
+                question.request_status = null;
+                dataset[cate].question[seg].request_status = null;
+            }
 
             const st = {
                 method: 'post',
@@ -331,13 +368,28 @@ const draft = (cate,seg) => {
                     dataset[cate].question[seg].est_id = rs.id;
                     dataset[cate].question[seg].estimate_by = rs.by;
                     dataset[cate].question[seg].estimate = false;
-
-                    if(!empty(dataset[cate].question[seg].score_pre_origin)){
-                        $('#sl-'+seg).removeClass('active');
-                        $('#sl-'+seg).addClass('complete');
+                    
+                    if(
+                        !empty(dataset[cate].question[seg].request_status) &&
+                        $.inArray(Number(dataset[cate].question[seg].request_status),[0,1,2,4]) !== -1
+                    ){
+                        $('#sl-'+seg).removeClass('active')
+                        .removeClass('complete')
+                        .removeClass('respond')
+                        .addClass('request');
+                    }
+                    else if(!empty(dataset[cate].question[seg].score_pre_origin)){
+                        $('#sl-'+seg)
+                        .removeClass('active')
+                        .removeClass('request')
+                        .removeClass('respond')
+                        .addClass('complete');
                     } else {
-                        $('#sl-'+seg).removeClass('complete');
-                        $('#sl-'+seg).addClass('active');
+                        $('#sl-'+seg)
+                        .removeClass('complete')
+                        .removeClass('request')
+                        .removeClass('respond')
+                        .addClass('active');
                     }
 
                     alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'}); 
@@ -461,8 +513,13 @@ const setQuestion = (cate,seg) => {
                     $('#sl-'+point.seg).addClass('complete');
                 }
             } else {
+                const request_status = Number(dataset[point.cate].question[point.seg].request_status);
                 $('#sl-'+point.seg).removeClass('complete');
-                $('#sl-'+point.seg).addClass('request');
+                if(request_status == 1 || request_status == 2){
+                    $('#sl-'+point.seg).addClass('request');
+                } else {
+                    $('#sl-'+point.seg).addClass('respond');
+                }
             }
         }
 
@@ -470,11 +527,15 @@ const setQuestion = (cate,seg) => {
         sRequest.hide();
         
         if(!empty(question.request_status)){
-            if($.inArray(Number(question.request_status),[0,1,2]) !== -1){
+            if($.inArray(Number(question.request_status),[0,1,2,4]) !== -1){
                 if($.inArray(Number(question.request_status),[0,1]) !== -1){
                     sRequest.html('คุณมีการขอข้อมูลเพิ่มเติมในข้อนี้');
-                } else {
+                } 
+                else if(Number(question.request_status) == 2){
                     sRequest.html('คุณได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้แล้ว');
+                }
+                else {
+                    sRequest.html('คุณยังไม่ได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้');
                 }
 
                 sRequest.show();
@@ -681,19 +742,24 @@ const setDropdown = (qt,cate,seg) => {
         if(Number(v.pre_status) == 1 && $.inArray(cate+1,assign) !== -1){            
             if(
                 !empty(v.request_status)
-                && $.inArray(Number(v.request_status),[0,1,2]) !== -1
+                && $.inArray(Number(v.request_status),[0,1,2,4]) !== -1
             ){
-                cp = 'request';
+                if($.inArray(Number(v.request_status),[2,4]) !== -1){
+                    cp = 'respond';
+                } else {
+                    cp = 'request';
+                }
             } else {
                 cp = !empty(v.score_pre) ? 'complete' : '';
             }
+
+            slt += '<option value="'+k+'">'+v.no+'</option>';
         } else {
             cp = 'hold';
         }
             
         cl = 'class="sl '+cp+'"';
         modal += '<li><a '+hr+' '+id+' '+cl+'> ข้อที่ '+v.no+'</a></li>';
-        slt += '<option value="'+k+'">'+v.no+'</option>';
     });
 
     md.html(modal);
@@ -758,8 +824,12 @@ const checkComplete = () => {
         if($.inArray(Number(request_status),[0,1,2]) !== -1){
             if($.inArray(Number(request_status),[0,1]) !== -1){
                 sRequest.html('คุณมีการขอข้อมูลเพิ่มเติมในข้อนี้');
-            } else {
+            } 
+            else if(Number(request_status) == 2){
                 sRequest.html('คุณได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้แล้ว');
+            }
+            else {
+                sRequest.html('คุณยังไม่ได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้');
             }
 
             sRequest.show();
@@ -850,6 +920,7 @@ const resetEstimate = (cate,seg) => {
 const calScore = (ele) => {
     const point = getPointer();
     const question = dataset[point.cate].question[point.seg];
+    const request_status = dataset[point.cate].question[point.seg].request_status;
     let selfscore, totalscore;
 
     if(lowcarbon && Number(point.cate) == 3){
@@ -865,6 +936,10 @@ const calScore = (ele) => {
     dataset[point.cate].question[point.seg].score_pre = selfscore;
     dataset[point.cate].question[point.seg].tscore_pre = totalscore;
     dataset[point.cate].question[point.seg].estimate = true;
+
+    if($.inArray(Number(request_status),[2,4]) !== -1){
+        dataset[point.cate].question[point.seg].request_status = null;
+    }
 }
 
 const zoomImages = (el) => {
@@ -914,9 +989,7 @@ qRequest.on('keypu change',() => {
 $('.btn-getdata').click(function() {
     const point = getPointer();
     const question =  dataset[point.cate].question[point.seg];
-    
-    $('#rp-finish').hide();
-    $('#rp-wait').hide();
+    setReqestFiled(question);
     
     mTNum.html(question.no);
     mNum.html(question.no);
@@ -924,31 +997,68 @@ $('.btn-getdata').click(function() {
     qRequest.val(question.request_list);
     countChar1($('#qRequest'))
 
-    if(expireRequest){
-        qRequest.prop('readonly','readonly');
-    }
-    else if(!empty(question.request_list)){
-        if($.inArray(Number(question.request_status),[1,2,3]) !== -1){
-            qRequest.prop('readonly','readonly');
-
-            if($.inArray(Number(question.request_status),[2,3]) !== -1){
-                $('#rp-finish').show();
-            } else {
-                $('#rp-wait').show();
-            }
-        } else {
-            qRequest.prop('readonly','');
-        }
-    }
-
     $('#modal-add-paper').modal('show');
 });
 
-mSelect.change(() => {
+mSelect.change(async() => {        
     const point = getPointer();
-    const question =  dataset[point.cate].question[mSelect.val()];
+    
+    if(dataset[point.cate].question[mSelect.val()].estimate){
+        await save(point.cate,point.seg);
+    }
+    
+    const question = dataset[point.cate].question[mSelect.val()];
+    setReqestFiled(question);
+
+    setQuestion(point.cate,mSelect.val());
     mTNum.html(question.no);
     mNum.html(question.no);
     qRequest.val(question.request_list);
 });
+
+const setReqestFiled = question => {    
+    $('#rp-finish').hide();
+    $('#rp-wait').hide();
+    $('#rq-unfinish').hide();
+    $('#rq-warning').hide();
+
+    if(expireRequest){
+        $('#rq-warning').show();
+        $('#rq-warning-txt').html('หมดเวลาการขอข้อมูลเพิ่มเติมแล้ว');
+        qRequest.prop('readonly','readonly');
+    }
+    else if(getIsFinish() == 'finish'){
+        qRequest.prop('readonly','readonly'); 
+    }
+    else if(!empty(question.request_list)){
+        if($.inArray(Number(question.request_status),[1,2,3,4]) !== -1){
+
+            if(Number(question.request_status) == 1){
+                $('#rq-wait').show();
+                qRequest.prop('readonly','readonly');  
+            }
+            else if($.inArray(Number(question.request_status),[2,3]) !== -1){
+                $('#rq-finish').show();
+                qRequest.prop('readonly',haveRequest ? 'readonly' : '');
+            } 
+            else if(Number(question.request_status) == 4) {
+                $('#rq-unfinish').show();
+                qRequest.prop('readonly',haveRequest ? 'readonly' : '');
+            }
+            else {
+                $('#rq-finish').show();
+                qRequest.prop('readonly',haveRequest ? 'readonly' : '');
+            }
+        } else {      
+            if(haveRequest){          
+                $('#rq-warning').show();
+                $('#rq-warning-txt').html('กำลังรอการตอบกลับจากสถานประกอบการ ไม่สามารถขอข้อมูลเพิ่มเติมได้');      
+                qRequest.prop('readonly','readonly');  
+            }
+            else {
+                qRequest.prop('readonly','');
+            }
+        }
+    }
+}
 

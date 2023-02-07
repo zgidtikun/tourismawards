@@ -31,7 +31,10 @@ class FilesController extends BaseController
                                 unlink(FCPATH.$user->profile);
                             }
 
-                            $obj->update($id,['profile' => $full_path]);
+                            $obj->where('id',$id)
+                            ->set(['profile' => $full_path])
+                            ->update();
+
                             $result = [
                                 'result' => 'success',
                                 'link' => base_url($full_path)
@@ -133,7 +136,10 @@ class FilesController extends BaseController
                     $files_up = array_merge($pack_file,$files_up);
                 }
 
-                $obj->update($estimate_id,['pack_file' => json_encode($files_up)]);
+                $obj->where('id',$estimate_id)
+                ->set(['pack_file' => json_encode($files_up)])
+                ->update();
+
                 $files_up = json_decode(json_encode($files_up),false);
 
                 foreach($files_up as $file){
@@ -204,7 +210,9 @@ class FilesController extends BaseController
                         }
                     }
 
-                    $obj->update($input->id,['pack_file' => json_encode($tmp)]);
+                    $obj->where('id',$input->id)
+                    ->set(['pack_file' => json_encode($tmp)])
+                    ->update();
                 } else {
                     $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
                 }
@@ -219,7 +227,10 @@ class FilesController extends BaseController
                     }
                 }
 
-                $obj->update($input->id,['pack_file' => json_encode($tmp)]);
+                $obj->where('id',$input->id)
+                ->set(['pack_file' => json_encode($tmp)])
+                ->update();
+                
                 $result = ['result' => 'success', 'message' => ''];
             }      
 

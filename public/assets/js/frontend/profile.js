@@ -32,7 +32,7 @@ const save = async() => {
             alert.login();
         } 
         else {
-            const title = callback.result == 'success' ? 'อัพเดทข้อมูลเรียบร้อยแล้ว' : 'ไม่สามารถอัพเดทข้อมูลได้';
+            const title = callback.result == 'success' ? 'อัพเดตข้อมูลเรียบร้อยแล้ว' : 'ไม่สามารถอัพเดตข้อมูลได้';
             const text = callback.result == 'success' ? '' : callback.message;
             alert.show(callback.result,title,text);
         }
@@ -58,24 +58,24 @@ const validation = () => {
 const onFileHandel = async(id) => {
     const accept = ['image/jpg','image/jpeg','image/png'];
     const map = mapField.find(el => el.id == id);
-    const handel = $(map.ip)[0].files[0];
+    const file = $(map.ip)[0].files[0];
     
-    if(!empty(handel)){
-        const mb = (handel.size / (1024 * 1024)).toFixed(2);
+    if(!empty(file)){
+        const mb = (file.size / (1024 * 1024)).toFixed(2);
         
         if(mb > map.size){
-            alert.show('error','ไม่สามารถอัพโหลดรูปได้','ขนาดไฟล์ไม่เกิน '+s.s+'MB เท่านั้น');
+            alert.show('error','ไม่สามารถอัพโหลดรูปได้',`ขนาดไฟล์ไม่เกิน ${map.size}MB เท่านั้น`);
             return;
         }
 
-        if($.inArray(handel.type,accept) === -1){
+        if(!accept.includes(file.type)){
             alert.show('error','ไม่สามารถอัพโหลดรูปได้','กรุณาเลือกเป็นไฟล์ .jpeg, .jpg, .png เท่านั้น');
             return;
         }
 
         const formData = new FormData();
         formData.append('id',getId());
-        formData.append('image[]',handel);
+        formData.append('image[]',file);
 
         const setting = {
             method: 'action',

@@ -109,8 +109,8 @@ $routes->group('inner-api', static function ($routes) {
     });
 
     $routes->group('profile', static function ($routes) {
-        $routes->post('update', 'FrontendController::updateProfile', ['filter' => 'auth:frontend']);
-        $routes->post('upload/image', 'FilesController::uploadProfile', ['filter' => 'auth:frontend']);
+        $routes->post('update', 'FrontendController::updateProfile', ['filter' => 'api:frontend']);
+        $routes->post('upload/image', 'FilesController::uploadProfile', ['filter' => 'api:frontend']);
     });
 
     $routes->group('app', static function ($routes) {

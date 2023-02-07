@@ -16,8 +16,8 @@
       <div class="backendform-row">
         <div class="backendform-col3">
           <p>รหัสใบสมัคร : <?= $result->code ?></p>
-          <p>ชื่อ : <?= $result->attraction_name_th ?></p>
-          <p>Name : <?= $result->attraction_name_en ?></p>
+          <p>ชื่อสถานประกอบการ : <?= $result->attraction_name_th ?></p>
+          <p>ชื่อสถานประกอบการภาษาอังกฤษ : <?= $result->attraction_name_en ?></p>
         </div>
 
         <div class="backendform-col3">

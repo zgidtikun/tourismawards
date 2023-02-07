@@ -170,7 +170,7 @@
                      <li><a href="javascript:void(0)" id="aboutmenu">เกี่ยวกับโครงการฯ</a>
                         <ul>
                            <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ</a></li>
-                           <li><a href="<?=base_url('judge')?>">กรรมการที่ปรึกษา</a></li>
+                           <!-- <li><a href="<?=base_url('judge')?>">กรรมการที่ปรึกษา</a></li> -->
                            <li><a href="<?=base_url('judge')?>">กรรมการตัดสินแต่ละประเภท</a></li>
                         </ul>
                      </li>
@@ -193,7 +193,7 @@
                      </li>
                      <li><a href="javascript:void(0)" id="awardmenu">ผลงานที่ได้รับรางวัล</a>
                         <ul>
-                           <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li>
+                           <!-- <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li> -->
                            <li><a href="<?=base_url('last-awards-winner')?>">ปีที่ผ่านมา</a></li>
                         </ul>
                      </li>
@@ -232,7 +232,7 @@
                   <div class="submenubox-list" data-tab="1" style="display: none;">
                      <ul>
                         <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ</a></li>
-                        <li><a href="<?=base_url('judge')?>">กรรมการที่ปรึกษา</a></li>
+                        <!-- <li><a href="<?=base_url('judge')?>">กรรมการที่ปรึกษา</a></li> -->
                         <li><a href="<?=base_url('judge')?>">กรรมการตัดสินแต่ละประเภท</a></li>
                      </ul>
 
@@ -260,7 +260,7 @@
                   <li><a href="javascript:" data-tab="4" class="btn-submenu">ผลงานที่ได้รับรางวัล</a></li>
                   <div class="submenubox-list" data-tab="4" style="display: none;">
                      <ul>
-                        <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li>
+                        <!-- <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li> -->
                         <li><a href="<?=base_url('last-awards-winner')?>">ปีที่ผ่านมา</a></li>
                      </ul>
                   </div>

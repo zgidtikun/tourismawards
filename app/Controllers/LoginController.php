@@ -214,7 +214,58 @@ class LoginController extends BaseController
 
     public function setSession(){
         if(getenv('CI_ENVIRONMENT') != 'production'){
-            
+            helper('semail');
+            send_email_frontend((object)[
+                'appId' => 2,
+                'tycon' => 'ทดสอบส่งอีเมล answer-request-complete'
+            ],'answer-request-complete');
+
+            // $years = ["2564","2562","2560","2558","2556","2553","2551","2549","2547","2545","2543","2541","2539"];
+            // $groups = [
+            //     [
+            //         'group' => 1,
+            //         'name' => 'attraction',
+            //         'title' => '<h2>ประเภทแหล่งท่องเที่ยว (Attraction)</h2>'
+            //     ],
+            //     [
+            //         'group' => 2,
+            //         'name' => 'accommodation',
+            //         'title' => '<h2>ประเภทที่พักนักท่องเที่ยว (Accommodation)</h2>'
+            //     ],
+            //     [
+            //         'group' => 3,
+            //         'name' => 'health',
+            //         'title' => '<h2>ประเภทการท่องเที่ยวเชิงสุขภาพ (Health and Wellness Tourism)</h2>'
+            //     ]
+            // ];
+
+            // $types = [[ 'type' => 1, 'name' => 'great'],[ 'type' => 2, 'name' => 'good']];
+
+            // $result = [];
+
+            // foreach($years as $year){
+            //     $result[$year] = [];
+
+            //     foreach($groups as $group){
+            //         $result[$year][$group['name']] = [
+            //             'title' => $group['title']
+            //         ];
+
+            //         foreach($types as $type){
+            //             $builder = $this->db->query(
+            //                 "SELECT place_name name, place_province province
+            //                 FROM award_old 
+            //                 WHERE award_group = {$group['group']}
+            //                     AND award_$year = {$type['type']}"
+            //             )
+            //             ->getResult();
+                        
+            //             $result[$year][$group['name']][$type['name']] = !empty($builder) ? $builder : [];
+            //         }
+            //     }
+            // }
+
+            // return $this->response->setJSON($result);
         }
         else return $this->response->redirect(base_url('403'));
     }

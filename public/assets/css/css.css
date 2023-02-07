@@ -777,7 +777,7 @@ justify-content: center;
 align-items: center;
 }
 .award-list-name {
-    font-size: 20px;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #1b510a;
     text-align: center;
@@ -790,11 +790,12 @@ border-bottom: 0;
 background-color: #626262;
 color: #FFF;
 }
-.award-section{
-display: flex;
-flex-wrap: wrap;
-margin: 8vw -20px 0 -20px;
-padding: 0;
+.award-section {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 80px -20px 0 -20px;
+    padding: 0;
+    justify-content: center;
 }
 .award-section-col{
 width: 25%;
@@ -836,14 +837,14 @@ top: 0;
 }
 .winner-title {
     color: #FFF;
-    font-size: 6.5em;
+    font-size: 3.5rem;
     text-align: center;
     margin-bottom: 40px;
     line-height: 1;
 }
 .winner-title-large {
     font-family: 'Abril Fatface', cursive;
-    font-size: 2em;
+    font-size: 9rem;
     line-height: 1;
 }
 .gold-award{
@@ -856,6 +857,7 @@ justify-content: center;
     padding: 10px 20px;
     text-align: center;
     margin: 0;
+    font-size: 1.3rem;
 }
 .container.tourismaward .row{
     border-bottom: 2px solid #1b510a;
@@ -883,6 +885,7 @@ justify-content: center;
     padding: 10px 20px;
     text-align: center;
     margin: 0;
+    font-size: 1.3rem;
 }
 .awardsection-list{
 width: 100%;
@@ -933,31 +936,36 @@ width: 100%;
 display: block;
 margin-top: 40px;
 }
-.award-othlist ul{
-display: flex;
-flex-wrap: wrap;
-width: auto;
-padding: 0;
-margin: 0;
-list-style: none;
+.award-othlist ul {
+    display: list-item;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    column-count: 2;
 }
-.award-othlist li{
-width: 50%;
-padding: 0 20px 0 35px;
-margin: 5px 0;
-position: relative;
+.award-othlist li {
+    width: 100%;
+    padding: 10px 20px 10px 35px;
+    margin: 0;
+    position: relative;
+    font-size: 18px;
 }
 .award-othlist li:before {
-    content: " ";
+    font-family: "bootstrap-icons";
+    content: "\F309";
     position: absolute;
-    width: 14px;
-    height: 14px;
-    top: 9px;
-    left: 5px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-record-fill' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M8 13A5 5 0 1 0 8 3a5 5 0 0 0 0 10z'/></svg>");
+    width: 20px;
+    height: 20px;
+    top: 3px;
+    left: 0;
+    color: #555;
+    font-size: 45px;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
 }
 .awardotherbranch .main-title {
     text-align: left;
@@ -1175,7 +1183,7 @@ color: #205010;
     margin: 0 -10px 40px -10px;
     padding-bottom: 20px;
     font-size: 24px;
-    border-bottom: 2px solid #e2e1e1;
+    border-bottom: 2px solid #205010;
 }
 .awardyear-col {
     flex: auto;
@@ -1288,12 +1296,30 @@ line-height: 0;
 }
 .award-section-txt {
     color: #FFF;
-    font-size: 18px;
+    font-size: 1.35rem;
     font-weight: 600;
     transition: .5s ease;
-    width: auto;
-    line-height: 20px;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    width: 100%;
+    line-height: 1.2;
+    display: block;
+}
+.award-section-txt span{
+position: relative;
+z-index: 1;
+}
+.award-section-txt:before{
+content: "";
+position: absolute;
+z-index: 0;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+background: rgb(0,0,0,0.35);
+background: -moz-linear-gradient(0deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 75%);
+background: -webkit-linear-gradient(0deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 75%);
+background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0) 75%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#000000",GradientType=1);
 }
 
 .award-list [class^="btn"]{
@@ -1332,4 +1358,167 @@ color: #2a6118;
 .container.footer a:link,.container.footer a:visited{
     color: #FFF;
 }
-/*GD-02-V.02022566*/
+
+a.btn-judedetail {
+    min-width: auto;
+    padding: 0;
+    display: flex;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+}
+a.btn-judedetail:hover{
+cursor: pointer;
+}
+
+.boxhide-judedetail {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    bottom: 0;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.1s linear;
+}
+.boxhide-judedetail.active {
+    bottom: 0;
+    z-index: 9999;
+}
+.boxhide-judedetail.active {
+display: flex;
+}
+.boxhide-judedetail.active .boxhide-overlay{
+position: fixed;
+width: 100vw;
+height: 100vh;
+top: 0;
+left: 0;
+background-color: rgba(0,0,0,0.75);
+transition: all 0.1s linear;
+}
+.boxhide-content{
+    width: 90%;
+    max-height: 90vh;
+    max-width: 800px;
+    background-color: #FFF;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transition: all 0.2s linear;
+    transform: translateY(100%);
+}
+.boxhide-content.active{
+    opacity: 1;
+    transform: translateY(0);
+}
+.btn-judedetail-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #C00;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    min-width: auto;
+    width: 30px;
+    height: 30px;
+    color: #FFF;
+    font-size: 30px;
+    max-height: none;
+    padding: 0;
+    z-index: 1;
+}
+.btn-judedetail-close i{
+line-height: 1;
+}
+.btn-judedetail-close:hover,.btn-judedetail-close:visited{
+color: #FFF;
+cursor: pointer;
+}
+.boxhide-content .judge-title {
+    position: sticky;
+    margin-bottom: 20px;
+}
+.boxhide-content-row {
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0 -20px;
+    align-items: center;
+}
+.boxhide-content-col{
+padding: 0 20px;
+}
+.boxhide-content-col.col1{
+    width: 100%;
+}
+.boxhide-content-col.col2{
+    width: 50%;
+}
+.boxhide-content-col.colimg{
+    width: 65%;
+}
+.boxhide-content-col.colname {
+    width: 35%;
+    text-align: center;
+}
+.boxhide-content-col .judge-img {
+    padding-top: 56.25%;
+}
+.lockbody{
+overflow: hidden;
+}
+.container.aboutus{
+font-size: 18px;
+}
+.container.aboutus .col12{
+margin: 40px 0;
+}
+.container.aboutus p{
+text-indent: 40px;
+}
+.container.aboutus ol {
+    margin: 10px 0;
+    list-style-type: decimal;
+    counter-reset: item;
+}
+
+.container.aboutus li {
+    display: block;
+    padding-left: 30px;
+    position: relative;
+    margin: 10px 0;
+}
+.container.aboutus li:before { 
+    content: counters(item, "") "."; 
+    counter-increment: item ;
+    position: absolute;
+    left: 0;
+}
+
+.container.aboutus ol li ol{
+    counter-reset: item;
+}
+.container.aboutus ol li ol li:before { 
+    content: counters(item, ".") ""; 
+    counter-increment: item ;
+    position: absolute;
+    left: 0;
+}
+.container.aboutus li ol {
+    margin: 20px 0;
+}
+.container.aboutus li ol li{
+    padding-left: 40px;
+}
+/*GD-02-V.07022566*/

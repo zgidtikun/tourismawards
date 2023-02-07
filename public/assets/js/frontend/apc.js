@@ -522,7 +522,6 @@ const register = {
         ];
 
         let checkComplete = true;
-        const pattern_email = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         
         $.each(tabs,function(key,tab){
             let checkRequire = true;
@@ -744,7 +743,7 @@ const register = {
             const app = register.formData.step1.appType;
             const confYear = register.appType.main.find(el => el.id == app);
             $('#step5-openYear').addClass('is-invalid');
-            $('#error-open-year').html('เปิดรับสมัครสําหรับผู้ประกอบการที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป');
+            $('#error-open-year').html('เปิดรับสมัครสําหรับสถานประกอบการที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป');
             bool_input = false;
         } else {
             const date = new Date(register.configRegisDate);
@@ -761,7 +760,7 @@ const register = {
             if(Number(totalYear.total_year) < Number(confYear.fixe_year_open)){
                 bool_input = false;
                 register.passYear = false;
-                $('#error-open-year').html('เปิดรับสมัครสําหรับผู้ประกอบการที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป');
+                $('#error-open-year').html('เปิดรับสมัครสําหรับสถานประกอบการที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป');
                 $('#step5-openYear').addClass('is-invalid');
             } else {
                 $('#step5-openYear').removeClass('is-invalid');  
@@ -773,7 +772,7 @@ const register = {
             alert.show(
                 'error',
                 'ดำเนินการไม่สำเร็จ',
-                'โปรดตรวจสอบแบบฟอร์มใบสมัคร ให้ครบถ้วน ก่อนส่งแบบฟอร์มใบสมัคร'
+                'กรุณากรอกข้อมูลให้ครบถ้วน ก่อนส่งแบบฟอร์มใบสมัคร'
             );
         }
 

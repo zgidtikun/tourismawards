@@ -50,3 +50,12 @@
 .formstep-col.active a {
     color: #2a6118;
 }
+
+.award-section-imgscale {
+    cursor: pointer;    
+}
+
+.hide-choice-box li a.respond {
+    color: #FFF;
+    background-color: #8515a0;
+}

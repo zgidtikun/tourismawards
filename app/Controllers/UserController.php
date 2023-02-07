@@ -82,7 +82,9 @@ class UserController extends BaseController
     {
         $inst = $this->getSelectSameRole($data['role'],'instance');
         try { 
-            $status = $inst->update($data['id'],['password' => password_hash($data['password'],PASSWORD_DEFAULT)]);
+            $status = $inst->where('id',$data['id'])
+            ->set(['password' => password_hash($data['password'],PASSWORD_DEFAULT)])
+            ->update();
             $result = (object) array('result' => $status);
         } 
         catch(\Exception $e) {

@@ -137,19 +137,19 @@
 
             <div class="formmainbox" id="main-focus">
                 <div class="regis-form-step">
-                    <a id="tab-s1" href="javascript:register.setStep(1);" class="btn-form-step active">
+                    <a id="tab-s1" href="javascript:void(0);" onclick="register.setStep(1)" class="btn-form-step active">
                         1. ประเภทการสมัคร
                     </a>
-                    <a id="tab-s2" href="javascript:register.setStep(2);" class="btn-form-step">
+                    <a id="tab-s2" href="javascript:void(0);" onclick="register.setStep(2)" class="btn-form-step">
                         2. ข้อมูลผลงานที่ส่งเข้าประกวด
                     </a>
-                    <a id="tab-s3" href="javascript:register.setStep(3);" class="btn-form-step">
+                    <a id="tab-s3" href="javascript:void(0);" onclick="register.setStep(3)" class="btn-form-step">
                         3. ข้อมูลหน่วยงานบริษัท
                     </a>
-                    <a id="tab-s4" href="javascript:register.setStep(4);" class="btn-form-step">
+                    <a id="tab-s4" href="javascript:void(0);" onclick="register.setStep(4)" class="btn-form-step">
                         4. ข้อมูลผู้ประสานงาน
                     </a>
-                    <a id="tab-s5" href="javascript:register.setStep(5);" class="btn-form-step">
+                    <a id="tab-s5" href="javascript:void(0);" onclick="register.setStep(5)" class="btn-form-step">
                         5. คุณสมบัติ/เอกสาร
                     </a>
                 </div>
@@ -1462,7 +1462,7 @@
                     
                     if(Number(totalYear.total_year) < Number(confYear.fixe_year_open)){
                         register.passYear = false;
-                        const title = 'เปิดรับสมัครสําหรับผู้ประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป';
+                        const title = 'เปิดรับสมัครสําหรับสถานประกอบการ<br>ที่จดทะเบียนมาแล้ว '+confYear.fixe_year_open+' ปีขึ้นไป';
                         alert.show('error',title,'');
                     }
                 } else { 

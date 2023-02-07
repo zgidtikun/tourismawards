@@ -6,7 +6,7 @@
                 <div class="formbox_row">
                     <div class="inp_form forget">
                         <h3>ลืมรหัสผ่าน</h3>
-                        <p class="subhead">รีเซ็ทรหัสผ่านด้วยอีเมลที่ใช้งาน</p>
+                        <p class="subhead">รีเซ็ตรหัสผ่านด้วยอีเมลที่ใช้งาน</p>
                         <?=form_open()?>
                         <div class="inp_form_row">
                             <div class="inp_form_col1">
@@ -36,7 +36,7 @@
         token: null,
         validate: function(){
             if($('#email').val() == ''){
-                alert.show('error','ไม่สามารถรีเซ็ทรหัสผ่าน','กรุณากรอกอีเมล');
+                alert.show('error','ไม่สามารถรีเซ็ตรหัสผ่าน','กรุณากรอกอีเมล');
                 return false;
             } else return true;
         },
@@ -74,7 +74,7 @@
                                     $('#email').val('');
                                 }
                             } else {
-                                alert.show('error','ไม่สามารถรีเซ็ทรหัสผ่าน',response.message);
+                                alert.show('error','ไม่สามารถรีเซ็ตรหัสผ่าน',response.message);
                                 return;
                             }
                         }

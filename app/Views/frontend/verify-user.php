@@ -15,12 +15,12 @@
                     <?php if($_verified) : ?>
                         <div class="alert alert-success" id="success">
                             <b><i class="bi bi-check-circle-fill"></i> 
-                            Verified ผู้ประกอบการเรียบร้อยแล้ว</b>  
+                            ยืนยันตัวตนเรียบร้อยแล้ว</b>  
                         </div>
                     <?php else : ?>
                         <div class="alert alert-danger alert-dismissible fade show" id="error">
                             <i class="bi bi-exclamation-triangle-fill"></i> 
-                            ไม่สามารถ Verify ผู้ประกอบการได้ กรุณาติดต่อเจ้าหน้าที่ได้ที่  
+                            ไม่สามารถยืนยันตัวตนได้ กรุณาติดต่อเจ้าหน้าที่ได้ที่  
                             <a class="alert-link" href="<?=base_url('contact-us')?>" title="ติดต่อเรา">
                                 ติดต่อเรา
                             </a>
@@ -44,7 +44,7 @@
             case 'success':
                 const setting = {
                     icon: 'success',
-                    title: 'Verified ผู้ประกอบการเรียบร้อยแล้ว',
+                    title: 'ยืนยันตัวตนเรียบร้อยแล้ว',
                     text: '',
                     btnText: 'เข้าสู่ระบบ'
                     // text: '<?=($_password) ? 'คุณยังไม่ได้ตั้งค่ารหัสผผ่าน' : ''?>',
@@ -60,7 +60,7 @@
                 });
             break;
             case 'error': 
-                alert.show('error','ไม่สามารถ Verify ผู้ประกอบการได้','กรุณาติดต่อเจ้าหน้าที่');
+                alert.show('error','ไม่สามารถยืนยันตัวตนได้','กรุณาติดต่อเจ้าหน้าที่');
             break;
         }
     }

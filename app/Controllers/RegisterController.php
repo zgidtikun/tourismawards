@@ -81,10 +81,16 @@ class RegisterController extends BaseController
                         $status = false;
                         $error['insert'] = $result->error;
                     } else {
-                        // $expire = date('YmdHis',strtotime('+1 days'));
-                        // $data->verify_token = vEncryption($data->user_id .'-'.$expire.'-'.$verify_code);
                         $data->user_id = $result->id;
                         $data->verify_token = vEncryption($data->user_id .'-'.$verify_code);
+                        save_log_activety([
+                            'module' => 'register',
+                            'action' => 'user_register',
+                            'bank' => 'frontend',
+                            'user_id' => $result->id,
+                            'datetime' => date('Y-m-d H:i:s'),
+                            'data' => $this->input->getVar()
+                        ]);
                         helper('semail');
                         send_email_frontend($data,'register');
                         $status = true;
@@ -183,6 +189,15 @@ class RegisterController extends BaseController
                 );
                 return $this->response->setJSON($result);
             }
+
+            save_log_activety([
+                'module' => 'register',
+                'action' => 'change_password',
+                'bank' => 'frontend',
+                'user_id' => $this->input->getVar('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => $this->input->getVar()
+            ]);
 
             $obj_user = new \App\Models\Users();
 

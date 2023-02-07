@@ -25,6 +25,9 @@ class MarkTest extends BaseController
 
     public function index()
     {
+        // $log = $this->LogActivity->findAll();
+        // px($log);
+        // px(json_decode($log[0]->action_data));
         show_404();
         $data = $this->db->table('admin')->where('id', 13)->get()->getRowObject();
         // px($data);
@@ -45,7 +48,6 @@ class MarkTest extends BaseController
         // pp(PasswordEncrypt('637cec9879aaa569c44e277a'));
         // px(PasswordDecrypt(PasswordEncrypt('637cec9879aaa569c44e277a')));
         show_404();
-        $log = $this->LogActivity->findAll();
         // px(session()->get());
         $url = 'https://www.tennis.in.th/uploads/2023/01/12/13/app-register/paper/20230112_212a53e787e5.pdf';
         $new_name = '115544sdsdsdsds.pdf';

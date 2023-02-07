@@ -4,10 +4,12 @@
     <div>
       <div class="banner-box-scale">
         <div class="banner-box-scale-img">
+          <div class="banner-txt" style="display:none"></div>
           <a href="javascript:;" onclick="$('.branchawards')[0].scrollIntoView();">
             <picture>
-              <source media="(max-width: 421px) and (orientation: portrait)" srcset="<?= base_url('assets/images/banner/mobile/banner_slide1.jpg') ?>" />
-              <source media="(max-width: 767px) and (orientation: portrait)" srcset="<?= base_url('assets/images/banner/tablet_h/banner_slide1.jpg') ?>" />
+              <source media="(max-width: 421px)" srcset="<?= base_url('assets/images/banner/mobile/banner_slide1.jpg') ?>" />
+              <source media="(max-width: 768px)" srcset="<?= base_url('assets/images/banner/tablet_v/banner_slide1.jpg') ?>" />
+              <source media="(max-width: 825px)" srcset="<?= base_url('assets/images/banner/tablet_h/banner_slide1.jpg') ?>" />
               <img alt="" src="<?= base_url('assets/images/banner/pc/banner_slide1.jpg') ?>">
             </picture>
           </a>
@@ -18,9 +20,11 @@
     <div>
       <div class="banner-box-scale">
         <div class="banner-box-scale-img">
+          <div class="banner-txt" style="display:none"></div>
           <picture>
-            <source media="(max-width: 421px) and (orientation: portrait)" srcset="<?= base_url('assets/images/banner/mobile/banner_slide2.jpg') ?>" />
-            <source media="(max-width: 767px) and (orientation: portrait)" srcset="<?= base_url('assets/images/banner/tablet_h/banner_slide2.jpg') ?>" />
+            <source media="(max-width: 421px)" srcset="<?= base_url('assets/images/banner/mobile/banner_slide2.jpg') ?>" />
+            <source media="(max-width: 768px)" srcset="<?= base_url('assets/images/banner/tablet_v/banner_slide2.jpg') ?>" />
+            <source media="(max-width: 825px)" srcset="<?= base_url('assets/images/banner/tablet_h/banner_slide2.jpg') ?>" />
             <img alt="" src="<?= base_url('assets/images/banner/pc/banner_slide2.jpg') ?>">
           </picture>
         </div>
@@ -30,11 +34,15 @@
     <div>
       <div class="banner-box-scale">
         <div class="banner-box-scale-img">
-          <picture>
-            <source media="(max-width: 421px) and (orientation: portrait)" srcset="<?= base_url('assets/images/banner/mobile/banner_slide3.jpg') ?>" />
-            <source media="(max-width: 767px) and (orientation: portrait)" srcset="<?= base_url('assets/images/banner/tablet_h/banner_slide3.jpg') ?>" />
-            <img alt="" src="<?= base_url('assets/images/banner/pc/banner_slide3.jpg') ?>">
-          </picture>
+          <div class="banner-txt" style="display:none"></div>
+          <a href="javascript:;" onclick="">
+            <picture>
+              <source media="(max-width: 421px)" srcset="<?= base_url('assets/images/banner/mobile/banner_slide3.jpg') ?>" />
+              <source media="(max-width: 768px)" srcset="<?= base_url('assets/images/banner/tablet_v/banner_slide3.jpg') ?>" />
+              <source media="(max-width: 825px)" srcset="<?= base_url('assets/images/banner/tablet_h/banner_slide3.jpg') ?>" />
+              <img alt="" src="<?= base_url('assets/images/banner/pc/banner_slide3.jpg') ?>">
+            </picture>
+          </a>
         </div>
       </div>
     </div>
@@ -42,9 +50,11 @@
     <div>
       <div class="banner-box-scale">
         <div class="banner-box-scale-img">
+          <div class="banner-txt" style="display:none"></div>
           <picture>
-            <source media="(max-width: 421px) and (orientation: portrait)" srcset="<?= base_url('assets/images/banner/mobile/banner_slide4.jpg') ?>" />
-            <source media="(max-width: 767px) and (orientation: portrait)" srcset="<?= base_url('assets/images/banner/tablet_h/banner_slide4.jpg') ?>" />
+            <source media="(max-width: 421px)" srcset="<?= base_url('assets/images/banner/mobile/banner_slide4.jpg') ?>" />
+            <source media="(max-width: 768px)" srcset="<?= base_url('assets/images/banner/tablet_v/banner_slide4.jpg') ?>" />
+            <source media="(max-width: 825px)" srcset="<?= base_url('assets/images/banner/tablet_h/banner_slide4.jpg') ?>" />
             <img alt="" src="<?= base_url('assets/images/banner/pc/banner_slide4.jpg') ?>">
           </picture>
         </div>

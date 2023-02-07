@@ -43,7 +43,7 @@ height: 100%;
 text-align: center;
 margin: 20px 0;
 }
-.btn-yellow:link,.btn-yellow:visited{
+.branch_content .btn-yellow:link,.branch_content .btn-yellow:visited{
 text-align: center;
 color: #FFF;
 padding: 5px 20px;
@@ -52,8 +52,9 @@ border-bottom: 3px solid #205010;
 display: table;
 margin: 10px auto 0 auto;
 transition: all 0.2s;
+font-size: 1.2rem;
 }
-.btn-yellow:hover{
+.branch_content .btn-yellow:hover{
 position: relative;
 transform: translateY(-5px);
 }
@@ -69,16 +70,33 @@ font-weight: normal;
 .claim_img{
 margin-bottom: 20px;
 }
-
+.claim_content{
+display: flex;
+flex-direction: column;
+}
 .claim_title {
     font-size: 24px;
     color: #FFF;
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
+    background-color: #1b510a;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.claim_txt{
-text-align: center;
-margin: 20px 0;
+    .claim_txt{
+        text-align: left;
+        margin: 20px 0;
+    }
+.claim_txt ul{
+padding: 0;
+margin: 0;
+}
+.claim_txt li {
+    padding: 0 0 0 10px;
+    margin: 0 0 0 40px;
+    list-style-position: outside;
 }
 .ruleawards .row {
     display: flex;
@@ -89,7 +107,7 @@ margin: 20px 0;
     align-items: normal;
 }
 .ruleawards .col6 {
-    padding: 10px;
+    padding: 40px;
     display: flex;
 }
 .btn-ruleyellow a:link, .btn-ruleyellow a:visited, .btn-ruledblue a:link, .btn-ruledblue a:visited {
@@ -99,7 +117,7 @@ margin: 20px 0;
     font-size: 28px;
     font-weight: bold;
     color: #FFF;
-    padding: 40px 20px;
+    padding: 0px;
     text-align: center;
     line-height: 34px;
     width: 100%;
@@ -163,7 +181,11 @@ margin: -10px;
 }
 .container.directoraward .hilight {
     display: flex;
+    width: 45%;
     padding: 0;
+}
+.container.directoraward .col7{
+width: 55%;
 }
 .hilight .judge_box{
 margin: 0;
@@ -191,6 +213,7 @@ width: 100%;
     position: relative;
     padding-top: 75%;
     overflow: hidden;
+    background-color: #9fa4b2;
 }
 .judge_img_scale {
     position: absolute;
@@ -199,10 +222,10 @@ width: 100%;
     width: 100%;
     height: 100%;
 }
-.judge_img img{
-width: 100%;
-height: 100%;
-object-fit: cover;
+.judge_img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 .container.winnneraward{
 padding: 0;
@@ -391,9 +414,20 @@ max-height: 150px;
 }
 
 .branchawards .col4,.branchawards .col6{
-    padding: 20px;
+    padding: 40px 20px;
+    margin: -10px 0;
 }
-
+ul.privilage-list{
+    list-style: disc;
+    margin: 0;
+    padding: 0;
+}
+.privilage-list li{
+    margin: 0 0 0 30px;
+    padding: 0 0 0 10px;
+    list-style-position: outside;
+text-align: left;
+}
 
 @media screen and (max-width:1700px) {
 .container.commentaward .main-title {
@@ -401,6 +435,13 @@ max-height: 150px;
     margin-left: auto;
     margin-right: auto;
     padding: 0 40px;
+}
+}
+
+@media screen and (max-width:1366px) {
+.award-section-col{
+width: 33.33%;
+padding:  0 20px;
 }
 }
 
@@ -440,22 +481,37 @@ padding-left: 0;
     margin: 0;
     padding: 0 10px;
 }
-.btn-ruleyellow a:link, .btn-ruleyellow a:visited, .btn-ruledblue a:link, .btn-ruledblue a:visited {
+.ruleawards .col6 {
+    padding: 30px 20px;
     display: flex;
-    justify-content: center;
-    align-items: baseline;
-    font-size: 28px;
-    font-weight: bold;
-    color: #FFF;
-    padding: 20px;
-    text-align: center;
-    line-height: 34px;
-    width: 100%;
-    transition: all 0.3s;
+}
+.btn-ruleyellow a:link, .btn-ruleyellow a:visited, .btn-ruledblue a:link, .btn-ruledblue a:visited {
+    justify-content: space-between;
 }
 .award-section-col {
-    width: 50%;
+    width: 33.33%;
     padding: 20px;
+}
+.branchawards .col4, .branchawards .col6 {
+    padding: 20px;
+    margin: 0;
+}
+.container.claimawards .col4{
+width: 100%;
+}
+.claim_title {
+    font-size: 1rem;
+    color: #FFF;
+    text-align: center;
+    font-weight: 600;
+    background-color: #1b510a;
+    padding: 10px 15px;
+}
+.container.directoraward .hilight {
+    width: 40%;
+}
+.container.directoraward .col7{
+    width: 60%;
 }
 }
 
@@ -491,16 +547,6 @@ margin: 0 0 20px 0;
     padding-left: 20px;
 }
 
-.claim_title {
-    font-size: 20px;
-    color: #FFF;
-    text-align: left;
-    font-weight: bold;
-}
-.claim_txt {
-    text-align: left;
-    margin: 20px 0;
-}
 .news_box_title {
     font-size: 20px;
 }
@@ -520,10 +566,36 @@ max-height: 100px;
     font-size: 4.5em;
 }
 .branchawards .row{
-margin: 0 -10px;
+margin: 40px -10px;
 }
 .branchawards .row [class^="col"]{
 padding: 10px;
+}
+.award-section-col {
+    width: 50%;
+    padding: 20px;
+}
+.container.directoraward .hilight {
+    display: flex;
+    width: 100%;
+    padding: 20px 0;
+}
+.container.directoraward .col7{
+width: 100%;
+}
+.container.directoraward .judge_box_col {
+    width: 50%;
+    position: relative;
+}
+.container.directoraward .hilight .judge_box_col {
+    width: 100%;
+    position: relative;
+}
+.hilight .judge_box .judge_img {
+    width: 100%;
+    position: relative;
+    padding-top: 42.75%;
+    overflow: hidden;
 }
 }
 
@@ -626,6 +698,21 @@ font-size: 16px;
 .winner-title {
     font-size: 3em;
 }
+.container.directoraward .judge_box_col {
+    width: 100%;
+    position: relative;
+}
+.award-section {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+}
+.winner-title-large {
+    font-family: 'Abril Fatface', cursive;
+    font-size: 6rem;
+    line-height: 1;
+}
 }
 
-/*GD-02-V.15122565*/
+/*GD-02-V.07022566*/

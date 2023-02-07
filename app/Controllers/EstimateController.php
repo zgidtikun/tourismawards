@@ -48,10 +48,8 @@ class EstimateController extends BaseController
                 ->select('created_by, IFNULL(attraction_name_th,attraction_name_en) place_name',false)
                 ->first();
 
-            $this->estimate->where([
-                    'application_id' => $appid,
-                    'request_status' => 0
-                ])     
+            $this->estimate->where('application_id')   
+                ->whereIn('request_status',[0,4])  
                 ->set([ 
                     'request_status' => 1,
                     'request_date' => $currentDate
@@ -72,7 +70,7 @@ class EstimateController extends BaseController
                 "UPDATE answer a INNER JOIN estimate e ON a.id = e.answer_id
                 SET a.status = 3
                 WHERE e.application_id = $appid
-                    AND e.request_status = 1;"
+                    AND e.request_status IN (1,4);"
             );
             
             $this->stage->where([
@@ -228,6 +226,12 @@ class EstimateController extends BaseController
                     $data['request_list'] = $input->request_list;
                     $data['request_date'] = $input->request_date;
                     $data['request_status'] = $input->request_status;
+
+                    if($input->request_status != '' && is_numeric($input->request_status)){
+                        $data['request_status'] = $input->score;
+                    } else {
+                        $data['request_status'] = NULL;
+                    }
                 } else {
                     $data['request_list'] = NULL;
                     $data['request_date'] = NULL;

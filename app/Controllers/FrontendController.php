@@ -295,10 +295,26 @@ class FrontendController extends BaseController
     public function updateProfile()
     {
         try {
-            $users = new \App\Models\Users();
-            $profile = $this->input->getVar('profile');
-            $users->update($this->input->getVar('id'),$profile);
-            $result = ['result' => 'success'];  
+            if(!empty($this->myId) && !is_array($this->myId)){
+                $users = new \App\Models\Users();
+                $profile = $this->input->getVar('profile');
+                $users->where('id',$this->myId)->set($profile)->update();
+
+                save_log_activety([
+                    'module' => 'user_profile',
+                    'action' => 'update_profile',
+                    'bank' => 'frontend',
+                    'user_id' => $this->myId,
+                    'datetime' => date('Y-m-d H:i:s'),
+                    'data' => $this->input->getVar()
+                ]);
+
+                $result = ['result' => 'success'];  
+            } else {
+                $result = ['result' => 'error']; 
+            }
+
+            return  $this->response->setJSON($result);
         } catch(Exception $e){
             save_log_error([
                 'module' => 'profile_update',
@@ -317,9 +333,9 @@ class FrontendController extends BaseController
                 'message' => ''
                 // 'message' => $e->getMessage()
             ];
-        }
 
-        return  $this->response->setJSON($result);
+            return  $this->response->setJSON($result);
+        }
     }
 
     public function boards()

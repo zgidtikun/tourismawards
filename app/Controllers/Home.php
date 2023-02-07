@@ -334,7 +334,7 @@ class Home extends BaseController
     public function winneraward13()
     {
         $data = [
-            'title' => 'ผลงานที่ได้รับรางวัล ปี 2565',
+            'title' => 'ผลงานปีที่ได้รับปีที่ผ่านมา',
             '_banner' => false,
             'view' => 'awards-winner-13'
         ];

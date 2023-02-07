@@ -142,7 +142,9 @@ class ApplicationController extends BaseController
             $this->appForm->insert($instData);
             $instId = $this->appForm->getInsertID();
             $formCode = date('Ym').'-'.str_pad($instId, 4, '0', STR_PAD_LEFT);
-            $this->appForm->update($instId,['code' => $formCode]);
+            $this->appForm->where('id',$instId)
+            ->set(['code' => $formCode])
+            ->update();
 
             $result = array(
                 'result' => 'success',
@@ -185,7 +187,9 @@ class ApplicationController extends BaseController
                 }
             }
             
-            $this->appForm->update($app_id,$updd);                      
+            $this->appForm->where('id',$app_id)
+            ->set($updd)
+            ->update();                      
 
             save_log_activety([
                 'module' => 'user_application',
@@ -257,7 +261,9 @@ class ApplicationController extends BaseController
                     }
                 }
                     
-                $this->appForm->update($app_id,$updd);
+                $this->appForm->where('id',$app_id)
+                ->set($updd)
+                ->update();
                 
                 helper('semail');
                 send_email_frontend((object)[
@@ -363,8 +369,11 @@ class ApplicationController extends BaseController
                 } else {
                     $updd = $files_up;
                 }
-
-                $this->appForm->update($app_id,['pack_file' => json_encode($updd)]);
+                    
+                $this->appForm->where('id',$app_id)
+                ->set(['pack_file' => json_encode($updd)])
+                ->update();
+                
                 $result['files'] = $files_up;
                 
             }
@@ -426,7 +435,11 @@ class ApplicationController extends BaseController
                     }
 
                     $package_file = !empty($tmp) ? json_encode($tmp) : NULL;
-                    $this->appForm->update($app_id,['pack_file' => $package_file]);
+                    
+                    $this->appForm->where('id',$app_id)
+                    ->set(['pack_file' => $package_file])
+                    ->update();
+                    
                     $result = ['result' => 'success', 'message' => '', 'files' => $tmp];
                 } else {
                     $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
@@ -443,7 +456,11 @@ class ApplicationController extends BaseController
                 }
 
                 $package_file = !empty($tmp) ? json_encode($tmp) : NULL;
-                $this->appForm->update($app_id,['pack_file' => $package_file]);
+                    
+                $this->appForm->where('id',$app_id)
+                ->set(['pack_file' => $package_file])
+                ->update();
+                
                 $result = ['result' => 'success', 'message' => ''];
             }
         } catch(\Exception $e){

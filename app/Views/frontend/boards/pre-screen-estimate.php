@@ -81,12 +81,12 @@
                 <div class="regis-form-data judge-form-data">
                     <div class="bs-row" style="font-size: 16px;">
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class="fw-semibold  text-dark">
+                            <span class="fw-semibold text-dark">
                             รหัสใบสมัคร : <span class="fw-normal text-dark" id="tyCode"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class="fw-semibold  text-dark">
+                            <span class="fw-semibold text-dark">
                             ประเภท : <span class="fw-normal text-dark" id="tyType"></span>
                             </span>
                         </div>
@@ -96,32 +96,32 @@
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class="fw-semibold  text-dark">
+                            <span class="fw-semibold text-dark">
                             ชื่อสถานประกอบการ : <span class="fw-normal text-dark" id="tyAttnTh"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class="fw-semibold  text-dark">
+                            <span class="fw-semibold text-dark">
                             สาขา : <span class="fw-normal text-dark" id="tyTSbu"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class="fw-semibold  text-dark">
+                            <span class="fw-semibold text-dark">
                             อีเมล : <span class="fw-normal text-dark" id="tyEmail"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class="fw-semibold  text-dark">
-                            Establishment : <span class="fw-normal text-dark" id="tyAttnEn"></span>
+                            <span class="fw-semibold text-dark">
+                            ชื่อสถานประกอบการภาษาอังกฤษ : <span class="fw-normal text-dark" id="tyAttnEn"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class="fw-semibold  text-dark">
+                            <span class="fw-semibold text-dark">
                             วันที่ส่งใบสมัคร : <span class="fw-normal text-dark" id="tyUdat"></span>
                             </span>
                         </div>
                         <div class="col-sm-12 col-md-4 mb-2">
-                            <span class="fw-semibold  text-dark">
+                            <span class="fw-semibold text-dark">
                             เบอร์ติดต่อ : <span class="fw-normal text-dark" id="tyTel"></span>
                             </span>
                         </div>
@@ -372,10 +372,16 @@ aria-hidden="true">
                     </span>
                 </span>
                 <div class="alert alert-warning mt-2" role="alert" id="rq-wait" style="display: none;">
-                    <b><i class="bi bi-exclamation-triangle-fill mr-2"></i>รอการตอบกลับจากผู้ประกอบการ</b>
+                    <b>รอการตอบกลับจากสถานประกอบการ</b>
+                </div>
+                <div class="alert alert-danger mt-2" role="alert" id="rq-unfinish" style="display: none;">
+                    <b>ไม่มีการตอบกลับจากสถานประกอบการ</b>
                 </div>
                 <div class="alert alert-success mt-2" role="alert" id="rq-finish" style="display: none;">
-                    <b><i class="bi bi-check-circle-fill mr-2"></i>ผู้ประกอบการตอบกลับแล้ว</b>
+                    <b>สถานประกอบการการตอบกลับแล้ว</b>
+                </div>
+                <div class="alert alert-success mt-2" role="alert" id="rq-warning" style="display: none;">
+                    <b id="rq-warning-txt">สถานประกอบการการตอบกลับแล้ว</b>
                 </div>
                 <textarea rows="9" id="qRequest" onkeyup="countChar1($('#qRequest'))"
                 <?php if(!$showRequest){ echo 'readonly="readonly"'; } ?>></textarea>

@@ -19,6 +19,10 @@
     font-size: 14px;
     font-weight: 400;
   }
+
+  #modal-detail .badge {
+    display: inline-block !important;
+  }
 </style>
 <div class="container">
   <div class="row">

@@ -268,7 +268,7 @@ const psc = {
                         } else {
                             if(finish.result == 'success'){
                                 let title = 'ส่งแบบประเมินเรียบร้อยแล้ว',
-                                    message = 'เราจะแจ้งผลให้ทราบวันที่ <b>19 พฤษภาคม 2566</b>';
+                                    message = 'เราจะแจ้งผลให้ทราบวันที่ <b>1 มิถุนายน 2566</b>';
                                 
                                 alert.show(finish.result,title,message).then(function(res){
                                     window.location.reload();
@@ -281,7 +281,7 @@ const psc = {
                 }
             });
         } else {
-            alert.show('error','ดำเนินการไม่สำเร็จ','กรุณาตอบคำถามให้ครบถ้วน ก่อนส่งแบบประเมินเข้าระบบ');
+            alert.show('error','ดำเนินการไม่สำเร็จ','กรุณากรอกข้อมูลให้ครบถ้วน<b style="color:#EE3232;">ทุกด้าน</b> ก่อนส่งแบบประเมินเข้าระบบ');
         }
     },
     validate: function(){

@@ -284,7 +284,7 @@ class semail {
                     $_cc = [];
                     $_bcc = [$this->mail_bcc];
                     
-                    $judge = $this->getUser($dataset->appId);                    
+                    $judge = $this->getJudgeEstimateRequest($dataset->appId);
                     
                     if(!empty($judge)){
                         foreach($judge as $user){
@@ -428,16 +428,33 @@ class semail {
                 'message' => $_message,
             ];
             
-            $_status = $this->SendMail($_set);
+            $_status = $this->SendMail($_set);                 
+            
+            helper('log');
+            save_log_activety([
+                'module' => 'send_email',
+                'action' => $by,
+                'bank' => 'frontend',
+                'user_id' => session()->get('id'),
+                'datetime' => date('Y-m-d H:i:s'),
+                'data' => [
+                    'to' => $_to,
+                    'from' => $_from,
+                    'cc' => $_cc,
+                    'bcc' => $_bcc,
+                    'subject' => $_subject,
+                    'status' => $_status 
+                ]
+            ]);
 
             $result = [ 'result' => $_status ? 'success' : 'error' ];
             
             return $result;
         } catch(Exception $e){
-            helper('semail');
+            helper('log');
             save_log_error([
                 'module' => 'helper_send_email',
-                'input_data' => '',
+                'input_data' => ['dataset' => $dataset, 'by' => $by],
                 'error_date' => date('Y-m-d H:i:s'),
                 'error_msg' => [
                     'error_file' => $e->getFile(),
@@ -446,7 +463,7 @@ class semail {
                     'error_msg' => $e->getMessage()
                 ]
             ]);
-            return [ 'result' => false,  'message' => $e ];
+            return [ 'result' => false,  'message' => '' ];
         }
     }
 
@@ -487,47 +504,21 @@ class semail {
 
         return (object) $result;
     }
-
-    private function getCommittees($id)
+    
+    private function getJudgeEstimateRequest($app_id)
     {
-        $obj_comm = new \App\Models\Committees();
-        $obj_user = new \App\Models\Users();
+        $db = \Config\Database::connect();
+
+        $judge = $db->table('users a')
+        ->select('a.email')
+        ->join('estimate_request b','a.id = b.request_by')
+        ->where('b.application_id',$app_id)
+        ->whereIn('b.request_status',[1,3])
+        ->groupBy('a.id')
+        ->get()
+        ->getResult();
         
-        $data = $obj_comm->where('users_id',$id)
-            ->select('
-                admin_id_tourism, 
-                admin_id_supporting, 
-                admin_id_responsibility,
-                admin_id_lowcarbon'
-            )
-            ->first();
-
-        $judge = $tourism = $support = $lowcarbon = $respons = [];
-    
-        if(!empty($data->admin_id_tourism)){
-            $tourism = json_decode($data->admin_id_tourism,true);
-            $judge = array_unique(array_merge($judge,$tourism));
-        }
-    
-        if(!empty($data->admin_id_supporting)){
-            $support = json_decode($data->admin_id_supporting,true);
-            $judge = array_unique(array_merge($judge,$support));
-        }
-    
-        if(!empty($data->admin_id_responsibility)){
-            $respons = json_decode($data->admin_id_responsibility,true);
-            $judge = array_unique(array_merge($judge,$respons));
-        }
-    
-        if(!empty($data->admin_id_lowcarbon)){
-            $lowcarbon = json_decode($data->admin_id_lowcarbon,true);
-            $judge = array_unique(array_merge($judge,$lowcarbon));
-        }
-
-        $result = $obj_user->whereIn('id',$judge)
-            ->select('email')->findAll();
-
-        return !empty($result) ? $result : [];
+        return $judge;
     }
 
     private function getAdmin()

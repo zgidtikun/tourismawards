@@ -2,6 +2,13 @@ const getBaseUrl = () => {
     return window.location.origin
 }
 
+const getHashPointerUrl = () => {
+    const url = window.location.href;
+    const hashValue = url.substring(url.indexOf("#") + 1);
+    const hash = decodeURIComponent(hashValue);
+    return hash;
+}
+
 const loading = (action) => {
     return new Promise(function(resolve, reject){
         if(action == 'show'){

@@ -17,7 +17,7 @@
         background-color: #C79534;
     }
     .claim_title {
-        font-size: 24px;
+        font-size: 1.2rem;
         color: #FFF;
         text-align: center;
         font-weight: 600;
@@ -87,7 +87,7 @@
             <div class="branch_img">
                 <div class="branch_img_box">
                     <div class="branch_img_scale">
-                        <img src="<?= base_url('assets/images/award_01.jpg') ?>" width="443" height="315" alt="..." loading="lazy">
+                        <img src="<?= base_url('assets/images/award_08.jpg') ?>" width="443" height="315" alt="..." loading="lazy">
                     </div>
                 </div>
             </div>
@@ -103,7 +103,7 @@
             <div class="branch_img">
                 <div class="branch_img_box">
                     <div class="branch_img_scale">
-                        <img src="<?= base_url('assets/images/award_02.jpg') ?>" width="443" height="315" alt="..." loading="lazy">
+                        <img src="<?= base_url('assets/images/award_09.jpg') ?>" width="443" height="315" alt="..." loading="lazy">
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
             <div class="branch_img">
                 <div class="branch_img_box">
                     <div class="branch_img_scale">
-                        <img src="<?= base_url('assets/images/award_03.jpg') ?>" width="443" height="315" alt="..." loading="lazy">
+                        <img src="<?= base_url('assets/images/award_06.jpg') ?>" width="443" height="315" alt="..." loading="lazy">
                     </div>
                 </div>
             </div>
@@ -323,26 +323,7 @@
     </div>
 </div>
 
-<style>
-    .award-section {
-        margin: 0 !important;
-    }
-
-    .winner-title {
-        font-size: 5vw;
-    }
-
-    .winner-title-large {
-        font-size: 10vw;
-    }
-
-    .award-section-col {
-        cursor: pointer;
-    }
-
-</style>
-<div class="container reveal"
-style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?>');">
+<div class="container reveal" style="background-image: url('<?= base_url('assets/images/winneraward_bg.jpg') ?>');background-position:center;background-size:cover;display:none;">
     <div class="container_box">
 
         <div class="row">
@@ -361,7 +342,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                                 <img src="<?= base_url('assets/images/award_01.jpg') ?>" 
                                 style="max-width: none !important;">
                                 <div class="award-section-txt">
-                                    Attraction
+                                 <span> Attraction</span>
                                 </div>
                             </div>
                         </div>
@@ -373,7 +354,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                                 <img src="<?= base_url('assets/images/award_02.jpg') ?>" 
                                 style="max-width: none !important;">
                                 <div class="award-section-txt">
-                                    Accommodation
+                                 <span>Accommodation</span>
                                 </div>
                             </div>
                         </div>
@@ -385,7 +366,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                                 <img src="<?= base_url('assets/images/award_03.jpg') ?>" 
                                 style="max-width: none !important;">
                                 <div class="award-section-txt">
-                                    Health and Wellness Tourism
+                                <span>Health and Wellness Tourism</span>
                                 </div>
                             </div>
                         </div>
@@ -397,7 +378,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                                 <img src="<?= base_url('assets/images/award_04.jpg') ?>" 
                                 style="max-width: none !important;">
                                 <div class="award-section-txt">
-                                    Tourism Program
+                                <span>Tourism Program</span>
                                 </div>
                             </div>
                         </div>
@@ -415,6 +396,64 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
         window.open(url,'_blank');
     }
 </script>
+<div class="container reveal" style="background-image: url('<?= base_url('assets/images/winneraward_bg.jpg') ?>');background-position:center;background-size:cover;">
+    <div class="container_box">
+
+        <div class="row">
+            <div class="col12">
+                <div class="winner-title">
+                    WINNER
+                    <div class="winner-title-large">
+                        2021
+                    </div>
+                </div>
+
+                <div class="award-section justify-content-center">
+                    <div class="award-section-col" 
+                    onclick="window.open('<?=base_url('last-awards-winner?type=attraction')?>','_blank')">
+                        <div class="award-section-img">
+                            <div class="award-section-imgscale">
+                                <img src="<?= base_url('assets/images/award_01.jpg') ?>" 
+                                style="max-width: none !important;">
+                                <div class="award-section-txt">
+                                <span>Attraction</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="award-section-col"
+                    onclick="window.open('<?=base_url('last-awards-winner?type=accommodation')?>','_blank')">
+                        <div class="award-section-img">
+                            <div class="award-section-imgscale">
+                                <img src="<?= base_url('assets/images/award_02.jpg') ?>" 
+                                style="max-width: none !important;">
+                                <div class="award-section-txt">
+                                <span>Accommodation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="award-section-col"
+                    onclick="window.open('<?=base_url('last-awards-winner?type=health-and-wellness-tourism')?>','_blank')">
+                        <div class="award-section-img">
+                            <div class="award-section-imgscale">
+                                <img src="<?= base_url('assets/images/award_03.jpg') ?>" 
+                                style="max-width: none !important;">
+                                <div class="award-section-txt">
+                                <span>Health and Wellness Tourism</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <div class="container qrcontact">
     <div class="container_box">
@@ -625,16 +664,16 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
             // });
             // $('.branch_txt').css("height", branchtxtheight + 20);
             //----------------------------------------------------------------------------------//
-            // var claimtitle = $('.claim_title').length;
-            // var claimtitletab = [];
-            // for (var i = 1; i <= claimtitle;) {
-            //     claimtitletab[i] = $('.claim_title[data-tab="' + i + '"]').height();
-            //     i++
-            // }
-            // var claimtitleheight = claimtitletab.reduce(function(a, b) {
-            //     return Math.max(a, b);
-            // });
-            // $('.claim_title').css("height", claimtitleheight);
+            var claimtitle = $('.claim_title').length;
+            var claimtitletab = [];
+            for (var i = 1; i <= claimtitle;) {
+                claimtitletab[i] = $('.claim_title[data-tab="' + i + '"]').height();
+                i++
+            }
+            var claimtitleheight = claimtitletab.reduce(function(a, b) {
+                return Math.max(a, b);
+            });
+            $('.claim_title').css("height", claimtitleheight+30);
 
             //----------------------------------------------------------------------------------//
             // var claimtxt = $('.claim_txt').length;

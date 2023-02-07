@@ -9,28 +9,28 @@
 
 <div class="container judgebox">
     <div class="container_box">
-        <div class="row">
+        <!-- <div class="row">
             <div class="col12">
                 <div class="judge-title">กรรมการที่ปรึกษา</div>
                 <div class="judge-list">
                     <ul>
-                    <?php foreach($judge as $val){ ?>
+                    <?php //foreach($judge as $val){ ?>
                         <li>
-                            <!-- <a href="javascript:void(0);" onclick="setDirector(0)"> -->
+                            <a href="javascript:void(0);" onclick="setDirector(0)">
                                 <div class="judge-img">
                                     <div class="judge-img-scale">
-                                        <img src="<?=base_url($val->profile)?>">
+                                        <img src="<?php //base_url($val->profile)?>">
                                     </div>
                                 </div>
-                                <div class="judge-name"><?=$val->fullname?></div>
+                                <div class="judge-name"><?php //$val->fullname?></div>
                                 <div class="judge-appointment">กรรมการที่ปรึกษา</div>
-                            <!-- </a> -->
+                            </a>
                         </li>
-                    <?php } ?>
+                    <?php //} ?>
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="row">
             <div class="col12">
