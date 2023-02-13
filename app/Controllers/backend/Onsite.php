@@ -289,7 +289,7 @@ class Onsite extends BaseController
             $sub_id = session()->award_type;
         }
 
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, C.application_form_id, C.assessment_round, C.admin_id_tourism, C.admin_id_supporting, C.admin_id_responsibility, C.admin_id_lowcarbon')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id AND C.assessment_round = 2', 'left')->where('C.application_form_id is NOT NULL', NULL, FALSE)->where('US.stage', 2)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, US.updated_at AS users_stage_updated_at, C.application_form_id, C.assessment_round, C.admin_id_tourism, C.admin_id_supporting, C.admin_id_responsibility, C.admin_id_lowcarbon')->join('users_stage US', 'US.user_id = AP.created_by', 'left')->join('committees C', 'C.application_form_id = AP.id AND C.assessment_round = 2', 'left')->where('C.application_form_id is NOT NULL', NULL, FALSE)->where('US.stage', 2)->where('AP.status', 3)->like($like, 'match', 'both')->where($where)->orderBy('AP.created_at', 'desc')->get()->getResultObject();
 
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
         $data['application_type'] = $this->ApplicationType->findAll();

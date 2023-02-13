@@ -94,7 +94,7 @@ class FrontendController extends BaseController
                     if($type == 1){ $user->award_type[$key] = 'แหล่งท่องเที่ยว (Attraction)'; }
                     elseif($type == 2){ $user->award_type[$key] = 'ที่พักนักท่องเที่ยว (Accommodation)'; }
                     elseif($type == 3){ $user->award_type[$key] = 'การท่องเที่ยวเชิงสุขภาพ (Health and Wellness Tourism)'; }
-                    elseif($type == 4){ $user->award_type[$key] = 'รายการนำเที่ยว (Tourism Program)'; }
+                    elseif($type == 4){ $user->award_type[$key] = 'รายการนำเที่ยว (Tour Programmes)'; }
                 }
             }
             

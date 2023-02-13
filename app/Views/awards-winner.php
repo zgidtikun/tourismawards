@@ -22,8 +22,7 @@
     }
 </style>
 
-<div class="container"
-style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?>');">
+<div class="container" style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?>');">
     <div class="container_box">
 
         <div class="row">
@@ -40,8 +39,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                     <div class="award-section-col">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
-                                <img src="<?= base_url('assets/images/award_01.jpg') ?>" 
-                                style="max-width: none !important;">
+                                <img src="<?= base_url('assets/images/award_01.jpg') ?>" style="max-width: none !important;">
                                 <div class="award-section-txt">
                                     Attraction
                                 </div>
@@ -53,8 +51,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                     <div class="award-section-col">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
-                                <img src="<?= base_url('assets/images/award_02.jpg') ?>" 
-                                style="max-width: none !important;">
+                                <img src="<?= base_url('assets/images/award_02.jpg') ?>" style="max-width: none !important;">
                                 <div class="award-section-txt">
                                     Accommodation
                                 </div>
@@ -66,8 +63,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                     <div class="award-section-col">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
-                                <img src="<?= base_url('assets/images/award_03.jpg') ?>" 
-                                style="max-width: none !important;">
+                                <img src="<?= base_url('assets/images/award_03.jpg') ?>" style="max-width: none !important;">
                                 <div class="award-section-txt">
                                     Health and Wellness Tourism
                                 </div>
@@ -79,10 +75,9 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
                     <div class="award-section-col">
                         <div class="award-section-img">
                             <div class="award-section-imgscale">
-                                <img src="<?= base_url('assets/images/award_04.jpg') ?>" 
-                                style="max-width: none !important;">
+                                <img src="<?= base_url('assets/images/award_04.jpg') ?>" style="max-width: none !important;">
                                 <div class="award-section-txt">
-                                    Tourism Program
+                                    Tour Programmes
                                 </div>
                             </div>
                         </div>
@@ -101,7 +96,7 @@ style="background-image: url('<?= base_url('assets/images/banner/banner1.jpg') ?
     });
 
     const toAwardsWinner = (param) => {
-        const url = window.location.origin+'/awards-winner/'+param;
-        window.open(url,'_blank');
+        const url = window.location.origin + '/awards-winner/' + param;
+        window.open(url, '_blank');
     }
 </script>

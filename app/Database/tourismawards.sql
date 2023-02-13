@@ -33,7 +33,7 @@ CREATE TABLE `admin` (
   `name` varchar(255) NOT NULL COMMENT 'ชื่อ',
   `surname` varchar(255) NOT NULL COMMENT 'นามสกุล',
   `member_type` int(1) NOT NULL COMMENT 'ประเภทสมาชิก\r\n1.ผู้ประกอบการ\r\n2.เจ้าหน้าที่ ททท.\r\n3. คณะกรรมการ\r\n4. ผู้ดูแลระบบ',
-  `award_type` int(1) NOT NULL COMMENT 'ประเภทการตัดสิน\r\n1.ประเภทแหล่งท่องเที่ยว (Attraction)\r\n2.ประเภทการท่องเที่ยวเชิงสุขภาพ (Health and Wellness Tourism)\r\n3.ประเภทที่พักนักท่องเที่ยว (Accommodation)\r\n4.ประเภทรายการนำเที่ยว (Tourism Program)',
+  `award_type` int(1) NOT NULL COMMENT 'ประเภทการตัดสิน\r\n1.ประเภทแหล่งท่องเที่ยว (Attraction)\r\n2.ประเภทการท่องเที่ยวเชิงสุขภาพ (Health and Wellness Tourism)\r\n3.ประเภทที่พักนักท่องเที่ยว (Accommodation)\r\n4.ประเภทรายการนำเที่ยว (Tour Programmes)',
   `assessment_group` int(1) NOT NULL COMMENT 'กลุ่มการประเมิน\r\n1.ด้าน Tourism Excellence\r\n2.ด้าน Supporting Business & Marketing Factors\r\n3.ด้านความยั่งยืน (Responsibility)\r\n',
   `mobile` varchar(25) NOT NULL COMMENT 'เบอร์มือถือ',
   `email` varchar(255) NOT NULL COMMENT 'E-mail',

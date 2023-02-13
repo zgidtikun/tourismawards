@@ -80,7 +80,7 @@
                   <th class="text-center type">ประเภทที่ตัดสิน</th>
                   <th class="text-center section">สาขารางวัล</th>
                   <th class="text-center status">สถานะ</th>
-                  <th class="text-center date">วันที่ประเมินล่าสุด</th>
+                  <th class="text-center date">สิ้นสุดประเมิน</th>
                   <th class="text-center edit">จัดการ</th>
                 </tr>
               </thead>
@@ -150,10 +150,7 @@
                         </div>
                       </td>
                       <td class="text-center">
-                        <?php 
-                        $app = new \Config\App();
-                        echo docDate($app->Estimate_ons_date, 3);
-                        ?>
+                        <?php echo docDate($value->users_stage_updated_at, 3) ?>
                       </td>
                       <td>
                         <div class="form-table-col edit">

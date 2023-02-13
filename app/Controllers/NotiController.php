@@ -25,4 +25,14 @@ class NotiController extends BaseController
         return $this->response->setJSON($result);
     }
 
+    public function saveLogErrorPage()
+    {
+        save_log_error([            
+            'module' => $this->input->getVar('error_message'),
+            'input_data' => '',
+            'error_date' => date('Y-m-d H:i:s'),
+            'error_msg' => $this->input->getVar('error_message')
+        ]);
+    }
+
 }

@@ -378,7 +378,7 @@
                                 <img src="<?= base_url('assets/images/award_04.jpg') ?>" 
                                 style="max-width: none !important;">
                                 <div class="award-section-txt">
-                                <span>Tourism Program</span>
+                                <span>Tour Programmes</span>
                                 </div>
                             </div>
                         </div>

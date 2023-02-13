@@ -92,13 +92,21 @@ class Home extends BaseController
         $obj = new \App\Models\Users();
 
         if(!empty($token)){
-            $token = urldecode($token);
+            $decode_token = urldecode($token);
             
             $user = $obj->where(
-                "CONCAT(verify_code,id) LIKE '$token'",NULL,false
+                "CONCAT(verify_code,id) LIKE '$decode_token'",NULL,false
             )
             ->select('email,id')
             ->first();
+
+            if(empty($user)){
+                $user = $obj->where(
+                    "CONCAT(verify_code,id) LIKE '$token'",NULL,false
+                )
+                ->select('email,id')
+                ->first();
+            };
 
             if(!empty($user)){
                 if(session()->get('isLoggedIn')){

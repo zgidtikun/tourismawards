@@ -17,7 +17,7 @@ class CreateTableAwardType extends Migration
             (1, 'แหล่งท่องเที่ยว (Attraction)'),
             (2, 'การท่องเที่ยวเชิงสุขภาพ (Health and Wellness Tourism)'),
             (3, 'ที่พักนักท่องเที่ยว (Accommodation)'),
-            (4, 'รายการนำเที่ยว (Tourism Program)');");
+            (4, 'รายการนำเที่ยว (Tour Programmes)');");
     }
 
     public function down()

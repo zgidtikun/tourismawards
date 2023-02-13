@@ -16,7 +16,7 @@ class AlterTableUsers28092022 extends Migration
             `surname` varchar(255) NOT NULL COMMENT 'นามสกุล',
             `profile` varchar(255) NOT NULL COMMENT 'รูปโปรไฟล์',
             `member_type` varchar(255) NOT NULL COMMENT 'ประเภทสมาชิก',
-            `award_type` varchar(255) DEFAULT NULL COMMENT '	ประเภทการตัดสิน 1.ประเภทแหล่งท่องเที่ยว (Attraction) 2.ประเภทการท่องเที่ยวเชิงสุขภาพ (Health and Wellness Tourism) 3.ประเภทที่พักนักท่องเที่ยว (Accommodation) 4.ประเภทรายการนำเที่ยว (Tourism Program)',
+            `award_type` varchar(255) DEFAULT NULL COMMENT '	ประเภทการตัดสิน 1.ประเภทแหล่งท่องเที่ยว (Attraction) 2.ประเภทการท่องเที่ยวเชิงสุขภาพ (Health and Wellness Tourism) 3.ประเภทที่พักนักท่องเที่ยว (Accommodation) 4.ประเภทรายการนำเที่ยว (Tour Programmes)',
             `assessment_group` varchar(255) DEFAULT NULL COMMENT 'กลุ่มการประเมิน 1.ด้าน Tourism Excellence 2.ด้าน Supporting Business & Marketing Factors 3.ด้านความยั่งยืน (Responsibility)',
             `mobile` varchar(25) NOT NULL COMMENT 'เบอร์มือถือ',
             `email` varchar(120) NOT NULL COMMENT 'E-mail',
