@@ -113,8 +113,17 @@ flex: none;
 .login_list li a {
     color: #FFF;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: flex-start;
+    margin: 5px 0;
+}
+
+.login_list li a.btn-user{
+    flex-direction: row-reverse;
+}
+.login_list li a.btn-user i{
+    margin-left: 0!important;
+    margin-right: 10px;
 }
 
 .login_list li a img {

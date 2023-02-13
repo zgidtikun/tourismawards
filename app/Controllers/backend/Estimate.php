@@ -104,7 +104,7 @@ class Estimate extends BaseController
         $data['question'][4] = @$data['lowcarbon'];
 
         // Template
-        $data['title']  = "ประเมินขั้นต้น (Pre-screen)";
+        $data['title']  = "มอบหมายกรรมการรอบประเมินขั้นต้น (Pre-Screen)";
         $data['view']   = 'administrator/estimate/edit';
         $data['ci']     = $this;
 
@@ -356,7 +356,7 @@ class Estimate extends BaseController
         $data['question'][4] = @$data['lowcarbon'];
 
         // Template
-        $data['title']  = 'ตรวจสอบใบสมัคร';
+        $data['title']  = 'การประเมินขั้นต้น (Pre-Screen)';
         $data['view']   = 'administrator/estimate/view_edit';
         $data['ci']     = $this;
 

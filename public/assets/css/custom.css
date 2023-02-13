@@ -31,7 +31,6 @@
     --bs-light: #f8f9fa;
     --bs-dark: #212529;
     --bs-main-base-rbg: 27, 81, 10;
-    /* --bs-main-base-rbg: 13, 44, 85; */
     --bs-primary-rgb: 13, 110, 253;
     --bs-secondary-rgb: 108, 117, 125;
     --bs-success-rgb: 25, 135, 84;
@@ -5667,7 +5666,7 @@ padding: 0;
 }
 
 .noti-box-footer {
-    position: absolute;
+    position: sticky;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -5689,10 +5688,6 @@ padding: 0;
 
 .swal2-container {
     z-index: 10009 !important;
-}
-
-.swal2-popup {
-    width: auto !important;
 }
 
 .swal2-close { 
@@ -5833,6 +5828,10 @@ padding: 0;
     width: 100%!important;
     padding: 0;
 }
+#step5-type3 .bs-row .col-sm-12 .card {
+  margin-top: 20px;
+  width: 50%;
+}
 #step5-type3 .bs-row .col-sm-12 .card .d-grid{
 padding: 0;
 }
@@ -5906,14 +5905,27 @@ padding-top: 0;
 margin-left: 0!important;
 }
 .swal2-container.swal2-center > .swal2-popup {
-  max-height: 85vh;
-  padding: 20px !important;
+    max-height: 85vh;
+    padding: 20px !important;
+    overflow: auto;
+}
+.swal2-container.swal2-center > .swal2-popup::-webkit-scrollbar{
+width: 5px;
+}
+.swal2-title {
+    margin: 20px 0!important;
+    font-size: 26px!important;
+    padding: 0!important;
 }
 .swal2-close {
     position: absolute;
     margin: 0px 10px 0 0 !important;
     line-height: 1;
     font-size: 30px!important;
+}
+.swal2-html-container{
+margin: 0!important;
+font-size: 18px!important;
 }
 .btn-danger:focus-visible{
 background-color: #dc3545;

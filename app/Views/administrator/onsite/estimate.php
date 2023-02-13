@@ -80,7 +80,7 @@
                   <th class="text-center type">ประเภทที่ตัดสิน</th>
                   <th class="text-center section">สาขารางวัล</th>
                   <th class="text-center status">สถานะ</th>
-                  <th class="text-center date">สิ้นสุดประเมิน</th>
+                  <th class="text-center date">วันที่ประเมินล่าสุด</th>
                   <th class="text-center edit">จัดการ</th>
                 </tr>
               </thead>
@@ -150,7 +150,10 @@
                         </div>
                       </td>
                       <td class="text-center">
-                        <?php echo docDate($value->created_at, 3) ?>
+                        <?php 
+                        $app = new \Config\App();
+                        echo docDate($app->Estimate_ons_date, 3);
+                        ?>
                       </td>
                       <td>
                         <div class="form-table-col edit">
@@ -201,8 +204,8 @@
 
           <div class="data-score-row">
             <div class="data-score-col no">
-              <label>A. Tourism Excellence (Product/Service)</label> <br>
-              <small>(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 40 คะแนน)</small>
+              <label>A.</label> Tourism Excellence (Product/Service) <br>
+              <span class="comment-score">(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 40 คะแนน)</span>
             </div>
             <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_tourism">-</span></div>
             <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_tourism">-</span></div>
@@ -211,8 +214,8 @@
 
           <div class="data-score-row">
             <div class="data-score-col no">
-              <label>B. Supporting Business &amp; Marketing Factors</label> <br>
-              <small>(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 15 คะแนน)</small>
+              <label>B.</label> Supporting Business &amp; Marketing Factors <br>
+              <span class="comment-score">(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 15 คะแนน)</span>
             </div>
             <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_supporting">-</span></div>
             <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_supporting">-</span></div>
@@ -221,8 +224,8 @@
 
           <div class="data-score-row">
             <div class="data-score-col no">
-              <label>C. Responsibility and Safety &amp; Health Administration</label> <br>
-              <small>(คะแนนเต็ม Pre-Screen 5 คะแนน, ลงพื้นที่ 20 คะแนน)</small>
+              <label>C.</label> Responsibility and Safety &amp; Health Administration <br>
+              <span class="comment-score">(คะแนนเต็ม Pre-Screen 5 คะแนน, ลงพื้นที่ 20 คะแนน)</span>
             </div>
             <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_reponsibility">-</span></div>
             <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_reponsibility">-</span></div>
@@ -366,9 +369,11 @@
       $('#pre_supporting').html(res.score_prescreen_sb);
       $('#pre_reponsibility').html(res.score_prescreen_rs);
 
-      $('#onsite_tourism').html(res.score_onsite_te);
-      $('#onsite_supporting').html(res.score_onsite_sb);
-      $('#onsite_reponsibility').html(res.score_onsite_rs);
+      if (res.score_onsite_te != null) {
+        $('#onsite_tourism').html(res.score_onsite_te);
+        $('#onsite_supporting').html(res.score_onsite_sb);
+        $('#onsite_reponsibility').html(res.score_onsite_rs);
+      }
 
       if (res.lowcarbon_status == 1) {
         $('#show_lowcarbon_score').show();
@@ -378,25 +383,34 @@
 
       var total_lowcarbon_score = F2C(Number(DF2C(res.lowcarbon_score)) + Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs)));
       $('#lowcarbon_score').html(res.lowcarbon_score);
-      $('#reponsibility_lowcarbon_score').html(F2C(Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs))));
-      $('#total_lowcarbon_score').html(total_lowcarbon_score);
-      $('#total_score_lowcarbon').html(F2C(total_lowcarbon_score * 100 / 45));
+
+      if (res.score_onsite_te != null) {
+        $('#reponsibility_lowcarbon_score').html(F2C(Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs))));
+        $('#total_lowcarbon_score').html(total_lowcarbon_score);
+        $('#total_score_lowcarbon').html(F2C(total_lowcarbon_score * 100 / 45));
+      }
 
       var total_tourism = Number(DF2C(res.score_prescreen_te)) + Number(DF2C(res.score_onsite_te));
       var total_supporting = Number(DF2C(res.score_prescreen_sb)) + Number(DF2C(res.score_onsite_sb));
       var total_reponsibility = Number(DF2C(res.score_prescreen_rs)) + Number(DF2C(res.score_onsite_rs));
 
-      $('#total_tourism').html(F2C(total_tourism));
-      $('#total_supporting').html(F2C(total_supporting));
-      $('#total_reponsibility').html(F2C(total_reponsibility));
+      if (res.score_onsite_te != null) {
+        $('#total_tourism').html(F2C(total_tourism));
+        $('#total_supporting').html(F2C(total_supporting));
+        $('#total_reponsibility').html(F2C(total_reponsibility));
+      }
 
 
       $('#sum_pre').html(F2C(Number(res.score_prescreen_te) + Number(res.score_prescreen_sb) + Number(res.score_prescreen_rs)));
-      $('#sum_onsite').html(F2C(Number(res.score_onsite_te) + Number(res.score_onsite_sb) + Number(res.score_onsite_rs)));
-      $('#sum_total').html(F2C(Number(total_tourism) + Number(total_supporting) + Number(total_reponsibility)));
+      if (res.score_onsite_te != null) {
+        $('#sum_onsite').html(F2C(Number(res.score_onsite_te) + Number(res.score_onsite_sb) + Number(res.score_onsite_rs)));
+        $('#sum_total').html(F2C(Number(total_tourism) + Number(total_supporting) + Number(total_reponsibility)));
+      }
 
-      var total_score = F2C(total_tourism + total_supporting + total_reponsibility);
-      $('#total_score').html(total_score);
+      if (res.score_onsite_te != null) {
+        var total_score = F2C(total_tourism + total_supporting + total_reponsibility);
+        $('#total_score').html(total_score);
+      }
 
       if (total_score >= 85) {
         var awards = 'รางวัลยอดเยี่ยม (Thailand Tourism Gold Award)';

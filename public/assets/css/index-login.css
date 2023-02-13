@@ -1,3 +1,21 @@
+*{
+scrollbar-width: thin;
+}
+::-webkit-scrollbar-track {
+    background: #F5F5F5;
+    border: 0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #E0E0E0;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #E0E0E0;
+}
+
 .btn-noti, .btn-user {
     padding: 0;
     min-width: auto;
@@ -11,7 +29,7 @@
 
 .user-profile i {
     margin-right: 5px;
-    top: 5px;
+    top: 0;
     position: relative;
 }
 
@@ -37,16 +55,17 @@
 
 .noti-box-content {
     position: relative;
-    width: 350px;
-    height: 100vh;
+    height: auto;
     min-height: 300px;
-    max-height: 400px;
+    width: 350px;
+    max-width: 100%;
+    max-height: 420px;
     background-color: #FFF;
     color: #000;
     border-radius: 10px;
     box-shadow: 0 0 5px rgb(0 0 0 / 15%);
-    overflow: hidden;
-    padding-bottom: 20px;
+    overflow: auto;
+    padding-bottom: 0;
     transition: all 0.2s;
     /* transform: translateY(-20px); */
 }
@@ -56,7 +75,7 @@
 }
 
 .noti-box-title {
-    position: absolute;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
@@ -67,7 +86,7 @@
 }
 
 .noti-box-txt {
-    padding: 65px 10px 0 20px;
+    padding: 0 10px 0 20px;
     height: 100%;
     overflow: auto;
 }
@@ -170,18 +189,28 @@
 
 .user-box-content {
     position: relative;
-    width: 95vw;
-    max-width: 400px;
+    left: 0;
+    top: 0;
+    width: 350px;
+    max-width: 100%;
     height: auto;
-    max-height: 400px;
+    max-height: 420px;
     background-color: #FFF;
     color: #000;
     border-radius: 10px;
     box-shadow: 0 0 5px rgb(0 0 0 / 15%);
-    overflow: hidden;
+    overflow: auto;
     padding-bottom: 20px;
     transition: all 0.2s;
     /* transform: translateY(-20px); */
+}
+.noti-box-content::-webkit-scrollbar,
+.user-box-content::-webkit-scrollbar{
+width: 5px;
+}
+.noti-box-content::-webkit-scrollbar-thumb,
+.user-box-content::-webkit-scrollbar-thumb {
+    background: #999;
 }
 
 .user-box.active .user-box-content {
@@ -189,7 +218,7 @@
 }
 
 .user-box-title {
-    position: relative;
+    position: sticky;
     top: 0;
     left: 0;
     width: 100%;
@@ -209,16 +238,21 @@
 
 .user-box-title .user-box-close {
     position: absolute;
-    right: 20px;
+    right: 10px;
     top: 10px;
     line-height: 1;
     background-color: #eee;
     border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
 }
 
 .user-box-title .user-box-close i:before {
     color: #ccc;
-    font-size: 20px;
+    font-size: 30px;
+    line-height: 1;
 }
 
 .user-status {
@@ -321,6 +355,12 @@ transition: all 0.3s;
         max-width: 350px;
         margin: 0 auto;
     }
+}
+@media screen and (max-width:1023px) and (orientation:landscape){
+.noti-box-content,
+.user-box-content {
+    max-height: 85vh;
+}
 }
 
 /*GD-02-V.15122565*/

@@ -11,7 +11,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายการแบบประเมิน</h3>
+        <h3>ข้อมูลผลงาน</h3>
       </div>
     </div>
 
@@ -53,7 +53,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายชื่อคณะกรรมการสำหรับประเมินใบสมัคร: รอบลงพื้นที่</h3>
+        <h3>รายชื่อคณะกรรมการรอบลงพื้นที่</h3>
       </div>
     </div>
 

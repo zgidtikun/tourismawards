@@ -1,6 +1,6 @@
 var appid, sp, tycoon, dataset, assign, expireRequest,
-    pointer     = { cate: -1, seg: -1 }
-    haveRequest = false
+    pointer     = { cate: -1, seg: -1 },
+    haveRequest = false,
     lowcarbon   = false;
 
 const btnSave   = $('#btn-save');
@@ -206,7 +206,7 @@ const setFinish = () => {
         if(rs.status){
             await loading('show');
 
-            const st = {
+            const setting = {
                 method: 'post',
                 url: '/inner-api/estimate/pre-screen/complete',
                 data: JSON.stringify({
@@ -217,24 +217,22 @@ const setFinish = () => {
                 }})
             }
 
-            api(st).then(async (rs) => {
-                await loading('hide');
+            const callback = await api(setting);
+            await loading('hide');
 
-                if(rs.result == 'error_login'){
-                    alert.login();
-                }
-                else if(rs.result == 'error'){
-                    alert.show('warning','ไม่สามารถส่งผลประเมินเข้าระบบได้',rs.message);
-                    waitDraft('finish');
-                }
-                else {
-                    alert.show('success', 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '').then(() => {
-                        window.location.reload();
-                    });
-                    checkComplete();
-                    waitDraft('finish');
-                }
-            });
+            if(callback.result == 'error_login'){
+                alert.login();
+            }
+            else if(callback.result == 'error'){
+                alert.show('warning','ไม่สามารถส่งผลประเมินเข้าระบบได้',callback.message);
+                waitDraft('finish');
+            }
+            else {
+                await alert.show('success', 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '');
+                checkComplete();
+                waitDraft('finish');
+                window.location.href = `${getBaseUrl()}/boards`;
+            }
         }
     });
 }
@@ -246,7 +244,7 @@ const save = (cate,seg) => {
         if(seg == -1){ seg = 0; }
         
         const question = dataset[cate].question[seg];
-        
+
         if(
             $.inArray(Number(question.request_status),[2,4]) !== -1 &&
             !empty(question.score_pre) && 
@@ -331,16 +329,7 @@ const draft = (cate,seg) => {
         
         const question = dataset[cate].question[seg];
 
-        if(question.estimate){            
-        
-            if(
-                $.inArray(Number(question.request_status),[2,4]) !== -1 &&
-                !empty(question.score_pre) &&
-                Number(question.pre_status) == 1
-            ){
-                question.request_status = null;
-                dataset[cate].question[seg].request_status = null;
-            }
+        if(question.estimate){      
 
             const st = {
                 method: 'post',
@@ -489,8 +478,8 @@ const setQuestion = (cate,seg) => {
         qSco.html('');
         
         const category = dataset[cate];
-        const question = category.question[seg];
-
+        const question = category.question[seg];        
+        
         $('.hide-choice').hide();
         $('body').removeClass('lockbody');
 
@@ -515,7 +504,7 @@ const setQuestion = (cate,seg) => {
             } else {
                 const request_status = Number(dataset[point.cate].question[point.seg].request_status);
                 $('#sl-'+point.seg).removeClass('complete');
-                if(request_status == 1 || request_status == 2){
+                if(request_status == 0 || request_status == 1){
                     $('#sl-'+point.seg).addClass('request');
                 } else {
                     $('#sl-'+point.seg).addClass('respond');
@@ -547,7 +536,7 @@ const setQuestion = (cate,seg) => {
         } else {
             qTitle.html(question.criteria_topic);
         }
-        console.log(question)
+        
         qTitle.attr('data-id',question.reply_id);
         qSum.html(category.question.length);
         mSum.html(category.question.length);
@@ -1017,8 +1006,8 @@ mSelect.change(async() => {
 });
 
 const setReqestFiled = question => {    
-    $('#rp-finish').hide();
-    $('#rp-wait').hide();
+    $('#rq-finish').hide();
+    $('#rq-wait').hide();
     $('#rq-unfinish').hide();
     $('#rq-warning').hide();
 
@@ -1032,32 +1021,40 @@ const setReqestFiled = question => {
     }
     else if(!empty(question.request_list)){
         if($.inArray(Number(question.request_status),[1,2,3,4]) !== -1){
-
             if(Number(question.request_status) == 1){
                 $('#rq-wait').show();
                 qRequest.prop('readonly','readonly');  
             }
-            else if($.inArray(Number(question.request_status),[2,3]) !== -1){
+            else if(Number(question.request_status) == 2) {
                 $('#rq-finish').show();
                 qRequest.prop('readonly',haveRequest ? 'readonly' : '');
             } 
             else if(Number(question.request_status) == 4) {
                 $('#rq-unfinish').show();
                 qRequest.prop('readonly',haveRequest ? 'readonly' : '');
-            }
-            else {
-                $('#rq-finish').show();
+            } else {     
+                if(haveRequest){          
+                    $('#rq-warning').show();
+                    $('#rq-warning-txt').html('กำลังรอการตอบกลับจากสถานประกอบการ ไม่สามารถขอข้อมูลเพิ่มเติมได้');      
+                    qRequest.prop('readonly','readonly');  
+                }
                 qRequest.prop('readonly',haveRequest ? 'readonly' : '');
             }
-        } else {      
-            if(haveRequest){          
-                $('#rq-warning').show();
-                $('#rq-warning-txt').html('กำลังรอการตอบกลับจากสถานประกอบการ ไม่สามารถขอข้อมูลเพิ่มเติมได้');      
-                qRequest.prop('readonly','readonly');  
-            }
-            else {
-                qRequest.prop('readonly','');
-            }
+        }
+        else {
+            // if(Number(question.request_status) != 0){
+            //     $('#rq-finish').show();
+            // }
+            qRequest.prop('readonly',haveRequest ? 'readonly' : '');
+        }
+    } else {      
+        if(haveRequest){          
+            $('#rq-warning').show();
+            $('#rq-warning-txt').html('กำลังรอการตอบกลับจากสถานประกอบการ ไม่สามารถขอข้อมูลเพิ่มเติมได้');      
+            qRequest.prop('readonly','readonly');  
+        }
+        else {
+            qRequest.prop('readonly','');
         }
     }
 }

@@ -35,7 +35,7 @@ const psc = {
             
             $('.btn-regis').removeClass('active').addClass('disabled');
             
-            if(psc.expired && $inArray(psc.status,['draft','reject']) !== -1){ 
+            if(psc.expired && $.inArray(psc.status,['draft','reject']) !== -1){ 
                 $('#formstatus-unpass').removeClass('hide');
                 $('#formstep-sts').addClass('notpass');
                 $('#formstep-sts').html('หมดเวลาการส่งแบบประเมินขั้นต้น');
@@ -298,7 +298,6 @@ const psc = {
         return check;
     },
     setNewQuestion: function(cate,seg){       
-        const regex = /<[^>]+>/gi;  
         let point = this.getPointer(),
             changeCate = false;
 

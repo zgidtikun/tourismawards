@@ -1,9 +1,18 @@
 <style>
-  .apexcharts-legend-series {
+  /* .apexcharts-legend-series {
     cursor: pointer;
     line-height: normal;
     margin: 0px 5px !important;
-  }
+  } */
+
+  /* .wrapper-chart {
+    height: 100px;
+  } */
+
+  /* canvas {
+    background: #fff;
+    height: 200px;
+  } */
 </style>
 <div class="dashboardcontent">
   <div class="dashboardcontent-row container">
@@ -11,28 +20,45 @@
     <div class="dashboardcontent-col2">
       <div class="dashboardcontent-detail">
         <h5 id="title_chart_1">แหล่งท่องเที่ยว (Attraction) <span id="count_item_1">0</span> รายการ</h5>
-        <div id="chart_1"></div>
+        <div class="wrapper-chart">
+          <canvas id="chart_1"></canvas>
+        </div>
       </div>
     </div>
 
     <div class="dashboardcontent-col2">
       <div class="dashboardcontent-detail">
         <h5 id="title_chart_2">ที่พักนักท่องเที่ยว (Accommodation) <span id="count_item_2">0</span> รายการ</h5>
-        <div id="chart_2"></div>
+        <div class="wrapper-chart">
+          <canvas id="chart_2"></canvas>
+        </div>
       </div>
     </div>
 
     <div class="dashboardcontent-col2">
       <div class="dashboardcontent-detail">
         <h5 id="title_chart_3">การท่องเที่ยวเชิงสุขภาพ (Health and Wellness Tourism) <span id="count_item_3">0</span> รายการ</h5>
-        <div id="chart_3"></div>
+        <div class="wrapper-chart">
+          <canvas id="chart_3"></canvas>
+        </div>
       </div>
     </div>
 
     <div class="dashboardcontent-col2">
       <div class="dashboardcontent-detail">
         <h5 id="title_chart_4">รายการการนำเที่ยว <span id="count_item_4">0</span> รายการ</h5>
-        <div id="chart_4"></div>
+        <div class="wrapper-chart">
+          <canvas id="chart_4"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboardcontent-col2">
+      <div class="dashboardcontent-detail">
+        <h5 id="title_chart_5">การท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน <span id="count_item_5">0</span> รายการ</h5>
+        <div class="wrapper-chart">
+          <canvas id="chart_5"></canvas>
+        </div>
       </div>
     </div>
 
@@ -40,29 +66,13 @@
 </div>
 <script>
   $(function() {
-    $('.btn-menulist').each(function (key, elm) {
+    $('.btn-menulist').each(function(key, elm) {
       if ($(elm).data('tab') == 2) {
         $(elm).click();
       }
     });
 
     var res = main_post(BASE_URL_BACKEND + '/dashboard/getData');
-    // cc(res)
-
-    // Shared Colors Definition
-    // const primary = '#6993FF';
-    // const success = '#1BC5BD';
-    // const info = '#8950FC';
-    // const warning = '#FFA800';
-    // const danger = '#F64E60';
-    // const green = '#0f0';
-
-    const colors = [
-      // '#55efc4','#81ecec','#74b9ff','#a29bfe','#dfe6e9',
-      // '#00b894','#00cec9','#0984e3','#6c5ce7','#b2bec3',
-      // '#ffeaa7','#fab1a0','#ff7675','#fd79a8','#636e72',
-      '#ff9f43', '#e17055', '#d63031', '#e84393', '#6c5ce7', '#00b894',
-    ];
 
     // Chart 1
     var series_1 = [
@@ -73,50 +83,7 @@
       res.attraction[1][5].length,
       res.attraction[1][6].length,
     ];
-    var options_1 = {
-      series: series_1, // เอาไว้ใส่ item
-      labels: res.type_sub[1],
-      chart: {
-        width: '100%',
-        type: 'donut'
-      },
-      dataLabels: {
-        enabled: false
-      },
-      legend: {
-        fontSize: '15px',
-        offsetY: 0,
-        width: 550,
-        markers: {
-          width: 13,
-          height: 13
-        },
-        formatter: function(seriesName, opts) {
-          return [seriesName, "&nbsp;&nbsp;&nbsp;", '<span style="float:right;margin-top: 3px;"><b>' + opts.w.globals.series[opts.seriesIndex] + '</b></span>']
-        },
-      },
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '65%',
-          }
-        }
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 250
-          },
-          legend: {
-            position: ''
-          }
-        }
-      }],
-      colors: colors
-    }
-    var chart_1 = new ApexCharts(document.querySelector("#chart_1"), options_1);
-    chart_1.render();
+    createChart('chart_1', series_1, res.type_sub[1]);
 
     // Chart 2
     var series_2 = [
@@ -125,50 +92,7 @@
       res.attraction[2][9].length,
       res.attraction[2][10].length,
     ];
-    var options_2 = {
-      series: series_2, // เอาไว้ใส่ item
-      labels: res.type_sub[2],
-      chart: {
-        width: '100%',
-        type: 'donut'
-      },
-      dataLabels: {
-        enabled: false
-      },
-      legend: {
-        fontSize: '15px',
-        offsetY: 0,
-        width: 550,
-        markers: {
-          width: 13,
-          height: 13
-        },
-        formatter: function(seriesName, opts) {
-          return [seriesName, "&nbsp;&nbsp;&nbsp;", '<span style="float:right;margin-top: 3px;"><b>' + opts.w.globals.series[opts.seriesIndex] + '</b></span>']
-        },
-      },
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '65%',
-          }
-        }
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 250
-          },
-          legend: {
-            position: ''
-          }
-        }
-      }],
-      colors: colors
-    }
-    var chart_2 = new ApexCharts(document.querySelector("#chart_2"), options_2);
-    chart_2.render();
+    createChart('chart_2', series_2, res.type_sub[2]);
 
     // Chart 3
     var series_3 = [
@@ -177,103 +101,124 @@
       res.attraction[3][13].length,
       res.attraction[3][14].length,
     ];
-    var options_3 = {
-      series: series_3, // เอาไว้ใส่ item
-      labels: res.type_sub[3],
-      chart: {
-        width: '100%',
-        type: 'donut'
-      },
-      dataLabels: {
-        enabled: false
-      },
-      legend: {
-        fontSize: '15px',
-        offsetY: 0,
-        width: 550,
-        markers: {
-          width: 13,
-          height: 13
-        },
-        formatter: function(seriesName, opts) {
-          return [seriesName, "&nbsp;&nbsp;&nbsp;", '<span style="float:right;margin-top: 3px;"><b>' + opts.w.globals.series[opts.seriesIndex] + '</b></span>']
-        },
-      },
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '65%',
-          }
-        }
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 250
-          },
-          legend: {
-            position: ''
-          }
-        }
-      }],
-      colors: colors
-    }
-    var chart_3 = new ApexCharts(document.querySelector("#chart_3"), options_3);
-    chart_3.render();
+
+    createChart('chart_3', series_3, res.type_sub[3]);
+
 
     // Chart 4
     var series_4 = [
       res.attraction[4][15].length,
     ];
-    var options_4 = {
-      series: series_4, // เอาไว้ใส่ item
-      labels: res.type_sub[4],
-      chart: {
-        width: '100%',
-        type: 'donut'
-      },
-      dataLabels: {
-        enabled: false
-      },
-      legend: {
-        fontSize: '15px',
-        offsetY: 0,
-        width: 550,
-        markers: {
-          width: 13,
-          height: 13
-        },
-        formatter: function(seriesName, opts) {
-          return [seriesName, "&nbsp;&nbsp;&nbsp;", '<span style="float:right;margin-top: 3px;"><b>' + opts.w.globals.series[opts.seriesIndex] + '</b></span>']
-        },
-      },
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '65%',
-          }
-        }
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 250
-          },
-          legend: {
-            position: ''
-          }
-        }
-      }],
-      colors: colors
-    }
-    var chart_4 = new ApexCharts(document.querySelector("#chart_4"), options_4);
-    chart_4.render();
+
+    createChart('chart_4', series_4, res.type_sub[4]);
+
+    // Chart 4
+    var series_5 = [
+      res.attraction[5][16].length,
+    ];
+
+    createChart('chart_5', series_5, res.type_sub[5]);
+
 
     $('#count_item_1').html(eval(series_1.join("+")));
     $('#count_item_2').html(eval(series_2.join("+")));
     $('#count_item_3').html(eval(series_3.join("+")));
     $('#count_item_4').html(eval(series_4.join("+")));
+    $('#count_item_5').html(eval(series_5.join("+")));
   });
+
+
+
+  function createChart(chartId, data, labels) {
+
+    const ctx = document.getElementById(chartId).getContext("2d");
+    if ($(window).width() > 748) {
+      var position = "right";
+    } else {
+      var position = "top";
+    }
+
+    var color = rendom_color();
+    if (chartId == 'chart_4') { // ฟ้า
+      color = ['#74b9ff'];
+    } else if (chartId == 'chart_5') { // เขียว
+      color = ['#00b894'];
+    }
+
+    const myChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          // label: "Test2",
+          data: data,
+          backgroundColor: color,
+          // borderColor: [],
+          // borderWidth: 1
+        }]
+      },
+      options: {
+        title: {
+          display: false,
+          text: "The Dashboard"
+        },
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        },
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+          cursor: "pointer",
+          display: true,
+          position: position,
+          align: "start",
+          offsetY: 0,
+          offsetX: 0,
+          width: 600,
+          markers: {
+            width: 10,
+            height: 10
+          },
+          labels: {
+            boxWidth: 12,
+            padding: 12,
+          },
+          layout: {
+            padding: {
+              left: 220
+            }
+          }
+        },
+      }
+    });
+  };
+
+  function rendom_color() {
+
+    const array = [
+      '#55efc4', '#81ecec', '#74b9ff', '#a29bfe',
+      // '#00b894', '#00cec9', '#0984e3', '#6c5ce7', '#b2bec3',
+      '#ffeaa7', '#fab1a0', '#ff7675', '#fd79a8', '#636e72',
+      '#ff9f43', '#e17055', '#d63031', '#e84393', '#6c5ce7', '#00b894',
+    ];
+
+    let randomIndex;
+    let currentIndex = array.length;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]
+      ];
+    }
+
+    return array;
+  }
 </script>

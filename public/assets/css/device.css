@@ -458,12 +458,11 @@ margin-right: 20px;
 }
 .login_list ul {
     display: flex;
-    justify-content: space-between;
     float: none;
 }
-.login_list li:first-child {
+.regisform .login_list li.userlogin:first-child {
     flex: none;
-    margin: 0;
+    margin: 0 20px 0 0;
 }
 .container.aboutus .col12 {
     margin: 20px 0;

@@ -99,7 +99,7 @@ class Onsite extends BaseController
         $data['question'] = $question;
 
         // Template
-        $data['title']  = 'ลงพื้นที่';
+        $data['title']  = 'มอบหมายกรรมการรอบลงพื้นที่';
         $data['view']   = 'administrator/onsite/edit';
         $data['ci']     = $this;
 
@@ -334,7 +334,7 @@ class Onsite extends BaseController
         $data['question'] = $question;
 
         // Template
-        $data['title']  = 'ลงพื้นที่';
+        $data['title']  = 'กรรมการรอบลงพื้นที่';
         $data['view']   = 'administrator/onsite/view_edit';
         $data['ci']     = $this;
 

@@ -273,7 +273,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
         $routes->post('reSubmit', 'Complete::reSubmit', ['filter' => 'api:backend']);
     });
 
-    // Report (เฉพาะแอดมินที่เข้าได้)
+    // Report (แอดมินและเจ้าหน้าที่เข้าถึงได้)
     $routes->group('report', static function ($routes) {
         $routes->get('', 'Report::index', ['filter' => 'auth:backend']);
         $routes->get('logs/(:any)', 'Report::logs/$1', ['filter' => 'auth:backend']);
@@ -298,9 +298,9 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
         $routes->post('changeScore', 'LowCarbon::changeScore', ['filter' => 'api:4']);
     });
 
-    // TourismAwards (เฉพาะแอดมินที่เข้าได้)
+    // TourismAwards (แอดมินและเจ้าหน้าที่เข้าถึงได้)
     $routes->group('tourismawards', static function ($routes) {
-        $routes->get('', 'TourismAwards::index', ['filter' => 'auth:4']);
+        $routes->get('', 'TourismAwards::index', ['filter' => 'auth:backend']);
     });
 
     // MarkTest is Controller for Test Only

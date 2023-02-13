@@ -1,6 +1,10 @@
 @charset "utf-8";
 /* CSS Document */
 
+*{
+scrollbar-width: thin;
+}
+
 .container.titlebox{
 background-color: #f5f4f1;
 }
@@ -513,6 +517,9 @@ width: 100%;
 .container.directoraward .col7{
     width: 60%;
 }
+.award-section-txt {
+    font-size: 100%;
+}
 }
 
 @media screen and (max-width:768px) {
@@ -569,7 +576,7 @@ max-height: 100px;
 margin: 40px -10px;
 }
 .branchawards .row [class^="col"]{
-padding: 10px;
+padding: 20px 10px;
 }
 .award-section-col {
     width: 50%;

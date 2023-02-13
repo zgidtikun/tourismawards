@@ -59,3 +59,16 @@
     color: #FFF;
     background-color: #8515a0;
 }
+
+@media screen and (max-width:834px) and (min-width:769px){
+}
+
+@media screen and (max-width:1024px) {
+    
+    .main-title-txt h2 {
+        line-height: 1.4;
+    }
+    .container.claimawards .main-title-txt h2 {
+        line-height: 1.5;
+    }
+}

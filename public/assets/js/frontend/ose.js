@@ -315,7 +315,7 @@ const setFinish = () => {
         if(rs.status){
             await loading('show');
 
-            const st = {
+            const setting = {
                 method: 'post',
                 url: '/inner-api/estimate/onsite/complete',
                 data:  JSON.stringify({
@@ -326,24 +326,22 @@ const setFinish = () => {
                 }})
             }
 
-            api(st).then((rs) => {
-                loading('hide');
+            const callback = await api(setting);
+            await loading('hide');
 
-                if(rs.result == 'error_login'){
-                    alert.login();
-                }
-                else if(rs.result == 'error'){
-                    alert.show(rs.result,'ไม่สามารถส่งผลประเมินเข้าระบบได้',rs.message);
-                    waitDraft('finish');
-                }
-                else {
-                    alert.show(rs.result, 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '')
-                    .then(() => {
-                        window.location.reload();
-                    });
-                    waitDraft('finish');
-                }
-            });
+            if(callback.result == 'error_login'){
+                alert.login();
+            }
+            else if(callback.result == 'error'){
+                alert.show('warning','ไม่สามารถส่งผลประเมินเข้าระบบได้',callback.message);
+                waitDraft('finish');
+            }
+            else {
+                await alert.show('success', 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '');
+                checkComplete();
+                waitDraft('finish');
+                window.location.href = `${getBaseUrl()}/boards`;
+            }
         }
     });
 }

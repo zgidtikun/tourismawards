@@ -205,7 +205,7 @@
                 files.push(`${getBaseUrl()}/${file.file_path}`);
             }
         });
-        console.log(files);
+        
         if(!empty(files)){
             img = `<img src="${files[0]}">`;
         } else {

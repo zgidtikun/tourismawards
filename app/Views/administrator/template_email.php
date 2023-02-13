@@ -231,7 +231,7 @@
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;" align="left">
 
                               <div style="color: #000; line-height: 140%; text-align: left; word-wrap: break-word;">
-                                <p style="font-size: 14px; line-height: 140%;"><?= $_content ?></p>
+                                <p style="font-size: 18px; line-height: 140%;"><?= $_content ?></p>
                               </div>
 
                             </td>

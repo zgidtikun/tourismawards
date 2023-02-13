@@ -204,7 +204,7 @@ class Approve extends BaseController
                     $message_noti = 'ใบสมัครของท่านยังไม่สมบูรณ์ กรุณาตรวจสอบข้อมูลเพิ่มเติม และส่งข้อมูลตอบกลับภายใน 24 ชั่วโมง';
                 } else if ($post['status'] == 3) {
                     $subject = 'อนุมัติใบสมัคร';
-                    $message = 'ใบสมัครของท่านได้รับการอนุมัติแล้ว ท่านสามารถล็อกอินเข้าสู่เว็บไซต์เพื่อทำการกรอกข้อมูลแบบประเมินขั้นต้น (Pre-Screen) ให้แล้วเสร็จภายในวันที่ 23 เมษายน 2566';
+                    $message = 'ใบสมัครของท่านได้รับการอนุมัติแล้ว ท่านสามารถล็อกอินเข้าสู่เว็บไซต์เพื่อทำการกรอกข้อมูลแบบประเมินขั้นต้น (Pre-Screen)';
                     $message_noti = 'ใบสมัครของท่านได้รับการอนุมัติแล้ว กรุณาทำการกรอกข้อมูลแบบประเมินขั้นต้น (Pre-Screen) ให้แล้วเสร็จภายในวันที่ 7 พฤษภาคม 2566';
                     $link_redirect = base_url('awards/pre-screen');
                 } else if ($post['status'] == 0) {
@@ -216,12 +216,12 @@ class Approve extends BaseController
                 }
 
                 $email_data = [
-                    '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
+                    '_header' => 'เรียนคุณ ' . @$users->name . ' ' . @$users->surname,
                     '_content' => $message
                 ];
 
                 $requestEmail = [
-                    'to' => $users->email,
+                    'to' => @$users->email,
                     'subject' => $subject,
                     'message' => view('administrator/template_email', $email_data),
                     // 'from' => $from,

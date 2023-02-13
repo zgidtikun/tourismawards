@@ -253,4 +253,8 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555555;
   }
+
+  .comment-score {
+    font-size: 12px;
+  }
 </style>

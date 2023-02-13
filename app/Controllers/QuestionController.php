@@ -48,14 +48,66 @@ class QuestionController extends BaseController
         }
     }
 
+    private function checkStatusRequest($appId,$judgeId)
+    {
+        $estimate = new \App\Models\Estimate();
+        $request = $estimate->where([
+            'application_id' => $appId,
+            'estimate_by' => $judgeId
+        ])
+        ->select('request_status status, COUNT(request_status) count_status')
+        ->groupBy('request_status')
+        ->findAll();
+
+        $status_null = $status_0 = $status_1 = $status_2 = $stauts_3 = $status_4 = 0;
+
+        foreach($request as $val){
+            if(is_numeric($val->status)){
+                if($val->status == 0){
+                    $status_0 = $val->count_status;
+                }
+                elseif($val->status == 1){
+                    $status_1 = $val->count_status;
+                }
+                elseif($val->status == 2){
+                    $status_2 = $val->count_status;
+                }
+                elseif($val->status == 3){
+                    $stauts_3 = $val->count_status;
+
+                }
+                elseif($val->status == 4){
+                    $status_4 = $val->count_status;
+
+                }
+            } else {
+                $status_null = $val->count_status;
+            }
+        }
+
+        if($status_1 > 0){
+            return 3;
+        }
+        elseif($status_2 > 0){
+            return 4;
+        }
+        elseif($status_4 > 0){
+            return 5;
+        }
+        else {
+            return '';
+        }
+    }
+
     public function getListEstimate($round,$status = 'wait')
     {
         try{
             $obj_ass = new \App\Models\AssessmentGroup();
             $assessment = $obj_ass->findAll();
 
-            $subEstimateSelect = 'application_id app_id, MAX(updated_at) updated_at, '
-                . 'MIN(request_status) request_status';
+            $subEstimateSelect = 'application_id app_id, MAX(updated_at) updated_at,
+                MIN(request_status) request_status';
+                
             if($round == 'pre-screen'){
                 $subEstimateSelect .= ', MIN(status_pre) show_status';
             } else {
@@ -165,45 +217,44 @@ class QuestionController extends BaseController
                     array_push($list,$val);
 
                     if($isFinish == 'unfinish'){
-                        if($val->status == 3){
-
+                        $rq_status = $this->checkStatusRequest($val->id,$this->myId);
+                        
+                        if($val->status == 3 && $rq_status == 3){  
                             if($current_date > $val->duedate){
                                 
                                 $UsersStage->where('id',$val->stage_id)
                                     ->set(['status' => 5])
                                     ->update();
 
-                                $estimate->where([            
-                                    'application_id' => $val->id,
-                                    'estimate_by' => $this->myId,
-                                    'request_status' => 1
-                                ])
-                                ->set(['request_status' => 0])
-                                ->update();
-
+                                $judgeRequest->set_expire_request($val->id,$this->myId);
                                 $val->status = 5;
-                                $val->request_status = 1;
+                                $val->request_status = 4;
                             } else {
                                 $exprireReq = $judgeRequest->get_expire_request($val->id,$this->myId);
                                 if($exprireReq->expire_status){
                                     if($exprireReq->request_status == 1){
                                         $judgeRequest->set_expire_request($val->id,$this->myId);
                                         $val->status = 5;
-                                        $val->request_status = 1;
+                                        $val->request_status = 4;
                                     }
                                     else if($exprireReq->request_status == 4){
                                         $val->status = 5;
-                                        $val->request_status = 1;
+                                        $val->request_status = 4;
                                     }
                                 }
                                 else if(!empty($exprireReq->request_status)){
                                     if($exprireReq->request_status == 4){
                                         $val->status = 5;
-                                        $val->request_status = 1;
+                                        $val->request_status = 4;
                                     }                                    
                                 }
                             }
 
+                        } else {
+                            if($rq_status != ''){
+                                $val->status = $rq_status;
+                                $val->request_status = $rq_status;
+                            }
                         }
                     } else {
                         // if(!in_array($val->status,[6,7]))

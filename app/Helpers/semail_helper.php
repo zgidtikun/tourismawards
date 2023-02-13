@@ -125,6 +125,18 @@ class semail {
                 return ['status'=> true, 'message' => 'Email sent successfully.'];
             }
         } catch (Exception $e) {
+            save_log_error([
+                'module' => 'send_mail_center',
+                'input_data' => $requestEmail,
+                'error_date' => date('Y-m-d H:i:s'),
+                'error_msg' => [
+                    'error_file' => $e->getFile(),
+                    'error_line' => $e->getLine(),
+                    'error_code' => $e->getCode(),
+                    'error_msg' => $e->getMessage()
+                ]
+            ]);
+
             return [
                 'status'=> false, 
                 'message'=>'Something went wrong. Please try again.',
@@ -147,7 +159,7 @@ class semail {
                     $_message = view('template-frontend-email',[
                         '_header' => 'ยืนยันตัวตนการเข้าร่วมประกวด',
                         '_content' => '<p>กรุณายืนยันตัวตนของท่านผ่านทางอีเมล เพื่อทำการล็อกอินเข้าสู่เว็บไซต์ '
-                            . 'ท่านจำเป็นต้องยืนยันตัวตนภายใน 24 ชั่วโมง</p>'
+                            . 'ท่านจำเป็นต้องยืนยันตัวตน</p>'
                             . '<p>โปรดยืนยันตัวตนด้วยการกดที่ลิงก์นี้ '
                             . '<b><a href="'.base_url('verify-user?c='.$dataset->verify_token).'" target="_blank">'
                             . 'ยืนยันตัวตน</a></b></p>'
@@ -225,36 +237,6 @@ class semail {
                     $_cc = [];
                     $_bcc = [$this->mail_bcc];                   
                 break;
-                case 'app': 
-                    $tycoon = $this->getTycoon($dataset->app_id);
-                    $_header = 'แจ้งการส่งใบสมัครเข้าระบบ';
-                    $_message = view('template-frontend-email',[
-                        '_header' => $_header,
-                        '_content' => $tycoon->place 
-                            . ' ได้ทำการส่งใบสมัครเข้าสู่ระบบ กรุณาเข้าสู่ระบบเพื่อทำการตรวจสอบใบสมัคร'
-                    ]);
-    
-                    $_subject = $_header;
-                    $_to = [];
-                    $_from = $email_sys;
-                    $_cc = [];
-                    $_bcc = [$this->mail_bcc];
-                    
-                    $list_admin = $this->getAdmin();
-                    $list_ttt = $this->getTTT($dataset->type,'');
-                    
-                    if(!empty($list_admin)){
-                        foreach($list_admin as $admin){
-                            array_push($_to,$admin->email);
-                        }
-                    }
-
-                    if(!empty($list_ttt)){
-                        foreach($list_ttt as $ttt){
-                            array_push($_to,$ttt->email);
-                        }
-                    }
-                break;
                 case 'answer-complete':                    
                     $_header = 'ส่งแบบประเมินขั้นต้น (Pre-Screen)';
                     $_message = view('template-frontend-email',[
@@ -298,7 +280,12 @@ class semail {
                     $_content = "$tycoon->place ได้หมดเวลาการส่งคำตอบการประเมินเบื้องต้น (Pre-Screen) เพิ่มเติม "
                         . "จึงขอให้ท่านคณะกรรมการกรุณาล็อกอินเข้าสู่เว็บไซต์ เพื่อทำการประเมินเบื้องต้น (Pre-Screen) อีกครั้ง";
                     
-                    $judge = $this->getUser($dataset->judgeId);   
+                    $judge = $this->getUser($dataset->judgeId);
+                    
+                    $_message = view('template-frontend-email',[
+                        '_header' => $_header,
+                        '_content' => $_content
+                    ]);   
 
                     $_subject = "ไม่มีการตอบกลับการขอข้อมูลเพิ่มเติมจาก $tycoon->place";
                     $_to = $judge->email;
@@ -306,38 +293,13 @@ class semail {
                     $_cc = [];
                     $_bcc = [$this->mail_bcc];    
                 break;
-                case 'estimate-request':    
-                    
-                    $db = \Config\Database::connect();
-
-                    $subQuery = $db->table('estimate')
-                    ->select('question_id')
-                    ->where('application_id',$dataset->appId)
-                    ->where('request_status',1)
-                    ->getCompiledSelect();
-
-                    $builder = $db->table('assessment_group a')
-                    ->select('a.name')
-                    ->join('question b','a.id = b.assessment_group_id')
-                    ->join("($subQuery) c",'b.id = c.question_id')
-                    ->groupBy('a.id')
-                    ->get();
-
-                    $ass_arr = [];
-
-                    foreach($builder->getResult() as $key=>$ass){
-                        $str_ass = 'ด้าน '.$ass->name;
-                        array_push($ass_arr,$str_ass);
-                    }
-
-                    $assessent = implode(', ',$ass_arr);
-                    $user = $this->getUser($dataset->id);  
-                    
-                    $_header = 'ขอข้อมูลเพิ่มเติม';                
+                case 'estimate-request':
+                    $user = $this->getUser($dataset->id); 
+                              
                     $_message = view('template-frontend-email',[
-                        '_header' => $_header,
+                        '_header' => 'ขอข้อมูลเพิ่มเติม',
                         '_content' => '<p>คณะกรรมการมีการขอข้อมูลเพิ่มเติม แบบประเมินของท่าน '
-                        . $assessent
+                        . $dataset->assessent
                         . ' กรุณาล็อกอินเข้าสู่เว็บไซต์เพื่อตรวจสอบการขอข้อมูล และส่งข้อมูลตอบกลับภายใน 72 ชั่วโมง</p>'
                     ]);
                     
@@ -372,47 +334,6 @@ class semail {
                     $_from = $email_sys;
                     $_cc = [];
                     $_bcc = [$this->mail_bcc]; 
-                break;
-                case 'estimate-complete-sys':                 
-                    $tycoon = $this->getTycoon($dataset->appId);
-                    
-                    $_stage = $dataset->stage == 1 ? 'ประเมินขั้นต้น' : 'ลงพื้นที่';
-                    $_header = 'การประเมินรอบ '.$_stage.' เสร็จสิ้นแล้ว';
-                    $_content = '<p>'.$tycoon->place;
-
-                    if($dataset->stage == 1){
-                        $_content .= ' ได้ผ่านการประเมินรอบขั้นต้น (Pre-Screen)'
-                            . ' กรุณาเข้าสู่ระบบเพื่อทำการมอบหมายกรรมการเพื่อประเมิน รอบลงพื้นที่</p>';
-                    } else {
-                        $_content.= ' ได้รับการประเมินรอบขั้นต้น (Pre-Screen) และรอบลงพื้นที่'
-                            . ' จากกรรรมการเรียบร้อยแล้ว</p>';
-                    }
-                    
-                    $_message = view('template-frontend-email',[
-                        '_header' => $_header,
-                        '_content' => $_content
-                    ]);
-    
-                    $_subject = 'แจ้ง'.$_header;
-                    $_to = [];
-                    $_from = $email_sys;
-                    $_cc = [];
-                    $_bcc = [$this->mail_bcc]; 
-                                        
-                    $list_admin = $this->getAdmin();
-                    $list_ttt = $this->getTTT('',$dataset->appId);
-                    
-                    if(!empty($cmt)){
-                        foreach($cmt as $user){
-                            array_push($_to,$user->email);
-                        }
-                    }
-
-                    if(!empty($list_ttt)){
-                        foreach($list_ttt as $ttt){
-                            array_push($_to,$ttt->email);
-                        }
-                    }
                 break;
                 default:
                     return [ 'result' => 'error', 'message' => 'No case to send email.' ];

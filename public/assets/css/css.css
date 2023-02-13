@@ -54,6 +54,7 @@ body:after {
 * {
     outline: none;
     box-sizing: border-box;
+    scrollbar-width: thin;
 }
 
 :focus{
@@ -438,7 +439,7 @@ min-height: 50vh;
     background-color: #2a6118;
     border-top: 3px solid #b6932f;
     color: #FFF;
-    font-size: 0.85em;
+    font-size: 18px;
 }
 .container.footer .logo img{
 max-height: 100px;
@@ -814,11 +815,6 @@ overflow: hidden;
     object-fit: cover;
     max-width: 100%!important;
     max-height: 100%!important;
-transition: all 0.5s;
-}
-
-.award-section-img img:hover{
-    transform: scale(1.1);
 }
 
 .award-section-imgscale{
@@ -827,14 +823,12 @@ width: 100%;
 height: 100%;
 left: 0;
 top: 0;
+transition: all 0.3s ease-in-out;
 }
-.award-section-txt {
-    font-size: 2vw;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 20px;
+.award-section-imgscale:hover{
+    transform: scale(1.03);
 }
+
 .winner-title {
     color: #FFF;
     font-size: 3.5rem;
@@ -1296,12 +1290,16 @@ line-height: 0;
 }
 .award-section-txt {
     color: #FFF;
-    font-size: 1.35rem;
+    font-size: 22px;
     font-weight: 600;
     transition: .5s ease;
     width: 100%;
     line-height: 1.2;
     display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
 }
 .award-section-txt span{
 position: relative;
@@ -1485,19 +1483,21 @@ font-size: 18px;
 margin: 40px 0;
 }
 .container.aboutus p{
-text-indent: 40px;
 }
 .container.aboutus ol {
-    margin: 10px 0;
+    margin: 20px 0 20px 20px;
     list-style-type: decimal;
     counter-reset: item;
+}
+.pinden{
+text-indent: 40px;
 }
 
 .container.aboutus li {
     display: block;
     padding-left: 30px;
     position: relative;
-    margin: 10px 0;
+    margin: 15px 0;
 }
 .container.aboutus li:before { 
     content: counters(item, "") "."; 
@@ -1518,7 +1518,8 @@ text-indent: 40px;
 .container.aboutus li ol {
     margin: 20px 0;
 }
-.container.aboutus li ol li{
+.container.aboutus li ol li {
     padding-left: 40px;
+    margin: 10px 0;
 }
-/*GD-02-V.07022566*/
+/*GD-02-V.10022566*/

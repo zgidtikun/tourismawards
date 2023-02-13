@@ -2,6 +2,26 @@ const getReferance = input => {
     return referance.find(el => el.input == input);
 }
 
+const lockUpload = (label, btn, action) => {
+    return new Promise(function (resolve) {
+        const html_uploading = 'Uploading...';
+        const html_finish = 'Upload Files';
+
+        switch (action) {
+            case 'lock':
+                $(label).html(setSpinner(html_uploading));
+                $(btn).prop('disabled', true);
+                resolve({ status: true });
+                break;
+            case 'unlock':
+                $(label).html(html_finish);
+                $(btn).prop('disabled', false);
+                resolve({ status: true });
+                break;
+        }
+    });
+}
+
 const onFileHandle = (setting, input, type) => {
     const files = $(input)[0].files;
     const acceptableTypes = accept[type];
@@ -21,7 +41,7 @@ const onFileHandle = (setting, input, type) => {
         }
 
         if (Number(totalFiles) > Number(reference.maxUpload)) {
-            alert.show('warning', 'ไม่สามารถอัพโหลดไฟล์ได้', `คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน ${ref.maxUpload} ไฟล์เท่านั้น`);
+            alert.show('warning', 'ไม่สามารถอัพโหลดไฟล์ได้', `คุณสามารถอัพโหลดไฟล์ได้ไม่เกิน ${reference.maxUpload} ไฟล์เท่านั้น`);
             return false
         }
 
@@ -54,153 +74,142 @@ const onFileHandle = (setting, input, type) => {
             alert.show('warning', errorTitle, errorMessage);
             return false;
         } else {
-            uploadFile(setting, input, 'input');
+            $.each(files,async(key,file) => {
+                await uploadFile(setting, input, file);
+            });
         }
     }
 };
 
-const lockUpload = (label, btn, action) => {
-    return new Promise(function (resolve) {
-        const html_uploading = 'Uploading...';
-        const html_finish = 'Upload Files';
+const uploadFile = async (setting, input, file) => {    
+    return new Promise(async(resolve, reject) => {
+        const formData = new FormData();
+        const reference = getReferance(input);
+        const api_setting = {};
+        let callback;
 
-        switch (action) {
-            case 'lock':
-                $(label).html(setSpinner(html_uploading));
-                $(btn).prop('disabled', true);
-                resolve({ status: true });
+        if (reference.app == 'awards/application') {
+            await register.waitUpload('lock', input);
+        } else {
+            await lockUpload(reference.label, reference.btn, 'lock');
+        }
+        
+        formData.append('files[]', file);
+
+        switch (reference.app) {
+            case 'awards/application':
+                formData.append('id', setting.id);
+                formData.append('position', reference.position);
+                formData.append('path', reference.path);
+
+                api_setting.method = 'action';
+                api_setting.url = reference.api;
+                api_setting.data = formData;
+
+                callback = await api(api_setting);
+
+                if (callback.result == 'error_login') {
+                    alert.login();
+                    await register.waitUpload('unlock', input);
+                    resolve(true); 
+                } else if (callback.result == 'success') {
+                    let countFile = 0;
+                    $.each(callback.files, function (key, file) {
+                        register.formData[reference.pointer[0]][reference.pointer[1]].push(file);
+                        countFile++;
+                    });
+
+                    $(input).val('');
+                    register.count[reference.pointer[1]] = await register.count[reference.pointer[1]] + Number(countFile);
+                    showFiles.tycoon(reference.input, register.formData[reference.pointer[0]][reference.pointer[1]]);
+                    await register.waitUpload('unlock', input);
+                    register.checkComplete();
+                    resolve(true); 
+                } else {
+                    $(input).val('');
+                    await register.waitUpload('unlock', input);
+                    alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
+                    resolve(true); 
+                }
                 break;
-            case 'unlock':
-                $(label).html(html_finish);
-                $(btn).prop('disabled', false);
-                resolve({ status: true });
+            case 'awards/pre-screen':
+                const answer = psc.questions[setting.cate].question[setting.seg];
+                const setAction = !empty(answer.reply_id) ? 'update' : 'create';
+
+                formData.append('qid', answer.id);
+                formData.append('aid', !empty(answer.reply_id) ? answer.reply_id : '');
+                formData.append('action', setAction);
+                formData.append('position', reference.position);
+                formData.append('path', reference.path);
+
+                api_setting.method = 'action';
+                api_setting.url = reference.api;
+                api_setting.data = formData;
+
+                await psc.waitDraft('wait');
+
+                callback = await api(api_setting);
+
+                if (callback.result == 'error_login') {
+                    alert.login();
+                    resolve(true); 
+                } else if (callback.result == 'success') {
+                    if (setAction == 'create') {
+                        psc.questions[setting.cate].question[setting.seg].reply_id = callback.id;
+                    }
+
+                    $(input).val('');
+                    psc.questions[setting.cate].question[setting.seg][reference.position] = callback.files;
+                    showFiles.tycoon(reference.input, callback.files);
+                    await lockUpload(reference.label, reference.btn, 'unlock');
+                    resolve(true); 
+                } else {
+                    $(input).val('');
+                    await lockUpload(reference.label, reference.btn, 'unlock');
+                    await psc.waitDraft('finish');
+                    alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
+                    resolve(true); 
+                }
+                break;
+            case 'estimate/onsite':
+                const estimate = dataset[setting.cate].question[setting.seg];
+                const est_id = !empty(estimate.est_id) ? estimate.est_id : '';
+
+                formData.append('app_id', appid);
+                formData.append('answer_id', estimate.reply_id);
+                formData.append('estimate_id', est_id);
+                formData.append('question_id', estimate.id);
+                formData.append('position', reference.position);
+                formData.append('path', reference.path);
+
+                api_setting.method = 'action';
+                api_setting.url = reference.api;
+                api_setting.data = formData;
+
+                await waitDraft('wait');
+
+                callback = await api(api_setting);
+                $(input).val('');
+
+                if (callback.result == 'error_login') {
+                    await lockUpload(reference.label, reference.btn, 'unlock');
+                    alert.login();
+                    resolve(true); 
+                } else if (callback.result == 'success') {
+                    dataset[setting.cate].question[setting.seg].est_id = callback.estimate_id;
+                    dataset[setting.cate].question[setting.seg].estFiles[reference.position] = callback.files;
+                    showFiles.tycoon(reference.input, callback.files);
+                    await lockUpload(reference.label, reference.btn, 'unlock');
+                    resolve(true); 
+                } else {
+                    await lockUpload(reference.label, reference.btn, 'unlock');
+                    alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
+                    await waitDraft('finish');
+                    resolve(true); 
+                }
                 break;
         }
-    });
-}
-
-const uploadFile = async (setting, input, handleBy) => {
-    const formData = new FormData();
-    const reference = getReferance(input);
-    const handle = handleBy === 'input' ? $(input)[0].files : setting.files;
-    const api_setting = {};
-    let callback;
-
-    if (reference.app == 'awards/application') {
-        await register.waitUpload('lock', input);
-    } else {
-        await lockUpload(reference.label, reference.btn, 'lock');
-    }
-
-    $.each(handle, function (key, file) {
-        formData.append('files[]', file);
-    });
-
-    switch (reference.app) {
-        case 'awards/application':
-            formData.append('id', setting.id);
-            formData.append('position', reference.position);
-            formData.append('path', reference.path);
-
-            api_setting.method = 'action';
-            api_setting.url = reference.api;
-            api_setting.data = formData;
-
-            callback = await api(api_setting);
-
-            if (callback.result == 'error_login') {
-                alert.login();
-                await register.waitUpload('unlock', input);
-            } else if (callback.result == 'success') {
-                let countFile = 0;
-                $.each(callback.files, function (key, file) {
-                    register.formData[reference.pointer[0]][reference.pointer[1]].push(file);
-                    countFile++;
-                });
-
-                $(input).val('');
-                register.count[reference.pointer[1]] = await register.count[reference.pointer[1]] + Number(countFile);
-                showFiles.tycoon(reference.input, register.formData[reference.pointer[0]][reference.pointer[1]]);
-                await register.waitUpload('unlock', input);
-                register.checkComplete();
-            } else {
-                $(input).val('');
-                await register.waitUpload('unlock', input);
-                alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
-            }
-            break;
-        case 'awards/pre-screen':
-            const answer = psc.questions[setting.cate].question[setting.seg];
-            const setAction = !empty(answer.reply_id) ? 'update' : 'create';
-
-            formData.append('qid', answer.id);
-            formData.append('aid', !empty(answer.reply_id) ? answer.reply_id : '');
-            formData.append('action', setAction);
-            formData.append('position', reference.position);
-            formData.append('path', reference.path);
-
-            api_setting.method = 'action';
-            api_setting.url = reference.api;
-            api_setting.data = formData;
-
-            await psc.waitDraft('wait');
-
-            callback = await api(api_setting);
-
-            if (callback.result == 'error_login') {
-                alert.login();
-            } else if (callback.result == 'success') {
-                if (setAction == 'create') {
-                    psc.questions[setting.cate].question[setting.seg].reply_id = callback.id;
-                }
-
-                $(input).val('');
-                psc.questions[setting.cate].question[setting.seg][reference.position] = callback.files;
-                showFiles.tycoon(reference.input, reference.questions[setting.cate].question[setting.seg][reference.position]);
-                await lockUpload(reference.label, reference.btn, 'unlock');
-            } else {
-                $(input).val('');
-                await lockUpload(reference.label, reference.btn, 'unlock');
-                await psc.waitDraft('finish');
-                alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
-            }
-            break;
-        case 'estimate/onsite':
-            const estimate = dataset[setting.cate].question[setting.seg];
-            const est_id = !empty(estimate.est_id) ? estimate.est_id : '';
-
-            formData.append('app_id', appid);
-            formData.append('answer_id', estimate.reply_id);
-            formData.append('estimate_id', est_id);
-            formData.append('question_id', estimate.id);
-            formData.append('position', reference.position);
-            formData.append('path', reference.path);
-
-            api_setting.method = 'action';
-            api_setting.url = reference.api;
-            api_setting.data = formData;
-
-            await waitDraft('wait');
-
-            callback = await api(api_setting);
-            $(input).val('');
-
-            if (callback.result == 'error_login') {
-                await lockUpload(reference.label, reference.btn, 'unlock');
-                alert.login();
-            } else if (res.result == 'success') {
-                dataset[setting.cate].question[setting.seg].est_id = callback.estimate_id;
-                dataset[setting.cate].question[setting.seg].estFiles[reference.position] = callback.files;
-                showFiles.tycoon(reference.input, dataset[setting.cate].question[setting.seg].estFiles[callback.position]);
-                await lockUpload(reference.label, reference.btn, 'unlock');
-            } else {
-                await lockUpload(reference.label, reference.btn, 'unlock');
-                alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
-                await waitDraft('finish');
-            }
-            break;
-    }
-
+    })
 }
 
 const removeFile = async (input, setting) => {
@@ -1133,8 +1142,8 @@ const referance = [{
     position: 'camera',
     path: 'images',
     app: 'estimate/onsite',
-    maxUpload: 999,
-    maxSize: 1000000
+    maxUpload: 10,
+    maxSize: 10
 },
 {
     input: '#etm-file',

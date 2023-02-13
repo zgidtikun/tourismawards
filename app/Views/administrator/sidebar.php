@@ -67,7 +67,11 @@
             </li>
             <li><a href="<?= base_url() ?>/administrator/onsite/estimate" data-type="process"><label>การประเมินรอบลงพื้นที่</label></a></li>
             <li><a href="<?= base_url() ?>/administrator/complete" data-type="process"><label>การประเมินที่เสร็จสมบูรณ์</label></a></li>
-            <li><a href="<?= base_url() ?>/administrator/lowcarbon" data-type="process"><label>Low Carbon หลังลงพื้นที่</label></a></li>
+
+            <?php if (isAdmin()) : ?>
+              <li><a href="<?= base_url() ?>/administrator/lowcarbon" data-type="process"><label>Low Carbon หลังลงพื้นที่</label></a></li>
+            <?php endif; ?>
+            <li><a href="<?= base_url() ?>/administrator/tourismawards" data-type="process"><label>รางวัลกินรีครั้งที่ 14</label></a></li>
           </ul>
         </div>
       </div>
@@ -132,7 +136,9 @@
     var screen_w = $(window).width();
     var screen_h = $(window).height();
 
-    $('.backendmenu-box').css({"display":"block"});
+    $('.backendmenu-box').css({
+      "display": "block"
+    });
     $('.backendmenu-box').addClass('hide');
 
     if (screen_w <= 1024) {

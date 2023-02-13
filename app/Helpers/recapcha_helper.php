@@ -15,7 +15,8 @@ function verify_recapcha_token($token){
         || (@$callback_recapcha->success == true && @$callback_recapcha->score <= 0.3)
     ){
         $result['result'] = false;
-        $result['message'] = 'โทเค็น reCAPTCHA ไม่ถูกต้อง';
+        $result['message'] = 'เกิดข้อผิดพลาดในการติดต่อกับเครือข่าย กรุณารีโหลดหน้าใหม่หรือตรวจสอบ Internet ของท่าน';
+        $result['errorCode'] = '';
 
         if(@$callback_recapcha->success == false && getenv('CI_ENVIRONMENT') != 'production'){
             if(isset($callback_recapcha->{'error-codes'})){
@@ -25,12 +26,14 @@ function verify_recapcha_token($token){
                     if (strpos($http_user_agent, 'Safari') === true){
                         $result['result'] = true;
                         $result['message'] = '';
-                    } else {
-                        $result['message'] .= ", $error_code";
-                    }
-                } else {
-                    $result['message'] .= ", $error_code";
-                }
+                    } 
+                    // else {
+                    //     $result['errorCode'] .= ", $error_code";
+                    // }
+                } 
+                // else {
+                //     $result['errorCode'] .= ", $error_code";
+                // }
             }
         }
         

@@ -378,10 +378,10 @@ aria-hidden="true">
                     <b>ไม่มีการตอบกลับจากสถานประกอบการ</b>
                 </div>
                 <div class="alert alert-success mt-2" role="alert" id="rq-finish" style="display: none;">
-                    <b>สถานประกอบการการตอบกลับแล้ว</b>
+                    <b>สถานประกอบการตอบกลับแล้ว</b>
                 </div>
-                <div class="alert alert-success mt-2" role="alert" id="rq-warning" style="display: none;">
-                    <b id="rq-warning-txt">สถานประกอบการการตอบกลับแล้ว</b>
+                <div class="alert alert-warning mt-2" role="alert" id="rq-warning" style="display: none;">
+                    <b id="rq-warning-txt"></b>
                 </div>
                 <textarea rows="9" id="qRequest" onkeyup="countChar1($('#qRequest'))"
                 <?php if(!$showRequest){ echo 'readonly="readonly"'; } ?>></textarea>

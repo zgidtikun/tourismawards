@@ -202,7 +202,7 @@
           <div class="data-score-row">
             <div class="data-score-col no">
               <label>A.</label> Tourism Excellence (Product/Service) <br>
-              <small>(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 40 คะแนน)</small>
+              <span class="comment-score">(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 40 คะแนน)</span>
             </div>
             <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_tourism">-</span></div>
             <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_tourism">-</span></div>
@@ -212,7 +212,7 @@
           <div class="data-score-row">
             <div class="data-score-col no">
               <label>B.</label> Supporting Business &amp; Marketing Factors <br>
-              <small>(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 15 คะแนน)</small>
+              <span class="comment-score">(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 15 คะแนน)</span>
             </div>
             <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_supporting">-</span></div>
             <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_supporting">-</span></div>
@@ -222,7 +222,7 @@
           <div class="data-score-row">
             <div class="data-score-col no">
               <label>C.</label> Responsibility and Safety &amp; Health Administration <br>
-              <small>(คะแนนเต็ม Pre-Screen 5 คะแนน, ลงพื้นที่ 20 คะแนน)</small>
+              <span class="comment-score">(คะแนนเต็ม Pre-Screen 5 คะแนน, ลงพื้นที่ 20 คะแนน)</span>
             </div>
             <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_reponsibility">-</span></div>
             <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_reponsibility">-</span></div>

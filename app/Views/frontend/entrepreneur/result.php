@@ -1,3 +1,21 @@
+<style>
+.btn-main {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #205010;
+    --bs-btn-border-color: #205010;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #205010;
+    --bs-btn-hover-border-color: #205010;
+    --bs-btn-focus-shadow-rgb: 60, 153, 110;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #205010;
+    --bs-btn-active-border-color: #205010;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #205010;
+    --bs-btn-disabled-border-color: #205010;
+}
+</style>
 <div class="container">
     <div class="row">
         <div class="col12">

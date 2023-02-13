@@ -159,8 +159,8 @@
 
           <div class="data-score-row">
             <div class="data-score-col no">
-              <label>A. Tourism Excellence (Product/Service)</label> <br>
-              <small>(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 40 คะแนน)</small>
+              <label>A.</label> Tourism Excellence (Product/Service) <br>
+              <span class="comment-score">(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 40 คะแนน)</span>
             </div>
             <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_tourism">-</span></div>
             <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_tourism">-</span></div>
@@ -169,8 +169,8 @@
 
           <div class="data-score-row">
             <div class="data-score-col no">
-              <label>B. Supporting Business &amp; Marketing Factors</label> <br>
-              <small>(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 15 คะแนน)</small>
+              <label>B.</label> Supporting Business &amp; Marketing Factors <br>
+              <span class="comment-score">(คะแนนเต็ม Pre-Screen 10 คะแนน, ลงพื้นที่ 15 คะแนน)</span>
             </div>
             <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_supporting">-</span></div>
             <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_supporting">-</span></div>
@@ -179,8 +179,8 @@
 
           <div class="data-score-row">
             <div class="data-score-col no">
-              <label>C. Responsibility and Safety &amp; Health Administration</label> <br>
-              <small>(คะแนนเต็ม Pre-Screen 5 คะแนน, ลงพื้นที่ 20 คะแนน)</small>
+              <label>C.</label> Responsibility and Safety &amp; Health Administration <br>
+              <span class="comment-score">(คะแนนเต็ม Pre-Screen 5 คะแนน, ลงพื้นที่ 20 คะแนน)</span>
             </div>
             <div class="data-score-col oldscore"><label>Pre-screen : </label><span id="pre_reponsibility">-</span></div>
             <div class="data-score-col newscore"><label>ลงพื้นที่ : </label><span id="onsite_reponsibility">-</span></div>

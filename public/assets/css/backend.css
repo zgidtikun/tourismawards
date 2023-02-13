@@ -34,6 +34,7 @@ body {
 * {
     outline: none;
     box-sizing: border-box;
+    scrollbar-width: thin;
 }
 
 div {
@@ -416,9 +417,11 @@ transition: all 0.3s;
 .backendcontent-subcol {
     padding: 0 10px;
     display: flex;
-    flex: none;
+    flex: auto;
     align-items: baseline;
     margin: 10px 0;
+    width: auto;
+    max-width: none;
 }
 .backendcontent-subcol.sort {
 width: auto;
@@ -426,7 +429,7 @@ flex:none;
 }
 .backendcontent-subcol.searchbox{
 flex: auto;
-max-width: 300px;
+/* max-width: 300px; */
 }
 
 .backendcontent-subcol label {
@@ -450,6 +453,7 @@ max-width: 300px;
 }
 
 .backendcontent-subcol.searchbox input {
+    min-width: 250px;
     font-size: 16px;
     padding-left: 50px;
     background-position: 10px;
@@ -2710,11 +2714,14 @@ margin: 10px 0;
 max-height: 70px;
 }
 .hidebox-content {
-    overflow: auto;
+    overflow-y: scroll;
     width: 100%;
     display: block;
     padding: 0;
     line-height: 24px;
+}
+.hidebox-content::-webkit-scrollbar{
+width: 5px;
 }
 
 .goldaward-text{
@@ -2743,11 +2750,24 @@ font-weight: bold;
 .lowcarbon-row.total p{
 padding-left: 0;
 }
+.logo-title picture{
+display: flex;
+}
 
 @media screen and (max-width:1600px) {
 .regis-form-step {
     padding: 0;
     justify-content: flex-start;
+}
+}
+
+@media screen and (max-width:1530px) {
+.backendcontent-subrow {
+    flex-wrap: wrap;
+}
+.backendcontent-subcol {
+    width: calc(100% / 3);
+    flex: none;
 }
 }
 
@@ -2798,17 +2818,17 @@ flex-wrap: wrap;
     flex-wrap: wrap;
 }
 .backendcontent-subcol {
-    padding: 0 10px;
-    display: flex;
-    align-items: baseline;
-    width: 33.33%;
-    margin: 10px 0;
+    width: calc(100% / 2);
 }
 .dashboardcontent-col2 {
         width: 100%;
         display: flex;
         padding: 10px 0;
     }
+.backendcontent-subcol label {
+    white-space: nowrap;
+    width: 150px;
+}
 }
 
 @media screen and (max-width:1200px) {

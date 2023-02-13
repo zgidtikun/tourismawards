@@ -609,10 +609,7 @@
 		$(window).load(function () {
         var reveals = document.querySelectorAll(".reveal");
         var webHeight = window.innerHeight;
-        var webelementTop = reveals[0].getBoundingClientRect().top;
-
-        // console.log(webHeight);
-        // console.log(webelementTop);
+        var webelementTop = reveals[0].getBoundingClientRect().top;        
 
         for (var i = 0; i < 4; i++) {
           if (webelementTop > webHeight / 3) {

@@ -456,6 +456,28 @@ class FrontendController extends BaseController
         return $this->response->setJSON($result);
     }
 
+    private function setEstimateDefault($appId,$judgeId,$assign)
+    {
+        $judgeName = session()->get('user');
+        $assessent = implode(', ', $assign);
+
+        $this->db->query(
+            "INSERT INTO estimate (application_id, answer_id, question_id, estimate_by, estimate_name)
+            SELECT b.id application_id, a.id answer_id, a.question_id, $judgeId estimate_by, '$judgeName' estimate_name
+            FROM answer a 
+            INNER JOIN application_form b on a.reply_by = b.created_by
+            INNER JOIN question c on a.question_id = c.id
+            WHERE b.id = $appId
+                AND c.assessment_group_id IN ($assessent)
+                AND a.id NOT IN (
+                    SELECT inna.answer_id
+                    FROM estimate inna 
+                    WHERE inna.application_id = $appId
+                        AND inna.estimate_by = $judgeId
+                )"
+        );
+    }
+
     public function prescreenEstimate($id)
     {
         if(!acceptEstimate($id,$this->myId,1)){
@@ -476,6 +498,7 @@ class FrontendController extends BaseController
         } else {
             $assign = $this->getGroupEstimate($id,$this->myId,1);
             $isFinish = $this->checkEstimateFinish($id,1,$this->myId);
+            $this->setEstimateDefault($id,$this->myId,$assign);            
 
             if($stage->status == 3){
                 $judgeRequest = new \App\Controllers\EstimateRequestController();
@@ -529,6 +552,7 @@ class FrontendController extends BaseController
         } else {
             $assign = $this->getGroupEstimate($id,$this->myId,2);
             $isFinish = $this->checkEstimateFinish($id,2,$this->myId);
+            $this->setEstimateDefault($id,$this->myId,$assign);    
 
             $obj_es = new EstimateScore();
             $score = $obj_es->where('application_id',$id)

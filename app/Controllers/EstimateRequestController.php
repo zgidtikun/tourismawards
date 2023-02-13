@@ -21,8 +21,8 @@ class EstimateRequestController extends BaseController
     {
         $count = $this->obj->where([
             'application_id' => $app_id,
-            'application_of' => $judge_id,
-            'request_by' => $user_id
+            'application_of' => $user_id,
+            'request_by' => $judge_id
         ])
         ->countAllResults();
         return $count == 0 ? true : false;
@@ -40,11 +40,12 @@ class EstimateRequestController extends BaseController
                 'request_duedate' => $data['duedate'],
                 'request_update' => $data['update']
             ]);
+            $action = '_create';
         } else {
             $this->obj->where([
                 'application_id' => $data['app_id'],
-                'application_of' => $data['judge_id'],
-                'request_by' => $data['user_id']
+                'application_of' => $data['user_id'],
+                'request_by' => $data['judge_id']
             ])
             ->set([
                 'request_status' => $data['status'],
@@ -53,7 +54,17 @@ class EstimateRequestController extends BaseController
                 'request_update' => $data['update']
             ])
             ->update();
-        }
+            $action = '_update';
+        }                   
+
+        save_log_activety([
+            'module' => 'estimate_pre_screen',
+            'action' => "estimate_send_request$action",
+            'bank' => 'frontend',
+            'user_id' => $data['user_id'],
+            'datetime' => date('Y-m-d H:i:s'),
+            'data' => $data
+        ]);
     }
 
     public function get_expire_request($app_id,$judge_id)
@@ -81,11 +92,71 @@ class EstimateRequestController extends BaseController
         }
     }
 
+    public function user_expire_request($app_id,$user_id,$place_name)
+    {
+        $judges = $this->obj->where([
+            'application_id' => $app_id,
+            'application_of' => $user_id,
+            'request_status' => 1
+        ])
+        ->select('request_by id')
+        ->findAll();
+
+        $this->obj->where([
+            'application_id' => $app_id,
+            'request_status' => 1
+        ])
+        ->set([
+            'request_status' => 4,
+            'request_update' => date('Y-m-d H:i:s')
+        ])
+        ->update();
+
+        $this->db->table('estimate')
+        ->where([
+            'application_id' => $app_id,
+            'request_status' => 1
+        ])
+        ->set('request_status',4)
+        ->update();
+
+        $this->db->table('users_stage')
+        ->where([
+            'user_id' => $user_id, 
+            'stage' => 1
+        ])
+        ->set(['status' => 5])
+        ->update();
+
+        $_noti = "$place_name ได้หมดเวลาการส่งคำตอบการประเมินเบื้องต้น (Pre-Screen) เพิ่มเติม "
+            . " โปรดทำการประเมินเบื้องต้น (Pre-Screen) อีกครั้ง";
+
+        helper('semail');
+
+        foreach($judges as $judge){
+            
+            set_noti((object)[
+                'user_id' => $judge->id,
+                'bank' => 'frontend'
+            ],[
+                'message' => $_noti,
+                'link' => base_url('boards'),
+                'send_date' => date('Y-m-d H:i:s'),
+                'send_by' => 'System'
+            ]); 
+
+            send_email_frontend((object)[
+                'appId' => $app_id,
+                'judgeId' => $judge->id
+            ],'answer-request-expired');
+        }
+    }
+
     public function set_expire_request($app_id,$judge_id)
     {
         $this->obj->where([
             'application_id' => $app_id,
-            'application_of' => $judge_id,
+            'request_by' => $judge_id,
             'request_status' => 1
         ])
         ->set([
@@ -114,7 +185,7 @@ class EstimateRequestController extends BaseController
             $_noti = "$place ได้หมดเวลาการส่งคำตอบการประเมินเบื้องต้น (Pre-Screen) เพิ่มเติม "
                 . " โปรดทำการประเมินเบื้องต้น (Pre-Screen) อีกครั้ง";
             
-            set_noti([
+            set_noti((object)[
                 'user_id' => $judge_id,
                 'bank' => 'frontend'
             ],[
@@ -134,8 +205,14 @@ class EstimateRequestController extends BaseController
         }
     }
 
-    public function respond_request($user_id,$place_n)
-    {
+    public function respond_request($appId,$user_id,$place_n)
+    {        
+        helper('semail');
+        send_email_frontend((object)[
+            'appId' => $appId,
+            'tycon' => $place_n
+        ],'answer-request-complete');
+
         $judges = $this->obj->where('application_of',$user_id)
         ->where('request_status',1)
         ->select('application_id,request_by')

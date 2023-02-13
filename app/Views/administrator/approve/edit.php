@@ -152,6 +152,9 @@
                     <input type="radio" id="require_lowcarbon_2" name="require_lowcarbon" value="2" <?= ($result->require_lowcarbon != 1) ? 'checked' : ''; ?> disabled>
                     <label for="require_lowcarbon_2"> ไม่ต้องการ</label>
                   </p>
+                  <a href="<?= base_url('download/คุณสมบัติและเกณฑ์ประเภทประเภทการท่องเที่ยวคาร์บอนต่ำ.pdf') ?>" target="_blank" style="color: #2a6118;">
+                    <small>คลิกดูคุณสมบัติ/เกณฑ์ประเภท Carbon & Sustainability</small>
+                  </a>
                 </div>
               </div>
 

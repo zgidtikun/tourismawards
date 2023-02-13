@@ -86,10 +86,10 @@ const getStage = () =>{
 
 const setShowStatus = (stageSts,requestSts,showSts) => {
     const stage = getStage();
-
+    
     if(stage.stage == 'pre-screen'){
         if(stage.status == 'wait'){
-            if(requestSts != '' && requestSts != 0){
+            if(requestSts != '' && $.inArray(Number(requestSts),[0,3]) === -1){
                 return stageSts;
             } else {
                 if(showSts == ''){
@@ -197,6 +197,7 @@ const setDataTable = (data) => {
                     data: 'status',
                     render: function(data, type, row, meta){
                         let content;
+                        
                         switch(Number(setShowStatus(row.status,row.request_status,row.show_status))){
                             case 1:
                                 content = '<span class="userstatus wait">';
@@ -368,8 +369,9 @@ const score = (f, id) => {
     }
     
     const ref = boards.list.find(el => el.id == id);
+    const stage = getStage();
+    const lstatus = stage.stage == 'pre-screen' ? ref.lowcarbon_status : 2;
     // const taget = ref.targetEstimate;
-    const lstatus = ref.lowcarbon_status;
     
     if(Number(lstatus) == 1){
         $('#modal-score .modal-dialog').removeClass('modal-lg');

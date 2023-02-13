@@ -48,9 +48,13 @@ class AnswerController extends BaseController
 
         $myApp = $this->appForm->where('created_by',$this->myId)
         ->select(
-            'id app_id,application_type_id type_id,
+            'id app_id,
+            attraction_name_th name_th, 
+            attraction_name_en name_en,
+            application_type_id type_id,
             application_type_sub_id sub_id,
-            status')
+            status'
+        )
         ->first();
             
         if(empty($myApp) || $myApp->status != 3){
@@ -126,16 +130,10 @@ class AnswerController extends BaseController
                 $duedate->expired_date = $stage->duedate;
                 $duedate->expired_str = FormatTree($stage->duedate,'thailand');
                 $duedate->expired_sts = $current_datetime > $stage->duedate ? 'true' : 'false';
-            }
 
-            if($stage->status == 3){
-                if($duedate->expired_sts == 'true'){            
-                    $this->usStg->where([
-                        'user_id' => $this->myId, 
-                        'stage' => 1
-                    ])
-                    ->set(['status' => 5])
-                    ->update();
+                if($stage->status == 3 && $duedate->expired_sts == 'true'){     
+                    $reqEstimate = new \App\Controllers\EstimateRequestController();
+                    $reqEstimate->user_expire_request($myApp->app_id,$this->myId,$myApp->name_th);
                 }
             }
         } else {
@@ -217,7 +215,7 @@ class AnswerController extends BaseController
 
                 if($val->reply_sts == 3){
                     $val->request = $instEstimate->where('answer_id',$val->reply_id)
-                    ->whereIn('request_status',[1])    
+                    ->whereIn('request_status',[1,4])    
                     ->select('request_list')
                     ->findAll();
                 }
@@ -383,7 +381,7 @@ class AnswerController extends BaseController
                                 ->update();
 
                             $judgeRequest = new \App\Controllers\EstimateRequestController();
-                            $judgeRequest->respond_request($this->myId,$form->place_name);
+                            $judgeRequest->respond_request($this->input->getVar('appId'),$this->myId,$form->place_name);
                             $isEstimateRequire = true;
                         }
                     } else {
@@ -414,12 +412,7 @@ class AnswerController extends BaseController
 
                     helper('semail');
 
-                    if($isEstimateRequire){
-                        send_email_frontend((object)[
-                            'appId' => $this->input->getVar('appId'),
-                            'tycon' => $form->place_name
-                        ],'answer-request-complete');
-                    } else {
+                    if(!$isEstimateRequire){
                         send_email_frontend((object)[
                             'email' => session()->get('account'),
                             'tycon' => session()->get('user')

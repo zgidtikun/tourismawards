@@ -115,7 +115,7 @@
                         <!-- <?php echo docDate($value->created_at, 3) ?> -->
                         <?php
                         $app = new \Config\App();
-                        echo docDate($app->APPForm_expired, 3);
+                        echo docDate($app->Estimate_pre_date, 3);
                         ?>
                       </td>
                       <td>

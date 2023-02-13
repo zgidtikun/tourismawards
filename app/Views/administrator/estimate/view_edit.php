@@ -11,7 +11,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายการแบบประเมินขั้นต้น (Pre-Screen)</h3>
+        <h3>ข้อมูลผลงาน</h3>
       </div>
     </div>
 
@@ -53,7 +53,7 @@
   <div class="backendcontent-row">
     <div class="backendcontent-title">
       <div class="backendcontent-title-txt">
-        <h3>รายชื่อคณะกรรมการสำหรับประเมินใบสมัคร: รอบประเมินขั้นต้น (Pre-screen)</h3>
+        <h3>รายชื่อคณะกรรมการรอบประเมินขั้นต้น (Pre-Screen)</h3>
       </div>
     </div>
 
