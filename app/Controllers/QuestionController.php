@@ -105,23 +105,25 @@ class QuestionController extends BaseController
             $obj_ass = new \App\Models\AssessmentGroup();
             $assessment = $obj_ass->findAll();
 
-            $subEstimateSelect = 'application_id app_id, MAX(updated_at) updated_at,
-                MIN(request_status) request_status';
+            $subEstimateSelect = 'inna.application_id app_id, MAX(inna.updated_at) updated_at,
+                MIN(inna.request_status) request_status';
                 
             if($round == 'pre-screen'){
-                $subEstimateSelect .= ', MIN(status_pre) show_status';
+                $subEstimateSelect .= ', MIN(inna.status_pre) show_status, 
+                    MAX(inna.score_pre_origin) score_origin';
             } else {
-                $subEstimateSelect .= ', MIN(status_onsite) show_status';
+                $subEstimateSelect .= ', MIN(inna.status_onsite) show_status, 
+                    MAX(inna.score_onsite_origin) score_origin';
             }
 
-            $subEstimate = $this->db->table('estimate')
+            $subEstimate = $this->db->table('estimate inna')
+                ->join('question innb','inna.question_id = innb.id')
                 ->select(
                     $subEstimateSelect
                 )
-                ->where([
-                    'estimate_by' => $this->myId
-                ])
-                ->groupBy('application_id')
+                ->where('inna.estimate_by',$this->myId)
+                ->where($round == 'pre-screen' ? 'innb.pre_status': 'innb.onside_status',1)
+                ->groupBy('inna.application_id')
                 ->getCompiledSelect();
             
             $subComm = $this->db->table('committees')
@@ -153,6 +155,7 @@ class QuestionController extends BaseController
                     IFNULL(inse.updated_at,\'\') updated_at,
                     IFNULL(inse.request_status,\'\') request_status,
                     IFNULL(inse.show_status,\'\') show_status,
+                    IFNULL(inse.score_origin,\'\') score_origin,
                     IFNULL(es.score_pte,\'\') score_pte,
                     IFNULL(es.score_psb,\'\') score_psb,
                     IFNULL(es.score_prs,\'\') score_prs,
@@ -186,7 +189,6 @@ class QuestionController extends BaseController
             $builder = $builder->get();
             $list = [];
             $UsersStage = new \App\Models\UsersStage();
-            $estimate = new \App\Models\Estimate();
             $judgeRequest = new \App\Controllers\EstimateRequestController();
             $ObjEst = new \App\Controllers\FrontendController();
             $current_date = date('Y-m-d H:i:s');
@@ -263,6 +265,17 @@ class QuestionController extends BaseController
 
                     unset($val->duedate);
                     unset($val->stage_id);
+                }
+
+                if($status == 'wait' && in_array($val->status,[1,2])){
+                    if(empty($val->score_origin)){
+                        $val->status = 1;
+                        $val->show_status = '';
+                    } 
+                    else {
+                        $val->status = 2;
+                        $val->show_status = 2;
+                    }
                 }
             }
             

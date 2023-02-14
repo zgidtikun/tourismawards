@@ -479,7 +479,7 @@ const setQuestion = (cate,seg) => {
         
         const category = dataset[cate];
         const question = category.question[seg];        
-        
+        // console.log(question,`QuestionID: ${question.id}, Origin: ${question.score_pre_origin}, Weignt: ${question.weight}, Full score: ${question.pre_score}`);
         $('.hide-choice').hide();
         $('body').removeClass('lockbody');
 

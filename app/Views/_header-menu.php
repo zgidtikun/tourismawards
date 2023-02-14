@@ -347,6 +347,10 @@
 
    <?php if (session()->get('isLoggedIn')): ?>
       $(document).ready(function() {
+         getHeaderNoti();
+      });
+
+      const getHeaderNoti = () => {
          $.ajax({
             type: 'post',
             url: window.location.origin + '/inner-api/noti/get',
@@ -371,6 +375,6 @@
                $('.btn-noti').html(icon);
             }
          });
-      });
+      }
    <?php endif;?>
 </script>

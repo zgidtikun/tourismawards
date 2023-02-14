@@ -131,8 +131,9 @@ const setDataTable = (data) => {
                         let content = `<a href="javascript:show(${row.id});"><span>`;
                         content += '<i class="bi bi-arrow-right-square-fill text-success mr-2"></i>';
                         content += `${data}</span>`;
-
-                        switch(Number(setShowStatus(row.status,row.request_status,row.show_status))){
+                        const showStatus = setShowStatus(row.status,row.request_status,row.show_status);
+                    
+                        switch(Number(showStatus)){
                             case 1:
                                 content += '<span class="badge badge-wait ml-1">';
                                 content += 'รอการประเมิน</span>';
@@ -232,7 +233,13 @@ const setDataTable = (data) => {
                         return content;
                     }
                 },
-                { data: 'updated_at' },
+                { 
+                    data: 'updated_at',
+                    render: function(data, type, row, meta){
+                        const showStatus = setShowStatus(row.status,row.request_status,row.show_status);
+                        return Number(showStatus) == 1 ? '' : data;
+                    }
+                },
                 { 
                     data: 'status',
                     render: function(data, type, row, meta){
