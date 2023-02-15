@@ -51,9 +51,6 @@
             <option value="">ทั้งหมด</option>
             <option value="1" <?= (@$_GET['status'] == 1) ? 'selected' : ''; ?>>รอส่งผลการประเมิน</option>
             <option value="2" <?= (@$_GET['status'] == 2) ? 'selected' : ''; ?>>กำลังประเมิน</option>
-            <option value="3" <?= (@$_GET['status'] == 3) ? 'selected' : ''; ?>>ขอข้อมูลเพิ่มเติม</option>
-            <option value="4" <?= (@$_GET['status'] == 4) ? 'selected' : ''; ?>>ตอบรับคำขอ</option>
-            <option value="5" <?= (@$_GET['status'] == 5) ? 'selected' : ''; ?>>ไม่มีการตอบกลับ</option>
             <option value="6" <?= (@$_GET['status'] == 6) ? 'selected' : ''; ?>>ผ่านการประเมิน</option>
             <option value="7" <?= (@$_GET['status'] == 7) ? 'selected' : ''; ?>>ไม่ผ่านการประเมิน</option>
           </select>

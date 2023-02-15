@@ -10,7 +10,7 @@
         <h3>รายการผลงานที่ได้รับรางวัล</h3>
       </div>
       <!-- <a href="javascript:" class="btn-blue" onclick="insert_item(this)">เพิ่มข้อมูล</a> -->
-      <!-- <a href="javascript:" onclick="export_data()" class="btn-export"><i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i> Export</a> -->
+      <a href="javascript:" onclick="export_data()" class="btn-export" title=""><i class="bi bi-box-arrow-right" style="margin-right: 5px;"></i> Export</a>
     </div>
 
     <!-- <form action="" method="get" id="search_form">
@@ -76,8 +76,6 @@
                   <th>ลำดับ</th>
                   <th>รหัสใบสมัคร</th>
                   <th>ชื่อสถานประกอบการ</th>
-                  <!-- <th>ประเภทที่ตัดสิน</th> -->
-                  <!-- <th>สาขารางวัล</th> -->
                   <th>คะแนนรวม</th>
                   <th>รางวัล</th>
                 </tr>
@@ -94,14 +92,14 @@
                       $awards = 'รางวัลดีเด่น (Thailand Tourism Silver Award)';
                     } else if ($total >= 65 && $total <= '74.99') {
                       $awards = 'เกียรติบัตรรางวัลอุตสาหกรรมท่องเที่ยวไทย (Thailand Tourism Certificate)';
+                    } else {
+                      $awards = 'ไม่ผ่านเกณฑ์';
                     }
                 ?>
                     <tr>
                       <td class="text-center"><?= $key + 1 ?></td>
                       <td class="text-center"><?= $value->code ?></td>
                       <td class="text-start"><?= $value->attraction_name_th ?></td>
-                      <!-- <td class="text-start"><?= applicationType($value->application_type_id) ?></td> -->
-                      <!-- <td class="text-start"><?= applicationTypeSub($value->application_type_sub_id) ?></td> -->
                       <td class="text-end"><?= $total ?></td>
                       <td class="text-start"><?= $awards ?></td>
                     </tr>
@@ -158,5 +156,9 @@
         semptyTable: "ไม่มีข้อมูล",
       }
     });
-  })
+  });
+
+  function export_data() {
+    window.open(BASE_URL_BACKEND + '/tourismawards/export');
+  }
 </script>

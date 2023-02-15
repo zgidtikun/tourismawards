@@ -97,7 +97,7 @@
                     } else if ($value->users_stage_status == 6) {
                       $status = '<div class="userstatus judge">ผ่านการประเมิน</div>';
                     } else if ($value->users_stage_status == 7) {
-                      $status = '<div class="userstatus officer">ไม่ผ่านการประเมิน</div>';
+                      $status = '<div class="userstatus officer">ไม่ผ่านการประเมินรอบลงพื้นที่</div>';
                     }
                 ?>
                     <tr>

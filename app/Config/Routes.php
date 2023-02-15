@@ -301,6 +301,7 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     // TourismAwards (แอดมินและเจ้าหน้าที่เข้าถึงได้)
     $routes->group('tourismawards', static function ($routes) {
         $routes->get('', 'TourismAwards::index', ['filter' => 'auth:backend']);
+        $routes->get('export', 'TourismAwards::export', ['filter' => 'auth:backend']);
     });
 
     // MarkTest is Controller for Test Only

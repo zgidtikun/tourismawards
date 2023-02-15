@@ -114,11 +114,11 @@
                                                 }
 
                                                 $content = 'ข้อมูลใบสมัคร';
-                                                $manual = base_url('download/tycoon_manual.pdf');
+                                                // $manual = base_url('download/tycoon_manual.pdf');
                                              } else {
                                                 $url = 'boards';
                                                 $content = 'การประเมิน';
-                                                $manual = base_url('download/judge_manual.pdf');
+                                                // $manual = base_url('download/judge_manual.pdf');
                                              }
                                        ?>
                                        <a href="<?=base_url($url)?>" class="mb-1">
@@ -129,10 +129,10 @@
                                           <i class="bi bi-key-fill"></i>
                                           &nbsp;&nbsp;เปลี่ยนรหัสผ่านใหม่
                                        </a>
-                                       <a href="<?=$manual?>" target="_blank" class="mb-1" class="mb-1">
+                                       <!-- <a href="javascript:;" target="_blank" class="mb-1" class="mb-1">
                                           <i class="bi bi-cloud-arrow-down-fill"></i>
                                           &nbsp;&nbsp;ดาวน์โหลดคู่มือการใช้งาน
-                                       </a>
+                                       </a> -->
                                     <?php else: ?>
                                        <a href="administrator/dashboard" class="mb-1">
                                           <i class="bi bi-file-bar-graph-fill"></i>
