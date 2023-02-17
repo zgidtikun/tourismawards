@@ -89,7 +89,11 @@ class Report extends BaseController
 
     public function pre_average()
     {
-        $data['result'] = $this->db->table('application_form AP')->select('AP.id, AP.code, AP.attraction_name_th, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, CM.admin_id_tourism, CM.admin_id_supporting, CM.admin_id_responsibility')->join('committees CM', 'CM.application_form_id = AP.id AND CM.assessment_round = 1')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')
+        ->select('AP.id, AP.code, AP.attraction_name_th, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, CM.admin_id_tourism, CM.admin_id_supporting, CM.admin_id_responsibility')
+        ->join('committees CM', 'CM.application_form_id = AP.id AND CM.assessment_round = 1')
+        ->join('application_type AT', 'AT.id = AP.application_type_id')
+        ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
 
         $count_committees = [];
         foreach ($data['result'] as $key => $value) {
