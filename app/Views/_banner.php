@@ -35,7 +35,7 @@
       <div class="banner-box-scale">
         <div class="banner-box-scale-img">
           <div class="banner-txt" style="display:none"></div>
-          <a href="javascript:;" onclick="">
+          <a href="<?=base_url('download/Factsheet-ประเภทการท่องเที่ยวคาร์บอนต่ำ.pdf')?>" target="_blank">
             <picture>
               <source media="(max-width: 767px) and (orientation:portrait)" srcset="<?= base_url('assets/images/banner/mobile/banner_slide3.jpg') ?>" />
               <source media="(max-width: 768px)" srcset="<?= base_url('assets/images/banner/tablet_v/banner_slide3.jpg') ?>" />

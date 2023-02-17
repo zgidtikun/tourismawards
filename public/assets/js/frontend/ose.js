@@ -608,7 +608,7 @@ const setQuestion = async(cate,seg) => {
         if(regex.test(question.os_eva)){
             ev = question.os_eva;
         } else {
-            ev = '<span class="txt-yellow title-comment">'
+            ev = '<span class="title-comment">'
                     + question.os_eva
                 '</span>';
         }
@@ -646,7 +646,9 @@ const setQuestion = async(cate,seg) => {
                 );
             }
         });
+
         qSco.html(sc);
+        $('.regis-form-step')[0].scrollIntoView();
         checkComplete();
     });
 }

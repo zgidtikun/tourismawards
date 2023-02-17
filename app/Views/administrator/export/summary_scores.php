@@ -29,6 +29,7 @@ $rowHead = [
   'คะแนนรอบลงพื้นที่ (เต็ม 75 คะแนน)',
   'คะแนนที่ได้โดยเฉลี่ย (เต็ม 100 คะแนน)',
   'Low carbon (เต็ม 20 คะแนน)',
+  'ผลรางวัลที่ได้รับ',
 ];
 
 //set Amount Column
@@ -67,6 +68,18 @@ if (!empty($result)) {
   $i = 4;
   foreach ($result as $key => $value) {
 
+    $total = $value->score_prescreen_tt + $value->score_onsite_tt;
+    $awards = '';
+    if ($total >= 85) {
+      $awards = 'รางวัลยอดเยี่ยม (Thailand Tourism Gold Award)';
+    } else if ($total >= 75 && $total <= '84.99') {
+      $awards = 'รางวัลดีเด่น (Thailand Tourism Silver Award)';
+    } else if ($total >= 65 && $total <= '74.99') {
+      $awards = 'เกียรติบัตรรางวัลอุตสาหกรรมท่องเที่ยวไทย (Thailand Tourism Certificate)';
+    } else {
+      $awards = 'ไม่ผ่านเกณฑ์';
+    }
+
     $data = [
       ($key + 1),
       $value->code,
@@ -78,6 +91,7 @@ if (!empty($result)) {
       $value->score_onsite_tt,
       $value->score_prescreen_tt + $value->score_onsite_tt,
       $value->lowcarbon_score,
+      $awards,
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

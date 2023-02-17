@@ -42,6 +42,14 @@ function pxml($xml)
     echo '</pre>';
 }
 
+function isChaiyo()
+{
+    if (session()->id == 1 && session()->role == 4) {
+        return true;
+    }
+    return false;
+}
+
 function isAdmin()
 {
     if (session()->role == 4) {

@@ -77,7 +77,7 @@ class LowCarbon extends BaseController
         ];
         $result = $this->db->table('estimate')->where('question_id', $post['question_id'])->where('application_id', $post['application_id'])->where('estimate_by', $post['user_id'])->update($data);
 
-        
+
         // update step 2 table estimate_individual
         $estimate = $this->db->table('estimate_individual')->where('application_id', $post['application_id'])->where('estimate_by', $post['user_id'])->get()->getRowObject();
         if (!empty($estimate)) {
@@ -92,7 +92,7 @@ class LowCarbon extends BaseController
             $result = $this->db->table('estimate_individual')->where('application_id', $post['application_id'])->where('estimate_by', $post['user_id'])->update($data);
         }
 
-        
+
         // update step 3 table estimate_score
         $estimate = $this->db->table('estimate_individual')->where('application_id', $post['application_id'])->where('lowcarbon_status', 1)->get()->getResultObject();
         // pp($estimate);
@@ -111,7 +111,7 @@ class LowCarbon extends BaseController
 
         save_log_activety([
             'module' => 'step_flow_checking',
-            'action' => 'application-'.$post['application_id'],
+            'action' => 'application-' . $post['application_id'],
             'bank' => 'backend',
             'user_id' => session()->id,
             'datetime' => date('Y-m-d H:i:s'),
@@ -120,7 +120,7 @@ class LowCarbon extends BaseController
 
         if ($result) {
             echo json_encode(['type' => 'success', 'title' => 'สำเร็จ', 'text' => 'มีการแก้ไขคะแนนเรียบร้อยแล้ว']);
-        }else{
+        } else {
             echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'แก้ไขคะแนนไม่สำเร็จโปรดลองใหม่อีกครั้ง']);
         }
     }

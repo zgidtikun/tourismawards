@@ -173,11 +173,6 @@
             ผู้มอบหมายกรรมการ : <?= adminName($committees->created_by) ?> วันที่ <?= docDate($committees->created_at, 3) ?> เวลา <?= date('H:i', strtotime($committees->created_at)) ?> น.
           <?php endif; ?>
         </div>
-
-        <!-- <div class="regis-form-data-row">
-    <a href="javascript: history.back(1)" class="btn-cancle">ยกเลิก</a>
-    <a href="javascript:void(0)" class="btn-save" id="btn_save" data-tab="1">บันทึก</a>
-  </div> -->
       </form>
 
     </div>

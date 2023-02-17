@@ -65,7 +65,10 @@ class Report extends BaseController
 
     public function register()
     {
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, U.email AS user_email, U.mobile AS user_mobile')->join('users U', 'U.id = AP.created_by')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')
+            ->select('AP.*, U.email AS user_email, U.mobile AS user_mobile, ES.score_prescreen_tt, ES.score_onsite_tt')
+            ->join('estimate_score ES', 'ES.application_id = AP.id', 'left')
+            ->join('users U', 'U.id = AP.created_by')->get()->getResultObject();
 
         return view('administrator/export/register', $data);
     }
@@ -91,22 +94,22 @@ class Report extends BaseController
         $count_committees = [];
         foreach ($data['result'] as $key => $value) {
             $estimate['tourism'] = $this->db->table('estimate ET')
-            ->select('SUM(tscore_pre) AS sum_tscore_pre, SUM(QU.pre_score) AS sum_pre_score')
-            ->join('question QU', 'QU.id = ET.question_id')
-            ->where('QU.assessment_group_id', 1)
-            ->where('application_id', $value->id)->get()->getRowObject();
-            
+                ->select('SUM(tscore_pre) AS sum_tscore_pre, SUM(QU.pre_score) AS sum_pre_score')
+                ->join('question QU', 'QU.id = ET.question_id')
+                ->where('QU.assessment_group_id', 1)
+                ->where('application_id', $value->id)->get()->getRowObject();
+
             $estimate['supporting'] = $this->db->table('estimate ET')
-            ->select('SUM(tscore_pre) AS sum_tscore_pre, SUM(QU.pre_score) AS sum_pre_score')
-            ->join('question QU', 'QU.id = ET.question_id')
-            ->where('QU.assessment_group_id', 2)
-            ->where('application_id', $value->id)->get()->getRowObject();
-            
+                ->select('SUM(tscore_pre) AS sum_tscore_pre, SUM(QU.pre_score) AS sum_pre_score')
+                ->join('question QU', 'QU.id = ET.question_id')
+                ->where('QU.assessment_group_id', 2)
+                ->where('application_id', $value->id)->get()->getRowObject();
+
             $estimate['responsibility'] = $this->db->table('estimate ET')
-            ->select('SUM(tscore_pre) AS sum_tscore_pre, SUM(QU.pre_score) AS sum_pre_score')
-            ->join('question QU', 'QU.id = ET.question_id')
-            ->where('QU.assessment_group_id', 3)
-            ->where('application_id', $value->id)->get()->getRowObject();
+                ->select('SUM(tscore_pre) AS sum_tscore_pre, SUM(QU.pre_score) AS sum_pre_score')
+                ->join('question QU', 'QU.id = ET.question_id')
+                ->where('QU.assessment_group_id', 3)
+                ->where('application_id', $value->id)->get()->getRowObject();
 
             $tourism = json_decode($value->admin_id_tourism);
             $supporting = json_decode($value->admin_id_supporting);
@@ -125,26 +128,26 @@ class Report extends BaseController
 
             foreach ($tourism as $index => $val) {
                 $result['result'][$key]['tourism'][$index] = $this->db->table('estimate_individual ET')
-                ->select('ET.score_pte, ET.score_psb, ET.score_prs, ET.score_pre, U.name, U.surname')
-                ->join('users U', 'U.id = ET.estimate_by')
-                ->where('ET.estimate_by', $val)
-                ->where('ET.application_id', $value->id)->get()->getRowObject();
+                    ->select('ET.score_pte, ET.score_psb, ET.score_prs, ET.score_pre, U.name, U.surname')
+                    ->join('users U', 'U.id = ET.estimate_by')
+                    ->where('ET.estimate_by', $val)
+                    ->where('ET.application_id', $value->id)->get()->getRowObject();
             }
 
             foreach ($supporting as $index => $val) {
                 $result['result'][$key]['supporting'][$index] = $this->db->table('estimate_individual ET')
-                ->select('ET.score_pte, ET.score_psb, ET.score_prs, ET.score_pre, U.name, U.surname')
-                ->join('users U', 'U.id = ET.estimate_by')
-                ->where('ET.estimate_by', $val)
-                ->where('ET.application_id', $value->id)->get()->getRowObject();
+                    ->select('ET.score_pte, ET.score_psb, ET.score_prs, ET.score_pre, U.name, U.surname')
+                    ->join('users U', 'U.id = ET.estimate_by')
+                    ->where('ET.estimate_by', $val)
+                    ->where('ET.application_id', $value->id)->get()->getRowObject();
             }
 
             foreach ($responsibility as $index => $val) {
                 $result['result'][$key]['responsibility'][$index] = $this->db->table('estimate_individual ET')
-                ->select('ET.score_pte, ET.score_psb, ET.score_prs, ET.score_pre, U.name, U.surname')
-                ->join('users U', 'U.id = ET.estimate_by')
-                ->where('ET.estimate_by', $val)
-                ->where('ET.application_id', $value->id)->get()->getRowObject();
+                    ->select('ET.score_pte, ET.score_psb, ET.score_prs, ET.score_pre, U.name, U.surname')
+                    ->join('users U', 'U.id = ET.estimate_by')
+                    ->where('ET.estimate_by', $val)
+                    ->where('ET.application_id', $value->id)->get()->getRowObject();
             }
         }
         $result['count_committees'] = max($count_committees);
@@ -154,7 +157,7 @@ class Report extends BaseController
 
     public function onsite_officer()
     {
-        $data['result'] = $this->db->table('estimate ET')->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')->join('question QU', 'QU.id = ET.question_id')->join('application_form AP', 'AP.id = ET.application_id')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
+        $data['result'] = $this->db->table('estimate ET')->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight, QU.onside_score')->join('question QU', 'QU.id = ET.question_id')->join('application_form AP', 'AP.id = ET.application_id')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
 
         return view('administrator/export/onsite_officer', $data);
     }
@@ -162,30 +165,30 @@ class Report extends BaseController
     public function onsite_average()
     {
         $data['result'] = $this->db->table('application_form AP')
-        ->select('AP.id, AP.code, AP.application_type_id, AP.application_type_sub_id, AP.attraction_name_th, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, CM.admin_id_tourism, CM.admin_id_supporting, CM.admin_id_responsibility')
-        ->join('committees CM', 'CM.application_form_id = AP.id AND CM.assessment_round = 2')
-        ->join('application_type AT', 'AT.id = AP.application_type_id')
-        ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
+            ->select('AP.id, AP.code, AP.application_type_id, AP.application_type_sub_id, AP.attraction_name_th, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, CM.admin_id_tourism, CM.admin_id_supporting, CM.admin_id_responsibility')
+            ->join('committees CM', 'CM.application_form_id = AP.id AND CM.assessment_round = 2')
+            ->join('application_type AT', 'AT.id = AP.application_type_id')
+            ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
 
         $count_committees = [];
         foreach ($data['result'] as $key => $value) {
             $estimate['tourism'] = $this->db->table('estimate ET')
-            ->select('SUM(tscore_onsite) AS sum_tscore_onsite, SUM(QU.onside_score) AS sum_onside_score')
-            ->join('question QU', 'QU.id = ET.question_id')
-            ->where('QU.assessment_group_id', 1)
-            ->where('application_id', $value->id)->get()->getRowObject();
-            
+                ->select('SUM(tscore_onsite) AS sum_tscore_onsite, SUM(QU.onside_score) AS sum_onside_score')
+                ->join('question QU', 'QU.id = ET.question_id')
+                ->where('QU.assessment_group_id', 1)
+                ->where('application_id', $value->id)->get()->getRowObject();
+
             $estimate['supporting'] = $this->db->table('estimate ET')
-            ->select('SUM(tscore_onsite) AS sum_tscore_onsite, SUM(QU.onside_score) AS sum_onside_score')
-            ->join('question QU', 'QU.id = ET.question_id')
-            ->where('QU.assessment_group_id', 2)
-            ->where('application_id', $value->id)->get()->getRowObject();
-            
+                ->select('SUM(tscore_onsite) AS sum_tscore_onsite, SUM(QU.onside_score) AS sum_onside_score')
+                ->join('question QU', 'QU.id = ET.question_id')
+                ->where('QU.assessment_group_id', 2)
+                ->where('application_id', $value->id)->get()->getRowObject();
+
             $estimate['responsibility'] = $this->db->table('estimate ET')
-            ->select('SUM(tscore_onsite) AS sum_tscore_onsite, SUM(QU.onside_score) AS sum_onside_score')
-            ->join('question QU', 'QU.id = ET.question_id')
-            ->where('QU.assessment_group_id', 3)
-            ->where('application_id', $value->id)->get()->getRowObject();
+                ->select('SUM(tscore_onsite) AS sum_tscore_onsite, SUM(QU.onside_score) AS sum_onside_score')
+                ->join('question QU', 'QU.id = ET.question_id')
+                ->where('QU.assessment_group_id', 3)
+                ->where('application_id', $value->id)->get()->getRowObject();
 
             $tourism = json_decode($value->admin_id_tourism);
             $supporting = json_decode($value->admin_id_supporting);
@@ -204,26 +207,26 @@ class Report extends BaseController
 
             foreach ($tourism as $index => $val) {
                 $result['result'][$key]['tourism'][$index] = $this->db->table('estimate_individual ET')
-                ->select('ET.score_ote, ET.score_osb, ET.score_ors, ET.score_onsite, U.name, U.surname')
-                ->join('users U', 'U.id = ET.estimate_by')
-                ->where('ET.estimate_by', $val)
-                ->where('ET.application_id', $value->id)->get()->getRowObject();
+                    ->select('ET.score_ote, ET.score_osb, ET.score_ors, ET.score_onsite, U.name, U.surname')
+                    ->join('users U', 'U.id = ET.estimate_by')
+                    ->where('ET.estimate_by', $val)
+                    ->where('ET.application_id', $value->id)->get()->getRowObject();
             }
 
             foreach ($supporting as $index => $val) {
                 $result['result'][$key]['supporting'][$index] = $this->db->table('estimate_individual ET')
-                ->select('ET.score_ote, ET.score_osb, ET.score_ors, ET.score_onsite, U.name, U.surname')
-                ->join('users U', 'U.id = ET.estimate_by')
-                ->where('ET.estimate_by', $val)
-                ->where('ET.application_id', $value->id)->get()->getRowObject();
+                    ->select('ET.score_ote, ET.score_osb, ET.score_ors, ET.score_onsite, U.name, U.surname')
+                    ->join('users U', 'U.id = ET.estimate_by')
+                    ->where('ET.estimate_by', $val)
+                    ->where('ET.application_id', $value->id)->get()->getRowObject();
             }
 
             foreach ($responsibility as $index => $val) {
                 $result['result'][$key]['responsibility'][$index] = $this->db->table('estimate_individual ET')
-                ->select('ET.score_ote, ET.score_osb, ET.score_ors, ET.score_onsite, U.name, U.surname')
-                ->join('users U', 'U.id = ET.estimate_by')
-                ->where('ET.estimate_by', $val)
-                ->where('ET.application_id', $value->id)->get()->getRowObject();
+                    ->select('ET.score_ote, ET.score_osb, ET.score_ors, ET.score_onsite, U.name, U.surname')
+                    ->join('users U', 'U.id = ET.estimate_by')
+                    ->where('ET.estimate_by', $val)
+                    ->where('ET.application_id', $value->id)->get()->getRowObject();
             }
         }
         $result['count_committees'] = max($count_committees);
@@ -233,7 +236,14 @@ class Report extends BaseController
 
     public function summary_scores()
     {
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, ES.score_prescreen_tt AS score_prescreen_tt, ES.lowcarbon_score AS lowcarbon_score, ES.score_onsite_tt AS score_onsite_tt, AT.name AS application_type_name, ATS.name AS application_type_sub_name')->join('estimate_score ES', 'ES.application_id = AP.id', 'left')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->orderBy('AP.id', 'desc')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')
+            ->select('AP.*, ES.score_prescreen_tt AS score_prescreen_tt, ES.lowcarbon_score AS lowcarbon_score, ES.score_onsite_tt AS score_onsite_tt, AT.name AS application_type_name, ATS.name AS application_type_sub_name')
+            ->join('estimate_score ES', 'ES.application_id = AP.id', 'left')
+            ->join('application_type AT', 'AT.id = AP.application_type_id')
+            ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')
+            ->join('users_stage US', 'US.user_id = AP.created_by AND US.status >= 6', 'left')
+            ->where('US.stage', 2)
+            ->orderBy('AP.id', 'desc')->get()->getResultObject();
         // px($data['result']);
 
         return view('administrator/export/summary_scores', $data);
@@ -257,7 +267,7 @@ class Report extends BaseController
 
     public function lowcarbon_officer()
     {
-        $data['result'] = $this->db->table('estimate ET')->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')->join('question QU', 'QU.id = ET.question_id AND QU.assessment_group_id = 4')->join('application_form AP', 'AP.id = ET.application_id')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
+        $data['result'] = $this->db->table('estimate ET')->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')->join('question QU', 'QU.id = ET.question_id AND QU.assessment_group_id = 4')->join('application_form AP', 'AP.id = ET.application_id')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->where('AP.require_lowcarbon', 1)->get()->getResultObject();
         // px($data['result']);
 
         return view('administrator/export/lowcarbon_officer', $data);

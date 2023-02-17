@@ -341,6 +341,7 @@
       var total_score = F2C(total_tourism + total_supporting + total_reponsibility);
       $('#total_score').html(total_score);
 
+      var awards = '';
       if (total_score >= 85) {
         var awards = 'รางวัลยอดเยี่ยม (Thailand Tourism Gold Award)';
       } else if (total_score >= 75 && total_score <= '84.99') {

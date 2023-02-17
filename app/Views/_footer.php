@@ -21,28 +21,28 @@
                     <p class="footermenutitle" data-tab="1">เกี่ยวกับโครงการฯ</p>
                     <ul data-tab="1">                        
                         <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ</a></li>
-                        <li><a href="<?=base_url('judge')?>">คณะกรรมการ</a></li>
+                        <!-- <li><a href="<?=base_url('judge')?>">คณะกรรมการ</a></li> -->
                     </ul>
                 </div>
 
                 <div class="footermenu_col">
                     <p class="footermenutitle" data-tab="2">ข้อมูลการประกวดรางวัล</p>
                     <ul data-tab="2">
-                        <li><a href="javascript:;">ประเภทแหล่งท่องเที่ยว</a></li>
-                        <li><a href="javascript:;">ประเภทที่พักนักท่องเที่ยว</a></li>
-                        <li><a href="javascript:;">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
-                        <li><a href="javascript:;">ประเภทรายการนำเที่ยว</a></li>
-                        <li><a href="javascript:;">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</a></li>
+                        <li><a href="<?=base_url('download/Factsheet-ประเภทแหล่งท่องเที่ยว.pdf')?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
+                        <li><a href="<?=base_url('download/Factsheet-ประเภทที่พักนักท่องเที่ยว.pdf')?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
+                        <li><a href="<?=base_url('download/Factsheet-ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                        <li><a href="<?=base_url('download/Factsheet-ประเภทรายการนำที่ยว.pdf')?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
+                        <li><a href="<?=base_url('download/Factsheet-ประเภทการท่องเที่ยวคาร์บอนต่ำ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</a></li>
                     </ul>
                 </div>
 
                 <div class="footermenu_col">
                     <p class="footermenutitle" data-tab="3">ข้อมูลการใช้งานระบบ</p>
                     <ul data-tab="3">
-                        <li><a href="javascript:;">ประเภทแหล่งท่องเที่ยว</a></li>
-                        <li><a href="javascript:;">ประเภทที่พักนักท่องเที่ยว</a></li>
-                        <li><a href="javascript:;">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
-                        <li><a href="javascript:;">ประเภทรายการนำเที่ยว</a></li>
+                        <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทแหล่งท่องเที่ยว.pdf'))?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
+                        <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทที่พักนักท่องเที่ยว.pdf'))?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
+                        <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf'))?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                        <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทรายการนำเที่ยว.pdf'))?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
                     </ul>
                 </div>
 

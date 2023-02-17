@@ -18,6 +18,11 @@ class Home extends BaseController
 
     public function index()
     {
+        $_app = new \Config\App();
+        if($_app->comming_soon){
+            return redirect()->to(base_url('comming-soon'));
+        }
+
         $data_judge = [];
         $data_news = [];
         
@@ -396,6 +401,16 @@ class Home extends BaseController
         $data['ci']     = $this;
 
         return view('administrator/template', $data);
+    }
+
+    public function comming_soon()
+    {        
+        $_app = new \Config\App();
+        if($_app->comming_soon){
+            return view('comming-soon');
+        } else {
+            return redirect()->to(base_url('home'));
+        }
     }
 
     public function error_403()

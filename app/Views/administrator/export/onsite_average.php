@@ -45,9 +45,9 @@ for ($i = 1; $i <= $count_committees; $i++) {
 }
 
 $rowHead[] = 'ผลรวมคะแนนเฉลี่ยที่ได้รับ';
-$rowHead[] = 'คะแนนเต็ม';
+// $rowHead[] = 'คะแนนเต็ม';
 $rowHead[] = 'weight ค่าน้ำหนัก (แต่ละด้าน)';
-$rowHead[] = 'คะแนนที่ได้โดยเฉลี่ย';
+$rowHead[] = 'คะแนนที่ได้รับ (รอบลงพื้นที่)';
 // pp($rowHead);
 
 //set Amount Column
@@ -109,7 +109,7 @@ if (!empty($result)) {
         }
       }
       $data[] = array_sum($score_ote) / count($score_ote);
-      $data[] = $value['estimate']['tourism']->sum_onside_score; // คะแนนเต็ม
+      // $data[] = $value['estimate']['tourism']->sum_onside_score; // คะแนนเต็ม
       $data[] = '40';
       $data[] = $value['estimate']['tourism']->sum_tscore_onsite;
 
@@ -141,7 +141,7 @@ if (!empty($result)) {
         }
       }
       $data[] = array_sum($score_osb) / count($score_osb);
-      $data[] = $value['estimate']['supporting']->sum_onside_score; // คะแนนเต็ม
+      // $data[] = $value['estimate']['supporting']->sum_onside_score; // คะแนนเต็ม
       $data[] = '15';
       $data[] = $value['estimate']['supporting']->sum_tscore_onsite;
 
@@ -173,7 +173,7 @@ if (!empty($result)) {
         }
       }
       $data[] = array_sum($score_ors) / count($score_ors);
-      $data[] = $value['estimate']['responsibility']->sum_onside_score; // คะแนนเต็ม
+      // $data[] = $value['estimate']['responsibility']->sum_onside_score; // คะแนนเต็ม
       $data[] = '20';
       $data[] = $value['estimate']['responsibility']->sum_tscore_onsite;
 

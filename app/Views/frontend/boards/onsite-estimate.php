@@ -1,28 +1,39 @@
-<style>
+<style>    
+    #qReply {
+        font-size: 20px;
+    }
     #qEva {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: normal;
-        color: #c6923a;
+        color: #000;
+    }
+    #qEva .title-comment {    
+        font-size: 20px;   
     }
     #qSco {
+        font-size: 20px;
         margin-top: 1rem;
     }
     #qSco p {
+        font-size: 20px;
         color: #000;
     }
     .regis-form-data-col1 ol{
         padding-left: 25px;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: normal;
-        color: #c6923a;
+        color: #000;
     }
     .regis-form-data-col1 div#qRemark ol {
         margin-top: 0;
         padding-left: 40px;
         color: #000;
     }
+    h4#qSubject {
+        font-size: 20px;
+    }
     .regis-form-data-col1 h4#qSubject ol {
-        /* margin-top: 0.5rem; */
+        font-size: 20px;
         padding: 0;
         padding-left: 40px;
         color: #000;

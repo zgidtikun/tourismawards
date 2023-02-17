@@ -93,7 +93,7 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="1">ประเภทแหล่งท่องเที่ยว</div>
-                <a href="<?=base_url('download/คุณสมบัติ_ประเภทแหล่งท่องเที่ยว.pdf')?>" class="btn-yellow" target="_blank">
+                <a href="<?=base_url('download/Factsheet-ประเภทแหล่งท่องเที่ยว.pdf')?>" class="btn-yellow" target="_blank">
                 คุณสมบัติ/เกณฑ์
                 </a>
             </div>
@@ -109,7 +109,7 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="2">ประเภทที่พักนักท่องเที่ยว</div>
-                <a href="<?=base_url('download/คุณสมบัติ_ประเภทที่พัก.pdf')?>" class="btn-yellow" target="_blank">
+                <a href="<?=base_url('download/Factsheet-ประเภทที่พักนักท่องเที่ยว.pdf')?>" class="btn-yellow" target="_blank">
                 คุณสมบัติ/เกณฑ์
                 </a>
             </div>
@@ -125,7 +125,7 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="3">ประเภทการท่องเที่ยวเชิงสุขภาพ</div>
-                <a href="<?=base_url('download/คุณสมบัติ_ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>" class="btn-yellow" target="_blank">
+                <a href="<?=base_url('download/Factsheet-ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>" class="btn-yellow" target="_blank">
                 คุณสมบัติ/เกณฑ์
                 </a>
             </div>
@@ -141,7 +141,7 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="4">ประเภทรายการนำเที่ยว</div>
-                <a href="<?=base_url('download/คุณสมบัติ_ประเภทรายการนำเที่ยว.pdf')?>" class="btn-yellow" target="_blank">
+                <a href="<?=base_url('download/Factsheet-ประเภทรายการนำที่ยว.pdf')?>" class="btn-yellow" target="_blank">
                 คุณสมบัติ/เกณฑ์
                 </a>
             </div>
@@ -157,7 +157,7 @@
             </div>
             <div class="branch_content">
                 <div class="branch_title" data-tab="4">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</div>
-                <a href="<?=base_url('download/คุณสมบัติ_ประเภท_low_carbon.pdf')?>" class="btn-yellow" target="_blank">
+                <a href="<?=base_url('download/Factsheet-ประเภทการท่องเที่ยวคาร์บอนต่ำ.pdf')?>" class="btn-yellow" target="_blank">
                 คุณสมบัติ/เกณฑ์
                 </a>
             </div>
@@ -262,7 +262,7 @@
     </div>
 </div>
 
-<div class="container directoraward">
+<div class="container directoraward" style="display:none;">
     <div class="row">
         <div class="col12 reveal">
             <div class="main-title">

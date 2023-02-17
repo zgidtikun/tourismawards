@@ -24,8 +24,8 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://tourismawards.local/';
-    // public $baseURL = 'https://www.tennis.in.th';
+    // public $baseURL = 'http://tourismawards.local/';
+    public $baseURL = 'https://www.tennis.in.th';
 
 
     /**
@@ -484,6 +484,7 @@ class App extends BaseConfig
     public $JudgingCriteriaScore;
     public $script_v = 1;
     public $config_regis_date;
+    public $comming_soon = false;
 
     public function __construct()
     {
@@ -509,7 +510,7 @@ class App extends BaseConfig
         ];
 
         if(getenv('CI_ENVIRONMENT') == 'production'){
-            $this->baseURL = 'http://tourismawards.tourismthailand.org';
+            $this->baseURL = 'https://tourismawards.tourismthailand.org/';
             $this->Register_expired = '2023-04-30'; // วันหมดเขต Register
             $this->APPForm_expired = '2023-04-30'; // วันหมดเขตส่งใบสมัคร
             $this->Pre_open = '2023-03-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
@@ -519,10 +520,18 @@ class App extends BaseConfig
             $this->announcement_date = '2024-01-01'; // วันที่ประกาศผลรางวัล
             $this->Estimate_require_date = '2023-05-15'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
             $this->Estimate_pre_date = '2023-05-25'; // วันหมดเขตการประเมินรอบ Pre-screen
-            $this->Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่
+            $this->Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่        
+            $this->RECAPCHA_KEY = '6Ldaj4wkAAAAAErI6aXoi6RpJXRgzaPk0rwZh_3B';
+            $this->RECAPCHA_SECRETKEY = '6Ldaj4wkAAAAAFPUf9D0OZ71R-j4BBlNLx4y_c6Y';
         }
         elseif(getenv('CI_ENVIRONMENT') == 'testing'){
             $this->baseURL = 'https://www.tennis.in.th';
+
+        }elseif(getenv('CI_ENVIRONMENT') == 'development'){
+            if(strstr($_SERVER['SERVER_NAME'], 'tourismawards.local')!==false){
+                $this->baseURL = 'http://tourismawards.local/';
+            }
+            
         }
     }
 }

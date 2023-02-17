@@ -32,7 +32,7 @@ $end = end($colExcel);
 
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
-$sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('A')->getAlignment()->setHorizontal('center');
 // $sheet->getStyle('F:G')->getAlignment()->setHorizontal('center');
 
 //set Bold

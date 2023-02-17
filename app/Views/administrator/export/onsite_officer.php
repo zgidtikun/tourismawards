@@ -42,9 +42,12 @@ $rowHead = [
   'จังหวัด',
   'หัวข้อการประเมิน',
   'เกณฑ์การประเมิน',
-  'คะแนนเต็ม (รายข้อ)',
   'ค่าน้ำหนัก (รายข้อ)',
-  'คะแนนที่ได้',
+  'คะแนนที่ได้ (คะแนนดิบ)',
+  'คะแนนที่ได้รับ (รอบลงพื้นที่)',
+  'คะแนนเต็ม (รายข้อ)',
+  'ชื่อผู้ประเมิน',
+  'ข้อเสนอแนะ (รายข้อ)',
 ];
 
 //set Amount Column
@@ -55,7 +58,8 @@ $end = end($colExcel);
 
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
-// $sheet->getStyle('M')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('I:L')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -91,17 +95,20 @@ if (!empty($result)) {
     }
 
     $data = [
-      ($key + 1),
-      $value->code,
-      $value->attraction_name_th,
-      $value->application_type_name,
-      $value->application_type_sub_name,
-      $value->address_province,
-      $value->question,
-      $assessment,
-      $value->pre_score,
-      $value->weight,
-      $value->tscore_onsite,
+      ($key + 1), // 'ลำดับที่',
+      $value->code, // 'รหัส',
+      $value->attraction_name_th, // 'ชื่อสถานประกอบการ',
+      $value->application_type_name,  // 'ประเภทรางวัลฯ',
+      $value->application_type_sub_name,  // 'สาขา',
+      $value->address_province, // 'จังหวัด',
+      $value->question, // 'หัวข้อการประเมิน',
+      $assessment,  // 'เกณฑ์การประเมิน',
+      $value->weight, // 'ค่าน้ำหนัก (รายข้อ)',
+      $value->score_onsite_origin,  // 'คะแนนที่ได้ (คะแนนดิบ)',
+      $value->score_onsite_origin * $value->weight, // 'คะแนนที่ได้รับ (รอบลงพื้นที่)', คะแนนดิบ X ค่าน้ำหนักรายข้อ ... $value->tscore_onsite
+      $value->onside_score, // 'คะแนนเต็ม (รายข้อ)',
+      $value->estimate_name,  // 'ชื่อผู้ประเมิน',
+      $value->comment_onsite, // 'ข้อเสนอแนะ (รายข้อ)',
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

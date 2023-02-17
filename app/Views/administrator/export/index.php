@@ -59,7 +59,10 @@
 
 <script>
   $(function() {
-    var pgurl = BASE_URL_BACKEND + '/report';
-    active_page(pgurl);
+    $('.btn-menulist').each(function(key, elm) {
+      if ($(elm).data('tab') == 2) {
+        $(elm).click();
+      }
+    });
   });
 </script>

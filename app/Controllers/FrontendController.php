@@ -208,22 +208,8 @@ class FrontendController extends BaseController
                 $form = $app_f->where('created_by',$this->myId)
                 ->select('application_type_id type_id')
                 ->first();
-
-                if($form->type_id == 1){
-                    $download_link = base_url('download/คุณสมบัติ_ประเภทแหล่งท่องเที่ยว.pdf');
-                }
-                elseif($form->type_id == 2){
-                    $download_link = base_url('download/คุณสมบัติ_ประเภทที่พัก.pdf');
-                }
-                elseif($form->type_id == 3){
-                    $download_link = base_url('download/คุณสมบัติ_ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf');
-                }
-                elseif($form->type_id == 4){
-                    $download_link = base_url('download/คุณสมบัติ_ประเภทรายการนำเที่ยว.pdf');
-                }
-                else {
-                    $download_link = '';
-                }
+                
+                $download_link = 'https://drive.google.com/drive/folders/1BgL5ULFsZZEJTXuGwFVyWFodMSPrSOoT?usp=sharing';
 
                 if(!empty($download_link)){
                     $download_link = "window.open('$download_link','_blank')";

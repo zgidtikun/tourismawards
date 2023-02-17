@@ -22,11 +22,9 @@ $rowHead = [
   'ลำดับที่',
   'รหัส',
   'ชื่อสถานประกอบการ',
-  'คะแนนรวม Respon พรีสกรีน',
-  'คะแนนรวม Respon ลงพื้นที่',
-  'คะแนนรวม Respon พรีสกรีน+ลงพื้นที่',
-  'คะแนนรวม Low carbon ของกรรมการทั้งหมด',
-  'คะแนนรวมทั้งหมด',
+  'คะแนน Responsibility and Safety &Health Administration',
+  'คะแนน Low Corbon',
+  'คะแนนที่ได้ 100 คะแนน',
 ];
 
 //set Amount Column
@@ -38,7 +36,7 @@ $end = end($colExcel);
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
-$sheet->getStyle('D:H')->getAlignment()->setHorizontal('center');
+// $sheet->getStyle('D:H')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -64,16 +62,14 @@ if (!empty($result)) {
   // Row Start
   $i = 4;
   foreach ($result as $key => $value) {
-
+    $total = ($value->score_prescreen_rs + $value->score_onsite_rs + $value->lowcarbon_score) * 100 / 45;
     $data = [
       ($key + 1),
       $value->code,
       $value->attraction_name_th,
-      $value->score_prescreen_rs,
-      $value->score_onsite_rs,
       $value->score_prescreen_rs + $value->score_onsite_rs,
       $value->lowcarbon_score,
-      $value->score_prescreen_rs + $value->score_onsite_rs + $value->lowcarbon_score,
+      $total,
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

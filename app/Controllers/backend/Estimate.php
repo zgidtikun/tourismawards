@@ -70,6 +70,7 @@ class Estimate extends BaseController
     public function edit($id)
     {
         $data['result'] = $this->ApplicationForm->find($id);
+        // px($data['result']);
         if (empty($data['result'])) {
             show_404();
         }

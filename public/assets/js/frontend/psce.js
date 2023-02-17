@@ -670,7 +670,7 @@ const setQuestion = (cate,seg) => {
         if(regex.test(question.pre_eva)){
             ev = question.pre_eva;
         } else {            
-            ev = '<span class="txt-yellow title-comment">'
+            ev = '<span class="title-comment">'
                     + question.pre_eva
                 '</span>';
         }
@@ -713,7 +713,8 @@ const setQuestion = (cate,seg) => {
         });
 
         qEva.html(ev);
-        qSco.html(sc);        
+        qSco.html(sc);     
+        $('.regis-form-step')[0].scrollIntoView();
         disabledForm();
     });
 }

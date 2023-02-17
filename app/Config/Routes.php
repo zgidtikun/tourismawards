@@ -35,6 +35,7 @@ $routes->setAutoRoute(false);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+$routes->get('comming-soon','Home::comming_soon');
 $routes->get('sendmail', 'SendMail::index');
 $routes->get('/', 'Home::index', ['as' => 'Home']);
 $routes->get('home', 'Home::index');

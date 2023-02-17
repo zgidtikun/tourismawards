@@ -406,6 +406,7 @@
         $('#total_score').html(total_score);
       }
 
+      var awards = '';
       if (total_score >= 85) {
         var awards = 'รางวัลยอดเยี่ยม (Thailand Tourism Gold Award)';
       } else if (total_score >= 75 && total_score <= '84.99') {

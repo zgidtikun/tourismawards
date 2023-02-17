@@ -24,6 +24,7 @@ $rowHead = [
   'ชื่อสถานประกอบการ',
   'ประเภทรางวัลฯ',
   'สาขา',
+  'วันที่สมัคร',
   'ที่อยู่',
   'จังหวัด',
   'อีเมล์ผู้ประกอบการ',
@@ -33,7 +34,8 @@ $rowHead = [
   'เบอร์โทรผู้ประสาน',
   'อีเมล์ผู้ประสาน',
   'สถานะ',
-  'ผลการตัดสินรางวัลฯ',
+  'คะแนนที่ได้ (100 คะแนน)',
+  'ผลรางวัลที่ได้รับ',
 ];
 
 //set Amount Column
@@ -45,7 +47,7 @@ $end = end($colExcel);
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
-$sheet->getStyle('M:N')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('O')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -66,7 +68,7 @@ foreach ($colExcel as $k => $v) {
   // $sheet->getColumnDimension($v)->setWidth(20); // Set Width Size PX
   $sheet->getColumnDimension($v)->setAutoSize(true); // Set Width Auto
 }
-// px($result);
+// px($result);s
 if (!empty($result)) {
 
   // Row Start
@@ -83,6 +85,20 @@ if (!empty($result)) {
     } else if ($value->status == 4) {
       $status = 'ไม่อนุมัติ';
     }
+
+    $total = $value->score_prescreen_tt + $value->score_onsite_tt;
+    $awards = '';
+    if ($total >= 85) {
+      $awards = 'รางวัลยอดเยี่ยม (Thailand Tourism Gold Award)';
+    } else if ($total >= 75 && $total <= '84.99') {
+      $awards = 'รางวัลดีเด่น (Thailand Tourism Silver Award)';
+    } else if ($total >= 65 && $total <= '74.99') {
+      $awards = 'เกียรติบัตรรางวัลอุตสาหกรรมท่องเที่ยวไทย (Thailand Tourism Certificate)';
+    } else {
+      $awards = '';
+      $total = '';
+    }
+
     $address = [
       // 'address'           => '',
       'address_number'    => $value->address_no,
@@ -101,6 +117,7 @@ if (!empty($result)) {
       $value->attraction_name_th,
       applicationType($value->application_type_id),
       applicationTypeSub($value->application_type_sub_id),
+      $value->created_at,
       mainAddress($address),
       $value->address_province,
       $value->user_email,
@@ -110,7 +127,8 @@ if (!empty($result)) {
       $value->knitter_tel,
       $value->knitter_email,
       $status,
-      '',
+      $total,
+      $awards,
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

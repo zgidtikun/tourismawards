@@ -1,25 +1,35 @@
 <style>
+    #qReply {
+        font-size: 20px;
+    }
     #qEva {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: normal;
-        color: #c6923a;
+        color: #000;
     }
     #qSco h4 {
+        font-size: 20px;
         color: #1b510a;
+    }
+    #qSco p {
+        font-size: 20px;
     }
     .regis-form-data-col1 ol {
         padding-left: 25px;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: normal;
-        color: #c6923a;
+        color: #000;
     }
     .regis-form-data-col1 div#qRemark ol {
         margin-top: 0;
         padding-left: 40px;
         color: #000;
     }
+    h4#qSubject {
+        font-size: 20px;
+    }
     .regis-form-data-col1 h4#qSubject ol {
-        /* margin-top: 0.5rem; */
+        font-size: 20px;
         padding: 0;
         padding-left: 40px;
         color: #000;
@@ -237,12 +247,14 @@
                             </div>
 
                             <div class="attachinp border-0 is-estimate">
+                                <?php if($showRequest): ?>
                                 <a href="javascript:void(0)" class="btn-getdata active">
                                     ขอข้อมูลเพิ่มเติม
                                 </a>
                                 <div id="sRequest" class="alert alert-warning" style="display: none;" role="alert">
                                     คุณมีการขอข้อมูลเพิ่มเติม
                                 </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

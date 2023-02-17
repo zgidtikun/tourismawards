@@ -45,9 +45,9 @@ for ($i = 1; $i <= $count_committees; $i++) {
 }
 
 $rowHead[] = 'ผลรวมคะแนนเฉลี่ยที่ได้รับ';
-$rowHead[] = 'คะแนนเต็ม';
+// $rowHead[] = 'คะแนนเต็ม';
 $rowHead[] = 'weight ค่าน้ำหนัก (แต่ละด้าน)';
-$rowHead[] = 'คะแนนที่ได้โดยเฉลี่ย';
+$rowHead[] = 'คะแนนที่ได้ (รอบ Pre-Screen)';
 // pp($rowHead);
 
 //set Amount Column
@@ -109,7 +109,7 @@ if (!empty($result)) {
         }
       }
       $data[] = array_sum($score_pte) / count($score_pte);
-      $data[] = $value['estimate']['tourism']->sum_pre_score; // คะแนนเต็ม
+      // $data[] = $value['estimate']['tourism']->sum_pre_score; // คะแนนเต็ม
       $data[] = '10';
       $data[] = $value['estimate']['tourism']->sum_tscore_pre;
 
@@ -141,7 +141,7 @@ if (!empty($result)) {
         }
       }
       $data[] = array_sum($score_psb) / count($score_psb);
-      $data[] = $value['estimate']['supporting']->sum_pre_score; // คะแนนเต็ม
+      // $data[] = $value['estimate']['supporting']->sum_pre_score; // คะแนนเต็ม
       $data[] = '10';
       $data[] = $value['estimate']['supporting']->sum_tscore_pre;
 
@@ -173,7 +173,7 @@ if (!empty($result)) {
         }
       }
       $data[] = array_sum($score_prs) / count($score_prs);
-      $data[] = $value['estimate']['responsibility']->sum_pre_score; // คะแนนเต็ม
+      // $data[] = $value['estimate']['responsibility']->sum_pre_score; // คะแนนเต็ม
       $data[] = '5';
       $data[] = $value['estimate']['responsibility']->sum_tscore_pre;
 
