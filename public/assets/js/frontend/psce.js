@@ -556,8 +556,6 @@ const setQuestion = (cate,seg) => {
 
         countChar($('#comment'))
 
-        const url = getBaseUrl();
-
         if(question.images.length > 0){
             qAblum.removeClass('text-center');                                        
             qAblum.addClass('ablumbox');
@@ -568,7 +566,7 @@ const setQuestion = (cate,seg) => {
                     '<div class="ablumbox-col">'
                         + '<div class="ablum-mainimg">'
                             + '<div class="ablum-mainimg-scale">'
-                                + '<img src="'+url+'/'+v.file_path+'" '
+                                + '<img src="'+window.uploadFileUrl+v.file_path+'" '
                                 + 'class="ablum-img" onclick="zoomImages(this)">'
                             + '</div>'
                         + '</div>'
@@ -606,7 +604,7 @@ const setQuestion = (cate,seg) => {
                         <div class="card card-body-muted">
                             <div class="bs-row">
                                 <div class="col-12">
-                                    <a href="${getBaseUrl()+'/'+paper.file_path}" target="_blank">
+                                    <a href="${window.uploadFileUrl+paper.file_path}" target="_blank">
                                         <span class="fs-file-name">${paper.file_original}</span>
                                     </a>
                                 </div>

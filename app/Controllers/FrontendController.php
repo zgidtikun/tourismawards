@@ -49,7 +49,7 @@ class FrontendController extends BaseController
         $user = $users->where('id',$this->myId)->first();
         
         if(!empty($user->profile))
-            $user->profile = base_url($user->profile);
+            $user->profile = UPLOAD_FILE_URL.$user->profile;
         else  $user->profile = base_url('assets/images/unknown_user.jpg');
 
         $user->fullname = $user->name.' '.$user->surname;

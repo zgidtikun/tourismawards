@@ -1,5 +1,5 @@
 const getBaseUrl = () => {
-    return window.location.origin
+    return window.location.origin;
 }
 
 const getHashPointerUrl = () => {

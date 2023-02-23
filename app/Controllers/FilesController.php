@@ -21,13 +21,13 @@ class FilesController extends BaseController
                     if($image->isValid() && !$image->hasMoved()){
                         $extension = $image->guessExtension();
                         $name = 'profile_'.$id.'_'.randomFileName($extension);
-                        $full_path = $path.'/'.$name;
+                        $full_path = $path.'/'.$name;     
 
                         if($image->move(FCPATH.$path, $name)){
                             $obj = new \App\Models\Users();                        
                             $user = $obj->where('id',$id)->select('profile')->first();
 
-                            if(!empty($user->profile)){
+                            if(!empty($user->profile) && file_exists(FCPATH.$user->profile)){
                                 unlink(FCPATH.$user->profile);
                             }
 
@@ -37,7 +37,7 @@ class FilesController extends BaseController
 
                             $result = [
                                 'result' => 'success',
-                                'link' => base_url($full_path)
+                                'link' => UPLOAD_FILE_URL.$full_path
                             ];
 
                             session()->set('profile',$result['link']);
@@ -112,7 +112,6 @@ class FilesController extends BaseController
                         $originalName = $file->getName();
                         $extension = $file->guessExtension();
                         $newName = $prefix.randomFileName($extension);
-                        
                         $file->move(FCPATH.$path, $newName);
 
                         $tmp_file = array(
@@ -195,33 +194,35 @@ class FilesController extends BaseController
             $pack = $obj->where('id',$input->id)->select('pack_file')->first();
             $pack_file = json_decode($pack->pack_file,false);
 
-            if($input->remove == 'fixed'){
-                if(unlink(FCPATH.$input->file_path)){
-                    $file_name = $input->file_name;
-                    $result = ['result' => 'success', 'message' => '', 'files' => []];
+            if($input->remove == 'fixed'){                
+                if(file_exists(FCPATH.$input->file_path)){
+                    unlink(FCPATH.$input->file_path);
+                }
+                
+                $file_name = $input->file_name;
+                $result = ['result' => 'success', 'message' => '', 'files' => []];
 
-                    foreach($pack_file as $file){
-                        if($file->file_name != $file_name){
-                            array_push($tmp,$file);
+                foreach($pack_file as $file){
+                    if($file->file_name != $file_name){
+                        array_push($tmp,$file);
 
-                            if($file->file_position == $input->position){
-                                array_push($result['files'],$file);
-                            }
+                        if($file->file_position == $input->position){
+                            array_push($result['files'],$file);
                         }
                     }
-
-                    $obj->where('id',$input->id)
-                    ->set(['pack_file' => json_encode($tmp)])
-                    ->update();
-                } else {
-                    $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
                 }
+
+                $obj->where('id',$input->id)
+                ->set(['pack_file' => json_encode($tmp)])
+                ->update();
             } else {
                 $position = $this->input->getVar('position');
 
                 foreach($pack_file as $file){
                     if($file->file_position == $position){
-                        unlink(FCPATH.$file->file_path);
+                        if(file_exists(FCPATH.$file->file_path)){
+                            unlink(FCPATH.$file->file_path);
+                        }
                     } else {
                         array_push($tmp,$file);
                     }

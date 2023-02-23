@@ -7,11 +7,6 @@
     </div>
 
     <div class="backendform dataregis">
-      <?php
-      // px($result);
-      // pp(json_decode($result->pack_file));
-      // pp($application_type_sub);
-      ?>
 
       <div class="backendform-row">
         <div class="backendform-col3">
@@ -23,7 +18,7 @@
         <div class="backendform-col3">
           <p>ประเภท : <?= applicationType($result->application_type_id) ?></p>
           <p>สาขา : <?= applicationTypeSub($result->application_type_sub_id) ?></p>
-          <p>วันที่ส่งใบสมัคร : <?= docDate($result->created_at, 3) ?></p>
+          <p>วันที่ส่งใบสมัคร : <?= docDate($result->send_date, 3) ?></p>
         </div>
 
         <div class="backendform-col3">
@@ -38,11 +33,6 @@
     </div>
   </div>
 </div>
-
-<?php
-// pp($result);
-// pp(json_decode($result->pack_file));
-?>
 
 <a name="pageform"></a>
 <div class="backendcontent">

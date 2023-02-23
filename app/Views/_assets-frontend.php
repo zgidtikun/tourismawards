@@ -27,5 +27,9 @@
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    window.uploadFileUrl = '<?=UPLOAD_FILE_URL?>';
+</script>
+
 <script src="<?= base_url('assets/js/frontend/other.js') ?>?v=<?=$app->script_v?>" charset="utf-8" type="text/javascript"></script>
 <script src="<?= base_url('assets/js/frontend/alert.js') ?>?v=<?=$app->script_v?>" charset="utf-8" type="text/javascript"></script>

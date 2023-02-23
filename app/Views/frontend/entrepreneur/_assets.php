@@ -22,14 +22,15 @@
 
 <script src="<?= base_url('assets/js/frontend/other.js') ?>?v=<?=$app->script_v?>" charset="utf-8" type="text/javascript"></script>
 <script src="<?= base_url('assets/js/frontend/alert.js') ?>?v=<?=$app->script_v?>" charset="utf-8" type="text/javascript"></script>
-
+<script>
+    window.uploadFileUrl = '<?=UPLOAD_FILE_URL?>';
+</script>
 <?php if($view == 'frontend/entrepreneur/application') : ?>
 <script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/JQL.min.js" type="text/javascript"></script>
 <script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dependencies/typeahead.bundle.js" type="text/javascript"></script>
 <link href="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.css" rel="stylesheet">
 <script src="https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/dist/jquery.Thailand.min.js" type="text/javascript"></script>
-
-<script>
+<script>    
     $.Thailand.setup({
         database: 'https://earthchie.github.io/jquery.Thailand.js/jquery.Thailand.js/database/db.json'
     });

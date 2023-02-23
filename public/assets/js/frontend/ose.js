@@ -459,7 +459,7 @@ const setQuestion = async(cate,seg) => {
             qRemark.hide();
         }
 
-        const url = getBaseUrl();
+        const url = getBaseUrl('aws');
 
         if(question.images.length > 0){
             qAblum.removeClass('text-center');                                        
@@ -471,7 +471,7 @@ const setQuestion = async(cate,seg) => {
                     '<div class="ablumbox-col">'
                         + '<div class="ablum-mainimg">'
                             + '<div class="ablum-mainimg-scale">'
-                                + '<img src="'+url+'/'+v.file_path+'" '
+                                + '<img src="'+window.uploadFileUrl+v.file_path+'" '
                                 + 'class="ablum-img" onclick="zoomImages(this)">'
                             + '</div>'
                         + '</div>'
@@ -509,7 +509,7 @@ const setQuestion = async(cate,seg) => {
                         <div class="card card-body-muted">
                             <div class="bs-row">
                                 <div class="col-12">
-                                    <a href="${getBaseUrl()+'/'+paper.file_path}" target="_blank">
+                                    <a href="${window.uploadFileUrl+paper.file_path}" target="_blank">
                                         <span class="fs-file-name">${paper.file_original}</span>
                                     </a>
                                 </div>

@@ -71,9 +71,9 @@ class Estimate extends BaseController
     {
         $data['result'] = $this->ApplicationForm->find($id);
         // px($data['result']);
-        if (empty($data['result'])) {
-            show_404();
-        }
+        // if (empty($data['result'])) {
+        //     show_404();
+        // }
         $data['id'] = $id;
         $data['application_type'] = $this->ApplicationType->findAll();
         $data['application_type_sub'] = $this->ApplicationTypeSub->where('application_type_id', $data['result']->application_type_id)->findAll();
@@ -103,6 +103,7 @@ class Estimate extends BaseController
         }
         $data['question'] = $question;
         $data['question'][4] = @$data['lowcarbon'];
+        // pp($data);
 
         // Template
         $data['title']  = "มอบหมายกรรมการรอบประเมินขั้นต้น (Pre-Screen)";

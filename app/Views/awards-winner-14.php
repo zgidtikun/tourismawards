@@ -202,7 +202,7 @@
 
         $.each(data.pack_file,(key,file) => {
             if(file.file_position == file_position){
-                files.push(`${getBaseUrl()}/${file.file_path}`);
+                files.push(`${getBaseUrl('aws')}/${file.file_path}`);
             }
         });
         

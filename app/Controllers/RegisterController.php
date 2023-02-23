@@ -33,9 +33,9 @@ class RegisterController extends BaseController
 
     public function signup()
     {
-        if (session()->get('isLoggedIn')) {
-            return redirect()->to(base_url('home'));
-        }
+        // if (session()->get('isLoggedIn')) {
+        //     return redirect()->to(base_url('home'));
+        // }
 
         $status = false;
         $error = array();
@@ -51,6 +51,8 @@ class RegisterController extends BaseController
                     $error['recapcha'] = $checkReCapcha->message;
                     $status = false;
                 }
+            } else {
+                $checkReCapcha = (object)['result' => true];
             }
 
             $valid = $this->validation->run((array)$data, 'signup');
@@ -109,11 +111,13 @@ class RegisterController extends BaseController
 
         $_app = new \Config\App();
         $_register_expire = date('Y-m-d') > $_app->Register_expired;
+        $_register_open = date('Y-m-d') >= $_app->Register_start;
 
         $data = [
             'title' => 'Register',
             'view' => 'frontend/register',
             '_recapcha' => $this->recapcha,
+            '_register_open' => $_register_open,
             '_register_expire' => $_register_expire,
             '_signup' => (object) array(
                 'method' => $method,

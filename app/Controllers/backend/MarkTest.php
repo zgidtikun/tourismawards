@@ -25,8 +25,9 @@ class MarkTest extends BaseController
 
     public function index()
     {
-        // px(password_hash('@TTA.2023!', PASSWORD_DEFAULT));
-        // px(session()->get());
+        // px(checkEstimateCommittee(23, 37, 1));
+        // px(password_hash('1qazxsw2+-+', PASSWORD_DEFAULT));
+        px(session()->get());
         // $log = $this->LogActivity->findAll();
         // px($log);
         // px(json_decode($log[0]->action_data));
@@ -64,7 +65,6 @@ class MarkTest extends BaseController
         exit;
 
         px(mb_substr("แหล่งท่องเที่ยว", 0, 1));
-        // px(password_hash('1qazxsw2+-+', PASSWORD_DEFAULT));
         // px($_COOKIE);
         // px(session()->get());
         // $data = 'user-' . genVerifyCode();
@@ -77,7 +77,6 @@ class MarkTest extends BaseController
         // px($_ENV);
         // // pp(session()->get());
         // // pp(checkPermission([4]));
-        // px(password_hash('0000', PASSWORD_DEFAULT));
         // $model = new Admin();
 
         // $page    = (int) ($this->request->getGet('page') ?? 1);

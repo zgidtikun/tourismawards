@@ -108,26 +108,46 @@
                     if (!empty(json_decode($value->admin_id_tourism))) {
                       $judge .= '<p><small> ด้าน Tourism Excellence (Product/Service)</small></p>';
                       foreach (json_decode($value->admin_id_tourism) as $k => $val) {
-                        $judge .= '<p>' . usersName($val) . '</p>';
+                        $check = '<span class="bi bi-x text-danger"></span>';
+                        if (checkEstimateCommittee($value->id, $val, 1)) {
+                          $check = '<span class="bi bi-check text-success"></span>';
+                        }
+                        $judge .= '<p>' . usersName($val) . ' ' . $check . '</p>';
                       }
                     }
                     if (!empty(json_decode($value->admin_id_supporting))) {
+                      $judge .= '<hr class="mt-1 mb-1">';
                       $judge .= '<p><small> ด้าน Supporting Business & Marketing Factors</small></p>';
                       foreach (json_decode($value->admin_id_supporting) as $k => $val) {
-                        $judge .= '<p>' . usersName($val) . '</p>';
+                        $check = '<span class="bi bi-x text-danger"></span>';
+                        if (checkEstimateCommittee($value->id, $val, 1)) {
+                          $check = '<span class="bi bi-check text-success"></span>';
+                        }
+                        $judge .= '<p>' . usersName($val) . ' ' . $check . '</p>';
                       }
                     }
                     if (!empty(json_decode($value->admin_id_responsibility))) {
+                      $judge .= '<hr class="mt-1 mb-1">';
                       $judge .= '<p><small> ด้าน Responsibility and Safety & Health Administration</small></p>';
                       foreach (json_decode($value->admin_id_responsibility) as $k => $val) {
-                        $judge .= '<p>' . usersName($val) . '</p>';
+                        $check = '<span class="bi bi-x text-danger"></span>';
+                        if (checkEstimateCommittee($value->id, $val, 1)) {
+                          $check = '<span class="bi bi-check text-success"></span>';
+                        }
+                        $judge .= '<p>' . usersName($val) . ' ' . $check . '</p>';
                       }
                     }
                     if (!empty(json_decode($value->admin_id_lowcarbon))) {
+                      $judge .= '<hr class="mt-1 mb-1">';
                       $judge .= '<p><small> ด้าน Low Carbon</small></p>';
                       foreach (json_decode($value->admin_id_lowcarbon) as $k => $val) {
-                        $judge .= '<p>' . usersName($val) . '</p>';
+                        $check = '<span class="bi bi-x text-danger"></span>';
+                        if (checkEstimateCommittee($value->id, $val, 1)) {
+                          $check = '<span class="bi bi-check text-success"></span>';
+                        }
+                        $judge .= '<p>' . usersName($val) . ' ' . $check . '</p>';
                       }
+                      $judge .= '<hr class="mt-1 mb-1">';
                     }
                 ?>
                     <tr>

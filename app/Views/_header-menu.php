@@ -67,7 +67,7 @@
                                     <div class="user-status-img">
                                        <div class="status-img">
                                           <div class="status-img-scale">
-                                             <img id="header-img-profile" src="<?=base_url(session()->get('profile'))?>">
+                                             <img id="header-img-profile" src="<?=session()->get('profile')?>">
                                           </div>
                                        </div>
                                     </div>
@@ -176,19 +176,19 @@
                      </li>
                      <li><a href="javascript:void(0)" id="informationmenu">ข้อมูลการประกวดรางวัล</a>
                         <ul>
-                           <li><a href="<?=base_url('download/Factsheet-ประเภทแหล่งท่องเที่ยว.pdf')?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
-                           <li><a href="<?=base_url('download/Factsheet-ประเภทที่พักนักท่องเที่ยว.pdf')?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
-                           <li><a href="<?=base_url('download/Factsheet-ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
-                           <li><a href="<?=base_url('download/Factsheet-ประเภทรายการนำที่ยว.pdf')?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
-                           <li><a href="<?=base_url('download/Factsheet-ประเภทการท่องเที่ยวคาร์บอนต่ำ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</a></li>
+                           <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทแหล่งท่องเที่ยว.pdf')?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
+                           <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทที่พักนักท่องเที่ยว.pdf')?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
+                           <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                           <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทรายการนำที่ยว.pdf')?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
+                           <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทการท่องเที่ยวคาร์บอนต่ำ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</a></li>
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="regismenu">ข้อมูลการใช้งานระบบ</a>
                         <ul>
-                           <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทแหล่งท่องเที่ยว.pdf'))?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
-                           <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทที่พักนักท่องเที่ยว.pdf'))?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
-                           <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf'))?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
-                           <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทรายการนำเที่ยว.pdf'))?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
+                           <li><a href="<?=DOWNLOAD_FILE_URL.('download/'.rawurlencode('คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทแหล่งท่องเที่ยว.pdf'))?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
+                           <li><a href="<?=DOWNLOAD_FILE_URL.('download/'.rawurlencode('คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทที่พักนักท่องเที่ยว.pdf'))?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
+                           <li><a href="<?=DOWNLOAD_FILE_URL.('download/'.rawurlencode('คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf'))?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                           <li><a href="<?=DOWNLOAD_FILE_URL.('download/'.rawurlencode('คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทรายการนำเที่ยว.pdf'))?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="awardmenu">ผลงานที่ได้รับรางวัล</a>
@@ -222,8 +222,8 @@
                <a href="javascript:void(0)" class="menuclose"><i class="bi bi-x"></i></a>
                <div class="menulogo">
                   <picture>
-                     <source srcset="https://www.tennis.in.th/assets/images/logo.svg">
-                     <img src="https://www.tennis.in.th/assets/images/logo.png">
+                     <source srcset="<?=base_url('assets/images/logo.svg')?>">
+                     <img src="<?=base_url('assets/images/logo.png')?>">
                   </picture>
                </div>
                <ul>
@@ -240,21 +240,21 @@
                   <li><a href="javascript:" data-tab="2" class="btn-submenu">ข้อมูลการประกวดรางวัล</a></li>
                   <div class="submenubox-list" data-tab="2" style="display: none;">
                      <ul>
-                        <li><a href="<?=base_url('download/Factsheet-ประเภทแหล่งท่องเที่ยว.pdf')?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
-                        <li><a href="<?=base_url('download/Factsheet-ประเภทที่พักนักท่องเที่ยว.pdf')?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
-                        <li><a href="<?=base_url('download/Factsheet-ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
-                        <li><a href="<?=base_url('download/Factsheet-ประเภทรายการนำที่ยว.pdf')?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
-                        <li><a href="<?=base_url('download/Factsheet-ประเภทการท่องเที่ยวคาร์บอนต่ำ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</a></li>
+                        <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทแหล่งท่องเที่ยว.pdf')?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
+                        <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทที่พักนักท่องเที่ยว.pdf')?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
+                        <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                        <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทรายการนำที่ยว.pdf')?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
+                        <li><a href="<?=DOWNLOAD_FILE_URL.('download/Factsheet-ประเภทการท่องเที่ยวคาร์บอนต่ำ.pdf')?>" target="_blank">ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน</a></li>
                      </ul>
                   </div>
 
                   <li><a href="javascript:" data-tab="3" class="btn-submenu">ข้อมูลการใช้งานระบบ</a></li>
                   <div class="submenubox-list" data-tab="3" style="display: none;">
                      <ul>
-                        <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทแหล่งท่องเที่ยว.pdf'))?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
-                        <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทที่พักนักท่องเที่ยว.pdf'))?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
-                        <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf'))?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
-                        <li><a href="<?=base_url(urlencode('download/คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทรายการนำเที่ยว.pdf'))?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
+                        <li><a href="<?=DOWNLOAD_FILE_URL.('download/'.rawurlencode('คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทแหล่งท่องเที่ยว.pdf'))?>" target="_blank">ประเภทแหล่งท่องเที่ยว</a></li>
+                        <li><a href="<?=DOWNLOAD_FILE_URL.('download/'.rawurlencode('คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทที่พักนักท่องเที่ยว.pdf'))?>" target="_blank">ประเภทที่พักนักท่องเที่ยว</a></li>
+                        <li><a href="<?=DOWNLOAD_FILE_URL.('download/'.rawurlencode('คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทการท่องเที่ยวเชิงสุขภาพ.pdf'))?>" target="_blank">ประเภทการท่องเที่ยวเชิงสุขภาพ</a></li>
+                        <li><a href="<?=DOWNLOAD_FILE_URL.('download/'.rawurlencode('คู่มือการใช้งานสำหรับผู้ประกอบการ ประเภทรายการนำเที่ยว.pdf'))?>" target="_blank">ประเภทรายการนำเที่ยว</a></li>
                      </ul>
                   </div>
                   <li><a href="javascript:" data-tab="4" class="btn-submenu">ผลงานที่ได้รับรางวัล</a></li>

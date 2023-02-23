@@ -107,6 +107,23 @@ function applicationTypeSub($id)
     return @$result->name;
 }
 
+function checkEstimateCommittee($app_id, $user_id, $round)
+{
+    // $round 1.pre-screen, 2.onsite
+    $db = \Config\Database::connect();
+    if ($round == 1) {
+        $result = $db->table('estimate_individual')->where('application_id', $app_id)->where('estimate_by', $user_id)->where('score_pre is NOT NULL')->get()->getRowObject();
+    } else if ($round == 2) {
+        $result = $db->table('estimate_individual')->where('application_id', $app_id)->where('estimate_by', $user_id)->where('score_onsite is NOT NULL')->get()->getRowObject();
+    }
+
+    if (!empty($result)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 function countNotification($type)
 {
     $db = \Config\Database::connect();

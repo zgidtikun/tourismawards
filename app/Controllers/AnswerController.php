@@ -580,33 +580,36 @@ class AnswerController extends BaseController
 
             $pack_file = json_decode($pack_file->pack_file,false);
 
-            if($this->input->getVar('remove') == 'fixed'){
-                if(unlink(FCPATH.$this->input->getVar('file_path'))){
-                    $file_name = $this->input->getVar('file_name');
-                    $result = ['result' => 'success', 'message' => '', 'files' => []];
+            if($this->input->getVar('remove') == 'fixed'){      
+                if(file_exists(FCPATH.$this->input->getVar('file_path'))){
+                    unlink(FCPATH.$this->input->getVar('file_path'));
+                }
+                
+                $file_name = $this->input->getVar('file_name');
+                $result = ['result' => 'success', 'message' => '', 'files' => []];
 
-                    foreach($pack_file as $file){
-                        if($file->file_name != $file_name){
-                            array_push($tmp,$file);
+                foreach($pack_file as $file){
+                    if($file->file_name != $file_name){
+                        array_push($tmp,$file);
 
-                            if($file->file_position == $position){
-                                array_push($result['files'],$file);
-                            }
+                        if($file->file_position == $position){
+                            array_push($result['files'],$file);
                         }
                     }
-
-                    $this->ans->where('id',$answer_id)
-                    ->set(['pack_file' => json_encode($tmp)])
-                    ->update();
-                } else {
-                    $result = ['result' => 'error', 'message' => 'ไม่พบไฟล์นี้ในระบบ'];
                 }
+
+                $this->ans->where('id',$answer_id)
+                ->set(['pack_file' => json_encode($tmp)])
+                ->update();
+                    
             } else {
                 $position = $this->input->getVar('position');
 
                 foreach($pack_file as $file){
                     if($file->file_position == $position){
-                        unlink(FCPATH.$file->file_path);
+                        if(file_exists(FCPATH.$file->file_path)){
+                            unlink(FCPATH.$file->file_path);
+                        }
                     } else {
                         array_push($tmp,$file);
                     }

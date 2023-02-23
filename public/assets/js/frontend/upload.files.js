@@ -22,7 +22,7 @@ const lockUpload = (label, btn, action) => {
     });
 }
 
-const onFileHandle = (setting, input, type) => {
+const onFileHandle = async(setting, input, type) => {
     const files = $(input)[0].files;
     const acceptableTypes = accept[type];
     const reference = getReferance(input);
@@ -73,10 +73,50 @@ const onFileHandle = (setting, input, type) => {
 
             alert.show('warning', errorTitle, errorMessage);
             return false;
-        } else {
+        } else {            
+
+            if (reference.app == 'awards/application') {
+                await register.waitUpload('lock', input);
+            } else {
+                if (reference.app == 'awards/pre-screen') {
+                    await psc.waitDraft('wait');
+                } else {
+                    await waitDraft('wait');
+                }
+
+                await lockUpload(reference.label, reference.btn, 'lock');
+            }
+
             $.each(files,async(key,file) => {
-                await uploadFile(setting, input, file);
+                const uploaded = await uploadFile(setting, input, file);
+
+                if(uploaded === 'error_login'){
+                    alert.login();
+                    return false;
+                } 
+                else if(uploaded === 'error'){                    
+                    return false;
+                }
             });
+
+            switch (reference.app) {
+                case 'awards/application':                    
+                    await register.waitUpload('unlock', input);                    
+                    register.checkComplete();               
+                    $(input).val('');
+                break;
+                case 'awards/pre-screen':
+                case 'estimate/onsite':
+                    if (reference.app == 'awards/pre-screen') {
+                        await psc.waitDraft('finish');
+                    } else {
+                        await waitDraft('finish'); 
+                    }   
+
+                    await lockUpload(reference.label, reference.btn, 'unlock');          
+                    $(input).val('');
+                break;
+            }
         }
     }
 };
@@ -87,12 +127,6 @@ const uploadFile = async (setting, input, file) => {
         const reference = getReferance(input);
         const api_setting = {};
         let callback;
-
-        if (reference.app == 'awards/application') {
-            await register.waitUpload('lock', input);
-        } else {
-            await lockUpload(reference.label, reference.btn, 'lock');
-        }
         
         formData.append('files[]', file);
 
@@ -109,29 +143,22 @@ const uploadFile = async (setting, input, file) => {
                 callback = await api(api_setting);
 
                 if (callback.result == 'error_login') {
-                    alert.login();
-                    await register.waitUpload('unlock', input);
-                    resolve(true); 
+                    resolve(callback.result); 
                 } else if (callback.result == 'success') {
                     let countFile = 0;
                     $.each(callback.files, function (key, file) {
                         register.formData[reference.pointer[0]][reference.pointer[1]].push(file);
                         countFile++;
                     });
-
-                    $(input).val('');
+                    
                     register.count[reference.pointer[1]] = await register.count[reference.pointer[1]] + Number(countFile);
                     showFiles.tycoon(reference.input, register.formData[reference.pointer[0]][reference.pointer[1]]);
-                    await register.waitUpload('unlock', input);
-                    register.checkComplete();
-                    resolve(true); 
+                    resolve(callback.result); 
                 } else {
-                    $(input).val('');
-                    await register.waitUpload('unlock', input);
                     alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
-                    resolve(true); 
+                    resolve(callback.result); 
                 }
-                break;
+            break;
             case 'awards/pre-screen':
                 const answer = psc.questions[setting.cate].question[setting.seg];
                 const setAction = !empty(answer.reply_id) ? 'update' : 'create';
@@ -146,31 +173,23 @@ const uploadFile = async (setting, input, file) => {
                 api_setting.url = reference.api;
                 api_setting.data = formData;
 
-                await psc.waitDraft('wait');
-
                 callback = await api(api_setting);
 
                 if (callback.result == 'error_login') {
-                    alert.login();
-                    resolve(true); 
+                    resolve(callback.result); 
                 } else if (callback.result == 'success') {
                     if (setAction == 'create') {
                         psc.questions[setting.cate].question[setting.seg].reply_id = callback.id;
                     }
-
-                    $(input).val('');
+                    
                     psc.questions[setting.cate].question[setting.seg][reference.position] = callback.files;
                     showFiles.tycoon(reference.input, callback.files);
-                    await lockUpload(reference.label, reference.btn, 'unlock');
-                    resolve(true); 
+                    resolve(callback.result); 
                 } else {
-                    $(input).val('');
-                    await lockUpload(reference.label, reference.btn, 'unlock');
-                    await psc.waitDraft('finish');
                     alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
-                    resolve(true); 
+                    resolve(callback.result); 
                 }
-                break;
+            break;
             case 'estimate/onsite':
                 const estimate = dataset[setting.cate].question[setting.seg];
                 const est_id = !empty(estimate.est_id) ? estimate.est_id : '';
@@ -186,28 +205,20 @@ const uploadFile = async (setting, input, file) => {
                 api_setting.url = reference.api;
                 api_setting.data = formData;
 
-                await waitDraft('wait');
-
                 callback = await api(api_setting);
-                $(input).val('');
 
                 if (callback.result == 'error_login') {
-                    await lockUpload(reference.label, reference.btn, 'unlock');
-                    alert.login();
-                    resolve(true); 
+                    resolve(callback.result); 
                 } else if (callback.result == 'success') {
                     dataset[setting.cate].question[setting.seg].est_id = callback.estimate_id;
                     dataset[setting.cate].question[setting.seg].estFiles[reference.position] = callback.files;
                     showFiles.tycoon(reference.input, callback.files);
-                    await lockUpload(reference.label, reference.btn, 'unlock');
-                    resolve(true); 
+                    resolve(callback.result); 
                 } else {
-                    await lockUpload(reference.label, reference.btn, 'unlock');
                     alert.show(callback.result, 'ไม่สามารถอัพโหลดไฟล์ได้', callback.message);
-                    await waitDraft('finish');
-                    resolve(true); 
+                    resolve(callback.result); 
                 }
-                break;
+            break;
         }
     })
 }
@@ -470,7 +481,7 @@ const showFiles = {
                     )
                 )
             ) {
-                const file_link = getBaseUrl() + '/' + setting.file_path;
+                const file_link = `${window.uploadFileUrl}${setting.file_path}`;
                 onclick = '';
 
                 file_name = `<a href="${file_link}" target="_blank">
@@ -505,7 +516,7 @@ const showFiles = {
             $.inArray(ref.app, ['awards/application', 'awards/pre-screen', 'estimate/onsite']) !== -1 &&
             ref.path == 'images'
         ) {
-            img = `${getBaseUrl()}/${setting.file_path}`;
+            img = `${window.uploadFileUrl}${setting.file_path}`;
 
             if (
                 (ref.app == 'awards/application' && $.inArray(Number(register.status), [1, 4]) !== -1) ||

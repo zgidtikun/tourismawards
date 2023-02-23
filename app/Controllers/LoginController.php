@@ -81,7 +81,7 @@ class LoginController extends BaseController
             'role' => $auth->role_id,
             'award_type' => $auth->award_type,
             'stage' => !empty($auth->stage) ? $auth->stage : '',
-            'profile' => !empty($auth->profile) ? $auth->profile : 'assets/images/unknown_user.jpg',
+            'profile' => !empty($auth->profile) ? UPLOAD_FILE_URL.$auth->profile : base_url('assets/images/unknown_user.jpg'),
             'bank' => $bank
         );
         

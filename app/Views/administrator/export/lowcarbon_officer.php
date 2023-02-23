@@ -22,10 +22,10 @@ $rowHead = [
   'ลำดับที่',
   'รหัส',
   'ชื่อสถานประกอบการ',
-  'ชื่อกรรมการ',
   'คำถาม',
-  'คะแนนที่ได้',
-  'คะแนนเต็ม',
+  'คะแนนที่ได้ (เต็ม 1 คะแนน)',
+  'ชื่อผู้ประเมิน',
+  'ข้อเสนอแนะ (รายข้อ)',
 ];
 
 //set Amount Column
@@ -37,7 +37,7 @@ $end = end($colExcel);
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
-$sheet->getStyle('F:G')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('E')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -68,10 +68,10 @@ if (!empty($result)) {
       ($key + 1),
       $value->code,
       $value->attraction_name_th,
-      $value->estimate_name,
       $value->question,
       $value->tscore_pre,
-      '1',
+      $value->estimate_name,
+      $value->comment_pre, // 'ข้อเสนอแนะ (รายข้อ)',
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

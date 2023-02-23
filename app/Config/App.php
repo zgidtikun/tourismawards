@@ -466,9 +466,10 @@ class App extends BaseConfig
      */
     public $CSPEnabled = false;
 
-    public $RECAPCHA_CK = false;
+    public $RECAPCHA_CK = true;
     public $RECAPCHA_KEY = '6LdC6vghAAAAANJyaGCqYGZ1eY6YrKgRb40B8Ay4';
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
+    public $Register_start = '2022-03-01'; // วันเปิด Register
     public $Register_expired = '2023-04-30'; // วันหมดเขต Register
     public $APPForm_expired = '2023-04-30'; // วันหมดเขตส่งใบสมัคร
     public $Pre_open = '2023-01-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
@@ -488,7 +489,7 @@ class App extends BaseConfig
 
     public function __construct()
     {
-        if(getenv('CI_ENVIRONMENT') != 'production'){
+        if (getenv('CI_ENVIRONMENT') != 'production') {
             $this->script_v = date('YmdHis');
         }
 
@@ -509,11 +510,11 @@ class App extends BaseConfig
             ]
         ];
 
-        if(getenv('CI_ENVIRONMENT') == 'production'){
+        if (getenv('CI_ENVIRONMENT') == 'production') {
+            $this->comming_soon = true;
             $this->baseURL = 'https://tourismawards.tourismthailand.org/';
             $this->Register_expired = '2023-04-30'; // วันหมดเขต Register
             $this->APPForm_expired = '2023-04-30'; // วันหมดเขตส่งใบสมัคร
-            $this->Pre_open = '2023-03-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
             $this->Pre_expired = '2023-05-07'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
             $this->announcement_pre_date = '2023-06-01'; // วันที่ประกาศผล prescreen
             $this->announcement_ons_date = '2024-01-01'; // วันที่ประกาศผล ลงพื้นที่
@@ -523,15 +524,51 @@ class App extends BaseConfig
             $this->Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่        
             $this->RECAPCHA_KEY = '6Ldaj4wkAAAAAErI6aXoi6RpJXRgzaPk0rwZh_3B';
             $this->RECAPCHA_SECRETKEY = '6Ldaj4wkAAAAAFPUf9D0OZ71R-j4BBlNLx4y_c6Y';
-        }
-        elseif(getenv('CI_ENVIRONMENT') == 'testing'){
-            $this->baseURL = 'https://www.tennis.in.th';
+            
+            $this->Register_start = '2022-03-01'; // วันเปิด Register
+            $this->Pre_open = '2023-01-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
 
-        }elseif(getenv('CI_ENVIRONMENT') == 'development'){
-            if(strstr($_SERVER['SERVER_NAME'], 'tourismawards.local')!==false){
-                $this->baseURL = 'http://tourismawards.local/';
+            // $this->Register_start = '2023-03-01'; // วันเปิด Register
+            // $this->Pre_open = '2023-03-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
+
+            if (!defined('UPLOAD_FILE_URL')) {
+                define('UPLOAD_FILE_URL', 'https://tourismawards.tourismthailand.org/');
+            }
+
+            if (!defined('DOWNLOAD_FILE_URL')) {
+                define('DOWNLOAD_FILE_URL', 'https://tourismawards.tourismthailand.org/');
+            }
+        } elseif (getenv('CI_ENVIRONMENT') == 'testing') {
+            $this->baseURL = 'https://www.tennis.in.th/';
+
+            if (!defined('UPLOAD_FILE_URL')) {
+                define('UPLOAD_FILE_URL', 'https://www.tennis.in.th/');
             }
             
+            if (!defined('DOWNLOAD_FILE_URL')) {
+                define('DOWNLOAD_FILE_URL', 'https://www.tennis.in.th/');
+            }
+        } elseif (getenv('CI_ENVIRONMENT') == 'development') {
+            if (strstr($_SERVER['SERVER_NAME'], 'tourismawards.local') !== false) {
+                $this->baseURL = 'http://tourismawards.local/';
+                $this->RECAPCHA_CK = false;
+
+                if (!defined('UPLOAD_FILE_URL')) {
+                    define('UPLOAD_FILE_URL', 'http://tourismawards.local/');
+                }
+
+                if (!defined('DOWNLOAD_FILE_URL')) {
+                    define('DOWNLOAD_FILE_URL', 'http://tourismawards.local/');
+                }
+            } else {    
+                if (!defined('UPLOAD_FILE_URL')) {
+                    define('UPLOAD_FILE_URL', 'https://www.tennis.in.th/');
+                }
+                
+                if (!defined('DOWNLOAD_FILE_URL')) {
+                    define('DOWNLOAD_FILE_URL', 'https://www.tennis.in.th/');
+                }
+            }
         }
     }
 }

@@ -60,7 +60,16 @@
                                 endif;
                             endif; 
 
-                            if(!$_signup->status && !$_register_expire) :
+                            if(!$_register_open):
+                        ?>                    
+                        <div class="alert alert-warning" id="warning">
+                            <b>
+                                <i class="bi bi-calendar-check-fill"></i> เปิดให้ลงทะเบียนตั้งแต่วันที่ 1 มีนาคม - 30 เมษายน 2566
+                            </b>
+                        </div>                        
+                        <?php 
+
+                            elseif(!$_signup->status && !$_register_expire && $_register_open) :
                                 $attr = ['id' => 'regis-form'];
                                 echo form_open(route_to('register'), $attr);
                         ?>

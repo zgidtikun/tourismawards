@@ -35,7 +35,7 @@
             <div class="user-status-img">
               <div class="status-img">
                 <div class="status-img-scale">
-                  <img src="<?= base_url() ?>/<?= session()->profile ?>">
+                  <img src="<?= session()->profile ?>">
                 </div>
               </div>
             </div>

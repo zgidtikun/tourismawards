@@ -38,18 +38,18 @@ class Report extends BaseController
         return view('administrator/template', $data);
     }
 
-    public function export($page)
+    public function export($page, $type_id = 1)
     {
         if ($page == 'register') {
             $this->register();
         } else if ($page == 'pre_officer') {
-            $this->pre_officer();
+            $this->pre_officer($type_id);
         } else if ($page == 'pre_average') {
             $this->pre_average();
         } else if ($page == 'onsite_average') {
             $this->onsite_average();
         } else if ($page == 'onsite_officer') {
-            $this->onsite_officer();
+            $this->onsite_officer($type_id);
         } else if ($page == 'summary_scores') {
             $this->summary_scores();
         } else if ($page == 'suggestion') {
@@ -73,7 +73,7 @@ class Report extends BaseController
         return view('administrator/export/register', $data);
     }
 
-    public function pre_officer()
+    public function pre_officer($type_id)
     {
         $data['result'] = $this->db->table('estimate ET')
             ->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')
@@ -81,8 +81,7 @@ class Report extends BaseController
             ->join('application_form AP', 'AP.id = ET.application_id')
             ->join('application_type AT', 'AT.id = AP.application_type_id')
             ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')
-            ->get()->getResultObject();
-        // px($data['result']);
+            ->where('AT.id', $type_id)->get()->getResultObject();
 
         return view('administrator/export/pre_officer', $data);
     }
@@ -90,10 +89,10 @@ class Report extends BaseController
     public function pre_average()
     {
         $data['result'] = $this->db->table('application_form AP')
-        ->select('AP.id, AP.code, AP.attraction_name_th, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, CM.admin_id_tourism, CM.admin_id_supporting, CM.admin_id_responsibility')
-        ->join('committees CM', 'CM.application_form_id = AP.id AND CM.assessment_round = 1')
-        ->join('application_type AT', 'AT.id = AP.application_type_id')
-        ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
+            ->select('AP.id, AP.code, AP.attraction_name_th, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, CM.admin_id_tourism, CM.admin_id_supporting, CM.admin_id_responsibility')
+            ->join('committees CM', 'CM.application_form_id = AP.id AND CM.assessment_round = 1')
+            ->join('application_type AT', 'AT.id = AP.application_type_id')
+            ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
 
         $count_committees = [];
         foreach ($data['result'] as $key => $value) {
@@ -159,9 +158,15 @@ class Report extends BaseController
         return view('administrator/export/pre_average', $result);
     }
 
-    public function onsite_officer()
+    public function onsite_officer($type_id)
     {
-        $data['result'] = $this->db->table('estimate ET')->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight, QU.onside_score')->join('question QU', 'QU.id = ET.question_id')->join('application_form AP', 'AP.id = ET.application_id')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
+        $data['result'] = $this->db->table('estimate ET')
+            ->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight, QU.onside_score')
+            ->join('question QU', 'QU.id = ET.question_id')
+            ->join('application_form AP', 'AP.id = ET.application_id')
+            ->join('application_type AT', 'AT.id = AP.application_type_id')
+            ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')
+            ->where('AT.id', $type_id)->get()->getResultObject();
 
         return view('administrator/export/onsite_officer', $data);
     }
@@ -248,38 +253,50 @@ class Report extends BaseController
             ->join('users_stage US', 'US.user_id = AP.created_by AND US.status >= 6', 'left')
             ->where('US.stage', 2)
             ->orderBy('AP.id', 'desc')->get()->getResultObject();
-        // px($data['result']);
 
         return view('administrator/export/summary_scores', $data);
     }
 
     public function suggestion()
     {
-        $data['result'] = $this->db->table('estimate ET')->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')->join('question QU', 'QU.id = ET.question_id')->join('application_form AP', 'AP.id = ET.application_id')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
-        // px($data['result']);
+        $data['result'] = $this->db->table('estimate ET')
+            ->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')
+            ->join('question QU', 'QU.id = ET.question_id')
+            ->join('application_form AP', 'AP.id = ET.application_id')
+            ->join('application_type AT', 'AT.id = AP.application_type_id')
+            ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
 
         return view('administrator/export/suggestion', $data);
     }
 
     public function lowcarbon()
     {
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, ES.score_prescreen_rs AS score_prescreen_rs, ES.score_onsite_rs AS score_onsite_rs, ES.lowcarbon_score AS lowcarbon_score')->join('estimate_score ES', 'ES.application_id = AP.id', 'left')->where('AP.require_lowcarbon', 1)->orderBy('AP.id', 'desc')->get()->getResultObject();
-        // px($data['result']);
+        $data['result'] = $this->db->table('application_form AP')
+            ->select('AP.*, ES.score_prescreen_rs AS score_prescreen_rs, ES.score_onsite_rs AS score_onsite_rs, ES.lowcarbon_score AS lowcarbon_score')
+            ->join('estimate_score ES', 'ES.application_id = AP.id', 'left')
+            ->where('AP.require_lowcarbon', 1)->orderBy('AP.id', 'desc')->get()->getResultObject();
 
         return view('administrator/export/lowcarbon', $data);
     }
 
     public function lowcarbon_officer()
     {
-        $data['result'] = $this->db->table('estimate ET')->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')->join('question QU', 'QU.id = ET.question_id AND QU.assessment_group_id = 4')->join('application_form AP', 'AP.id = ET.application_id')->join('application_type AT', 'AT.id = AP.application_type_id')->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->where('AP.require_lowcarbon', 1)->get()->getResultObject();
-        // px($data['result']);
+        $data['result'] = $this->db->table('estimate ET')
+            ->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')
+            ->join('question QU', 'QU.id = ET.question_id AND QU.assessment_group_id = 4')
+            ->join('application_form AP', 'AP.id = ET.application_id')
+            ->join('application_type AT', 'AT.id = AP.application_type_id')
+            ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')
+            ->where('AP.require_lowcarbon', 1)->get()->getResultObject();
 
         return view('administrator/export/lowcarbon_officer', $data);
     }
 
     public function export1()
     {
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, U.email AS user_email, U.mobile AS user_mobile')->join('users U', 'U.id = AP.created_by')->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')
+            ->select('AP.*, U.email AS user_email, U.mobile AS user_mobile')
+            ->join('users U', 'U.id = AP.created_by')->get()->getResultObject();
 
         px($data);
     }

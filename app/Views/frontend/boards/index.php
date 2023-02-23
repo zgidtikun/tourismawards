@@ -258,15 +258,15 @@ tabindex="-1" aria-labelledby="modal-score-label" aria-hidden="true">
 
 <!-- DataTable -->
 <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-<script src="https://www.tennis.in.th/assets/js/dataTables.responsive.min.js"></script>
+<script src="<?=base_url('assets/js/dataTables.responsive.min.js')?>"></script>
 <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
-<link rel="stylesheet" href="https://www.tennis.in.th/assets/css/site.css" />
-<link rel="stylesheet" href="https://www.tennis.in.th/assets/css/responsive.dataTables.min.css" />
+<link rel="stylesheet" href="<?=base_url('assets/css/site.css')?>" />
+<link rel="stylesheet" href="<?=base_url('assets/css/responsive.dataTables.min.css')?>" />
 
 <!-- Slick -->
-<script src="https://www.tennis.in.th/assets/js/slick.js"></script>
-<link rel="stylesheet" href="https://www.tennis.in.th/assets/css/slick.css" />
-<link rel="stylesheet" href="https://www.tennis.in.th/assets/css/slick-theme.css" />
+<script src="<?=base_url('assets/js/slick.js')?>"></script>
+<link rel="stylesheet" href="<?=base_url('assets/css/slick.css')?>" />
+<link rel="stylesheet" href="<?=base_url('assets/css/slick-theme.css')?>" />
 
 <script type="text/javascript">
   jQuery(document).ready(function( $ ) {
