@@ -57,6 +57,7 @@ $routes->get('forgot-password', 'RegisterController::forgetpass');
 $routes->get('verify-user', 'Home::verifyuser');
 $routes->get('new-password', 'Home::newpassword');
 $routes->get('new-password/(:any)', 'Home::newpassword/$1');
+$routes->get('re_calculate_score_estimate/(:any)/(:any)', 'EstimateController::reCalFinishEstimate/$1/$2');
 
 $routes->get('login', 'LoginController::index');
 $routes->get('login/(:any)', 'LoginController::index/$1');

@@ -257,4 +257,8 @@
   .comment-score {
     font-size: 12px;
   }
+
+  .disable-click {
+    pointer-events: none;
+  }
 </style>

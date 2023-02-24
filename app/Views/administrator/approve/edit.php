@@ -601,7 +601,7 @@
     } else {
       $('#judge_comment').prop('required', false);
     }
-
+    $('#btn_save').html('<i class="fa fa-spinner spinner-border"></i>').addClass('disable-click');
     var data = {
       status: status,
       insert_id: insert_id,

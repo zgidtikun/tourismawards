@@ -179,9 +179,17 @@
       if (typeof fx == 'function') {
         fx(option); // ถ้ามีฟังก์ชั่นให้ทำก่อน
       }
+      if (reload == 0) {
+        if (option.type == 'error') {
+          $('#btn_save').html('ตกลง').removeClass('disable-click');
+        }
+      }
       if (reload == 1) {
         if (option.type == 'success') {
           location.reload();
+        }
+        if (option.type == 'error') {
+          $('#btn_save').html('ตกลง').removeClass('disable-click');
         }
       }
     });

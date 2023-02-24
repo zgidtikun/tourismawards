@@ -55,7 +55,7 @@ class Approve extends BaseController
         if (array_key_exists('status', $_GET) && $_GET['status'] != "") {
             $where['status'] = $_GET['status'];
         } else {
-            $where['status >= '] = '2';
+            $where['status != '] = '1';
         }
 
         $data['result'] = $this->ApplicationForm->orLike($like, 'match', 'both')->where($where)->orderBy('id', 'desc')->findAll();

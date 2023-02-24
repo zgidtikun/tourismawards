@@ -660,24 +660,24 @@ class EstimateController extends BaseController
         $avg_te = $avg_sb = $avg_rs = $avg_lc = 0;
 
         if ($sumScr->score_te > 0) {
-            $avg_te = $sumScr->score_te / $cJudge->tourism;
+            $avg_te = round($sumScr->score_te / $cJudge->tourism,2);
         }
 
         if ($sumScr->score_te > 0) {
-            $avg_sb = $sumScr->score_sb / $cJudge->support;
+            $avg_sb = round($sumScr->score_sb / $cJudge->support,2);
         }
 
         if ($sumScr->score_rs > 0) {
-            $avg_rs = $sumScr->score_rs / $cJudge->respons;
+            $avg_rs = round($sumScr->score_rs / $cJudge->respons,2);
         }
 
         if ($stage == 1) {
             if ($sumScr->score_lc > 0) {
-                $avg_lc = $sumScr->score_lc / $cJudge->lowcarbon;
+                $avg_lc = round($sumScr->score_lc / $cJudge->lowcarbon,2);
             }
         }
 
-        $avg_tt = $avg_te + $avg_sb + $avg_rs;
+        $avg_tt = round(($avg_te + $avg_sb + $avg_rs),2);
 
         if ($stage == 1) {
             $inst_avg['score_prescreen_te'] = $avg_te;
@@ -794,6 +794,149 @@ class EstimateController extends BaseController
             'respons' => $crespons,
             'lowcarbon' => $clowcarbon
         ];
+    }
+        
+
+    public function reCalFinishEstimate($id, $stage)
+    {
+
+        $app = new \Config\App();
+        $users = new \App\Models\Users();
+        $answer = new \App\Models\Answer();
+        $appForm = new  \App\Controllers\ApplicationController();
+        $haveLowcarbon = $appForm->checkRequireLowCarbon($id);
+        $cJudge = $this->countJudgeEstimate($id, $stage);
+        $current_datetime = date('Y-m-d H:i:s');
+
+        if ($stage == 1) {
+            $select_sum = 'SUM(score_pte) score_te, SUM(score_psb) score_sb,
+                SUM(score_prs) score_rs, SUM(score_pre) score_tt, 
+                SUM(lowcarbon_score) score_lc';
+        } else {
+            $select_sum = 'SUM(score_ote) score_te, SUM(score_osb) score_sb,
+                SUM(score_ors) score_rs, SUM(score_onsite) score_tt';
+        }
+
+        $sumScr = $this->estInd->where('application_id', $id)
+            ->select($select_sum)
+            ->first();
+
+        $avg_te = $avg_sb = $avg_rs = $avg_lc = 0;
+
+        if ($sumScr->score_te > 0) {
+            $avg_te = $sumScr->score_te / $cJudge->tourism;
+            pp($avg_te);
+            $avg_te = round($avg_te, 2);
+            pp($avg_te);
+            pp('avg_te');
+        }
+
+        if ($sumScr->score_te > 0) {
+            $avg_sb = $sumScr->score_sb / $cJudge->support;
+            pp($avg_sb);
+            $avg_sb = round($avg_sb, 2);
+            pp($avg_sb);
+            pp('avg_sb');
+        }
+
+        if ($sumScr->score_rs > 0) {
+            $avg_rs = $sumScr->score_rs / $cJudge->respons;
+            pp($avg_rs);
+            $avg_rs = round($avg_rs, 2);
+            pp($avg_rs);
+            pp('avg_rs');
+        }
+
+        if ($stage == 1) {
+            if ($sumScr->score_lc > 0) {
+                $avg_lc = $sumScr->score_lc / $cJudge->lowcarbon;
+                pp($avg_lc);
+                $avg_lc = round($avg_lc, 2);
+                pp($avg_lc);
+                pp('avg_lc');
+            }
+        }
+
+        $avg_tt = $avg_te + $avg_sb + $avg_rs;
+        pp($avg_tt);
+        pp('avg_tt');
+
+        if ($stage == 1) {
+            $inst_avg['score_prescreen_te'] = $avg_te;
+            $inst_avg['score_prescreen_sb'] = $avg_sb;
+            $inst_avg['score_prescreen_rs'] = $avg_rs;
+            $inst_avg['score_prescreen_tt'] = $avg_tt;
+            $inst_avg['pre_send_date'] = $current_datetime;
+            $inst_avg['lowcarbon_status'] = $haveLowcarbon ? 1 : 2;
+            $inst_avg['lowcarbon_score'] = $haveLowcarbon ? $avg_lc : 0;
+        } else {
+            $inst_avg['score_onsite_te'] = $avg_te;
+            $inst_avg['score_onsite_sb'] = $avg_sb;
+            $inst_avg['score_onsite_rs'] = $avg_rs;
+            $inst_avg['score_onsite_tt'] = $avg_tt;
+            $inst_avg['onsite_send_date'] = $current_datetime;
+        }
+
+        $criteria = $stage == 1 ? $app->JudgingCriteriaPre : $app->JudgingCriteriaOnst;
+        $pass = $avg_tt >= $criteria ? true : false;
+
+        // pp($pass);
+        // return $pass;
+
+        $existEstScr = $this->estScr->where('application_id', $id)
+            ->countAllResults();
+
+        if ($existEstScr < 1) {
+            $inst_avg['application_id'] = $id;
+            $this->estScr->insert($inst_avg);
+        } else {
+            $this->estScr->where('application_id', $id)
+                ->set($inst_avg)
+                ->update();
+        }
+
+        $form = $this->appForm->where('id', $id)
+            ->select(
+                'created_by app_of,
+                    IFNULL(attraction_name_th,attraction_name_en) place_name',
+                false
+            )
+            ->first();
+
+        $this->stage->where([
+            'user_id' => $form->app_of,
+            'stage' => $stage
+        ])
+            ->set(['status' => $pass ? 6 : 7])
+            ->update();
+
+        $answer->where('reply_by', $form->app_of)
+            ->set(['status' => $pass ? 4 : 0])
+            ->update();
+
+        $users->where('id', $form->app_of)
+            ->set(['stage' => 3])
+            ->update();
+
+        if ($pass && $stage == 1) {
+            $existStage = $this->stage->where([
+                'user_id' => $form->app_of,
+                'stage' => 2,
+            ])
+                ->countAllResults();
+
+            if ($existStage <= 0) {
+                $this->stage->insert([
+                    'user_id' => $form->app_of,
+                    'stage' => 2,
+                    'status' => 1
+                ]);
+            }
+        }
+        pp($pass);
+        echo 'success';
+
+        return $pass;
     }
 
     private function checkFinishEsitmate($id, $stage)

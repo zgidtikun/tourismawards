@@ -142,9 +142,9 @@ class Estimate extends BaseController
         ];
         // pp($data);
 
-        $committees = $this->db->table('committees')->where(['users_id' => session()->id, 'application_form_id' => $post['application_form_id'], 'assessment_round' => 1])->get()->getRowObject();
+        $committees = $this->db->table('committees')->where(['application_form_id' => $post['application_form_id'], 'assessment_round' => 1])->get()->getRowObject();
         if (!empty($committees)) {
-            echo json_encode(['type' => 'success', 'title' => 'ผิดพลาด', 'text' => 'มีการเพิ่มกรรมการรอบการประเมินขั้นต้นเรียบร้อยแล้ว']);
+            echo json_encode(['type' => 'error', 'title' => 'ผิดพลาด', 'text' => 'มีการมอบหมายกรรมการรอบการประเมินขั้นต้นเรียบร้อยแล้ว']);
             exit;
         }
 
@@ -172,10 +172,11 @@ class Estimate extends BaseController
             $setting = [
                 'application_form_id' => $post['application_form_id'],
                 'text'  => $text,
+                'post'  => $post,
             ];
             save_log_activety([
-                'module' => '',
-                'action' => '',
+                'module' => 'committees',
+                'action' => 'application-' . $post['application_form_id'],
                 'bank' => 'backend',
                 'user_id' => session()->get('id'),
                 'datetime' => date('Y-m-d H:i:s'),
@@ -248,10 +249,11 @@ class Estimate extends BaseController
             $setting = [
                 'application_form_id' => $post['application_form_id'],
                 'text'  => $text,
+                'post'  => $post,
             ];
             save_log_activety([
-                'module' => '',
-                'action' => '',
+                'module' => 'committees',
+                'action' => 'application-' . $post['application_form_id'],
                 'bank' => 'backend',
                 'user_id' => session()->get('id'),
                 'datetime' => date('Y-m-d H:i:s'),

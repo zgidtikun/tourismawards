@@ -213,6 +213,7 @@
       $('#image_cover').prop('required', false);
     }
     if (main_validated('input_form')) {
+      $('#btn_save').html('<i class="fa fa-spinner spinner-border"></i>').addClass('disable-click');
       if (insert_id == "" || insert_id == 0) {
         var res = main_save(BASE_URL_BACKEND + '/news/saveInsert', '#input_form');
         res_swal(res, 0, function() {

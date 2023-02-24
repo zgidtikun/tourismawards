@@ -211,6 +211,7 @@
           toastr.error('E-Mail นี้มีการสมัครเข้าใช้งานแล้ว');
           return false;
         }
+        $('#btn_save').html('<i class="fa fa-spinner spinner-border"></i>').addClass('disable-click');
         var res = main_save(BASE_URL_BACKEND + '/officer/saveInsert', '#input_form');
         res_swal(res, 0, function() {
           if (res.type == 'success') {
@@ -219,6 +220,7 @@
         });
       } else {
         if (validated()) {
+          $('#btn_save').html('<i class="fa fa-spinner spinner-border"></i>').addClass('disable-click');
           var res = main_save(BASE_URL_BACKEND + '/officer/saveUpdate', '#input_form');
           res_swal(res, 0, function() {
             if (res.type == 'success') {

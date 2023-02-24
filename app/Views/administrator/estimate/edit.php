@@ -187,9 +187,6 @@
   </div>
 </div>
 
-<?php //pp($question[4]); 
-?>
-
 <div class="backendcontent">
   <div class="backendcontent-row">
     <div class="regis-form-step" style="grid-template-columns: repeat(3, 1fr);">
@@ -670,6 +667,7 @@
   $('#btn_save').click(function(e) {
     if (validated()) {
       var insert_id = $('#insert_id').val();
+      $('#btn_save').html('<i class="fa fa-spinner spinner-border"></i>').addClass('disable-click');
       if (insert_id == 0 || insert_id == "") {
         var res = main_save(BASE_URL_BACKEND + '/estimate/saveInsert', '#input_form');
         res_swal(res, 0, function() {

@@ -525,6 +525,7 @@
   $('#btn_save').click(function(e) {
     if (validated()) {
       var insert_id = $('#insert_id').val();
+      $('#btn_save').html('<i class="fa fa-spinner spinner-border"></i>').addClass('disable-click');
       if (insert_id == 0 || insert_id == "") {
         var res = main_save(BASE_URL_BACKEND + '/onsite/saveInsert', '#input_form');
         res_swal(res, 0, function() {

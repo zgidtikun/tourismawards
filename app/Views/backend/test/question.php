@@ -124,6 +124,7 @@
   $('#btn_save').click(function(e) {
     var id = $('#id').val();
     $('#table').val('question');
+    $('#btn_save').html('<i class="fa fa-spinner spinner-border"></i>').addClass('disable-click');
     if (id == 0 || id == "") {
       var res = main_save(BASE_URL_BACKEND + '/MarkTest/saveInsert', '#form_input');
       cc(res)

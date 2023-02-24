@@ -540,6 +540,7 @@
   });
 
   $('#btn_save').click(function(e) {
+    $('#btn_save').html('<i class="fa fa-spinner spinner-border"></i>').addClass('disable-click');
     var status = $('input[name="status"]:checked').val();
     var insert_id = $('#insert_id').val();
     var judge_comment = $('#judge_comment').val();
@@ -549,7 +550,6 @@
       judge_comment: judge_comment,
     }
     var res = main_post(BASE_URL_BACKEND + '/approve/saveStatus', data);
-    cc(res)
     res_swal(res, 1);
   });
 

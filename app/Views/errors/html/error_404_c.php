@@ -142,7 +142,6 @@
         </div>
     </div>
     <div id="particles-js"></div>
-    <a class="back" href="<?=route_to('home')?>">Go Back</a>
 </body>
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
