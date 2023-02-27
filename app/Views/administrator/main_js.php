@@ -37,9 +37,6 @@
         semptyTable: "ไม่มีข้อมูล",
       }
     });
-
-    // $('[data-toggle="tooltip"]').tooltip();
-    // init_selectpicker();
   });
 
   function active_page(pgurl) {
@@ -271,38 +268,36 @@
     return return_;
   }
 
-  /*
-    //  วิธีใช้งาน JS Windows Alert เผื่ออนาคตมีการแจ้งเตือนทำไว้ใช้
-    //  var data = {
-    //    title: 'Mark Notification',
-    //    body: 'Mark Body Notification',
-    //    link: base_url + 'backend',
-    //  }
-    //  setNotification(data);
-    // 
-  */
+  // วิธีใช้ งาน JS Windows Alert เผื่ ออนาคตมีการแจ้ งเตือนทำไว้ ใช้
+  // var data = {
+  //   title: 'Mark Notification',
+  //   body: 'Mark Body Notification',
+  //   link: BASE_URL + 'backend',
+  // }
+  // setNotification(data);
+
   function setNotification(data_use = {}) {
 
     // เล่นเสียงเวลาที่มีข้อความเข้า
-    // const audio = new Audio("https://freesound.org/data/previews/501/501690_1661766-lq.mp3");
+    // const audio = new Audio("https://cdn.pixabay.com/download/audio/2022/03/10/audio_f088e3a85e.mp3?filename=ringtone-1-46486.mp3");
     // audio.play();
 
     var data = {
       title: 'title',
       body: 'body',
-      icon: base_url + "images/favicon.png",
-      link: base_url,
+      icon: BASE_URL + "images/favicon.png",
+      link: BASE_URL,
     }
 
     $.extend(data, data_use);
 
-    // console.log(Notification.permission);
+    console.log(Notification.permission);
     if (Notification.permission === "granted") {
-      // console.log("we have permission");
+      console.log("we have permission");
       showNotification(data_use);
     } else if (Notification.permission !== "denied") {
       Notification.requestPermission().then(permission => {
-        // console.log(permission);
+        console.log(permission);
       });
     }
   }

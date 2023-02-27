@@ -69,7 +69,7 @@ if (!empty($result)) {
       $value->code,
       $value->attraction_name_th,
       $value->question,
-      $value->tscore_pre,
+      $value->score_pre_origin,
       $value->estimate_name,
       $value->comment_pre, // 'ข้อเสนอแนะ (รายข้อ)',
     ];

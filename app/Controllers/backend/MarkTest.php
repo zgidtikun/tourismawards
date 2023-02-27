@@ -25,15 +25,16 @@ class MarkTest extends BaseController
 
     public function index()
     {
+        // return view('administrator/template_email');
         // px(checkEstimateCommittee(23, 37, 1));
-        // px(password_hash('1qazxsw2+-+', PASSWORD_DEFAULT));
-        px(session()->get());
+        // px(password_hash('Ttawards14', PASSWORD_DEFAULT));
+        // px(session()->get());
         // $log = $this->LogActivity->findAll();
         // px($log);
         // px(json_decode($log[0]->action_data));
         show_404();
-        // $data = $this->db->table('admin')->where('id', 13)->get()->getRowObject();
-        // // px($data);
+        // $data = $this->db->table('admin')->where('id', 1)->get()->getRowObject();
+        // px($data);
         // $email_data = [
         //     '_header' => 'เรียนคุณ ' . $data->name . ' ' . $data->surname,
         //     '_content' => 'คุณได้รับการเพิ่มให้เป็นผู้ดูแลระบบ (Admin) อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) ด้วยอีเมล ' . $data->email

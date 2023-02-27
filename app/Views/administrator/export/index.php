@@ -47,12 +47,12 @@
 
     $data_2 = [
       [
-        'link' => base_url('administrator/report/export/pre_officer/1'),
+        'link' => base_url('administrator/report/export/pre_officer'),
         'name' => 'คะแนนรอบ Pre-Screen (รายกรรมการ)',
         'class' => 'pre_officer',
       ],
       [
-        'link' => base_url('administrator/report/export/onsite_officer/1'),
+        'link' => base_url('administrator/report/export/onsite_officer'),
         'name' => 'คะแนนรอบลงพื้นที่ (รายกรรมการ)',
         'class' => 'onsite_officer',
       ],

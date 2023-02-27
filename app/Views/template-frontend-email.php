@@ -248,7 +248,7 @@
                                   <span style="color: #fff; font-size: 14px; line-height: 19.6px;">10400 ประเทศไทย</span>
                                 </p>
                                 <p style="font-size: 14px; line-height: 140%;">
-                                  <span style="color: #fff; font-size: 14px; line-height: 19.6px;">โทร : 064-104-3958</span><br/>
+                                  <span style="color: #fff; font-size: 14px; line-height: 19.6px;">โทร : 0 2250 5500</span><br/>
                                   <!-- <span style="color: #fff; font-size: 14px; line-height: 19.6px;">อีเมล์ : tourismawards.tat@gmail.com</span> -->
                                 </p>
                               </div>

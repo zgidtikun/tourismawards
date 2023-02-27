@@ -44,7 +44,7 @@ $rowHead = [
   'เกณฑ์การประเมิน',
   'ค่าน้ำหนัก (รายข้อ)',
   'คะแนนที่ได้ (คะแนนดิบ)',
-  'คะแนนที่ได้รับ (รอบลงพื้นที่)',
+  'คะแนนที่ได้รับ (รอบ Pre-Screen)',
   'คะแนนเต็ม (รายข้อ)',
   'ชื่อผู้ประเมิน',
   'ข้อเสนอแนะ (รายข้อ)',
@@ -86,12 +86,15 @@ if (!empty($result)) {
   // Row Start
   $i = 4;
   foreach ($result as $key => $value) {
+    $assessment = '';
     if ($value->assessment_group_id == 1) {
       $assessment = 'Tourism Excellence (Product/Service)';
     } else if ($value->assessment_group_id == 2) {
       $assessment = 'Supporting Business & Marketing Factors';
     } else if ($value->assessment_group_id == 3) {
       $assessment = 'Responsibility and Safety & Health Administration';
+    } else if ($value->assessment_group_id == 4) {
+      $assessment = 'Low Carbon & Sustainability';
     }
 
     $data = [

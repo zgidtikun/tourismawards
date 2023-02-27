@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="Thailand Tourism Awards รางวัลอุตสาหกรรมท่องเที่ยวไทย เป็นรางวัลที่รับรองคุณภาพสินค้าและบริการทางการท่องเที่ยว ด้วยมาตรฐานการท่องเที่ยวอย่างยั่งยืน รับผิดชอบต่อสังคม และสิ่งแวดล้อม (Responsible Tourism)">
     <title><?=$title?></title>
     <link rel="shortcut icon" href="<?=base_url('assets/images/favicon.png')?>">
 

@@ -511,7 +511,14 @@ class App extends BaseConfig
         ];
 
         if (getenv('CI_ENVIRONMENT') == 'production') {
-            $this->comming_soon = true;
+            $current_date = date('Y-m-d');
+            
+            if($current_date >= '2021-02-27'){
+                $this->comming_soon = false;
+            } else {
+                $this->comming_soon = true;
+            }
+
             $this->baseURL = 'https://tourismawards.tourismthailand.org/';
             $this->Register_expired = '2023-04-30'; // วันหมดเขต Register
             $this->APPForm_expired = '2023-04-30'; // วันหมดเขตส่งใบสมัคร
@@ -525,11 +532,11 @@ class App extends BaseConfig
             $this->RECAPCHA_KEY = '6Ldaj4wkAAAAAErI6aXoi6RpJXRgzaPk0rwZh_3B';
             $this->RECAPCHA_SECRETKEY = '6Ldaj4wkAAAAAFPUf9D0OZ71R-j4BBlNLx4y_c6Y';
             
-            $this->Register_start = '2022-03-01'; // วันเปิด Register
-            $this->Pre_open = '2023-01-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
+            // $this->Register_start = '2022-03-01'; // วันเปิด Register
+            // $this->Pre_open = '2023--01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
 
-            // $this->Register_start = '2023-03-01'; // วันเปิด Register
-            // $this->Pre_open = '2023-03-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
+            $this->Register_start = '2023-03-01'; // วันเปิด Register
+            $this->Pre_open = '2023-03-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
 
             if (!defined('UPLOAD_FILE_URL')) {
                 define('UPLOAD_FILE_URL', 'https://tourismawards.tourismthailand.org/');

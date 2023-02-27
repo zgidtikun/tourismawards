@@ -92,6 +92,8 @@ if (!empty($result)) {
       $assessment = 'Supporting Business & Marketing Factors';
     } else if ($value->assessment_group_id == 3) {
       $assessment = 'Responsibility and Safety & Health Administration';
+    } else if ($value->assessment_group_id == 4) {
+      $assessment = 'Low Carbon & Sustainability';
     }
 
     $data = [

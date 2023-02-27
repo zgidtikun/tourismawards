@@ -49,7 +49,7 @@
                                     เบอร์โทรศัพท์
                                 </div>
                                 <div class="contact-txt">
-                                    <b><a href="tel:0641043958">064-104-3958</a></b>
+                                    <b><a href="tel:022505500">0 2250 5500</a></b>
                                 </div>
                             </div>
                         </li>

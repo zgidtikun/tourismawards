@@ -11,7 +11,7 @@
                 การท่องเที่ยวแห่งประเทศไทย (สำนักงานใหญ่)<br>
                 1600 ถ.เพชรบุรีตัดใหม่ แขวงมักกะสัน เขตราชเทวี กรุงเทพฯ<br>
                 10400 ประเทศไทย<br><br>
-                โทร : 064-104-3958<br>
+                โทร : 0 2250 5500<br>
                 อีเมล : tourismawards14@gmail.com
                 </p>
             </div>
@@ -93,3 +93,14 @@
 
     });
 </script>
+
+<?php if(getenv('CI_ENVIRONMENT') == 'production'): ?>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H70R1H0L02"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-H70R1H0L02');
+</script>
+<?php endif; ?>

@@ -76,12 +76,12 @@ class Report extends BaseController
     public function pre_officer($type_id)
     {
         $data['result'] = $this->db->table('estimate ET')
-            ->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')
+            ->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AP.application_type_id, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight')
             ->join('question QU', 'QU.id = ET.question_id')
             ->join('application_form AP', 'AP.id = ET.application_id')
             ->join('application_type AT', 'AT.id = AP.application_type_id')
             ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')
-            ->where('AT.id', $type_id)->get()->getResultObject();
+            ->where('AP.application_type_id', $type_id)->where("ET.score_pre_origin IS NOT NULL")->get()->getResultObject();
 
         return view('administrator/export/pre_officer', $data);
     }
@@ -161,12 +161,12 @@ class Report extends BaseController
     public function onsite_officer($type_id)
     {
         $data['result'] = $this->db->table('estimate ET')
-            ->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight, QU.onside_score')
-            ->join('question QU', 'QU.id = ET.question_id')
+            ->select('ET.*,QU.question, QU.assessment_group_id, AP.code, AP.attraction_name_th, AP.application_type_id, AT.name AS application_type_name, ATS.name AS application_type_sub_name, AP.address_province, QU.pre_score, QU.weight, QU.onside_score')
+            ->join('question QU', 'QU.id = ET.question_id AND QU.assessment_group_id != 4')
             ->join('application_form AP', 'AP.id = ET.application_id')
             ->join('application_type AT', 'AT.id = AP.application_type_id')
             ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')
-            ->where('AT.id', $type_id)->get()->getResultObject();
+            ->where('AP.application_type_id', $type_id)->where("ET.score_onsite_origin IS NOT NULL")->get()->getResultObject();
 
         return view('administrator/export/onsite_officer', $data);
     }

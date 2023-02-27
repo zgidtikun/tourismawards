@@ -486,7 +486,7 @@
                     <b>Line OA: <a href="https://lin.ee/KhaHCpd" target="_blank" class="txt-green">@touirsmawards</a></b>
                 </p>
                 <p>
-                    <b>ติดต่อสอบถามข้อมูลโครงการ<br><a href="tel:0641043958" class="txt-green">โทร. 064-104-3958</a></b>
+                    <b>ติดต่อสอบถามข้อมูลโครงการ<br><a href="tel:022505500" class="txt-green">โทร. 0 2250 5500</a></b>
                 </p>
             </div>
 
