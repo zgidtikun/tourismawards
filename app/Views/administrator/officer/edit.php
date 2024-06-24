@@ -58,6 +58,7 @@
               <option value="นาย" <?= (@$result->prefix == 'นาย') ? 'selected' : ''; ?>>นาย</option>
               <option value="นาง" <?= (@$result->prefix == 'นาง') ? 'selected' : ''; ?>>นาง</option>
               <option value="นางสาว" <?= (@$result->prefix == 'นางสาว') ? 'selected' : ''; ?>>นางสาว</option>
+              <option value="ดร." <?= (@$result->prefix == 'ดร.') ? 'selected' : ''; ?>>ดร.</option>
             </select>
           </div>
         </div>

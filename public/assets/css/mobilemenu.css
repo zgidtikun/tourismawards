@@ -34,7 +34,7 @@ z-index: 999;
     width: 320px;
     max-height: 600px;
     position: absolute;
-    background-color: #205010;
+    background-color: #14463d;
     border-radius: 20px;
     top: 50px;
     right: 20px;
@@ -58,7 +58,7 @@ z-index: 999;
     position: absolute;
     left: 0;
     right: 0;
-    background-color: #205010;
+    background-color: #14463d;
     padding-bottom: 20px;
     z-index: 1;
 }

@@ -1,34 +1,34 @@
 var appid, sp, tycoon, dataset, assign, expireRequest,
-    pointer     = { cate: -1, seg: -1 },
+    pointer = { cate: -1, seg: -1 },
     haveRequest = false,
-    lowcarbon   = false;
+    lowcarbon = false;
 
-const btnSave   = $('#btn-save');
-const btnBack   = $('#btn-back');
-const btnNext   = $('#btn-next');
-const btnReset  = $('#btn-reset');
-const btnRequest= $('#btn-request');
-const btnSMemo  = $('.btn-memosave');
-const qTitle    = $('#qTitle');
-const qSum      = $('#qSum');
-const qNum      = $('#qNum');
-const qSubject  = $('#qSubject');
-const qRemark  = $('#qRemark');
-const hSubject  = $('#hSubject');
-const qReply    = $('#qReply');
-const qAblum    = $('#qAblum');
-const mTNum     = $('#mTNum');
-const mNum      = $('#mNum');
-const mSum      = $('#mSum');
-const qEva      = $('#qEva');
-const qSco      = $('#qSco');
-const esCmm     = $('#comment');
-const esNote    = $('#note');
-const qRequest  = $('#qRequest');
-const mSelect   = $('#mSelect');
-const sRequest   = $('#sRequest');
+const btnSave = $('#btn-save');
+const btnBack = $('#btn-back');
+const btnNext = $('#btn-next');
+const btnReset = $('#btn-reset');
+const btnRequest = $('#btn-request');
+const btnSMemo = $('.btn-memosave');
+const qTitle = $('#qTitle');
+const qSum = $('#qSum');
+const qNum = $('#qNum');
+const qSubject = $('#qSubject');
+const qRemark = $('#qRemark');
+const hSubject = $('#hSubject');
+const qReply = $('#qReply');
+const qAblum = $('#qAblum');
+const mTNum = $('#mTNum');
+const mNum = $('#mNum');
+const mSum = $('#mSum');
+const qEva = $('#qEva');
+const qSco = $('#qSco');
+const esCmm = $('#comment');
+const esNote = $('#note');
+const qRequest = $('#qRequest');
+const mSelect = $('#mSelect');
+const sRequest = $('#sRequest');
 
-const setPage = (id,stage,ass,er) => {
+const setPage = (id, stage, ass, er) => {
     appid = id;
     sp = stage;
     assign = ass;
@@ -40,7 +40,7 @@ const getPointer = () => {
     return pointer;
 }
 
-const setPointer = (cate,seg) => {
+const setPointer = (cate, seg) => {
     pointer = { cate: cate, seg: seg };
 }
 
@@ -52,43 +52,45 @@ const getIsFinish = () => {
     return sp.isFinish;
 }
 
-const init = async() =>{
+const init = async() => {
     await loading('show');
 
-    api({ method: 'get', url: '/inner-api/boards/estimate/'+appid })
-    .then(async(rs) => {
-        tycoon      = rs.tycoon;     
-        dataset     = rs.data;  
-        haveRequest = rs.request;
-        lowcarbon   = rs.lowcarbon
-        
-        let tmp = tycoon.t_name.split('(');
-        tycoon.t_name = tmp[0].trim();
+    api({ method: 'get', url: '/inner-api/boards/estimate/' + appid })
+        .then(async(rs) => {
+            tycoon = rs.tycoon;
+            dataset = rs.data;
+            haveRequest = rs.request;
+            lowcarbon = rs.lowcarbon
 
-        tmp = tycoon.ts_name.split('(');
-        tycoon.ts_name = tmp[0].trim();
+            let tmp = tycoon.t_name.split('(');
+            tycoon.t_name = tmp[0].trim();
 
-        $('#tyCode').html(tycoon.code);      
-        $('#tyType').html(tycoon.t_name);    
-        $('#tyName').html(tycoon.knitter_name);    
-        $('#tyAttnTh').html(tycoon.attn_th);    
-        $('#tyTSbu').html(tycoon.ts_name);    
-        $('#tyEmail').html(tycoon.knitter_email);    
-        $('#tyAttnEn').html(tycoon.attn_en);    
-        $('#tyUdat').html(tycoon.send_date);    
-        $('#tyTel').html(tycoon.knitter_tel);
+            tmp = tycoon.ts_name.split('(');
+            tycoon.ts_name = tmp[0].trim();
+            // console.log(tycoon);
 
-        if(lowcarbon){
-            $('#tab-3').show();
-        }
-        
-        loading('hide');        
-        setQuestion(assign[0]-1,0);
-        checkComplete();
-    });
+            $('#tyCode').html(tycoon.code);
+            $('#tyType').html(tycoon.t_name);
+            $('#tyName').html(tycoon.knitter_name);
+            $('#tyAttnTh').html(tycoon.attn_th);
+            $('#tyTSbu').html(tycoon.ts_name);
+            $('#tyEmail').html(tycoon.knitter_email);
+            $('#tyAttnEn').html(tycoon.attn_en);
+            $('#tyUdat').html(tycoon.send_date);
+            $('#tyTel').html(tycoon.knitter_tel);
+            $('#tyProvince').html(tycoon.address_province);
+
+            if (lowcarbon) {
+                $('#tab-3').show();
+            }
+
+            loading('hide');
+            setQuestion(assign[0] - 1, 0);
+            checkComplete();
+        });
 }
 
-const setRequest = async() => {    
+const setRequest = async() => {
     await loading('show');
     const st = {
         method: 'post',
@@ -105,7 +107,7 @@ const setRequest = async() => {
         $('#modal-add-paper').modal('hide');
         sp.status = 3;
 
-        if(rs.result == 'success'){
+        if (rs.result == 'success') {
             title = 'ส่งคำขอข้อมูลเพิ่มเติมแล้ว';
             msg = 'กรุณารอผู้ประกอบการตอบกลับภายใน 72 ชั่วโมง<br>ท่านจึงจะสามารถกลับมาประเมินต่อได้';
         } else {
@@ -113,8 +115,8 @@ const setRequest = async() => {
             msg = rs.message;
         }
 
-        alert.show(rs.result,title,msg).then((al) => {
-            if(rs.result == 'success'){
+        alert.show(rs.result, title, msg).then((al) => {
+            if (rs.result == 'success') {
                 sp.status = 3;
                 haveRequest = true;
                 disabledForm();
@@ -124,10 +126,10 @@ const setRequest = async() => {
 }
 
 const setFinish = () => {
-    let tscore, mscore, tescore, ttescore, sbscoe, 
-        tsbscoe, rsscore, trsscore, 
+    let tscore, mscore, tescore, ttescore, sbscoe,
+        tsbscoe, rsscore, trsscore,
         te, sb, rs;
-        
+
     tscore = mscore = 0;
     tescore = sbscoe = rsscore = 0;
     ttescore = tsbscoe = trsscore = 0;
@@ -135,52 +137,47 @@ const setFinish = () => {
 
     let estimateLowCarbon = false;
     let estimateMain = false;
-    
-    $.each(assign,(ak,av) => {        
-        let index = av-1;
 
-        if(av == 1){ 
+    $.each(assign, (ak, av) => {
+        let index = av - 1;
+
+        if (av == 1) {
             te = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
-            estimateMain = true; 
-        }
-        else if(av == 2){ 
+            estimateMain = true;
+        } else if (av == 2) {
             sb = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
-            estimateMain = true; 
-        }
-        else if(av == 3){
+            estimateMain = true;
+        } else if (av == 3) {
             rs = Number(dataset[index].group.score_prescreen);
             tscore += Number(dataset[index].group.score_prescreen);
-            estimateMain = true; 
-        }
-        else {
-            estimateLowCarbon = true; 
+            estimateMain = true;
+        } else {
+            estimateLowCarbon = true;
         }
 
-        $.each(dataset[index].question,(qk,qv) => {
-            if(!empty(qv.score_pre) && Number(qv.pre_status) == 1){
-                if(av == 1){ 
-                    tescore += Number(qv.score_pre_origin) *  Number(qv.weight);
+        $.each(dataset[index].question, (qk, qv) => {
+            if (!empty(qv.score_pre) && Number(qv.pre_status) == 1) {
+                if (av == 1) {
+                    tescore += Number(qv.score_pre_origin) * Number(qv.weight);
                     ttescore += Number(qv.pre_score);
-                }
-                else if(av == 2){ 
-                    sbscoe += Number(qv.score_pre_origin) *  Number(qv.weight);
+                } else if (av == 2) {
+                    sbscoe += Number(qv.score_pre_origin) * Number(qv.weight);
                     tsbscoe += Number(qv.pre_score);
-                }
-                else if(av == 3){
-                    rsscore += Number(qv.score_pre_origin) *  Number(qv.weight);
+                } else if (av == 3) {
+                    rsscore += Number(qv.score_pre_origin) * Number(qv.weight);
                     trsscore += Number(qv.pre_score);
                 } else {
                     lcbscore += Number(qv.score_pre_origin);
-                }             
+                }
             }
         });
     });
-    
+
     let confirm_title = `ยืนยันการส่งผลประเมินเข้าระบบ`;
 
-    if(estimateMain){
+    if (estimateMain) {
         const stescore = tescore != 0 ? ((tescore * te) / ttescore).toFixed(2) : 0;
         const ssbscore = sbscoe != 0 ? ((sbscoe * sb) / tsbscoe).toFixed(2) : 0;
         const srsscore = rsscore != 0 ? ((rsscore * rs) / trsscore).toFixed(2) : 0;
@@ -188,68 +185,67 @@ const setFinish = () => {
         confirm_title += `\r\nคะแนนที่ประเมินคือ <span class="txt-yellow">${sscore}</span> คะแนน`;
     }
 
-    if(estimateLowCarbon){
+    if (estimateLowCarbon) {
         confirm_title += `\r\nคะแนน Low Carbon คือ <span class="txt-yellow">${lcbscore}</span> คะแนน`;
     }
 
     alert.confirm({
-        mode: 'confirm-main',
-        icon: 'info',
-        title: confirm_title,
-        text: 'กรุณาตรวจสอบความถูกต้องก่อนส่งผลประเมินเข้าระบบ<br>หากส่งผลประเมินเข้าระบบแล้ว จะไม่สามารถกลับมาแก้ไขการประเมินได้',
-        button: {
-            confirm: 'ส่งผลประเมินเข้าระบบ',
-            cancel: 'ยกเลิก'
-        }
-    })
-    .then(async(rs) => {
-        if(rs.status){
-            await loading('show');
+            mode: 'confirm-main',
+            icon: 'info',
+            title: confirm_title,
+            text: 'กรุณาตรวจสอบความถูกต้องก่อนส่งผลประเมินเข้าระบบ<br>หากส่งผลประเมินเข้าระบบแล้ว จะไม่สามารถกลับมาแก้ไขการประเมินได้',
+            button: {
+                confirm: 'ส่งผลประเมินเข้าระบบ',
+                cancel: 'ยกเลิก'
+            }
+        })
+        .then(async(rs) => {
+            if (rs.status) {
+                await loading('show');
 
-            const setting = {
-                method: 'post',
-                url: '/inner-api/estimate/pre-screen/complete',
-                data: JSON.stringify({
-                    data:{
-                        appId: appid,
-                        stage: 1,
-                        lowcarbon: estimateLowCarbon
-                }})
-            }
+                const setting = {
+                    method: 'post',
+                    url: '/inner-api/estimate/pre-screen/complete',
+                    data: JSON.stringify({
+                        data: {
+                            appId: appid,
+                            stage: 1,
+                            lowcarbon: estimateLowCarbon
+                        }
+                    })
+                }
 
-            const callback = await api(setting);
-            await loading('hide');
+                const callback = await api(setting);
+                await loading('hide');
 
-            if(callback.result == 'error_login'){
-                alert.login();
+                if (callback.result == 'error_login') {
+                    alert.login();
+                } else if (callback.result == 'error') {
+                    alert.show('warning', 'ไม่สามารถส่งผลประเมินเข้าระบบได้', callback.message);
+                    waitDraft('finish');
+                } else {
+                    await alert.show('success', 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '');
+                    checkComplete();
+                    waitDraft('finish');
+                    window.location.href = `${getBaseUrl()}/boards`;
+                }
             }
-            else if(callback.result == 'error'){
-                alert.show('warning','ไม่สามารถส่งผลประเมินเข้าระบบได้',callback.message);
-                waitDraft('finish');
-            }
-            else {
-                await alert.show('success', 'ส่งผลประเมินเข้าระบบเรียบร้อยแล้ว', '');
-                checkComplete();
-                waitDraft('finish');
-                window.location.href = `${getBaseUrl()}/boards`;
-            }
-        }
-    });
+        });
 }
 
-const save = (cate,seg) => {
-    return new Promise(async (resolve, reject) => {
+const save = (cate, seg) => {
+    return new Promise(async(resolve, reject) => {
         await waitDraft('wait');
-        if(cate == -1){ cate = 0; }
-        if(seg == -1){ seg = 0; }
-        
+        if (cate == -1) { cate = 0; }
+        if (seg == -1) { seg = 0; }
+
         const question = dataset[cate].question[seg];
 
-        if(
-            $.inArray(Number(question.request_status),[2,4]) !== -1 &&
-            !empty(question.score_pre) && 
+        if (
+            $.inArray(Number(question.request_status), [2, 4]) !== -1 &&
+            !empty(question.score_pre) &&
             Number(question.pre_status) == 1
-        ){
+        ) {
             question.request_status = null;
             dataset[cate].question[seg].request_status = null;
         }
@@ -276,60 +272,58 @@ const save = (cate,seg) => {
         };
 
         api(st).then((rs) => {
-            if(rs.result == 'success'){
+            if (rs.result == 'success') {
                 dataset[cate].question[seg].est_id = rs.id;
                 dataset[cate].question[seg].estimate_by = rs.by;
                 dataset[cate].question[seg].estimate = false;
 
-                if(
-                    !empty(dataset[cate].question[seg].request_status) &&
-                    $.inArray(Number(dataset[cate].question[seg].request_status),[0,1,2,4]) !== -1
-                ){
-                    $('#sl-'+seg).removeClass('active')
-                    .removeClass('complete')
-                    .removeClass('respond')
-                    .addClass('request');
+                if (!empty(dataset[cate].question[seg].request_status) &&
+                    $.inArray(Number(dataset[cate].question[seg].request_status), [0, 1, 2, 4]) !== -1
+                ) {
+                    $('#sl-' + seg).removeClass('active')
+                        .removeClass('complete')
+                        .removeClass('respond')
+                        .addClass('request');
                     setReqestFiled(dataset[cate].question[seg]);
-                }
-                else if(!empty(dataset[cate].question[seg].score_pre_origin)){
-                    $('#sl-'+seg)
-                    .removeClass('active')
-                    .removeClass('request')
-                    .removeClass('respond')
-                    .addClass('complete');
+                } else if (!empty(dataset[cate].question[seg].score_pre_origin)) {
+                    $('#sl-' + seg)
+                        .removeClass('active')
+                        .removeClass('request')
+                        .removeClass('respond')
+                        .addClass('complete');
                 } else {
-                    $('#sl-'+seg)
-                    .removeClass('complete')
-                    .removeClass('request')
-                    .removeClass('respond')
-                    .addClass('active');
+                    $('#sl-' + seg)
+                        .removeClass('complete')
+                        .removeClass('request')
+                        .removeClass('respond')
+                        .addClass('active');
                 }
-                
-                alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'}); 
+
+                alert.toast({ icon: 'success', title: 'บันทึกการประเมินแล้ว' });
+                checkComplete();
                 waitDraft('finish');
-                resolve({ result: 'success' });       
-            }
-            else if(rs.result == 'error_login'){
+                resolve({ result: 'success' });
+            } else if (rs.result == 'error_login') {
                 alert.login();
                 resolve({ result: 'error' });
             } else {
-                alert.toast({icon: rs.result, title: rs.message});      
+                alert.toast({ icon: rs.result, title: rs.message });
                 waitDraft('finish');
-                resolve({ result: 'error' });  
+                resolve({ result: 'error' });
             }
         });
     });
 }
 
-const draft = (cate,seg) => {
-    return new Promise(async (resolve, reject) => {
+const draft = (cate, seg) => {
+    return new Promise(async(resolve, reject) => {
         await waitDraft('wait');
-        if(cate == -1){ cate = 0; }
-        if(seg == -1){ seg = 0; }
-        
+        if (cate == -1) { cate = 0; }
+        if (seg == -1) { seg = 0; }
+
         const question = dataset[cate].question[seg];
 
-        if(question.estimate){      
+        if (question.estimate) {
 
             const st = {
                 method: 'post',
@@ -353,117 +347,115 @@ const draft = (cate,seg) => {
             };
 
             api(st).then((rs) => {
-                if(rs.result == 'success'){
+                if (rs.result == 'success') {
                     dataset[cate].question[seg].est_id = rs.id;
                     dataset[cate].question[seg].estimate_by = rs.by;
                     dataset[cate].question[seg].estimate = false;
-                    
-                    if(
-                        !empty(dataset[cate].question[seg].request_status) &&
-                        $.inArray(Number(dataset[cate].question[seg].request_status),[0,1,2,4]) !== -1
-                    ){
-                        $('#sl-'+seg).removeClass('active')
-                        .removeClass('complete')
-                        .removeClass('respond')
-                        .addClass('request');
-                    }
-                    else if(!empty(dataset[cate].question[seg].score_pre_origin)){
-                        $('#sl-'+seg)
-                        .removeClass('active')
-                        .removeClass('request')
-                        .removeClass('respond')
-                        .addClass('complete');
+
+                    if (!empty(dataset[cate].question[seg].request_status) &&
+                        $.inArray(Number(dataset[cate].question[seg].request_status), [0, 1, 2, 4]) !== -1
+                    ) {
+                        $('#sl-' + seg).removeClass('active')
+                            .removeClass('complete')
+                            .removeClass('respond')
+                            .addClass('request');
+                    } else if (!empty(dataset[cate].question[seg].score_pre_origin)) {
+                        $('#sl-' + seg)
+                            .removeClass('active')
+                            .removeClass('request')
+                            .removeClass('respond')
+                            .addClass('complete');
                     } else {
-                        $('#sl-'+seg)
-                        .removeClass('complete')
-                        .removeClass('request')
-                        .removeClass('respond')
-                        .addClass('active');
+                        $('#sl-' + seg)
+                            .removeClass('complete')
+                            .removeClass('request')
+                            .removeClass('respond')
+                            .addClass('active');
                     }
 
-                    alert.toast({icon: 'success', title: 'บันทึกการประเมินแล้ว'}); 
+                    alert.toast({ icon: 'success', title: 'บันทึกการประเมินแล้ว' });
                     waitDraft('finish');
-                    resolve({ result: 'success' });       
-                }
-                else if(rs.result == 'error_login'){
+                    checkComplete();
+                    resolve({ result: 'success' });
+                } else if (rs.result == 'error_login') {
                     alert.login();
                     resolve({ result: 'error' });
                 } else {
-                    alert.toast({icon: rs.result, title: rs.message});      
+                    alert.toast({ icon: rs.result, title: rs.message });
                     waitDraft('finish');
-                    resolve({ result: 'error' });  
+                    resolve({ result: 'error' });
                 }
             });
-        } else {  
+        } else {
             waitDraft('finish')
-            resolve({ result: 'success' });    
+            resolve({ result: 'success' });
         }
     });
 }
 
 const waitDraft = sts => {
-    return new Promise(function(resolve, reject){
-        if(sts == 'wait'){
+    return new Promise(function(resolve, reject) {
+        if (sts == 'wait') {
             $('#tab-0').addClass('disabled');
             $('#tab-1').addClass('disabled');
             $('#tab-2').addClass('disabled');
             $('.btn-choice').addClass('disabled');
-            $('.btn-confirm-submit').prop('disabled',true);
-            $('[name=score]').prop('disabled',true);
-            esCmm.prop('readonly','readyonly');
-            qRequest.prop('readonly','readyonly');
-            esNote.prop('readonly','readyonly');
-            btnBack.prop('disabled',true);
-            btnNext.prop('disabled',true);
-            btnSMemo.prop('disabled',true);
-            btnSave.prop('disabled',true);
-            btnReset.prop('disabled',true);
-            btnRequest.prop('disabled',true);
-            resolve({finish: true});
+            $('.btn-confirm-submit').prop('disabled', true);
+            $('[name=score]').prop('disabled', true);
+            esCmm.prop('readonly', 'readyonly');
+            qRequest.prop('readonly', 'readyonly');
+            esNote.prop('readonly', 'readyonly');
+            btnBack.prop('disabled', true);
+            btnNext.prop('disabled', true);
+            btnSMemo.prop('disabled', true);
+            btnSave.prop('disabled', true);
+            btnReset.prop('disabled', true);
+            btnRequest.prop('disabled', true);
+            resolve({ finish: true });
         } else {
             $('#tab-0').removeClass('disabled');
             $('#tab-1').removeClass('disabled');
             $('#tab-2').removeClass('disabled');
             $('.btn-choice').removeClass('disabled');
-            $('.btn-confirm-submit').prop('disabled',false);
-            $('[name=score]').prop('disabled',false);
-            esCmm.prop('readonly','');
-            qRequest.prop('readonly','');
-            esNote.prop('readonly','');
-            btnBack.prop('disabled',false);
-            btnNext.prop('disabled',false);
-            btnSMemo.prop('disabled',false);
-            btnSave.prop('disabled',false);
-            btnReset.prop('disabled',false);
-            btnRequest.prop('disabled',false);             
+            $('.btn-confirm-submit').prop('disabled', false);
+            $('[name=score]').prop('disabled', false);
+            esCmm.prop('readonly', '');
+            qRequest.prop('readonly', '');
+            esNote.prop('readonly', '');
+            btnBack.prop('disabled', false);
+            btnNext.prop('disabled', false);
+            btnSMemo.prop('disabled', false);
+            btnSave.prop('disabled', false);
+            btnReset.prop('disabled', false);
+            btnRequest.prop('disabled', false);
             checkComplete();
-            resolve({finish: true});
+            resolve({ finish: true });
         }
     });
 }
 
-const setQuestion = (cate,seg) => {    
+const setQuestion = (cate, seg) => {
     const regex = /<[^>]+>/gi;
     let point = getPointer(),
         changeCate = false;
-        qcontent = '';
+    qcontent = '';
 
-    if(point.cate != cate){
+    if (point.cate != cate) {
         changeCate = true;
     }
-    
-    draft(point.cate,point.seg).then(draftRes => {
-        if(changeCate){
+
+    draft(point.cate, point.seg).then(draftRes => {
+        if (changeCate) {
             $('.btn-form-step').removeClass('active');
-            $('#tab-'+cate).addClass('active');
-            $('#tab-'+cate)[0].scrollIntoView();
-            setDropdown(dataset[cate].question,cate,seg);
+            $('#tab-' + cate).addClass('active');
+            $('#tab-' + cate)[0].scrollIntoView();
+            setDropdown(dataset[cate].question, cate, seg);
         }
 
-        if(point.cate == -1){ point.cate = cate; }
-        if(point.seg == -1){ point.seg = seg; }
+        if (point.cate == -1) { point.cate = cate; }
+        if (point.seg == -1) { point.seg = seg; }
 
-        qTitle.attr('data-id','');
+        qTitle.attr('data-id', '');
         qSum.html('');
         mSum.html('');
         qNum.html('');
@@ -471,84 +463,82 @@ const setQuestion = (cate,seg) => {
         mNum.html('');
         qSubject.html('');
         esCmm.val('');
-        esNote.val(''); 
+        esNote.val('');
         qRemark.html('หมายเหตุ : ');
-        qAblum.html('');        
+        qAblum.html('');
         qEva.html('');
         qSco.html('');
-        
+
         const category = dataset[cate];
-        const question = category.question[seg];        
+        const question = category.question[seg];
         // console.log(question,`QuestionID: ${question.id}, Origin: ${question.score_pre_origin}, Weignt: ${question.weight}, Full score: ${question.pre_score}`);
         $('.hide-choice').hide();
         $('body').removeClass('lockbody');
 
         $('.sl').removeClass('active');
-        
-        if(!$('#sl-'+seg).hasClass('complete') && !$('#sl-'+seg).hasClass('request')){
-            $('#sl-'+seg).addClass('active');
+
+        if (!$('#sl-' + seg).hasClass('complete') && !$('#sl-' + seg).hasClass('request')) {
+            $('#sl-' + seg).addClass('active');
         }
 
-        if(!changeCate){
-            if(
-                dataset[point.cate].question[point.seg].request_status === null
-                || Number(dataset[point.cate].question[point.seg].request_status) === 3
-            ){
-                if(
+        if (!changeCate) {
+            if (
+                dataset[point.cate].question[point.seg].request_status === null ||
+                Number(dataset[point.cate].question[point.seg].request_status) === 3
+            ) {
+                if (
                     empty(dataset[point.cate].question[point.seg].score_pre)
-                ){
-                    $('#sl-'+point.seg).removeClass('complete');
+                ) {
+                    $('#sl-' + point.seg).removeClass('complete');
                 } else {
-                    $('#sl-'+point.seg).addClass('complete');
+                    $('#sl-' + point.seg).addClass('complete');
                 }
             } else {
                 const request_status = Number(dataset[point.cate].question[point.seg].request_status);
-                $('#sl-'+point.seg).removeClass('complete');
-                if(request_status == 0 || request_status == 1){
-                    $('#sl-'+point.seg).addClass('request');
+                $('#sl-' + point.seg).removeClass('complete');
+                if (request_status == 0 || request_status == 1) {
+                    $('#sl-' + point.seg).addClass('request');
                 } else {
-                    $('#sl-'+point.seg).addClass('respond');
+                    $('#sl-' + point.seg).addClass('respond');
                 }
             }
         }
 
-        setPointer(cate,seg);
+        setPointer(cate, seg);
         sRequest.hide();
-        
-        if(!empty(question.request_status)){
-            if($.inArray(Number(question.request_status),[0,1,2,4]) !== -1){
-                if($.inArray(Number(question.request_status),[0,1]) !== -1){
+
+        if (!empty(question.request_status)) {
+            if ($.inArray(Number(question.request_status), [0, 1, 2, 4]) !== -1) {
+                if ($.inArray(Number(question.request_status), [0, 1]) !== -1) {
                     sRequest.html('คุณมีการขอข้อมูลเพิ่มเติมในข้อนี้');
-                } 
-                else if(Number(question.request_status) == 2){
+                } else if (Number(question.request_status) == 2) {
                     sRequest.html('คุณได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้แล้ว');
-                }
-                else {
+                } else {
                     sRequest.html('คุณยังไม่ได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้');
                 }
 
                 sRequest.show();
             }
-        }  
-        
-        if(cate != 3){
+        }
+
+        if (cate != 3) {
             qTitle.html(category.group.name);
         } else {
             qTitle.html(question.criteria_topic);
         }
-        
-        qTitle.attr('data-id',question.reply_id);
+
+        qTitle.attr('data-id', question.reply_id);
         qSum.html(category.question.length);
         mSum.html(category.question.length);
         qNum.html(question.no);
         mTNum.html(question.no);
         mNum.html(question.no);
-        qSubject.html(question.no+'. '+question.question);
+        qSubject.html(question.no + '. ' + question.question);
         esCmm.val(question.comment_pre);
-        esNote.val(question.note_pre);    
+        esNote.val(question.note_pre);
 
-        if(!empty(question.remark)){
-            qRemark.html('หมายเหตุ : '+question.remark);
+        if (!empty(question.remark)) {
+            qRemark.html('หมายเหตุ : ' + question.remark);
             qRemark.show();
         } else {
             qRemark.hide();
@@ -556,36 +546,36 @@ const setQuestion = (cate,seg) => {
 
         countChar($('#comment'))
 
-        if(question.images.length > 0){
-            qAblum.removeClass('text-center');                                        
+        if (question.images.length > 0) {
+            qAblum.removeClass('text-center');
             qAblum.addClass('ablumbox');
             let ap = '';
 
-            $.each(question.images,(k,v) => {
+            $.each(question.images, (k, v) => {
                 ap += (
-                    '<div class="ablumbox-col">'
-                        + '<div class="ablum-mainimg">'
-                            + '<div class="ablum-mainimg-scale">'
-                                + '<img src="'+window.uploadFileUrl+v.file_path+'" '
-                                + 'class="ablum-img" onclick="zoomImages(this)">'
-                            + '</div>'
-                        + '</div>'
-                    + '</div>'
+                    '<div class="ablumbox-col">' +
+                    '<div class="ablum-mainimg">' +
+                    '<div class="ablum-mainimg-scale">' +
+                    '<img src="' + window.uploadFileUrl + v.file_path + '" ' +
+                    'class="ablum-img" onclick="zoomImages(this)">' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
                 );
-            });            
+            });
 
             qAblum.html(ap);
         } else {
-            qAblum.removeClass('ablumbox');                                        
+            qAblum.removeClass('ablumbox');
             qAblum.addClass('text-center');
-            qAblum.css('color','#000');
+            qAblum.css('color', '#000');
             qAblum.text('ไม่มีรูปแนบ');
         }
 
         const btnDownload = $(`.btn-download`);
         const listDownload = $(`#list-download`);
 
-        if(question.paper < 1){           
+        if (question.paper < 1) {
             // btnDownload.addClass('btn-transparent disabled');
             // btnDownload.css('color','#000');
             // btnDownload.css('opacity','1');
@@ -598,7 +588,7 @@ const setQuestion = (cate,seg) => {
             // btnDownload.css('opacity','1');
             // btnDownload.html('ดาวน์โหลดไฟล์แนบ');
             let list = '';
-            $.each(question.paper,(key,paper) => {
+            $.each(question.paper, (key, paper) => {
                 list += `
                     <div class="col-12">
                         <div class="card card-body-muted">
@@ -618,17 +608,17 @@ const setQuestion = (cate,seg) => {
             listDownload.show();
         }
 
-        let back = seg != 0 ? seg-1 : seg,
-            next = seg != category.question.length-1 ? seg+1 : seg;
+        let back = seg != 0 ? seg - 1 : seg,
+            next = seg != category.question.length - 1 ? seg + 1 : seg;
 
-        btnBack.attr('onclick','setQuestion('+cate+','+back+')');
-        btnNext.attr('onclick','setQuestion('+cate+','+next+')');
-        btnSMemo.attr('onclick','draft('+cate+','+seg+')');
+        btnBack.attr('onclick', 'setQuestion(' + cate + ',' + back + ')');
+        btnNext.attr('onclick', 'setQuestion(' + cate + ',' + next + ')');
+        btnSMemo.attr('onclick', 'draft(' + cate + ',' + seg + ')');
 
-        if(seg == 0){
+        if (seg == 0) {
             btnBack.hide();
             btnNext.show();
-        } else if(seg >= category.question.length-1){
+        } else if (seg >= category.question.length - 1) {
             btnBack.show();
             btnNext.hide();
         } else {
@@ -638,16 +628,16 @@ const setQuestion = (cate,seg) => {
 
         qReply.html(question.reply);
 
-        if(Number(question.pre_status) == 1 && $.inArray(cate+1,assign) !== -1){
+        if (Number(question.pre_status) == 1 && $.inArray(cate + 1, assign) !== -1) {
             $('.none-estimate').hide();
             $('.none-assign').hide();
             $('.is-estimate').show();
-            btnSave.attr('onclick','save('+cate+','+seg+')');
-            btnRequest.attr('onclick','save('+cate+','+seg+')');
+            btnSave.attr('onclick', 'save(' + cate + ',' + seg + ')');
+            btnRequest.attr('onclick', 'save(' + cate + ',' + seg + ')');
             btnSave.show();
             btnReset.show();
         } else {
-            if($.inArray(cate+1,assign) !== -1){
+            if ($.inArray(cate + 1, assign) !== -1) {
                 $('.none-assign').hide();
                 $('.none-estimate').show();
             } else {
@@ -656,8 +646,8 @@ const setQuestion = (cate,seg) => {
             }
 
             $('.is-estimate').hide();
-            btnSave.hide();    
-            btnReset.hide();  
+            btnSave.hide();
+            btnReset.hide();
             return;
         }
 
@@ -665,74 +655,71 @@ const setQuestion = (cate,seg) => {
 
         let ev = sc = '';
 
-        if(regex.test(question.pre_eva)){
+        if (regex.test(question.pre_eva)) {
             ev = question.pre_eva;
-        } else {            
-            ev = '<span class="title-comment">'
-                    + question.pre_eva
-                '</span>';
+        } else {
+            ev = '<span class="title-comment">' + question.pre_eva + '</span>';
         }
 
         const sco = question.pre_scor.split('|');
 
         sc += '<h4>เกณฑ์การให้คะแนนรอบ Pre-Screen</h4>';
-        
-        $.each(sco,(k,v) => {
-            if(!empty(v)){
+
+        $.each(sco, (k, v) => {
+            if (!empty(v)) {
                 let tmp = v.split('='),
                     dis = ck = '';
-                    
-                if(
-                    $.inArray(Number(getStageStatus()),[3,6,7]) !== -1
-                ){
-                    if(
-                        getIsFinish() == 'finish' 
-                        || (getIsFinish() == 'unfinish' && haveRequest)
-                    ){
+
+                if (
+                    $.inArray(Number(getStageStatus()), [3, 6, 7]) !== -1
+                ) {
+                    if (
+                        getIsFinish() == 'finish' ||
+                        (getIsFinish() == 'unfinish' && haveRequest)
+                    ) {
                         dis = 'disabled';
                     }
                 }
 
-                if(!empty(question.score_pre_origin)){
-                    if(Number(question.score_pre_origin) == Number(tmp[0].trim())){
+                if (!empty(question.score_pre_origin)) {
+                    if (Number(question.score_pre_origin) == Number(tmp[0].trim())) {
                         ck = 'checked';
                     }
                 }
 
                 sc += (
-                    '<p><input type="radio" name="score" value="'+tmp[0].trim()+'" '
-                    + dis+' '+ck
-                    + ' onclick="calScore(this)">'
-                        + tmp[1].trim()
-                        + ' ('+tmp[0].trim()+' คะแนน)'
-                    + '</p>'
+                    '<p><input type="radio" name="score" value="' + tmp[0].trim() + '" ' +
+                    dis + ' ' + ck +
+                    ' onclick="calScore(this)">' +
+                    tmp[1].trim() +
+                    ' (' + tmp[0].trim() + ' คะแนน)' +
+                    '</p>'
                 );
             }
         });
 
         qEva.html(ev);
-        qSco.html(sc);     
+        qSco.html(sc);
         $('.regis-form-step')[0].scrollIntoView();
         disabledForm();
     });
 }
 
-const setDropdown = (qt,cate,seg) => {
+const setDropdown = (qt, cate, seg) => {
     const md = $('#selection-list');
     let modal = slt = '';
     cate = cate == -1 ? 0 : cate;
-    
-    $.each(qt, function(k, v){
-        let hr = 'href="javascript:setQuestion('+cate+','+k+');"',
-            id = 'id="sl-'+k+'"',
-            cp, cl;        
-            
-        if(Number(v.pre_status) == 1 && $.inArray(cate+1,assign) !== -1){            
-            if(
-                !empty(v.request_status)
-                && $.inArray(Number(v.request_status),[0,1,2,4]) !== -1
-            ){
-                if($.inArray(Number(v.request_status),[2,4]) !== -1){
+
+    $.each(qt, function(k, v) {
+        let hr = 'href="javascript:setQuestion(' + cate + ',' + k + ');"',
+            id = 'id="sl-' + k + '"',
+            cp, cl;
+
+        if (Number(v.pre_status) == 1 && $.inArray(cate + 1, assign) !== -1) {
+            if (!empty(v.request_status) &&
+                $.inArray(Number(v.request_status), [0, 1, 2, 4]) !== -1
+            ) {
+                if ($.inArray(Number(v.request_status), [2, 4]) !== -1) {
                     cp = 'respond';
                 } else {
                     cp = 'request';
@@ -741,17 +728,17 @@ const setDropdown = (qt,cate,seg) => {
                 cp = !empty(v.score_pre) ? 'complete' : '';
             }
 
-            slt += '<option value="'+k+'">'+v.no+'</option>';
+            slt += '<option value="' + k + '">' + v.no + '</option>';
         } else {
             cp = 'hold';
         }
-            
-        cl = 'class="sl '+cp+'"';
-        modal += '<li><a '+hr+' '+id+' '+cl+'> ข้อที่ '+v.no+'</a></li>';
+
+        cl = 'class="sl ' + cp + '"';
+        modal += '<li><a ' + hr + ' ' + id + ' ' + cl + '> ข้อที่ ' + v.no + '</a></li>';
     });
 
     md.html(modal);
-    mSelect.html(slt); 
+    mSelect.html(slt);
     checkComplete();
 }
 
@@ -761,62 +748,60 @@ const checkComplete = () => {
         isRequest = false,
         isEmpty = false;
 
-    $.each(assign,(ak,av) => {
+    $.each(assign, (ak, av) => {
         let checkEmptyScore = true,
-            index = av-1;
+            index = av - 1;
 
         let countNoQuestion = 0;
         let countFinish = 0;
         let countRequest = 0;
-       
-        $.each(dataset[index].question,(qk,qv) => {
-            if(Number(qv.pre_status) == 1){
+
+        $.each(dataset[index].question, (qk, qv) => {
+            if (Number(qv.pre_status) == 1) {
                 countNoQuestion++;
                 let checkNotEmpty = true,
                     checkRequest = false;
-
-                if(Number(qv.request_status) === 0 && qv.request_status !== null){
+                    
+                if ((Number(qv.request_status) === 0 || Number(qv.request_status) === 4) && qv.request_status !== null) {
                     checkRequest = true;
                     isRequest = true;
                 }
-                
-                if(empty(qv.score_pre)){
+
+                if (empty(qv.score_pre)) {
                     checkEmptyScore = false;
                     checkNotEmpty = false;
                     isEmpty = true;
                 }
 
-                if(checkNotEmpty || checkRequest){
+                if (checkNotEmpty || checkRequest) {
                     countFinish++;
                 }
             }
         });
-        
-        if(Number(countFinish) == Number(countNoQuestion)){            
+
+        if (Number(countFinish) == Number(countNoQuestion)) {
             ccp++;
         }
 
-        if(checkEmptyScore){
-            $('#tab-'+index).addClass('complete');
+        if (checkEmptyScore) {
+            $('#tab-' + index).addClass('complete');
         } else {
-            $('#tab-'+index).removeClass('complete');
+            $('#tab-' + index).removeClass('complete');
         }
     });
 
-    let p = getPointer();    
-    if(p.cate == -1){ p.cate = 0; }
-    if(p.seg == -1){ p.seg = 0; }
+    let p = getPointer();
+    if (p.cate == -1) { p.cate = 0; }
+    if (p.seg == -1) { p.seg = 0; }
     const request_status = dataset[p.cate].question[p.seg].request_status;
-        
-    if(!empty(request_status)){
-        if($.inArray(Number(request_status),[0,1,2]) !== -1){
-            if($.inArray(Number(request_status),[0,1]) !== -1){
+
+    if (!empty(request_status)) {
+        if ($.inArray(Number(request_status), [0, 1, 2]) !== -1) {
+            if ($.inArray(Number(request_status), [0, 1]) !== -1) {
                 sRequest.html('คุณมีการขอข้อมูลเพิ่มเติมในข้อนี้');
-            } 
-            else if(Number(request_status) == 2){
+            } else if (Number(request_status) == 2) {
                 sRequest.html('คุณได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้แล้ว');
-            }
-            else {
+            } else {
                 sRequest.html('คุณยังไม่ได้รับการตอบกลับข้อมูลเพิ่มเติมในข้อนี้');
             }
 
@@ -828,52 +813,51 @@ const checkComplete = () => {
         sRequest.hide();
     }
 
-    if(ccp < cp){
-        $('#btn-send-request').prop('disabled',true);
-        $('#btn-send-request-modal').prop('disabled',true);
-        $('#btn-send-estimate').prop('disabled',true);
-    } else {    
-        if(isRequest){
-            $('#btn-send-request').prop('disabled',false);
-            $('#btn-send-request-modal').prop('disabled',false);
+    if (ccp < cp) {
+        $('#btn-send-request').prop('disabled', true);
+        $('#btn-send-request-modal').prop('disabled', true);
+        $('#btn-send-estimate').prop('disabled', true);
+    } else {
+        if (isRequest) {
+            $('#btn-send-request').prop('disabled', false);
+            $('#btn-send-request-modal').prop('disabled', false);
         } else {
-            $('#btn-send-request').prop('disabled',true);
-            $('#btn-send-request-modal').prop('disabled',true);
+            $('#btn-send-request').prop('disabled', true);
+            $('#btn-send-request-modal').prop('disabled', true);
         }
-        
-        if(isEmpty || isRequest){
-            $('#btn-send-estimate').prop('disabled',true);
+
+        if (isEmpty || isRequest) {
+            $('#btn-send-estimate').prop('disabled', true);
         } else {
-            $('#btn-send-estimate').prop('disabled',false);
+            $('#btn-send-estimate').prop('disabled', false);
         }
     }
-    
+
     disabledForm();
 }
 
-const disabledForm = () => {    
-    if($.inArray(Number(getStageStatus()),[3,6,7]) !== -1){
-        if(
-            getIsFinish() == 'finish' 
-            || (getIsFinish() == 'unfinish' && haveRequest)
-        ){
-            $('.btn-confirm-submit').hide();        
-            $('[name="score"]').prop('disabled','disabled');
-            esCmm.prop('readonly','readyonly');
-            qRequest.prop('readonly','readyonly');
-            esNote.prop('readonly','readyonly');
+const disabledForm = () => {
+    if ($.inArray(Number(getStageStatus()), [3, 6, 7]) !== -1) {
+        if (
+            getIsFinish() == 'finish' ||
+            (getIsFinish() == 'unfinish' && haveRequest)
+        ) {
+            $('.btn-confirm-submit').hide();
+            $('[name="score"]').prop('disabled', 'disabled');
+            esCmm.prop('readonly', 'readyonly');
+            qRequest.prop('readonly', 'readyonly');
+            esNote.prop('readonly', 'readyonly');
             btnSave.hide();
             btnReset.hide();
             btnRequest.hide();
             btnSMemo.hide();
         }
-    } 
-    else if(getIsFinish() == 'finish') {
-        $('.btn-confirm-submit').hide();        
-        $('[name="score"]').prop('disabled','disabled');
-        esCmm.prop('readonly','readyonly');
-        qRequest.prop('readonly','readyonly');
-        esNote.prop('readonly','readyonly');
+    } else if (getIsFinish() == 'finish') {
+        $('.btn-confirm-submit').hide();
+        $('[name="score"]').prop('disabled', 'disabled');
+        esCmm.prop('readonly', 'readyonly');
+        qRequest.prop('readonly', 'readyonly');
+        esNote.prop('readonly', 'readyonly');
         btnSave.hide();
         btnReset.hide();
         btnRequest.hide();
@@ -883,17 +867,17 @@ const disabledForm = () => {
 
 const downloadFile = () => {
     const point = getPointer();
-    if(dataset[point.cate].question[point.seg].paper.length > 0) {
-        let url = getBaseUrl()+'/inner-api/answer/download/file';
-        url += '/'+qTitle.attr('data-id')+'/paper';
-        window.open(url,'_blank');
+    if (dataset[point.cate].question[point.seg].paper.length > 0) {
+        let url = getBaseUrl() + '/inner-api/answer/download/file';
+        url += '/' + qTitle.attr('data-id') + '/paper';
+        window.open(url, '_blank');
     } else {
-        alert.show('warning','ไม่มีไฟล์ในรายการนี้','');
+        alert.show('warning', 'ไม่มีไฟล์ในรายการนี้', '');
     }
 }
 
-const resetEstimate = (cate,seg) => {
-    $('[name="score"]').prop('checked',false);
+const resetEstimate = (cate, seg) => {
+    $('[name="score"]').prop('checked', false);
     esCmm.val('');
 
     const point = getPointer();
@@ -911,21 +895,21 @@ const calScore = (ele) => {
     const request_status = dataset[point.cate].question[point.seg].request_status;
     let selfscore, totalscore;
 
-    if(lowcarbon && Number(point.cate) == 3){
+    if (lowcarbon && Number(point.cate) == 3) {
         totalscore = selfscore = 0;
     } else {
         const maxscore = question.pre_score;
         const weight = question.weight;
         selfscore = parseFloat(ele.value) * parseFloat(weight);
-        totalscore = selfscore / maxscore;    
+        totalscore = selfscore / maxscore;
     }
-    
+
     dataset[point.cate].question[point.seg].score_pre_origin = ele.value;
     dataset[point.cate].question[point.seg].score_pre = selfscore;
     dataset[point.cate].question[point.seg].tscore_pre = totalscore;
     dataset[point.cate].question[point.seg].estimate = true;
 
-    if($.inArray(Number(request_status),[2,4]) !== -1){
+    if ($.inArray(Number(request_status), [2, 4]) !== -1) {
         dataset[point.cate].question[point.seg].request_status = null;
     }
 }
@@ -946,22 +930,22 @@ const zoomImages = (el) => {
     });
 }
 
-esCmm.on('keypu change',() => {
+esCmm.on('keypu change', () => {
     const point = getPointer();
     dataset[point.cate].question[point.seg].comment_pre = esCmm.val();
     dataset[point.cate].question[point.seg].estimate = true;
 });
 
-esNote.on('keypu change',() => {
+esNote.on('keypu change', () => {
     const point = getPointer();
     dataset[point.cate].question[point.seg].note_pre = esNote.val();
     dataset[point.cate].question[point.seg].estimate = true;
 });
 
-qRequest.on('keypu change',() => {
+qRequest.on('keypu change', () => {
     const point = getPointer();
 
-    if(!empty(qRequest.val())){
+    if (!empty(qRequest.val())) {
         dataset[point.cate].question[point.seg].request_list = qRequest.val();
         dataset[point.cate].question[point.seg].request_status = 0;
         dataset[point.cate].question[point.seg].request_date = getCurrentDate();
@@ -970,15 +954,15 @@ qRequest.on('keypu change',() => {
         dataset[point.cate].question[point.seg].request_status = null;
         dataset[point.cate].question[point.seg].request_date = null;
     }
-    
+
     dataset[point.cate].question[point.seg].estimate = true;
 });
 
 $('.btn-getdata').click(function() {
     const point = getPointer();
-    const question =  dataset[point.cate].question[point.seg];
+    const question = dataset[point.cate].question[point.seg];
     setReqestFiled(question);
-    
+
     mTNum.html(question.no);
     mNum.html(question.no);
     mSelect.val(point.seg);
@@ -988,73 +972,66 @@ $('.btn-getdata').click(function() {
     $('#modal-add-paper').modal('show');
 });
 
-mSelect.change(async() => {        
+mSelect.change(async() => {
     const point = getPointer();
-    
-    if(dataset[point.cate].question[mSelect.val()].estimate){
-        await save(point.cate,point.seg);
+
+    if (dataset[point.cate].question[mSelect.val()].estimate) {
+        await save(point.cate, point.seg);
     }
-    
+
     const question = dataset[point.cate].question[mSelect.val()];
     setReqestFiled(question);
 
-    setQuestion(point.cate,mSelect.val());
+    setQuestion(point.cate, mSelect.val());
     mTNum.html(question.no);
     mNum.html(question.no);
     qRequest.val(question.request_list);
 });
 
-const setReqestFiled = question => {    
+const setReqestFiled = question => {
     $('#rq-finish').hide();
     $('#rq-wait').hide();
     $('#rq-unfinish').hide();
     $('#rq-warning').hide();
 
-    if(expireRequest){
+    if (expireRequest) {
         $('#rq-warning').show();
         $('#rq-warning-txt').html('หมดเวลาการขอข้อมูลเพิ่มเติมแล้ว');
-        qRequest.prop('readonly','readonly');
-    }
-    else if(getIsFinish() == 'finish'){
-        qRequest.prop('readonly','readonly'); 
-    }
-    else if(!empty(question.request_list)){
-        if($.inArray(Number(question.request_status),[1,2,3,4]) !== -1){
-            if(Number(question.request_status) == 1){
+        qRequest.prop('readonly', 'readonly');
+    } else if (getIsFinish() == 'finish') {
+        qRequest.prop('readonly', 'readonly');
+    } else if (!empty(question.request_list)) {
+        if ($.inArray(Number(question.request_status), [1, 2, 3, 4]) !== -1) {
+            if (Number(question.request_status) == 1) {
                 $('#rq-wait').show();
-                qRequest.prop('readonly','readonly');  
-            }
-            else if(Number(question.request_status) == 2) {
+                qRequest.prop('readonly', 'readonly');
+            } else if (Number(question.request_status) == 2) {
                 $('#rq-finish').show();
-                qRequest.prop('readonly',haveRequest ? 'readonly' : '');
-            } 
-            else if(Number(question.request_status) == 4) {
+                qRequest.prop('readonly', haveRequest ? 'readonly' : '');
+            } else if (Number(question.request_status) == 4) {
                 $('#rq-unfinish').show();
-                qRequest.prop('readonly',haveRequest ? 'readonly' : '');
-            } else {     
-                if(haveRequest){          
+                qRequest.prop('readonly', haveRequest ? 'readonly' : '');
+            } else {
+                if (haveRequest) {
                     $('#rq-warning').show();
-                    $('#rq-warning-txt').html('กำลังรอการตอบกลับจากสถานประกอบการ ไม่สามารถขอข้อมูลเพิ่มเติมได้');      
-                    qRequest.prop('readonly','readonly');  
+                    $('#rq-warning-txt').html('กำลังรอการตอบกลับจากสถานประกอบการ ไม่สามารถขอข้อมูลเพิ่มเติมได้');
+                    qRequest.prop('readonly', 'readonly');
                 }
-                qRequest.prop('readonly',haveRequest ? 'readonly' : '');
+                qRequest.prop('readonly', haveRequest ? 'readonly' : '');
             }
-        }
-        else {
+        } else {
             // if(Number(question.request_status) != 0){
             //     $('#rq-finish').show();
             // }
-            qRequest.prop('readonly',haveRequest ? 'readonly' : '');
+            qRequest.prop('readonly', haveRequest ? 'readonly' : '');
         }
-    } else {      
-        if(haveRequest){          
+    } else {
+        if (haveRequest) {
             $('#rq-warning').show();
-            $('#rq-warning-txt').html('กำลังรอการตอบกลับจากสถานประกอบการ ไม่สามารถขอข้อมูลเพิ่มเติมได้');      
-            qRequest.prop('readonly','readonly');  
-        }
-        else {
-            qRequest.prop('readonly','');
+            $('#rq-warning-txt').html('กำลังรอการตอบกลับจากสถานประกอบการ ไม่สามารถขอข้อมูลเพิ่มเติมได้');
+            qRequest.prop('readonly', 'readonly');
+        } else {
+            qRequest.prop('readonly', '');
         }
     }
 }
-

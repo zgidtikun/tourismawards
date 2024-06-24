@@ -22,7 +22,11 @@ $rowHead = [
   'ลำดับที่',
   'รหัส',
   'ชื่อสถานประกอบการ',
-  'คะแนน Responsibility and Safety &Health Administration',
+  'ประเภทรางวัลฯ',
+  'สาขา',
+  'จังหวัด',
+  'คะแนน Responsibility and Safety &Health Administration (Pre-Screen)',
+  'คะแนน Responsibility and Safety &Health Administration (ลงพื้นที่)',
   'คะแนน Low Corbon',
   'คะแนนที่ได้ 100 คะแนน',
 ];
@@ -36,7 +40,7 @@ $end = end($colExcel);
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
-// $sheet->getStyle('D:H')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('G:J')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -67,9 +71,13 @@ if (!empty($result)) {
       ($key + 1),
       $value->code,
       $value->attraction_name_th,
-      $value->score_prescreen_rs + $value->score_onsite_rs,
-      $value->lowcarbon_score,
-      $total,
+      $value->application_type_name,
+      $value->application_type_sub_name,
+      $value->address_province,
+      $value->score_prescreen_rs,
+      $value->score_onsite_rs,
+      FC($value->lowcarbon_score),
+      F2C($total),
     ];
     foreach ($colExcel as $k => $v) {
       $sheet->setCellValue($v . $i, $data[$k]);

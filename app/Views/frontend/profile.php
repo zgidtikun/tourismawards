@@ -261,7 +261,7 @@
         <div class="col12">
             <div class="card">
                 <div class="card-header text-sm-center fs-20 text-base-main fw-semibold">
-                    <span class="mt-3 ml-3"><i class="bi bi-person-lines-fill mr-1"></i> ข้อมูลส่วนตัว<?=$profile->prefix?></span>
+                    <span class="mt-3 ml-3"><i class="bi bi-person-lines-fill mr-1"></i> ข้อมูลส่วนตัว</span>
                 </div>
                 <div class="card-body">
                     <form id="form-profile">
@@ -273,6 +273,7 @@
                                             <option value="นาย" <?php if($profile->prefix == 'นาย'){ echo 'selected'; } ?>>นาย</option>
                                             <option value="นาง" <?php if($profile->prefix == 'นาง'){ echo 'selected'; } ?>>นาง</option>
                                             <option value="นางสาว" <?php if($profile->prefix == 'นางสาว'){ echo 'selected'; } ?>>นางสาว</option>
+                                            <option value="ดร." <?php if($profile->prefix == 'ดร.'){ echo 'selected'; } ?>>ดร.</option>
                                         </select>
                                         <label>คำนำหน้า</label>
                                     </div>

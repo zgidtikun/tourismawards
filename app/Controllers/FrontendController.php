@@ -122,12 +122,12 @@ class FrontendController extends BaseController
 
     public function AssessmentResults()
     {
-        $app = new \Config\App();
+        // $app = new \Config\App();
         $stage = new \App\Models\UsersStage();
         $prescreen = $stage->where(['user_id' => $this->myId, 'stage' => 1])
             ->select('status')->first();
-        $onsite = $stage->where(['user_id' => $this->myId, 'stage' => 2])
-            ->select('status')->first();
+        // $onsite = $stage->where(['user_id' => $this->myId, 'stage' => 2])
+        //     ->select('status')->first();
 
         if(
             empty($prescreen)
@@ -144,100 +144,100 @@ class FrontendController extends BaseController
             ]
         ];
 
-        $current = date('Y-m-d');
-        $duedate_pre = $app->announcement_pre_date;        
-        $duedate_onsite = $app->announcement_ons_date;
-        $duedate_reult = $app->announcement_date;
+        // $current = date('Y-m-d');
+        // $duedate_pre = $app->announcement_pre_date;        
+        // $duedate_onsite = $app->announcement_ons_date;
+        // $duedate_reult = $app->announcement_date;
 
-        if($current < $duedate_pre){
-            $data->result->sts_title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen)';   
+        // // if($current < $duedate_pre){
+        //     $data->result->sts_title = 'กำลังอยู่ในช่วงขั้นตอนการประเมินขั้นต้น (Pre-screen)';   
+        //     $data->result->sts_content = '';
+        //     $data->result->title = '';
+        //     $data->result->img = base_url('assets/images/prescreen_pass.png');
+        //     $data->result->content = 'ผลงานของท่านอยู่ระหว่างการตรวจประเมินขั้นต้น (Pre-Screen)'
+        //         . '<br>ประกาศผลงานที่ผ่านการประเมินขั้นต้น (Pre-Screen) ผ่านทางหน้าเว็บไซต์ '
+        //         . '<br>ในวันที่ 13 มิถุนายน 2566 เวลา 13.00 น.';
+        //         // . FormatTree($duedate_pre,'thailand');
+
+        //     return view('frontend/entrepreneur/_template',(array) $data);
+        // // }        
+
+        // if($current >= $duedate_onsite && !empty($onsite) && in_array($onsite->status,[6,7])){   
+
+        //     $data->result->sts_title = 'สรุปผลการประเมินรอบลงพื้นที่เรียบร้อยแล้ว';   
+        //     $data->result->sts_content = 'ระบบได้แจ้งผลการประเมินของท่านเรียบร้อยแล้ว';     
+        //     $data->result->title = 'ผลการประเมินรอบลงพื้นที่';
+
+        //     if($onsite->status == 6){
+        //         if($current >= $duedate_reult){ 
+        //             $data->result->award_result = true;                   
+        //             $data->result->sts_title = 'สรุปผลการประกาศรางวัลเรียบร้อยแล้ว';   
+        //             $data->result->sts_content = 'ระบบได้แจ้งสรุปผลการประกาศรางวัลของท่านเรียบร้อยแล้ว';     
+        //             $data->result->title = 'ประกาศผลรางัล';
+        //             $data->result->img = base_url('assets/images/logo.png');   
+
+        //             $award = $this->getAwardResult($this->myId);
+
+        //             if($award->type !== 0){
+        //                 $data->result->content = 'ขอแสดงความยินดีด้วย ท่านได้รับรางวัล<br>';
+        //                 $data->result->content .= $award->name;
+        //             } else {
+        //                 $data->result->content = 'ท่านไม่ผ่านเกณฑ์ประเมินการได้รับรางวัล<br>
+        //                 หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ<br>
+        //                 Line Official : @tourismawards';
+        //             }
+        //         } else { 
+        //             $data->result->img = base_url('assets/images/prescreen_pass.png');
+        //             $data->result->content = 'ผลงานของท่านผ่านการประเมินรอบลงพื้นที่<br>
+        //                 ทางโครงการฯ จะประกาศผลอย่างเป็นทางการอีกครั้ง<br>
+        //                 โดยท่านสามารถดูผลรางวัลได้ที่ https://tourismawards.tourismthailand.org/awards-winner';
+        //         }
+        //     } else {
+        //         $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
+        //         $data->result->content = 'ขอขอบพระคุณผู้ประกอบการที่เข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 
+        //             <br>ทางโครงการฯ ขอแจ้งว่าผลงานของท่านไม่ผ่านการประเมินรอบลงพื้นที่
+        //             <br>หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ 
+        //             <br>Line Official : @tourismawards';
+        //     }
+        // } else {         
+            $data->result->sts_title = 'ประกาศรายชื่อผลงานที่ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14';   
             $data->result->sts_content = '';
             $data->result->title = '';
-            $data->result->img = base_url('assets/images/prescreen_pass.png');
-            $data->result->content = 'ผลงานของท่านอยู่ระหว่างการตรวจประเมินขั้นต้น (Pre-Screen)'
-                . '<br>ประกาศผลงานที่ผ่านการประเมินขั้นต้น (Pre-Screen) ในวันที่ '
-                . FormatTree($duedate_pre,'thailand');
 
-            return view('frontend/entrepreneur/_template',(array) $data);
-        }        
-
-        if($current >= $duedate_onsite && !empty($onsite) && in_array($onsite->status,[6,7])){   
-
-            $data->result->sts_title = 'สรุปผลการประเมินรอบลงพื้นที่เรียบร้อยแล้ว';   
-            $data->result->sts_content = 'ระบบได้แจ้งผลการประเมินของท่านเรียบร้อยแล้ว';     
-            $data->result->title = 'ผลการประเมินรอบลงพื้นที่';
-
-            if($onsite->status == 6){
-                if($current >= $duedate_reult){ 
-                    $data->result->award_result = true;                   
-                    $data->result->sts_title = 'สรุปผลการประกาศรางวัลเรียบร้อยแล้ว';   
-                    $data->result->sts_content = 'ระบบได้แจ้งสรุปผลการประกาศรางวัลของท่านเรียบร้อยแล้ว';     
-                    $data->result->title = 'ประกาศผลรางัล';
-                    $data->result->img = base_url('assets/images/logo.png');   
-
-                    $award = $this->getAwardResult($this->myId);
-
-                    if($award->type !== 0){
-                        $data->result->content = 'ขอแสดงความยินดีด้วย ท่านได้รับรางวัล<br>';
-                        $data->result->content .= $award->name;
-                    } else {
-                        $data->result->content = 'ท่านไม่ผ่านเกณฑ์ประเมินการได้รับรางวัล<br>
-                        หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ<br>
-                        Line Official : @tourismawards';
-                    }
-                } else { 
-                    $data->result->img = base_url('assets/images/prescreen_pass.png');
-                    $data->result->content = 'ผลงานของท่านผ่านการประเมินรอบลงพื้นที่<br>
-                        ทางโครงการฯ จะประกาศผลอย่างเป็นทางการอีกครั้ง<br>
-                        โดยท่านสามารถดูผลรางวัลได้ที่ https://tourismawards.tourismthailand.org/awards-winner';
-                }
-            } else {
-                $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
-                $data->result->content = 'ขอขอบพระคุณผู้ประกอบการที่เข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 
-                    <br>ทางโครงการฯ ขอแจ้งว่าผลงานของท่านไม่ผ่านการประเมินรอบลงพื้นที่
-                    <br>หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ 
-                    <br>Line Official : @tourismawards';
-            }
-        } else {         
-            $data->result->sts_title = 'ผลการประเมินขั้นต้นเรียบร้อยแล้ว (Pre-screen)';   
-            $data->result->sts_content = '';
-            $data->result->title = '';
-
-            if($prescreen->status == 6){
-                $app_f = new \App\Models\ApplicationForm();
-                $form = $app_f->where('created_by',$this->myId)
-                ->select('application_type_id type_id')
-                ->first();
+        //    if($prescreen->status == 6){
+        //         $app_f = new \App\Models\ApplicationForm();
+        //         $form = $app_f->where('created_by',$this->myId)
+        //         ->select('application_type_id type_id')
+        //         ->first();
                 
-                $download_link = 'https://drive.google.com/drive/folders/1BgL5ULFsZZEJTXuGwFVyWFodMSPrSOoT?usp=sharing';
+                $download_link = 'https://tourismawards.tourismthailand.org/download/รายชื่อผลงานที่ได้รับรางวัลอุตสาหกรรมท่องเที่ยว-ครั้งที่-14.pdf';
 
                 if(!empty($download_link)){
                     $download_link = "window.open('$download_link','_blank')";
                 }
 
-                $data->result->img = base_url('assets/images/prescreen_complete.png');
-                $data->result->content = 'ผลงานของท่านผ่านการประเมินขั้นต้น (Pre-Screen)
-                    <br>ขอให้ท่านนำส่ง PowerPoint และ Video Clip เพื่อนำเสนอผลงาน
-                    <br>ตามหลักเกณฑ์การตัดสินรางวัลฯ ดาวน์โหลดเอกสารได้ที่
+                // $data->result->img = base_url('assets/images/prescreen_complete.png');
+                $data->result->content = 'ประกาศรายชื่อผลงานที่ได้รับรางวัลอุตสาหกรรมท่องเที่ยวไทย 
+                    <br>Thailand Tourism Awards 
+                    <br>ครั้งที่ 14 ประจำปี 2566
                     <br><br>
-                    เกณฑ์การประเมินรอบลงพื้นที่<br>
                     <button type="button" class="btn btn-main" style="max-width:190px"
                     onclick="'.$download_link.'">
-                        <i class="bi bi-cloud-download"></i> Download File
+                        คลิ๊ก!
                     </button>
                     <br><br>
-                    ส่งผลงานได้ที่ E-mail : tourismawards14@gmail.com
-                    <br>โดยระบุชื่อเรื่อง : ประเภท สาขาที่สมัคร + ชื่อที่ท่านส่งเข้าประกวด
-                    <br>ภายในวันที่ 2 - 11 มิถุนายน 2566';
-            } else {
-                $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
-                $data->result->content = 'ขอขอบพระคุณผู้ประกอบการที่เข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566'
-                    . '<br>ทางโครงการฯ ขอแจ้งว่าผลงานของท่านไม่ผ่านการประเมินขั้นต้น (Pre-Screen)'
-                    . '<br>หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ '
-                    . '<br>Line Official : @tourismawards';
-            }
+                    หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่
+                    <br>อีเมล : tourismawards14@gmail.com หรือ
+                    <br>Line Official : @tourismawards';
+        //     } else {
+        //         $data->result->img = base_url('assets/images/prescreen_uncomplete.png');
+        //         $data->result->content = 'ขอขอบพระคุณผู้ประกอบการที่เข้าร่วมการประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566'
+        //             . '<br>ทางโครงการฯ ขอแจ้งว่าผลงานของท่านไม่ผ่านการประเมินขั้นต้น (Pre-Screen)'
+        //             . '<br>หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่อีเมล : tourismawards14@gmail.com หรือ '
+        //             . '<br>Line Official : @tourismawards';
+        //     }
 
-        }
+        // }
         
         return view('frontend/entrepreneur/_template',(array) $data);
 

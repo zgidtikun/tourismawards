@@ -552,7 +552,7 @@ const register = {
             if(tab.step == 5){
                 checkFileRequire = checkRequireFiles('awards/application');
             }
-
+            
             if(!checkRequire || !checkFileRequire){
                 checkComplete = false;
                 if($(tab.id).hasClass('complete')){

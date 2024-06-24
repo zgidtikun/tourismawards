@@ -99,6 +99,7 @@
                     <?php if(!empty($result->title)): ?>
                     <span class="header"><?=$result->title?></span>
                     <?php endif; ?>
+                    <?php if(!empty($result->img)): ?>
                     <img src="<?=$result->img?>" 
                     <?php if($result->award_result) : ?>
                         style="width: 300px !important;padding-bottom: 2rem !important;"
@@ -107,6 +108,7 @@
                         style="padding-top: 0 !important;"
                     <?php endif; ?> 
                     >
+                    <?php endif; ?>
                     <span class="content"><?=$result->content?></span>
                 </div>
             </div>

@@ -27,6 +27,7 @@
           <p>รหัสใบสมัคร : <?= $result->code ?></p>
           <p>ชื่อสถานประกอบการ : <?= $result->attraction_name_th ?></p>
           <p>ชื่อสถานประกอบการภาษาอังกฤษ : <?= $result->attraction_name_en ?></p>
+          <p>จังหวัด : <?= $result->address_province ?></p>
         </div>
 
         <div class="backendform-col3">

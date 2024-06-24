@@ -57,10 +57,10 @@
     <div class="nav-header">
       <div class="brand-logo">
         <a href="index.html">
-          <b class="logo-abbr"><img src="<?php echo base_url('backend/assets/images/logo.png') ?>" alt="Tourismaward"> </b>
-          <span class="logo-compact"><img src="<?php echo base_url('backend/assets/images/logo-compact.png?v=1') ?>" alt="Tourismaward"></span>
+          <b class="logo-abbr"><img src="<?= base_url('assets/images/logo.png?v=2') ?>" alt="Tourismaward"> </b>
+          <span class="logo-compact"><img src="<?= base_url('assets/images/logo.png?v=2') ?>" alt="Tourismaward"></span>
           <span class="brand-title">
-            <img src="<?php echo base_url('backend/assets/images/logo-compact.png?v=1') ?>" alt="Tourismaward" style="width: 70%;">
+            <img src="<?= base_url('assets/images/logo.png?v=2') ?>" alt="Tourismaward" style="width: 70%;">
           </span>
         </a>
       </div>

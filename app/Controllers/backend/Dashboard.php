@@ -21,7 +21,7 @@ class Dashboard extends BaseController
     {
 
         $type_sub   = $this->db->table("application_type_sub")->get()->getResultObject();
-        $attraction   = $this->db->table("application_form")->get()->getResultObject();
+        $attraction   = $this->db->table("application_form")->where('status', 3)->get()->getResultObject();
         $data['type_sub'] = [];
         $data['attraction'] = [];
 

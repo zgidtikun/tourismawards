@@ -221,7 +221,7 @@ class QuestionController extends BaseController
                     if($isFinish == 'unfinish'){
                         $rq_status = $this->checkStatusRequest($val->id,$this->myId);
                         
-                        if($val->status == 3 && $rq_status == 3){  
+                        if(($val->status == 3 || $val->status == 5) && $rq_status == 3){  
                             if($current_date > $val->duedate){
                                 
                                 $UsersStage->where('id',$val->stage_id)
@@ -326,7 +326,7 @@ class QuestionController extends BaseController
                 af.application_type_id type_id, af.application_type_sub_id sub_type_id,
                 af.knitter_name, af.attraction_name_th attn_th, af.attraction_name_en attn_en,
                 af.knitter_email, af.knitter_tel, af.updated_at, af.created_by,
-                af.send_date, af.require_lowcarbon'
+                af.send_date, af.require_lowcarbon, af.address_province'
             )
             ->get();
 

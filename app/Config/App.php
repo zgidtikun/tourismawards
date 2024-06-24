@@ -24,8 +24,8 @@ class App extends BaseConfig
      *
      * @var string
      */
-    // public $baseURL = 'http://tourismawards.local/';
-    public $baseURL = 'https://www.tennis.in.th';
+    public $baseURL = 'http://tourismawards.local/';
+    // public $baseURL = 'https://www.tennis.in.th';
 
 
     /**
@@ -471,16 +471,16 @@ class App extends BaseConfig
     public $RECAPCHA_SECRETKEY = '6LdC6vghAAAAAC9nstLF616tJhhMizOOMyfXUFAd';
     public $Register_start = '2022-03-01'; // วันเปิด Register
     public $Register_expired = '2023-04-30'; // วันหมดเขต Register
-    public $APPForm_expired = '2023-04-30'; // วันหมดเขตส่งใบสมัคร
+    public $APPForm_expired = '2023-05-03 17:00'; // วันหมดเขตส่งใบสมัคร
     public $Pre_open = '2023-01-01'; // วันเปิดแบบฟอร์มรอบ Pre-screen
-    public $Pre_expired = '2023-05-07'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
+    public $Pre_expired = '2023-09-21'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
     public $announcement_pre_date = '2023-06-01'; // วันที่ประกาศผล prescreen
     public $announcement_ons_date = '2024-01-01'; // วันที่ประกาศผล ลงพื้นที่
     public $announcement_date = '2024-01-01'; // วันที่ประกาศผลรางวัล
     public $Estimate_require_date = '2023-05-15'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
     public $Estimate_pre_date = '2023-05-25'; // วันหมดเขตการประเมินรอบ Pre-screen
     public $Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่
-    public $JudgingCriteriaPre = 18;
+    public $JudgingCriteriaPre = 17.50;
     public $JudgingCriteriaOnst = 57;
     public $JudgingCriteriaScore;
     public $script_v = 1;
@@ -520,14 +520,21 @@ class App extends BaseConfig
             }
 
             $this->baseURL = 'https://tourismawards.tourismthailand.org/';
-            $this->Register_expired = '2023-04-30'; // วันหมดเขต Register
-            $this->APPForm_expired = '2023-04-30'; // วันหมดเขตส่งใบสมัคร
-            $this->Pre_expired = '2023-05-07'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
+            $this->Register_expired = '2023-04-30'; // วันหมดเขต Register today > expired
+            
+            //เนื่องจากเช็คเวลาเปิดปิดไม่ได้ จึงใช้การคำนวนจาก app config มาช่วย ถ้าถึงเวลาที่ต้องปิด ให้ปรับมาใช้ config expred วันที่ 1 พค แทน
+            if(time() <= strtotime('2023-05-04 17:00:00')){
+                $this->APPForm_expired = '2023-05-04 17:00'; // วันหมดเขตส่งใบสมัคร  expired <= today
+            }else{
+                $this->APPForm_expired = '2023-05-04'; // วันหมดเขตส่งใบสมัคร  expired <= today
+            }
+            
+            $this->Pre_expired = '2023-05-22'; // วันหมดเขตส่งแบบฟอร์มรอบ Pre-screen
             $this->announcement_pre_date = '2023-06-01'; // วันที่ประกาศผล prescreen
             $this->announcement_ons_date = '2024-01-01'; // วันที่ประกาศผล ลงพื้นที่
             $this->announcement_date = '2024-01-01'; // วันที่ประกาศผลรางวัล
-            $this->Estimate_require_date = '2023-05-15'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
-            $this->Estimate_pre_date = '2023-05-25'; // วันหมดเขตการประเมินรอบ Pre-screen
+            $this->Estimate_require_date = '2023-05-26'; // วันหมดเขตการร้องขอข้อมูลเพิ่มเติม
+            $this->Estimate_pre_date = '2023-06-11'; // วันหมดเขตการประเมินรอบ Pre-screen
             $this->Estimate_ons_date = '2024-01-01'; // วันหมดเขตการประเมินรอบ ลงพื้นที่        
             $this->RECAPCHA_KEY = '6Ldaj4wkAAAAAErI6aXoi6RpJXRgzaPk0rwZh_3B';
             $this->RECAPCHA_SECRETKEY = '6Ldaj4wkAAAAAFPUf9D0OZ71R-j4BBlNLx4y_c6Y';

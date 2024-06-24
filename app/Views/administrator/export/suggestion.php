@@ -25,6 +25,8 @@ $rowHead = [
   'ประเภทรางวัลฯ',
   'สาขา',
   'จังหวัด',
+  'คำถาม',
+  'คำตอบ',
   'ชื่อผู้ประเมิน',
   'เกณฑ์การประเมิน',
   'ข้อเสนอแนะ (Pre-Screen)',
@@ -41,6 +43,9 @@ $end = end($colExcel);
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
 
+$sheet->getStyle('G:H')->getAlignment()->setWrapText(true);
+$sheet->getStyle('K')->getAlignment()->setWrapText(true);
+
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
 
@@ -56,8 +61,11 @@ foreach ($colExcel as $k => $v) {
   //set Cell Head
   $sheet->setCellValue($v . "3", $rowHead[$k]);
   //set Width
-  // $sheet->getColumnDimension($v)->setWidth(20); // Set Width Size PX
-  $sheet->getColumnDimension($v)->setAutoSize(true); // Set Width Auto
+  if (in_array($v, ['H'])) {
+    $sheet->getColumnDimension($v)->setWidth(100); // Set Width Size PX
+  } else {
+    $sheet->getColumnDimension($v)->setAutoSize(true); // Set Width Auto
+  }
 }
 // px($result);
 if (!empty($result)) {
@@ -83,6 +91,8 @@ if (!empty($result)) {
       $value->application_type_name,
       $value->application_type_sub_name,
       $value->address_province,
+      ($value->question),
+      $value->reply,
       $value->estimate_name,
       $assessment,
       $value->comment_pre,

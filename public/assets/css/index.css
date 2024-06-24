@@ -38,7 +38,7 @@ height: 100%;
     transform: translateY(-50%);
 }
 .branch_title {
-    color: #2a6118;
+    color: #14463d;
     text-align: center;
     font-size: 1.2rem;
     font-weight: bold;
@@ -51,8 +51,8 @@ margin: 20px 0;
 text-align: center;
 color: #FFF;
 padding: 5px 20px;
-background-color: #2a6118;
-border-bottom: 3px solid #205010;
+background-color: #14463d;
+border-bottom: 3px solid #103830;
 display: table;
 margin: 10px auto 0 auto;
 transition: all 0.2s;
@@ -63,7 +63,7 @@ position: relative;
 transform: translateY(-5px);
 }
 .container.claimawards{
-background-color: #2a6118;
+background-color: #14463d;
 color: #FFF;
 }
 
@@ -83,7 +83,7 @@ flex-direction: column;
     color: #FFF;
     text-align: center;
     font-weight: 600;
-    background-color: #1b510a;
+    background-color: #103830!important;
     padding: 15px;
     display: flex;
     justify-content: center;

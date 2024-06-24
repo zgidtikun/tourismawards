@@ -1,3 +1,96 @@
+<?= $this->extend('frontend/layout') ?>
+<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
+
+<?= $this->section('js') ?>
+<script>
+    $('#username, #password').keypress((e) => {
+        if(e.keyCode == 13){
+            signin.authen();
+        }
+    });
+
+    const signin = {
+        token: '',
+        authen: function() {
+            if (this.validation()) {
+                <?php if (!empty($_recapcha) && $_recapcha) : ?>
+                recapchaToken().then(function(data) {
+                    signin.token = data.rccToken;
+                <?php endif; ?>
+                    const headers = new Headers();
+                    headers.append('Content-Type', 'application/json');
+
+                    fetch(
+                        '<?= base_url('auth/check/frontend') ?>',
+                        {
+                            method: 'POST',
+                            headers: headers,
+                            body: JSON.stringify({
+                                username: document.querySelector('#username').value,
+                                password: document.querySelector('#password').value,
+                                memorize: false,
+                                recapcha_token: signin.token                                
+                            })
+                        }
+                    )
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.result == 'success') {
+                            let message;
+
+                            if(response.role == 1){
+                                message = 'คุณสามารถบันทึกข้อมูลได้ตลอดเวลา ';
+                                message += 'ด้วยปุ่ม <b>"บันทึก"</b> และกดปุ่ม <b>"ส่งใบสมัคร" </b>เมื่อพร้อม';    
+                            } else {
+                                message = 'ท่านสามารถบันทึกข้อมูลได้ตลอดเวลา ด้วยปุ่ม “<b>บันทึก</b>” และสามารถกลับมาประเมินต่อ ';
+                                message += 'หรือแก้ไขผลการประเมินได้ และหากมีการแก้ไขคะแนนต้องกดปุ่ม “<b>บันทึก</b>” ทุกครั้ง ';
+                                message += '“<b>ก่อนส่งผลประเมินเข้าระบบ</b>” เมื่อท่าน “<b>ส่งผลประเมินเข้าระบบแล้ว</b>” ';
+                                message += 'จะไม่สามารถกลับมาแก้ไขการประเมินได้ ดังนั้น กรุณาตรวจสอบความถูกต้องก่อนส่งผลประเมินเข้าระบบ';
+                            }
+
+                            alert.show('info','คำแนะนำการใช้งาน', message).then(function(data){
+                                window.location.href = response.redirect;
+                            });
+                        } else {
+                            alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', response.message);                               
+                        }
+                    })
+                    .catch(errors => {
+                        resolve({
+                            status: false,
+                            result: 'error',
+                            message: `Request failed : ${errors.statusText}`
+                        });
+                    });
+                <?php if (!empty($_recapcha) && $_recapcha) : ?>
+                });
+                <?php endif; ?>
+            }
+        },
+        validation: function() {
+            if (document.querySelector('#username').value == '') {
+                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'กรุณากรอก อีเมล');
+                return false;
+            }
+
+            if (document.querySelector('#password').value == '') {
+                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'กรุณากรอก รหัสผ่าน');
+                return false;
+            }
+
+            return true;
+        }
+    }
+</script>
+<?= $this->endSection() ?>
+
+<?= $this->section('recapcha') ?>
+<?php if (!empty($_recapcha) && $_recapcha) : ?>
+<?= $this->include('_recapcha'); ?>
+<?php endif; ?>
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
 <div class="container login" style="height: 100%;">
     <div class="row">
         <div class="col6 loginbox">
@@ -36,71 +129,4 @@
         </div>
     </div>
 </div>
-<script>
-    $('#username, #password').keypress((e) => {
-        if(e.keyCode == 13){
-            signin.authen();
-        }
-    });
-
-    const signin = {
-        token: '',
-        authen: function() {
-            if (this.validation()) {
-                <?php if (!empty($_recapcha) && $_recapcha) : ?>
-                recapchaToken().then(function(data) {
-                    signin.token = data.rccToken;
-                <?php endif; ?>
-                $.ajax({
-                    method: 'post',
-                    url: '<?= base_url('auth/check/frontend') ?>',
-                    data: {
-                        username: $('#username').val(),
-                        password: $('#password').val(),
-                        memorize: false,
-                        recapcha_token: signin.token
-                    },
-                    dataType: 'json',
-                    async: false,
-                    success: function(response) {
-                        if (response.result == 'success') {
-                            let message;
-
-                            if(response.role == 1){
-                                message = 'คุณสามารถบันทึกข้อมูลได้ตลอดเวลา ';
-                                message += 'ด้วยปุ่ม <b>"บันทึก"</b> และกดปุ่ม <b>"ส่งใบสมัคร" </b>เมื่อพร้อม';    
-                            } else {
-                                message = 'ท่านสามารถบันทึกข้อมูลได้ตลอดเวลา ด้วยปุ่ม “<b>บันทึก</b>” และสามารถกลับมาประเมินต่อ ';
-                                message += 'หรือแก้ไขผลการประเมินได้ และหากมีการแก้ไขคะแนนต้องกดปุ่ม “<b>บันทึก</b>” ทุกครั้ง ';
-                                message += '“<b>ก่อนส่งผลประเมินเข้าระบบ</b>” เมื่อท่าน “<b>ส่งผลประเมินเข้าระบบแล้ว</b>” ';
-                                message += 'จะไม่สามารถกลับมาแก้ไขการประเมินได้ ดังนั้น กรุณาตรวจสอบความถูกต้องก่อนส่งผลประเมินเข้าระบบ';
-                            }
-
-                            alert.show('info','คำแนะนำการใช้งาน', message).then(function(data){
-                                window.location.href = response.redirect;
-                            });
-                        } else {
-                            alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', response.message);                               
-                        }
-                    }
-                });
-                <?php if (!empty($_recapcha) && $_recapcha) : ?>
-                });
-                <?php endif; ?>
-            }
-        },
-        validation: function() {
-            if ($('#username').val() == '') {
-                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'กรุณากรอก อีเมล');
-                return false;
-            }
-
-            if ($('#password').val() == '') {
-                alert.show('error','ไม่สามารถเข้าสู่ระบบได้!', 'กรุณากรอก รหัสผ่าน');
-                return false;
-            }
-
-            return true;
-        }
-    }
-</script>
+<?= $this->endSection() ?>

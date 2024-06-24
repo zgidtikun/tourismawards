@@ -2,6 +2,10 @@
   .dataTables_wrapper .dataTables_length {
     justify-content: flex-start !important;
   }
+
+  table.dataTable th[aria-label^="ความเชี่ยวชาญ"] {
+    min-width: 250px !important;
+  }
 </style>
 <div class="backendcontent">
   <div class="backendcontent-row">
@@ -35,29 +39,38 @@
                 <tr>
                   <th class="no">ลำดับ</th>
                   <th class="name">ชื่อ-สกุล</th>
-                  <th class="tel">เบอร์โทรศัพท์</th>
                   <th class="mail">อีเมล</th>
-                  <th class="status">สถานะ</th>
-                  <th class="status">บทบาทผู้ใช้งาน</th>
-                  <th class="date">วันที่สร้าง</th>
+                  <th class="tel">สถานะ</th>
+                  <th class="name">ประเภทที่ตัดสิน</th>
+                  <th class="mail">ความเชี่ยวชาญ</th>
                   <th class="edit">จัดการ</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
+                // px($result);
                 $i = 1;
                 if (!empty($result)) :
                   foreach ($result as $key => $value) :
-                    $label = '';
-                    if ($value->role_id == 1) {
-                      $label = '<div class="userstatus trader">ผู้ประกอบการ</div>';
-                    } else if ($value->role_id == 2) {
-                      $label = '<div class="userstatus officer">เจ้าหน้าที่ ททท.</div>';
-                    } else if ($value->role_id == 3) {
-                      $label = '<div class="userstatus judge">กรรมการ</div>';
-                    } else if ($value->role_id == 4) {
-                      $label = '<div class="userstatus admin">ผู้ดูแลระบบ</div>';
+                    // pp(json_decode($value->award_type));
+                    $award_type = json_decode($value->award_type);
+                    $assessment_group = json_decode($value->assessment_group);
+
+                    $award_type_arr = [];
+                    if (!empty($award_type)) {
+                      foreach ($award_type as $k => $v) {
+                        $award_type_arr[] = '<li>' . awardType($v) . '</li> ';
+                      }
                     }
+                    $award_type = implode('', $award_type_arr);
+
+                    $assessment_group_arr = [];
+                    if (!empty($assessment_group)) {
+                      foreach ($assessment_group as $k => $v) {
+                        $assessment_group_arr[] = '<li> ' . assessmentGroup($v) . '</li> ';
+                      }
+                    }
+                    $assessment_group = implode('', $assessment_group_arr);
 
                     $status = '<div class="userstatus officer">ไม่ได้ยืนยัน</div>';
                     if ($value->status == 1) {
@@ -74,13 +87,14 @@
                           $path = base_url() . '/assets/images/unknown_user.jpg';
                         }
                         ?>
-                        <img src="<?= $path ?>" class="d-none d-sm-block" style="height: 50px; width: 50px"> <?= $value->name ?> <?= $value->surname ?>
+                        <img src="<?= $path ?>" class="d-none d-sm-block" style="height: 50px; width: 50px"><?= $value->prefix ?> <?= $value->name ?> <?= $value->surname ?>
                       </td>
-                      <td class=""><?= $value->mobile ?></td>
                       <td class="text-start"><?= $value->email ?></td>
                       <td class=""><?= $status ?></td>
-                      <td class=""><?= $label ?></td>
-                      <td class=""><?= docDate($value->created_at, 3) ?></td>
+                      <td class="text-start">
+                        <ul><?= $award_type ?></ul>
+                      </td>
+                      <td class="text-start"><?= $assessment_group ?></td>
                       <td class="">
                         <div class="form-table-col edit">
                           <a href="javascript:" class="btn-edit" title="แก้ไขข้อมูล" onclick="edit_item('<?= $value->id ?>')"><i class="bi bi-pencil-square"></i></a>
@@ -117,23 +131,23 @@
         responsivePriority: 1,
         targets: 1
       }, {
-        responsivePriority: 2,
+        responsivePriority: 1,
+        targets: 2
+      }, {
+        responsivePriority: 10001,
+        targets: 3
+      }, {
+        responsivePriority: 1,
         targets: 4
+      }, {
+        responsivePriority: 1,
+        targets: 5
       }, {
         responsivePriority: 10001,
         targets: 6
       }, {
         responsivePriority: 10001,
-        targets: 5
-      }, {
-        responsivePriority: 10001,
-        targets: 4
-      }, {
-        responsivePriority: 10001,
-        targets: 3
-      }, {
-        responsivePriority: 10001,
-        targets: 1
+        targets: 0
       }],
       pageLength: 10,
       numbersLength: 3,

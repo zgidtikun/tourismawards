@@ -379,7 +379,7 @@ class Estimate extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 25 พฤษภาคม 2566 ';
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 11 มิถุนายน 2566 ';
                 $message_noti = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Tourism Excellence';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
@@ -417,7 +417,7 @@ class Estimate extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 25 พฤษภาคม 2566 ';
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 11 มิถุนายน 2566 ';
                 $message_noti = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Supporting Business & Marketing Factors';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
@@ -455,7 +455,7 @@ class Estimate extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsibility and Safety & Health Administration';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsibility and Safety & Health Administration กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 25 พฤษภาคม 2566 ';
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsibility and Safety & Health Administration กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 11 มิถุนายน 2566 ';
                 $message_noti = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Responsibility and Safety & Health Administration';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,
@@ -493,7 +493,7 @@ class Estimate extends BaseController
                 $users = $this->db->table('users')->where('id', $value)->get()->getRowObject();
 
                 $subject = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon';
-                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 25 พฤษภาคม 2566 ';
+                $message = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon กรุณาเข้าสู่ระบบเพื่อทำการประเมินภายในวันที่ 11 มิถุนายน 2566 ';
                 $message_noti = 'ท่านได้รับการมอบหมายให้ประเมิน ' . $result->attraction_name_th . ' ด้าน Low Carbon';
                 $email_data = [
                     '_header' => 'เรียนคุณ ' . $users->name . ' ' . $users->surname,

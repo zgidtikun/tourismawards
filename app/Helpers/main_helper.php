@@ -42,6 +42,22 @@ function pxml($xml)
     echo '</pre>';
 }
 
+function F2C($number)
+{
+    return @number_format($number, 2, '.', ',');
+}
+
+// คอมม่า
+function FC($string)
+{
+    if (empty($string)) {
+        return $string;
+    } else {
+        $number = round((float)$string);
+        return number_format((float)$number);
+    }
+}
+
 function isChaiyo()
 {
     if (session()->id == 1 && session()->role == 4) {
@@ -107,6 +123,36 @@ function applicationTypeSub($id)
     return @$result->name;
 }
 
+function awardType($id)
+{
+    // $db = \Config\Database::connect();
+    // $result = $db->table('award_type')->where('id', $id)->get()->getRowObject();
+    // return @$result->name;
+
+    $data = [
+        '1' => 'แหล่งท่องเที่ยว',
+        '2' => 'ที่พักนักท่องเที่ยว',
+        '3' => 'การท่องเที่ยวเชิงสุขภาพ',
+        '4' => 'รายการนำเที่ยว',
+    ];
+    return $data[$id];
+}
+
+function assessmentGroup($id)
+{
+    // $db = \Config\Database::connect();
+    // $result = $db->table('assessment_group')->where('id', $id)->get()->getRowObject();
+    // return @$result->name;
+
+    $data = [
+        '1' => 'TourismExcellence',
+        '2' => 'Supporting & Marketing',
+        '3' => 'Responsibility',
+        '4' => 'Low Carbon',
+    ];
+    return $data[$id];
+}
+
 function checkEstimateCommittee($app_id, $user_id, $round)
 {
     // $round 1.pre-screen, 2.onsite
@@ -156,6 +202,12 @@ function show_404()
 function show_403()
 {
     header('Location: ' . base_url() . '/403');
+    exit();
+}
+
+function show_error_report()
+{
+    header('Location: ' . base_url() . '/error_report');
     exit();
 }
 

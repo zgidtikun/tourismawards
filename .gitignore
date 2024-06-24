@@ -127,3 +127,4 @@ nb-configuration.xml
 
 *.txt
 public/uploads/
+/public/uploads

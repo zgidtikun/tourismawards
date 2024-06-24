@@ -12,10 +12,10 @@ const init = () => {
 
 const setCountList = async() => {
     const callback = await api({method: 'get', url: '/inner-api/boards/count-stage'});
-    $('#count-tab1').html(`${callback.pre_wait} รายการ`);
-    $('#count-tab2').html(`${callback.pre_comp} รายการ`);
-    $('#count-tab3').html(`${callback.inst_wait} รายการ`);
-    $('#count-tab4').html(`${callback.inst_comp} รายการ`);
+    $('#count-tab1').html(`${callback.pre_wait} ผลงาน`);
+    $('#count-tab2').html(`${callback.pre_comp} ผลงาน`);
+    $('#count-tab3').html(`${callback.inst_wait} ผลงาน`);
+    $('#count-tab4').html(`${callback.inst_comp} ผลงาน`);
 }
 
 const setSearcher = async() => {
@@ -546,6 +546,6 @@ $('#sat-main').on('change',function(){
 $('.btn-dashboard').click(function(){
     $('.btn-dashboard').removeClass('active');
     $(this).toggleClass('active');
-    $('.fs-title').html(`รายการ ${$(this)[0].innerHTML}`);
+    $('.fs-title').html(`ผลงาน ${$(this)[0].innerHTML}`);
     getData();
 });

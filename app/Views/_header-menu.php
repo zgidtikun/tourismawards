@@ -7,7 +7,7 @@
                <ul>
                   <?php
                      if (!session()->get('isLoggedIn')):
-                        $_app = new \Config\App();
+                        $_app = config(\Config\App::class);
                         $_register_expire = date('Y-m-d') > $_app->Register_expired;
                         if (!$_register_expire):
                         ?>
@@ -89,14 +89,7 @@
                                     </div>
                                  </div>
                                  <div class="user-profile">
-                                    <?php
-                                       if (in_array(session()->get('role'), [1, 3])):
-                                          // $user_obj = new \App\Models\Users();
-                                          // $user = $user_obj->where('id',session()->get('id'))
-                                          // ->select('verify_code')
-                                          // ->first();
-                                          // $new_pass_token = urlencode($user->verify_code.session()->get('id'));
-                                       ?>
+                                    <?php if (in_array(session()->get('role'), [1, 3])): ?>
 	                                       <a href="<?=base_url('profile')?>" class="mb-1">
 	                                          <i class="bi bi-person-fill"></i>
 	                                          &nbsp;&nbsp;ข้อมูลส่วนตัว
@@ -114,11 +107,9 @@
                                                 }
 
                                                 $content = 'ข้อมูลใบสมัคร';
-                                                // $manual = base_url('download/tycoon_manual.pdf');
                                              } else {
                                                 $url = 'boards';
                                                 $content = 'การประเมิน';
-                                                // $manual = base_url('download/judge_manual.pdf');
                                              }
                                        ?>
                                        <a href="<?=base_url($url)?>" class="mb-1">
@@ -129,10 +120,6 @@
                                           <i class="bi bi-key-fill"></i>
                                           &nbsp;&nbsp;เปลี่ยนรหัสผ่านใหม่
                                        </a>
-                                       <!-- <a href="javascript:;" target="_blank" class="mb-1" class="mb-1">
-                                          <i class="bi bi-cloud-arrow-down-fill"></i>
-                                          &nbsp;&nbsp;ดาวน์โหลดคู่มือการใช้งาน
-                                       </a> -->
                                     <?php else: ?>
                                        <a href="administrator/dashboard" class="mb-1">
                                           <i class="bi bi-file-bar-graph-fill"></i>
@@ -157,9 +144,9 @@
             <div class="header-box-col logo">
                <a href="<?=base_url('home')?>">
                   <picture>
-                     <source srcset="<?=base_url('assets/images/logo.svg')?>">
-                     <source srcset="<?=base_url('assets/images/logo.png')?>">
-                     <img src="<?=base_url('assets/images/logo.png')?>" width="514" height="200" alt="logo">
+                     <source srcset="<?=base_url('assets/images/logo.svg')?>?v=2">
+                     <source srcset="<?=base_url('assets/images/logo.png')?>?v=2">
+                     <img src="<?=base_url('assets/images/logo.png')?>?v=2" width="514" height="200" alt="logo">
                   </picture>
                </a>
             </div>
@@ -170,8 +157,6 @@
                      <li><a href="javascript:void(0)" id="aboutmenu">เกี่ยวกับโครงการฯ</a>
                         <ul>
                            <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ</a></li>
-                           <!-- <li><a href="<?=base_url('judge')?>">กรรมการที่ปรึกษา</a></li> -->
-                           <!-- <li><a href="<?=base_url('judge')?>">กรรมการตัดสินแต่ละประเภท</a></li> -->
                         </ul>
                      </li>
                      <li><a href="javascript:void(0)" id="informationmenu">ข้อมูลการประกวดรางวัล</a>
@@ -193,20 +178,11 @@
                      </li>
                      <li><a href="javascript:void(0)" id="awardmenu">ผลงานที่ได้รับรางวัล</a>
                         <ul>
-                           <!-- <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li> -->
+                           <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li>
                            <li><a href="<?=base_url('last-awards-winner')?>">ปีที่ผ่านมา</a></li>
                         </ul>
                      </li>
-                     <!-- <li>
-                        <a href="<?=base_url('new')?>" id="newsmenu">ข่าวประชาสัมพันธ์</a>
-                     </li> -->
-                     <li><a href="<?=base_url('contact-us')?>" id="contactmenu">ติดต่อเรา</a>
-                     </li>
-                     <!-- <li class="search">
-                        <a href="javascript:void(0)">
-                           <i class="bi bi-search"></i>
-                        </a>
-                     </li> -->
+                     <li><a href="<?=base_url('contact-us')?>" id="contactmenu">ติดต่อเรา</a></li>
                   </ul>
                </nav>
             </div>
@@ -232,10 +208,7 @@
                   <div class="submenubox-list" data-tab="1" style="display: none;">
                      <ul>
                         <li><a href="<?=base_url('about-us')?>">ข้อมูลโครงการฯ</a></li>
-                        <!-- <li><a href="<?=base_url('judge')?>">กรรมการที่ปรึกษา</a></li> -->
-                        <!-- <li><a href="<?=base_url('judge')?>">กรรมการตัดสินแต่ละประเภท</a></li> -->
                      </ul>
-
                   </div>
                   <li><a href="javascript:" data-tab="2" class="btn-submenu">ข้อมูลการประกวดรางวัล</a></li>
                   <div class="submenubox-list" data-tab="2" style="display: none;">
@@ -260,11 +233,10 @@
                   <li><a href="javascript:" data-tab="4" class="btn-submenu">ผลงานที่ได้รับรางวัล</a></li>
                   <div class="submenubox-list" data-tab="4" style="display: none;">
                      <ul>
-                        <!-- <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li> -->
+                        <li><a href="<?=base_url('awards-winner')?>">ครั้งที่ 14 ปี 2566</a></li>
                         <li><a href="<?=base_url('last-awards-winner')?>">ปีที่ผ่านมา</a></li>
                      </ul>
                   </div>
-                  <!-- <li><a href="<?=base_url('new')?>">ข่าวประชาสัมพันธ์</a></li> -->
                   <li><a href="<?=base_url('contact-us')?>">ติดต่อเรา</a></li>
                </ul>
             </div>
@@ -276,105 +248,132 @@
 </div>
 
 <script>
+   document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.btn-menu').forEach( e => {
+         e.addEventListener('click', () => {
+            const body = document.querySelector('body');
+            const box = document.querySelector('.menubox');
 
-   jQuery(document).ready(function() {
-
-      $('.btn-menu').click(function() {
-         if ($('.menubox').hasClass('active')) {
-            $('body').removeClass('overlay');
-            $('.menubox').removeClass('active');
-         } else {
-            $('body').addClass('overlay');
-            $('.menubox').addClass('active');
-         }
-      });
-
-      $('.menuclose').click(function() {
-         $('body').removeClass('overlay');
-         $('.menubox').removeClass('active');
-      });
-      
-      $(".btn-submenu").click(function () {
-         const datatabsubmenu = $(this).attr("data-tab");
-         
-         if ($(this).hasClass("active")) {
-            $(".btn-submenu").removeClass("active");
-            $(".submenubox-list").removeClass("active").slideUp();
-         } else {
-            $(".btn-submenu").removeClass("active");
-            $(".submenubox-list").removeClass("active").slideUp();
-            $('.btn-submenu[data-tab="' + datatabsubmenu + '"]').addClass("active");
-            $('.submenubox-list[data-tab="' + datatabsubmenu + '"]')
-            .addClass("active")
-            .slideDown();
-         }
-      });
-
-   });
-
-   jQuery(document).ready(function() {
-      $('.btn-noti').click(function() {
-         $('.noti-box').slideDown(200).addClass('active ');
-         $('body').addClass("lockbody");
-         $('.btn-noti').html('<i class="bi bi-bell-fill"></i>');
-      });
-      $('.noti-box-close').click(function() {
-         $('.noti-box').slideUp(200).removeClass('active ');
-         $('body').removeClass("lockbody");
-      });
-      $('.noti-box-overlay').click(function() {
-         $('.noti-box').slideUp(200).removeClass('active ');
-         $('body').removeClass("lockbody");
-      });
-   });
-
-   jQuery(document).ready(function() {
-      $('.btn-user').click(function() {
-         $('.user-box').slideDown(100).addClass('active ');
-         $('body').addClass("lockbody");
-      });
-      $('.user-box-close').click(function() {
-         $('.user-box').slideUp(100).removeClass('active ');
-         $('body').removeClass("lockbody");
-      });
-      $('.user-box-overlay').click(function() {
-         $('.user-box').slideUp(100).removeClass('active ');
-         $('body').removeClass("lockbody");
-      });
-   });
-
-   $(".flexnav").flexNav();
-
-   <?php if (session()->get('isLoggedIn')): ?>
-      $(document).ready(function() {
-         getHeaderNoti();
-      });
-
-      const getHeaderNoti = () => {
-         $.ajax({
-            type: 'post',
-            url: window.location.origin + '/inner-api/noti/get',
-            data: {
-               limit: 5
-            },
-            dataType: 'json',
-            success: function(res) {
-               let icon, list = '';
-
-               $.each(res.noti, function(k, v) {
-                  list += '<li><a href="' + v.link + '">' + v.message + '</a></li>';
-               });
-
-               icon = '<i class="bi bi-bell-fill"></i>';
-               if (res.noti.length > 0) {
-                  icon += '<span class="noti-alert"></span>';
-               }
-
-               $('#noti-list').html(list);
-               $('.noti-box').attr('data-id', res.id);
-               $('.btn-noti').html(icon);
+            if(box.classList.contains('active')){
+               body.classList.remove('overlay');
+               box.classList.remove('active');
+            } else {
+               body.classList.add('overlay');
+               box.classList.add('active');
             }
          });
+      });      
+
+      document.querySelector('.menuclose').addEventListener('click', () => {
+         document.querySelector('body').classList.remove('overlay');
+         document.querySelector('.menubox').classList.remove('active');
+      });
+
+      document.querySelectorAll('.btn-submenu').forEach( el => {
+         el.addEventListener('click', function() {
+            const thisTab = this.dataset.tab;
+
+            document.querySelectorAll('.btn-submenu').forEach( function(ip) {
+               const tab = ip.dataset.tab;
+               if(thisTab !== tab) ip.classList.remove('active');
+            });            
+            
+            $(".submenubox-list").removeClass("active").slideUp();
+
+            if(this.classList.contains('active')){
+               document.querySelector(`.btn-submenu[data-tab="${thisTab}"]`).classList.remove('active');
+               $(".submenubox-list").removeClass("active").slideUp();      
+            } else {
+               document.querySelector(`.btn-submenu[data-tab="${thisTab}"]`).classList.add('active');
+               $(`.submenubox-list[data-tab="${thisTab}"]`).addClass("active").slideDown();
+            } 
+         });
+      });
+
+      if(document.querySelector('.btn-noti') !== null){
+         document.querySelector('.btn-noti').addEventListener('click', () => {
+            $('.noti-box').slideDown(150).addClass('active ');
+            document.querySelector('body').classList.add('overlay');
+            document.querySelector('.btn-noti').innerHTML = '<i class="bi bi-bell-fill"></i>';
+         });
+      }
+
+      if(document.querySelector('.btn-noti-close') !== null){
+         document.querySelector('.noti-box-close').addEventListener('click', () => {
+            $('.noti-box').slideDown(150).removeClass('active ');
+            document.querySelector('body').classList.remove('overlay');
+         });
+      }
+
+      if(document.querySelector('.btn-noti-overlay') !== null){
+         document.querySelector('.noti-box-overlay').addEventListener('click', () => {
+            $('.noti-box').slideDown(150).removeClass('active ');
+            document.querySelector('body').classList.remove('overlay');
+         });
+      }      
+
+      if(document.querySelector('.btn-user') !== null){
+         document.querySelector('.btn-user').addEventListener('click', () => {
+            $('.user-box').slideDown(150).addClass('active ');
+            document.querySelector('body').classList.add('overlay');
+         });
+      }
+
+      if(document.querySelector('.btn-user-close') !== null){
+         document.querySelector('.btn-user-close').addEventListener('click', () => {
+            $('.user-box').slideDown(150).removeClass('active ');
+            document.querySelector('body').classList.remove('overlay');
+         });
+      }
+
+      if(document.querySelector('.btn-user-overlay') !== null){
+         document.querySelector('.btn-user-overlay').addEventListener('click', () => {
+            $('.user-box').slideDown(150).removeClass('active ');
+            document.querySelector('body').classList.remove('overlay');
+         });
+      }
+
+      <?php if (session()->get('isLoggedIn')): ?>
+         getHeaderNoti();
+      <?php endif;?>
+   });
+
+   <?php if (session()->get('isLoggedIn')): ?>
+      const getHeaderNoti = () => { 
+         const headers = new Headers();
+         headers.append('Content-Type', 'application/json');
+
+         fetch(
+            `${window.location.origin}/inner-api/noti/get`,
+            {
+               method: 'POST',
+               headers: headers,
+               body: JSON.stringify({limit: 5})
+            }
+         )
+         .then(response => response.json())
+         .then(response => {
+            let   icon = '<i class="bi bi-bell-fill"></i>',
+                  list = '';
+            
+            for(index in response.noti){
+               const noti = response.noti[index];
+               list += `<li><a href="${noti.link}">${noti.message}</a></li>`;
+            }
+
+            if(response.noti > 0) icon += '<span class="noti-alert"></span>';
+
+            document.querySelector('.noti-box').dataset.id = response.id;
+            document.querySelector('.btn-noti').innerHTML = icon;
+            document.querySelector('#noti-list').innerHTML = list;
+         })
+        .catch(errors => {
+            resolve({
+                status: false,
+                result: 'error',
+                message: `Request failed : ${errors.statusText}`
+            });
+        });
       }
    <?php endif;?>
 </script>

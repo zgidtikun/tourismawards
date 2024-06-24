@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col4 logo">
                 <picture>
-                    <source srcset="<?= base_url('assets/images/footer-logo.svg') ?>">
-                    <source srcset="<?= base_url('assets/images/footer-logo.png') ?>">
-                    <img src="<?= base_url('assets/images/footer-logo.png') ?>" width="257" height="100" alt="logo" loading="lazy">
+                    <source srcset="<?= base_url('assets/images/footer-logo.svg') ?>?v=2">
+                    <source srcset="<?= base_url('assets/images/footer-logo.png') ?>?v=2">
+                    <img src="<?= base_url('assets/images/footer-logo.png') ?>?v=2" width="257" height="100" alt="logo" loading="lazy">
                 </picture>
                 <p>
                 การท่องเที่ยวแห่งประเทศไทย (สำนักงานใหญ่)<br>
@@ -73,22 +73,30 @@
 </div>
 
 <script>
-    jQuery(document).ready(function($) {
-        var screen_w = $(window).width();
-        var screen_h = $(window).height();
+    document.addEventListener('DOMContentLoaded', () => {  
+        const screen_w = window.innerWidth;
+        const screen_h = window.innerHeight;
+
         if (screen_w <= 1024) {
-            $(".footermenutitle").click(function() {
-                var datatab = $(this).attr("data-tab");
-                if ($(this).hasClass("active")) {
-                    $(".footermenu_col ul").slideUp(200);
-                    $(this).removeClass("active");
-                } else {
-                    $(".footermenu_col ul").slideUp(200);
-                    $('.footermenu_col ul[data-tab="' + datatab + '"]').slideDown(200);
-                    $(".footermenutitle").removeClass("active");
-                    $(this).addClass("active");
-                }
-            });
+            document.querySelectorAll(".footermenutitle").forEach( ele => {
+                ele.addEventListener('click', function() {
+                    const datatab = this.dataset.tab;
+                    
+                    if (this.classList.contains("active")) {
+                        $(".footermenu_col ul").slideUp(200);
+                        this.classList.remove("active")
+                    } else {
+                        $(".footermenu_col ul").slideUp(200);
+                        $(`.footermenu_col ul[data-tab="${datatab}"]`).slideDown(200);
+                        
+                        document.querySelectorAll(".footermenutitle").forEach(function(e){
+                            e.classList.remove("active");
+                        });
+
+                        this.classList.add("active");
+                    }
+                });
+            });            
         }
 
     });
@@ -98,9 +106,8 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H70R1H0L02"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag(){ dataLayer.push(arguments); }
   gtag('js', new Date());
-
   gtag('config', 'G-H70R1H0L02');
 </script>
 <?php endif; ?>

@@ -122,8 +122,8 @@
 
             <div class="formstatus uncomplete hide" id="formstatus-nopass">
                 <img src="<?= base_url('/assets/images/uncomplete-regis-form.png') ?>">
-                <h3>ไม่ผ่านอนุมัติ</h3>
-                <p>ท่านไม่ผ่านเกณฑ์การประกวด</p>
+                <h3>ไม่ผ่านการอนุมัติ</h3>
+                <p>หากมีข้อสงสัยสามารถสอบถามเพิ่มเติมได้ที่ Line OA : @tourismawards</p>
             </div>
 
             <div class="formstatus-comoment hide">
@@ -183,7 +183,7 @@
                             </div>
                         </div>
                         <div class="regis-form-data-col1">
-                            <h4>กรุณาระบุ หากต้องการสมัครประเภทพิเศษ Low Carbon & Sustainability</h4>
+                            <h4>กรุณาระบุ หากต้องการสมัครเพิ่มประเภท Low Carbon & Sustainability</h4>
                             <p>
                                 <input type="radio" name="step1-lowcarbon" id="step1-lowcarbon-1" value="1">ต้องการ
                             </p>
@@ -678,7 +678,7 @@
                                 เลขที่ใบอนุญาตประกอบธุรกิจ
                                 <span class="required">*</span>
                             </h4>
-                            <input type="text" class="form-control" id="step5-t2-bussLicense" maxlength="10">
+                            <input type="text" class="form-control" id="step5-t2-bussLicense">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>
                         <div class="bs-row">
@@ -854,7 +854,7 @@
                                 เลขที่ใบอนุญาตประกอบธุรกิจ
                                 <span class="required">*</span>
                             </h4>
-                            <input type="text" class="form-control" id="step5-t3-bussLicense" maxlength="10">
+                            <input type="text" class="form-control" id="step5-t3-bussLicense">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>
                         <div class="regis-form-data-col1">
@@ -1146,7 +1146,7 @@
                             <h4>
                                 เลขที่ใบอนุญาตประกอบธุรกิจ <span class="required">*</span>
                             </h4>
-                            <input type="text" class="form-control" id="step5-t4-bussLicense" maxlength="10">
+                            <input type="text" class="form-control" id="step5-t4-bussLicense">
                             <div class="invalid-feedback">กรุณากรอก เลขที่ใบอนุญาตประกอบธุรกิจ</div>
                         </div>
                         <div class="bs-row">
@@ -1391,6 +1391,7 @@
     });
 
     $(document).ready(function() {
+        console.log('<?=$duedate->expired_date?>')
         register.init(
             '<?= $duedate->expired_sts ? 'Expired' : 'Unexpired' ?>',
             '<?= $config_date ?>'

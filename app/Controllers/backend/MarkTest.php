@@ -33,21 +33,21 @@ class MarkTest extends BaseController
         // px($log);
         // px(json_decode($log[0]->action_data));
         show_404();
-        // $data = $this->db->table('admin')->where('id', 1)->get()->getRowObject();
+        $data = $this->db->table('admin')->where('id', 1)->get()->getRowObject();
         // px($data);
-        // $email_data = [
-        //     '_header' => 'เรียนคุณ ' . $data->name . ' ' . $data->surname,
-        //     '_content' => 'คุณได้รับการเพิ่มให้เป็นผู้ดูแลระบบ (Admin) อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) ด้วยอีเมล ' . $data->email
-        // ];
-        // $requestEmail = [
-        //     'to' => $data->email,
-        //     'subject' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
-        //     'message' => view('administrator/template_email', $email_data),
-        //     // 'from' => $from,
-        //     // 'cc' => [],
-        //     // 'bcc' => []
-        // ];
-        // px($requestEmail);
+        $email_data = [
+            '_header' => 'เรียนคุณ ' . $data->name . ' ' . $data->surname,
+            '_content' => 'คุณได้รับการเพิ่มให้เป็นผู้ดูแลระบบ (Admin) อุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 (Thailand Tourism Awards 2023) ด้วยอีเมล ' . $data->email
+        ];
+        $requestEmail = [
+            'to' => $data->email,
+            'subject' => 'มีการลงทะเบียนผู้ใช้ใหม่บนเว็บไซต์',
+            'message' => view('administrator/template_email', $email_data),
+            // 'from' => $from,
+            // 'cc' => [],
+            // 'bcc' => []
+        ];
+        px($requestEmail);
         // pp();
         // pp(PasswordEncrypt('637cec9879aaa569c44e277a'));
         // px(PasswordDecrypt(PasswordEncrypt('637cec9879aaa569c44e277a')));

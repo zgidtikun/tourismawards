@@ -45,10 +45,7 @@ $routes->post('contact-us/send', 'Home::sendEmailContact');
 $routes->get('judge', 'Home::judge');
 $routes->post('get-awards-winner', 'EstimateController::getAwardResut');
 $routes->get('awards-infomation', 'Home::winnerinfo');
-$routes->get('awards-winner', 'Home::winneraward');
 $routes->get('last-awards-winner', 'Home::winneraward13');
-$routes->get('awards-winner/(:any)', 'Home::winneraward14/$1');
-$routes->get('awards-winner-14/(:any)', 'Home::winneraward14/$1');
 $routes->get('application-guide', 'Home::appguide');
 $routes->get('privacy-policy', 'Home::privacypolicy');
 $routes->get('new', 'Home::new');
@@ -57,7 +54,14 @@ $routes->get('forgot-password', 'RegisterController::forgetpass');
 $routes->get('verify-user', 'Home::verifyuser');
 $routes->get('new-password', 'Home::newpassword');
 $routes->get('new-password/(:any)', 'Home::newpassword/$1');
+$routes->get('winner-tta14', 'Home::ebook');
 $routes->get('re_calculate_score_estimate/(:any)/(:any)', 'EstimateController::reCalFinishEstimate/$1/$2');
+
+$routes->group('awards-winner', static function ($routes) {
+    $routes->get('/', 'Home::winneraward');
+    $routes->get('(:any)', 'Home::winneraward14/$1');
+    $routes->get('(:any)/(:any)', 'Home::winneraward14/$1/$2');
+});
 
 $routes->get('login', 'LoginController::index');
 $routes->get('login/(:any)', 'LoginController::index/$1');
@@ -343,6 +347,7 @@ $routes->environment('development', static function ($routes) {
 
 $routes->get('403', 'Home::error_403');
 $routes->get('404', 'Home::error_404');
+$routes->get('error_report', 'Home::error_report');
 
 /*
  * --------------------------------------------------------------------

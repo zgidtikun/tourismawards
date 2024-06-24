@@ -299,6 +299,7 @@ class AnswerController extends BaseController
     public function saveReply()
     {
         try{
+
             switch($this->input->getVar('action')){
                 case 'create': 
                     $dtdb = [
@@ -327,23 +328,38 @@ class AnswerController extends BaseController
                     ]);
                     break;
                 case 'finish':
+                                        
+                    $cusstg = $this->usStg->where([
+                        'user_id' => $this->myId, 
+                        'stage' => 1
+                    ])
+                    ->select('status')
+                    ->first();
+
+                    if(empty($cusstg)){
+                        $this->usStg->insert([
+                            'user_id' => $this->myId, 
+                            'stage' => 1, 
+                            'status' => 1
+                        ]);
+                    } 
+
                     $insId = null;
                     $answers = json_decode(json_encode($this->input->getVar('answer')),false);
 
+                    $ansUpdate = [];
+                    $counter = 0;
+
                     foreach($answers as $ans){
-                        if($ans->action == 'create'){
-                            $this->ans->insert([
-                                'question_id' => $ans->qid,
-                                'reply' => $ans->reply,
-                                'reply_by' => $this->myId,
-                                'status' => 2,
-                            ]);
-                        } else {
-                            $this->ans->where('id',$ans->aid)
-                                ->set([ 'reply' => $ans->reply, 'status' => 2 ])
-                                ->update();
-                        }
-                    }
+                        $ansUpdate[] = [                            
+                            'id' => $ans->aid,
+                            'reply' => $ans->reply,
+                            'status' => 2,
+                        ];
+                        $counter++;
+                    }  
+                    
+                    $update = $this->db->table('answer')->updateBatch($ansUpdate,'id');                    
 
                     $this->ans->where('reply_by', $this->myId)
                         ->set([ 
@@ -351,13 +367,6 @@ class AnswerController extends BaseController
                             'send_date' => date('Y-m-d H:i:s')
                         ])
                         ->update();
-
-                    $cusstg = $this->usStg->where([
-                        'user_id' => $this->myId, 
-                        'stage' => 1
-                    ])
-                    ->select('status')
-                    ->first();
 
                     $form = $this->appForm->where('id',$this->input->getVar('appId'))
                         ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
@@ -384,14 +393,8 @@ class AnswerController extends BaseController
                             $judgeRequest->respond_request($this->input->getVar('appId'),$this->myId,$form->place_name);
                             $isEstimateRequire = true;
                         }
-                    } else {
-                        $this->usStg->insert([
-                            'user_id' => $this->myId, 
-                            'stage' => 1, 
-                            'status' => 1
-                        ]);
-                    }                    
-
+                    } 
+                    
                     save_log_activety([
                         'module' => 'user_pre_screen',
                         'action' => 'pre_screen_send_sys',
@@ -399,15 +402,6 @@ class AnswerController extends BaseController
                         'user_id' => $this->myId,
                         'datetime' => date('Y-m-d H:i:s'),
                         'data' => $this->input->getVar()
-                    ]);
-
-                    save_log_activety([
-                        'module' => 'step_flow_checking',
-                        'action' => 'application-'.$this->input->getVar('appId'),
-                        'bank' => 'frontend',
-                        'user_id' => $this->myId,
-                        'datetime' => date('Y-m-d H:i:s'),
-                        'data' => 'ผู้ประกอบการกดส่งแบบประเมิน'
                     ]);
 
                     helper('semail');
@@ -418,6 +412,15 @@ class AnswerController extends BaseController
                             'tycon' => session()->get('user')
                         ],'answer-complete');
                     }
+
+                    save_log_activety([
+                        'module' => 'step_flow_checking',
+                        'action' => 'application-'.$this->input->getVar('appId'),
+                        'bank' => 'frontend',
+                        'user_id' => $this->myId,
+                        'datetime' => date('Y-m-d H:i:s'),
+                        'data' => "ผู้ประกอบการกดส่งแบบประเมิน ($counter/$update)"
+                    ]);
                 break;
             }
             

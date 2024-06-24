@@ -13,6 +13,7 @@
           <p>รหัสใบสมัคร : <?= $result->code ?></p>
           <p>ชื่อสถานประกอบการ : <?= $result->attraction_name_th ?></p>
           <p>ชื่อสถานประกอบการภาษาอังกฤษ : <?= $result->attraction_name_en ?></p>
+          <p>จังหวัด : <?= $result->address_province ?></p>
         </div>
 
         <div class="backendform-col3">
@@ -126,7 +127,7 @@
               </div>
 
               <div class="regis-form-data-col1">
-                <h4>กรุณาระบุ หากต้องการสมัครประเภทพิเศษ Low Carbon & Sustainability</h4>
+                <h4>กรุณาระบุ หากต้องการสมัครเพิ่มประเภท Low Carbon & Sustainability</h4>
                 <div id="option_application_type_sub">
                   <?php
                   $checked = "";
@@ -523,7 +524,7 @@
           </div>
         </div>
 
-        <?php if ($result->status == 0 || $result->status == 3) { ?>
+        <?php if (($result->status == 0 || $result->status == 3) && !isChaiyo()) { ?>
           <div class="text-end">
             ผู้อนุมัติ: <?= $result->approve_name ?> อัพเดทวันที่ <?= docDate($result->approve_time, 3) ?> <?= date('H:i', strtotime($result->approve_time)) ?> น.
           </div>

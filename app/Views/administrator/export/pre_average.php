@@ -41,6 +41,7 @@ $rowHead[] = 'สาขา';
 $rowHead[] = 'จังหวัด';
 $rowHead[] = 'เกณฑ์การประเมิน';
 for ($i = 1; $i <= $count_committees; $i++) {
+  $rowHead[] = 'ชื่อกรรมการคนที่ ' . $i;
   $rowHead[] = 'คะแนนของกรรมการคนที่ ' . $i;
 }
 
@@ -59,7 +60,10 @@ $end = end($colExcel);
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
-$sheet->getStyle('H:N')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('O:R')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('I')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('K')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('M')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -70,8 +74,10 @@ $sheet->setCellValue('A1', $TITLE)->mergeCells('A1:' . $end . '1');
 $sheet->setCellValue('A2', "")->mergeCells('A2:' . $end . '2');
 
 //set Format
-$sheet->getStyle('H:L')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
-$sheet->getStyle('N')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
+$sheet->getStyle('O:R')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
+$sheet->getStyle('I')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
+$sheet->getStyle('K')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
+$sheet->getStyle('M')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_NUMBER_00);
 
 foreach ($colExcel as $k => $v) {
   //set Cell Head
@@ -87,7 +93,6 @@ if (!empty($result)) {
   $i = 4;
   $j = 1;
   foreach ($result as $index => $value) {
-
     $data = [];
     if (!empty($value['tourism'])) {
       $data[] = $j++;
@@ -100,18 +105,20 @@ if (!empty($result)) {
 
       $score_pte = [];
       foreach ($value['tourism'] as $key => $val) {
-        $data[] = @$val->score_pte;
+        $data[] = @$val->name . " " . @$val->surname;
+        $data[] = F2C(@$val->score_pte);
         $score_pte[] = @$val->score_pte;
       }
       if (count($value['tourism']) <= $count_committees) {
-        for ($n=0; $n < ($count_committees - count($value['tourism'])); $n++) { 
+        for ($n = 0; $n < ($count_committees - count($value['tourism'])); $n++) {
+          $data[] = '';
           $data[] = '';
         }
       }
-      $data[] = array_sum($score_pte) / count($score_pte);
+      $data[] = F2C(array_sum($score_pte) / count($score_pte));
       // $data[] = $value['estimate']['tourism']->sum_pre_score; // คะแนนเต็ม
       $data[] = '10';
-      $data[] = $value['estimate']['tourism']->sum_tscore_pre;
+      $data[] = F2C(@$value['estimate']->score_prescreen_te);
 
       // pp($data);
       foreach ($colExcel as $k => $v) {
@@ -132,18 +139,20 @@ if (!empty($result)) {
 
       $score_psb = [];
       foreach ($value['supporting'] as $key => $val) {
-        $data[] = @$val->score_psb;
+        $data[] = @$val->name . " " . @$val->surname;
+        $data[] = F2C(@$val->score_psb);
         $score_psb[] = @$val->score_psb;
       }
       if (count($value['supporting']) <= $count_committees) {
-        for ($l=0; $l < ($count_committees - count($value['supporting'])); $l++) { 
+        for ($l = 0; $l < ($count_committees - count($value['supporting'])); $l++) {
+          $data[] = '';
           $data[] = '';
         }
       }
-      $data[] = array_sum($score_psb) / count($score_psb);
+      $data[] = F2C(array_sum($score_psb) / count($score_psb));
       // $data[] = $value['estimate']['supporting']->sum_pre_score; // คะแนนเต็ม
       $data[] = '10';
-      $data[] = $value['estimate']['supporting']->sum_tscore_pre;
+      $data[] = F2C(@$value['estimate']->score_prescreen_sb);
 
       // pp($data);
       foreach ($colExcel as $k => $v) {
@@ -164,18 +173,20 @@ if (!empty($result)) {
 
       $score_prs = [];
       foreach ($value['responsibility'] as $key => $val) {
-        $data[] = @$val->score_prs;
+        $data[] = @$val->name . " " . @$val->surname;
+        $data[] = F2C(@$val->score_prs);
         $score_prs[] = @$val->score_prs;
       }
       if (count($value['responsibility']) <= $count_committees) {
-        for ($m=0; $m < ($count_committees - count($value['responsibility'])); $m++) { 
+        for ($m = 0; $m < ($count_committees - count($value['responsibility'])); $m++) {
+          $data[] = '';
           $data[] = '';
         }
       }
-      $data[] = array_sum($score_prs) / count($score_prs);
+      $data[] = F2C(array_sum($score_prs) / count($score_prs));
       // $data[] = $value['estimate']['responsibility']->sum_pre_score; // คะแนนเต็ม
       $data[] = '5';
-      $data[] = $value['estimate']['responsibility']->sum_tscore_pre;
+      $data[] = F2C(@$value['estimate']->score_prescreen_rs);
 
       // pp($data);
       foreach ($colExcel as $k => $v) {

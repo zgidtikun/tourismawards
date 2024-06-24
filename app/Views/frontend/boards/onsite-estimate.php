@@ -119,6 +119,11 @@
                             เบอร์ติดต่อ : <span class="fw-normal text-dark" id="tyTel"></span>
                             </span>
                         </div>
+                        <div class="col-sm-12 col-md-4 mb-2">
+                            <span class="fw-semibold text-dark">
+                            จังหวัด : <span class="fw-normal text-dark" id="tyProvince"></span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

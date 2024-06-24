@@ -326,7 +326,8 @@ class EstimateController extends BaseController
 
             $this->stage->where([
                 'user_id' => $form->created_by,
-                'stage' => $target == 'pre' ? 1 : 2
+                'stage' => $target == 'pre' ? 1 : 2,
+                'status' => 1
             ])
                 ->set(['status' => 2])
                 ->update();
@@ -477,6 +478,8 @@ class EstimateController extends BaseController
             $ttescore = $tsbscoe = $trsscore = $tlcscore = 0;
             $stescore = $ssbscore = $srsscore = $slcscore = $sscore = 0;
             $te = $sb = $rs = 0;
+            $update = [];
+            $counter = 0;
 
             foreach ($estimate as $list) {
                 $escore = $cscore = 0;
@@ -506,20 +509,25 @@ class EstimateController extends BaseController
                 }
 
                 if ($list->stage == 1) {
-                    $update['score_pre'] = $escore;
-                    $update['tscore_pre'] = $cscore;
-                    $update['status_pre'] = 3;
-                    $update['request_status'] = 3;
+                    $update[$counter]['score_pre'] = $escore;
+                    $update[$counter]['tscore_pre'] = $cscore;
+                    $update[$counter]['status_pre'] = 3;
+                    $update[$counter]['request_status'] = 3;
                 } else {
-                    $update['score_onsite'] = $escore;
-                    $update['tscore_onsite'] = $cscore;
-                    $update['status_onsite'] = 3;
+                    $update[$counter]['score_onsite'] = $escore;
+                    $update[$counter]['tscore_onsite'] = $cscore;
+                    $update[$counter]['status_onsite'] = 3;
                 }
 
-                $this->estimate->where('id', $list->est_id)
-                    ->set($update)
-                    ->update();
+                $update[$counter]['id'] = $list->est_id;
+                $counter++;
+                // $this->estimate->where('id', $list->est_id)
+                //     ->set($update)
+                //     ->update();
             }
+
+            // $this->db->update_batch('estimate',$update);
+            $this->db->table('estimate')->updateBatch($update,'id');
 
             if ($tescore > 0) {
                 $stescore = ($tescore * $te) / $ttescore;
@@ -751,7 +759,7 @@ class EstimateController extends BaseController
 
         return $pass;
     }
-
+    
     private function countJudgeEstimate($id, $stage)
     {
         $select = 'admin_id_tourism tourism,

@@ -137,7 +137,7 @@
       <div class="dashboard-box" data-tab="1">
         <div class="bs-row mt-4">
           <div class="col-sm-12 col-md-12 fs-title text-base-main fw-semibold border-bottom mb-3">
-            รายการ รอบ Pre-screen ที่รอประเมิน
+            ผลงาน รอบ Pre-screen ที่รอประเมิน
           </div>
           <div class="col-sm-12 col-md-4 mb-2">
             <div class="form-floating">
@@ -166,7 +166,7 @@
           <thead>
             <tr>
               <th class="text-center">ลำดับ</th>
-              <th class="text-center">ชื่อแหล่งท่องเที่ยว</th>
+              <th class="text-center">ชื่อผลงาน</th>
               <th class="text-center">ประเภทแหล่งท่องเที่ยว</th>
               <th class="text-center">สาขาที่ประกวด</th>
               <th class="text-center">สถานะ</th>

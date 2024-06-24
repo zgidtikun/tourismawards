@@ -24,6 +24,7 @@ $rowHead = [
   'ชื่อสถานประกอบการ',
   'ประเภทรางวัลฯ',
   'สาขา',
+  'สมัคร Low Carbon',
   'วันที่สมัคร',
   'ที่อยู่',
   'จังหวัด',
@@ -47,8 +48,8 @@ $end = end($colExcel);
 //set Align
 $sheet->getStyle('A1:' . $end . '3')->getAlignment()->setHorizontal('center');
 $sheet->getStyle('A:B')->getAlignment()->setHorizontal('center');
-$sheet->getStyle('F')->getAlignment()->setHorizontal('center');
-$sheet->getStyle('O')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('F:G')->getAlignment()->setHorizontal('center');
+$sheet->getStyle('P')->getAlignment()->setHorizontal('center');
 
 //set Bold
 $sheet->getStyle('A1:' . $end . '3')->getFont()->setBold(true);
@@ -76,14 +77,17 @@ if (!empty($result)) {
   $i = 4;
   foreach ($result as $key => $value) {
 
+    // 0. no pass, 1. draft, 2. finished, 3. approve, 4. reject
     $status = '';
     if ($value->status == 1) {
-      $status = 'รอตรวจสอบ';
+      $status = 'กำลังเตรียมข้อมูล';
     } else if ($value->status == 2) {
-      $status = 'ขอข้อมูลเพิ่มเติม';
+      $status = 'รอตรวจสอบ';
     } else if ($value->status == 3) {
       $status = 'อนุมัติ';
     } else if ($value->status == 4) {
+      $status = 'ขอข้อมูลเพิ่มเติม';
+    } else if ($value->status == 0) {
       $status = 'ไม่อนุมัติ';
     }
 
@@ -98,6 +102,11 @@ if (!empty($result)) {
     } else {
       $awards = '';
       $total = '';
+    }
+
+    $lowcarbon = 'ไม่ต้องการ';
+    if ($value->require_lowcarbon == 1) {
+      $lowcarbon = 'ต้องการ';
     }
 
     $address = [
@@ -118,6 +127,7 @@ if (!empty($result)) {
       $value->attraction_name_th,
       applicationType($value->application_type_id),
       applicationTypeSub($value->application_type_sub_id),
+      $lowcarbon,
       $value->created_at,
       mainAddress($address),
       $value->address_province,

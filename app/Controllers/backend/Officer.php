@@ -21,11 +21,13 @@ class Officer extends BaseController
         }
         $data['result']  = $this->db->table('users')->where('role_id', 3)->like($where, 'match', 'both')->orderBy('created_at', 'desc')->get()->getResultObject();
 
+        // px($data['result']);
         // $data['result'] = $this->db->table('users U')->select('U.*, MT.name AS member_type_name, AT.name AS award_type_name, AG.name AS assessment_group_name')->join('member_type MT', 'MT.id = U.member_type', 'left')->join('award_type AT', 'AT.id = U.award_type', 'left')->join('assessment_group AG', 'AG.id = U.assessment_group', 'left')->where('U.member_type = 3 AND U.status = 1')->orWhere($where)->orderBy('U.id', 'desc')->get()->getResultObject();
 
         $data['award_type'] = $this->db->table('award_type')->get()->getResultObject();
         $data['assessment_group'] = $this->db->table('assessment_group')->get()->getResultObject();
         $data['type']   = 3;
+        // px($data['award_type']);
 
 
         // Template

@@ -50,7 +50,7 @@ class Database extends Config
         'port'     => 3306,
     ];
     
-    public $local = [
+    public $development = [
         'DSN'      => '',
         'hostname' => '10.0.0.70',
         'username' => 'tourismawarddb',
@@ -70,25 +70,25 @@ class Database extends Config
         'port'     => 3306,
     ];
     
-    public $development = [
-        'DSN'      => '',
-        'hostname' => 'localhost',
-        'username' => 'admin_tennisdb',
-        'password' => 'VPyrWt0CS',
-        'database' => 'admin_tennisdb',
-        'DBDriver' => 'MySQLi',
-        'DBPrefix' => '',
-        'pConnect' => false,
-        'DBDebug'  => (ENVIRONMENT !== 'production'),
-        'charset'  => 'utf8mb4',
-        'DBCollat' => 'utf8mb4_general_ci',
-        'swapPre'  => '',
-        'encrypt'  => false,
-        'compress' => false,
-        'strictOn' => false,
-        'failover' => [],
-        'port'     => 3306,
-    ];
+    // public $development = [
+    //     'DSN'      => '',
+    //     'hostname' => 'localhost',
+    //     'username' => 'admin_tennisdb',
+    //     'password' => 'VPyrWt0CS',
+    //     'database' => 'admin_tennisdb',
+    //     'DBDriver' => 'MySQLi',
+    //     'DBPrefix' => '',
+    //     'pConnect' => false,
+    //     'DBDebug'  => (ENVIRONMENT !== 'production'),
+    //     'charset'  => 'utf8mb4',
+    //     'DBCollat' => 'utf8mb4_general_ci',
+    //     'swapPre'  => '',
+    //     'encrypt'  => false,
+    //     'compress' => false,
+    //     'strictOn' => false,
+    //     'failover' => [],
+    //     'port'     => 3306,
+    // ];
     
     public $production = [
         'DSN'      => '',
@@ -149,9 +149,9 @@ class Database extends Config
         }
 
         if(getenv('CI_ENVIRONMENT') == 'development'){
-            if(strstr($_SERVER['SERVER_NAME'], 'tourismawards.local')!==false){                
-                $this->defaultGroup = 'local';
-            }
+            // if(strstr($_SERVER['SERVER_NAME'], 'tourismawards.local')!==false){                
+            //     $this->defaultGroup = 'local';
+            // }
             
         }
     }

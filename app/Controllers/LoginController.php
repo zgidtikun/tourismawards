@@ -36,11 +36,10 @@ class LoginController extends BaseController
         }
            
         if($bank == 'frontend')
-            return view('template-frontend',array(
-                'title' => 'Login',
-                '_recapcha' => $this->recapcha,
-                'view' => 'frontend/login'
-            ));
+        return view('frontend/login',array(
+            'title' => 'Login',
+            '_recapcha' => $this->recapcha,
+        ));
         else
             return redirect()->to(base_url('administrator/login'));
     }

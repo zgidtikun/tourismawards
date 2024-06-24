@@ -1,3 +1,7 @@
+<?= $this->extend('frontend/layout') ?>
+<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
+
+<?= $this->section('css') ?>
 <style>
     .in-valid {
         font-size: 13px;
@@ -16,6 +20,53 @@
         margin-left: 1rem;
     }
 </style>
+<?= $this->endSection() ?>
+
+<?= $this->section('js') ?>
+<script>
+    document.querySelector('#accept').addEventListener('click', function(){
+        if(this.checked)
+            document.querySelector('#btn-regis').disabled = false;
+        else document.querySelector('#btn-regis').disabled = true;
+    });
+    
+
+    document.querySelector('#telephone').addEventListener('input', function(){
+        this.value = this.value.replace(/[^0-9]/g,'');
+    });
+
+    document.querySelectorAll('#name, #surname').forEach( el => {
+        el.addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z\u0E00-\u0E7F\s]/g,'');
+        });
+    });
+
+    const hide = id => {
+        const input = document.querySelector(`#${id}`);
+
+        if(!input.classList.contains('hide')) input.classList.add('hide');
+        else input.classList.remove('hide');
+    }
+
+    const register = () => {   
+    <?php if(!empty($_recapcha) && $_recapcha) : ?>
+        setRecapchaToken().then(data => { 
+    <?php endif; ?>
+            document.querySelector('#regis-form').submit(); 
+    <?php if(!empty($_recapcha) && $_recapcha) : ?>
+        });
+    <?php endif; ?>
+    }
+</script>
+<?= $this->endSection() ?>
+
+<?= $this->section('recapcha') ?>
+<?php if (!empty($_recapcha) && $_recapcha) : ?>
+<?= $this->include('_recapcha'); ?>
+<?php endif; ?>
+<?= $this->endSection() ?>
+
+<?= $this->section('content') ?>
 <div class="container login">
     <div class="row">
         <div class="col6 loginbox">
@@ -227,34 +278,4 @@
         </div>
     </div>
 </div>
-<script>
-    $('#accept').click(function(){
-        if($(this).is(':checked'))
-            $('#btn-regis').prop('disabled',false);
-        else $('#btn-regis').prop('disabled',true);
-    });
-
-    $('#telephone').on('keyup change input', function(){
-        this.value = this.value.replace(/[^0-9]/g,'');
-    });
-
-    $('#name, #surname').on('keyup change input', function() {
-        this.value = this.value.replace(/[^a-zA-Z\u0E00-\u0E7F\s]/g,'');
-    });
-
-    var hide = (id) => {
-        if(!$('#'+id).hasClass('hide'))
-            $('#'+id).addClass('hide');
-        else $('#'+id).removeClass('hide'); 
-    }
-
-    var register = () => {   
-        <?php if(!empty($_recapcha) && $_recapcha) : ?>
-        setRecapchaToken().then(data => { 
-        <?php endif; ?>
-            $('#regis-form').submit(); 
-        <?php if(!empty($_recapcha) && $_recapcha) : ?>
-        });
-        <?php endif; ?>
-    }
-</script>
+<?= $this->endSection() ?>

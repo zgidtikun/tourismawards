@@ -246,6 +246,10 @@ img {
     max-width: none;
     padding-top: 41.14%;
 }
+.banner-box img{
+width: 100%;
+height: auto;
+}
 
 .banner-box-scale-img {
     width: 100%;
@@ -300,8 +304,8 @@ height: 100%;
     line-height: 1;
 }
 .btn-banner:link,.btn-banner:visited {
-    background-color: #2a6118;
-    border-bottom: 3px solid #205010;
+    background-color: #14463d;
+    border-bottom: 3px solid #103830;
     display: table;
     margin: 40px auto 0 auto;
     padding: 10px 30px;
@@ -436,7 +440,7 @@ min-height: 50vh;
 }
 
 .container.footer {
-    background-color: #2a6118;
+    background-color: #14463d;
     border-top: 3px solid #b6932f;
     color: #FFF;
     font-size: 18px;
@@ -451,7 +455,7 @@ margin: 40px 0;
 padding: 0;
 }
 .container.copyright{
-background-color: #1b510a;
+background-color: #103830;
 color:#FFF;
 font-size: 0.85em;
 }
@@ -544,7 +548,7 @@ color: #FFF;
     height: auto;
     flex-direction: column;
     width: 300px;
-    border-bottom: 3px solid #205010;
+    border-bottom: 3px solid #103830;
     box-shadow: 0 0 5px rgba(0,0,0,0.75);
     border-radius: 10px;
     overflow: hidden;
@@ -566,7 +570,7 @@ color: #FFF;
     padding: 0;
     line-height: normal;
     text-align: left;
-    border-bottom: 1px solid #205010;
+    border-bottom: 1px solid #103830;
     padding-bottom: 0!important;
 }
 
@@ -585,7 +589,7 @@ transition: all 0.5s;
 border-bottom: 0;
 }
 .header-box-col.menu ul li.item-with-ul ul li a:hover{
-background-color: #205010;
+background-color: #103830;
 }
 
 .header-box-col.menu ul li.item-with-ul ul li a:before {
@@ -611,10 +615,14 @@ color: #b6932f;
     margin-bottom: 40px;
     font-size: 24px;
 }
+.main-title.smalltitle .main-title-txt, .main-title.smalltitle .main-title-txt h2 {
+    font-size: 30px;
+    line-height: 1;
+}
 .main-title-txt h2 {
     font-size: 1.9rem;
     font-weight: bold;
-    color: #2a6118;
+    color: #14463d;
     margin: 10px 0;
     line-height: 1.2;
 }
@@ -628,7 +636,7 @@ text-align: center;
 max-height: 50px;
 }
 .txt-banner {
-    background-color: #2a6118;
+    background-color: #14463d;
     padding: 80px 20px;
     display: flex;
     align-items: center;
@@ -644,8 +652,8 @@ max-height: 50px;
 }
 .judge-title {
     font-size: 1.5em;
-    color: #2a6118;
-    border-bottom: 2px solid #1b510a;
+    color: #14463d;
+    border-bottom: 2px solid #103830;
     padding-bottom: 20px;
     font-weight: bold;
 }
@@ -687,7 +695,7 @@ margin-bottom: 20px;
 }
 
 .judge-name{
-color: #2a6118;
+color: #14463d;
 font-weight: bold;
 }
 .award-list {
@@ -766,6 +774,11 @@ background-color: #EEE;
 .award-list-img img{
 width: 100%;
 height: 100%;
+object-fit: cover;
+}
+.award-list-img a {
+width: 100%;
+height: 100%; 
 }
 .award-list-imgscale{
 position: absolute;
@@ -776,11 +789,12 @@ left: 0;
 display: flex;
 justify-content: center;
 align-items: center;
+overflow: hidden;
 }
 .award-list-name {
     font-size: 1.2rem;
     font-weight: bold;
-    color: #1b510a;
+    color: #103830;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -791,6 +805,7 @@ border-bottom: 0;
 background-color: #626262;
 color: #FFF;
 }
+
 .award-section {
     display: flex;
     flex-wrap: wrap;
@@ -799,8 +814,26 @@ color: #FFF;
     justify-content: center;
 }
 .award-section-col{
-width: 25%;
+flex: auto;
 padding:  0 20px;
+text-align: center;
+}
+.goldsilverawards .award-section-col {
+    font-size: 50px;
+    line-height: 1;
+    align-self: flex-end;
+    font-weight: bold;
+    border-left: 2px solid #FFF;
+}
+.goldsilverawards .award-section-col a{
+color: #FFF;
+}
+.goldsilverawards .award-section-col:first-child{
+border-left: 0;
+}
+.goldsilverawards .award-section-col .txt-small {
+    font-size: 30px;
+    letter-spacing: 3px;
 }
 .award-section-img{
 width: 100%;
@@ -854,14 +887,14 @@ justify-content: center;
     font-size: 1.3rem;
 }
 .container.tourismaward .row{
-    border-bottom: 2px solid #1b510a;
+    border-bottom: 2px solid #103830;
 }
 .container.tourismaward .row:last-of-type{
     border-bottom: 0;
 }
 .award-winner-name {
     font-size: 20px;
-    color: #205010;
+    color: #103830;
     text-align: left;
     margin-bottom: 20px;
     font-weight: bold;
@@ -909,8 +942,11 @@ width: 50%;
     text-align: center;
 }
 .awardsection-list li a.active {
-    background-color: #2a6118;
+    background-color: #14463d;
     color: #FFF;
+}
+.hall_of_fame .award-list li {
+    width: 33.33%;
 }
 .container_box.awardsection{
 display: none;
@@ -924,6 +960,19 @@ display: block;
 .awardotherbranch .awardsection-list li{
 width: 33.33%;
 text-align: center;
+}
+.awardsection.goldsilverawards .award-winner-name .province {
+    display: block;
+    font-size: 20px;
+    font-weight: 400;
+}
+.awardsection.goldsilverawards .award-winner-subject p {
+    display: flex;
+    column-gap: 10px;
+}
+.awardsection.goldsilverawards .award-winner-subject p span{
+width: 20px;
+flex: none;
 }
 .award-othlist{
 width: 100%;
@@ -1018,7 +1067,7 @@ position: absolute;
 left: 0;
 }
 .news-subject i::before{
-color: #205010;
+color: #103830;
 }
 .news-date, .news-name {
     padding: 0 20px 0 30px;
@@ -1052,7 +1101,7 @@ padding: 10px;
 border: 1px solid #CCC;
 }
 .news-content-social i:hover:before{
-background-color: #205010;
+background-color: #103830;
 color: #FFF;
 }
 .contact-map{
@@ -1096,7 +1145,7 @@ padding: 10px;
     box-shadow: 0 0 5px rgb(0 0 0 / 15%);
 }
 .contact-subject{
-color: #2a6118;
+color: #14463d;
 font-weight: bold;
 margin: 10px 0;
 }
@@ -1156,8 +1205,8 @@ width: 50%;
     margin-top: 40px;
 }
 .btn-save {
-    background-color: #2a6118;
-    border-bottom: 3px solid #205010;
+    background-color: #14463d;
+    border-bottom: 3px solid #103830;
     color: #FFF;
     transition: all 0.3s;   
     margin: 5px;
@@ -1167,7 +1216,7 @@ width: 50%;
     color: #FFF;
 }
 .privacy h3{
-color: #205010;
+color: #103830;
 }
 .awardyear {
     display: flex;
@@ -1177,7 +1226,7 @@ color: #205010;
     margin: 0 -10px 40px -10px;
     padding-bottom: 20px;
     font-size: 24px;
-    border-bottom: 2px solid #205010;
+    border-bottom: 2px solid #103830;
 }
 .awardyear-col {
     flex: auto;
@@ -1322,9 +1371,9 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endCo
 
 .award-list [class^="btn"]{
 transition: all 0.2s;
-background-color: #2a6118;
+background-color: #14463d;
 border: 0;
-border-bottom: 3px solid #205010;
+border-bottom: 3px solid #103830;
 }
 .award-list [class^="btn"]:hover {
     position: relative;
@@ -1350,7 +1399,7 @@ max-height: 300px;
 }
 .txt-green,
 a.txt-green{
-color: #2a6118;
+color: #14463d;
 }
 
 .container.footer a:link,.container.footer a:visited{

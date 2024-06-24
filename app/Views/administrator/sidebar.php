@@ -6,8 +6,8 @@
   <div class="backendmenu-row">
     <div class="backendmenu-logo">
       <picture>
-        <source srcset="<?= base_url() ?>/assets/images/logo.svg">
-        <img src="<?= base_url() ?>/assets/images/logo.png" width="372" height="144">
+        <source srcset="<?= base_url() ?>/assets/images/logo.svg?v=2">
+        <img src="<?= base_url('assets/images/logo.png?v=2') ?>" width="372" height="144">
       </picture>
     </div>
     <div class="backendmenu-list">

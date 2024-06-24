@@ -1,8 +1,8 @@
 var ayear, atab;
-const syear = $('#syear');
+const syear = document.querySelector('#syear');
 
-syear.change(() => {
-    ayear = syear.val();
+syear.addEventListener('change', () => {
+    ayear = syear.value;
     setAwards();
 });
 
@@ -15,18 +15,20 @@ const setAwards = () => {
     else if(Number(atab) == 2) list = award.accommodation;
     else list = award.health;
 
-    $.each(list.great,(k,v) => {
-        li_ga += `<li>${v.name} จังหวัด ${v.province}</li>`;
-    });
+    for(index in list.great){
+        const great = list.great[index];
+        li_ga += `<li>${great.name} จังหวัด ${great.province}</li>`;
+    }
 
-    $.each(list.good,(k,v) => {
-        li_sa += `<li>${v.name} จังหวัด ${v.province}</li>`;
-    });
+    for(index in list.good){
+        const good = list.good[index];
+        li_sa += `<li>${good.name} จังหวัด ${good.province}</li>`;
+    }
 
-    $('.txt-banner').html(`<h2>ผลงานที่ได้รับรางวัล ปี ${ayear}</h2>`);
-    $('.main-title-txt').html(list.title);
-    $('#gold-award-list').html(li_ga);
-    $('#silver-award-list').html(li_sa);
+    document.querySelector('.txt-banner').innerHTML = `<h2>ผลงานที่ได้รับรางวัล ปี ${ayear}</h2>`;
+    document.querySelector('.main-title-txt').innerHTML = list.title;
+    document.querySelector('#gold-award-list').innerHTML = li_ga;
+    document.querySelector('#silver-award-list').innerHTML = li_sa;
 }
 
 const awards = {

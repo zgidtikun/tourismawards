@@ -176,6 +176,14 @@ width: 50%;
     width: auto!important;
     padding: 20px 0;
 }
+.main-title.smalltitle .main-title-txt, .main-title.smalltitle .main-title-txt h2 {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.hall_of_fame .award-list li {
+    width: 50%;
+}
 }
 
 @media screen and (max-width:768px) {
@@ -261,6 +269,10 @@ max-height: 64px;
 }
 
 @media screen and (max-width:767px) and (orientation:portrait){
+    
+.hall_of_fame .award-list li {
+    width: 100%;
+}
 .formlogin .banner-logo{
 display: none;
 }
@@ -275,7 +287,7 @@ display: none;
 .mainsite.awardotherbranch .row {
     display: flex;
     flex-wrap: wrap;
-    margin: 40px -10px;
+    margin: 40px 0;
     padding: 0;
     width: auto;
     align-items: flex-start;
@@ -334,7 +346,7 @@ display: none;
     transition: all 0.3s;
 }
 .award-list li {
-    padding: 20px;
+    padding: 20px 0;
     margin: 0;
     width: 100%;
 }
@@ -376,7 +388,7 @@ display: none;
     padding: 0 0 0 20px;
     margin: 0 -10px 0 0;
     position: relative;
-    scroll-snap-align: end;
+    scroll-snap-align: start;
     flex: none;
     color: #222;
     align-content: flex-start;
@@ -399,18 +411,25 @@ margin-right: 20px;
 .awardbranch .main-title,
 .awardotherbranch .main-title {
     text-align: left;
-    padding: 0 20px;
+    padding: 0;
 }
 .awardbranch .gold-award, .awardbranch .silver-award,
 .awardotherbranch .gold-award, .awardotherbranch .silver-award {
     display: flex;
     justify-content: flex-start;
-    padding: 0 20px;
+    padding: 0;
 }
 .award-list {
-    margin: 40px 0;
+    margin: 20px 0;
     width: 100%;
-    padding: 0 20px;
+    padding: 0;
+}
+.award-list ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: -20px 0;
+    list-style: none;
 }
 .award-othlist {
     width: 100%;
@@ -467,6 +486,13 @@ margin-right: 20px;
 .container.aboutus .col12 {
     margin: 20px 0;
 }
+.main-title.smalltitle .main-title-txt, .main-title.smalltitle .main-title-txt h2 {
+    font-size: 20px;
+    line-height: 1;
+}
+.awardsectionlist .col12{
+padding: 0;
+}
 }
 
 @media screen and (max-width:1023px) and (orientation:landscape){
@@ -479,5 +505,4 @@ margin-right: 20px;
     -webkit-box-orient: vertical;
 }
 }
-
 /*GD-02-V.06022566*/

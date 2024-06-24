@@ -1,6 +1,6 @@
 <script type="text/javascript" async>
   // Set cookie
-  jQuery(document).ready(function($) {       
+  $(document).ready(function($) {       
     if($.cookie('cookieinfo') !== 'true'){
       const cookie_box = `
         <div id="cookie_box" style="display: none;">

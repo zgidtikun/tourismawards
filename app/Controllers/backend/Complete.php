@@ -57,7 +57,16 @@ class Complete extends BaseController
             $sub_id = session()->award_type;
         }
 
-        $data['result'] = $this->db->table('application_form AP')->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, ES.score_prescreen_tt, ES.score_onsite_tt')->join('users_stage US', 'US.user_id = AP.created_by AND US.status >= 6', 'left')->join('estimate_score ES', 'ES.application_id = AP.id', 'left')->where('US.stage', 2)->where($where)->like($like, 'match', 'both')->orderBy('AP.created_at', $sort)->get()->getResultObject();
+        $data['result'] = $this->db->table('application_form AP')
+        ->select('AP.*, US.stage, US.status AS users_stage_status, US.duedate, ES.score_prescreen_tt, ES.score_onsite_tt')
+        ->join('users_stage US', 'US.user_id = AP.created_by AND US.status >= 6', 'left')
+        ->join('estimate_score ES', 'ES.application_id = AP.id', 'left')
+        ->where('US.stage', 2)
+        ->where($where)
+        ->like($like, 'match', 'both')
+        ->orderBy('AP.created_at', $sort)
+        ->get()
+        ->getResultObject();
 
         // pp_sql();
         // px($data['result']);

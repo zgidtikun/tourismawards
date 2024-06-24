@@ -24,10 +24,20 @@
         'class' => '',
       ],
       [
+        'link' => base_url('administrator/report/export/summary_scores_prescreen'),
+        'name' => 'สรุปคะแนน (Pre-Screen)',
+        'class' => '',
+      ],
+      [
         'link' => base_url('administrator/report/export/summary_scores'),
         'name' => 'สรุปคะแนนทั้งหมด',
         'class' => '',
       ],
+      // [
+      //   'link' => base_url('administrator/report/export/summary_scores_onsite'),
+      //   'name' => 'สรุปคะแนน (ลงพื้นที่)',
+      //   'class' => '',
+      // ],
       [
         'link' => base_url('administrator/report/export/suggestion'),
         'name' => 'ข้อเสนอแนะกรรมการ',

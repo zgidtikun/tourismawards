@@ -268,7 +268,7 @@ const psc = {
                         } else {
                             if(finish.result == 'success'){
                                 let title = 'ส่งแบบประเมินเรียบร้อยแล้ว',
-                                    message = 'เราจะแจ้งผลให้ทราบวันที่ <b>1 มิถุนายน 2566</b>';
+                                    message = 'เราจะแจ้งผลให้ทราบผ่านทางหน้าเว็บไซต์</br>ในวันที่ <b>13 มิถุนายน 2566</b>';
                                 
                                 alert.show(finish.result,title,message).then(function(res){
                                     window.location.reload();
