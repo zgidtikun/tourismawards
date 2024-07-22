@@ -173,6 +173,18 @@ $routes->group('administrator', ['namespace' => 'App\Controllers\backend'], stat
     $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth:backend']);
     $routes->post('dashboard/getData', 'Dashboard::getData', ['filter' => 'api:backend']);
 
+    $routes->group('question', static function ($routes) {
+        $routes->get('', 'Question::index', ['filter' => 'auth:4']);
+        $routes->get('add', 'Question::add', ['filter' => 'auth:4']);
+        $routes->get('detail/(:num)', 'Question::edit/$1', ['filter' => 'auth:4']);
+        $routes->get('show/(:num)', 'Question::show/$1', ['filter' => 'auth:4']);
+
+        $routes->post('list', 'Question::get_list_question', ['filter' => 'api:4']);
+        $routes->post('store', 'Question::store', ['filter' => 'api:4']);
+        $routes->get('remove/(:num)', 'Question::destroy/$1', ['filter' => 'api:4']);
+        $routes->post('change-weight', 'Question::change_weight', ['filter' => 'api:4']);
+    });
+
     // Users (เฉพาะแอดมินที่เข้าได้)
     $routes->group('users', static function ($routes) {
         $routes->get('', 'Users::index', ['filter' => 'auth:4']);

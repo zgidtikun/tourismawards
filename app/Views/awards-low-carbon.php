@@ -1,7 +1,3 @@
-<?= $this->extend('layout') ?>
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
-
-<?= $this->section('css') ?>
 <style>
     .certificate-award {
         display: flex;
@@ -16,20 +12,7 @@
         margin: 0;
     }
 </style>
-<?= $this->endSection() ?>
 
-<?= $this->section('js') ?>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const headerHeight = document.querySelector('#header-inner').offsetHeight;
-        const mainsite = document.querySelector('.mainsite');
-        mainsite.style.display = 'block';
-        mainsite.style.marginTop = `${headerHeight}px`;
-    });
-</script>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
 <div class="banner-box">
     <img width="1920" height="900" alt="" loading="lazy"
     <?php if($setting == 'gold-awards-low-carbon'): ?>
@@ -46,13 +29,12 @@
             <div class="col12">
                 <div class="main-title">
                     <div class="main-title-txt">
-                        <h2>ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน<br>(Low Carbon & Sustainbility)</h2>
+                        <h2>ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน<br>(Low Carbon & Sustainbility)
+                        </h2>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<?= $this->include('_awards') ?>
-<?= $this->endSection() ?>
+<?=view('_awards')?>

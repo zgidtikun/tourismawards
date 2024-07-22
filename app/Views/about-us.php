@@ -1,17 +1,3 @@
-<?= $this->extend('layout') ?>
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
-
-<?= $this->section('js') ?>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const headerHeight = document.querySelector('#header-inner').offsetHeight;
-        document.querySelector('.mainsite').style.display = 'block';
-        document.querySelector('.mainsite').style.marginTop = `${headerHeight}px`;
-    });
-</script>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
 <div class="banner-box">
     <div>
         <div class="banner-box-scale">
@@ -45,9 +31,9 @@
             </div>
             <div class="col12">
                 <p class="pinden"><b>
-                        การท่องเที่ยวแห่งประเทศไทย (ททท.) จัดประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 เพื่อคัดสรรผู้ประกอบการท่องเที่ยวไทยที่มีคุณภาพมาตรฐานระดับสากล ทั้งในด้านการท่องเที่ยวอย่างปลอดภัย
-                        และยั่งยืน (Safe and Sustainable Tourism) รวมทั้งการรับผิดชอบต่อสังคม และสิ่งแวดล้อม (Responsible Tourism) เพื่อเป้าหมายร่วมกันในการยกระดับอุตสาหกรรมท่องเที่ยวไทยสู่การเติบโตอย่างยั่งยืน (High Value and Sustainability)
-                    </b></p>
+                    การท่องเที่ยวแห่งประเทศไทย (ททท.) จัดประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย ครั้งที่ 14 ประจำปี 2566 เพื่อคัดสรรผู้ประกอบการท่องเที่ยวไทยที่มีคุณภาพมาตรฐานระดับสากล ทั้งในด้านการท่องเที่ยวอย่างปลอดภัย 
+                    และยั่งยืน (Safe and Sustainable Tourism) รวมทั้งการรับผิดชอบต่อสังคม และสิ่งแวดล้อม (Responsible Tourism) เพื่อเป้าหมายร่วมกันในการยกระดับอุตสาหกรรมท่องเที่ยวไทยสู่การเติบโตอย่างยั่งยืน (High Value and Sustainability)
+                </b></p>
                 <ol>
                     <li>
                         ประเภทแหล่งท่องเที่ยว (Attraction) แบ่งประเภทรางวัลย่อยออกเป็น 6 สาขา ประกอบด้วย
@@ -91,11 +77,11 @@
                     <li>เกียรติบัตรรางวัลอุตสาหกรรมท่องเที่ยวไทย (Thailand Tourism Certificate) </li>
                 </ol>
                 <p>
-                    *** โดยผลงานที่ได้รับรางวัล Thailand Tourism Gold Award จำนวน 3 ครั้งติดต่อกัน โดยไม่จำเป็นต้องได้รับรางวัลประเภทเดียวกัน จะได้รับรางวัล Hall of Fame
+                    *** โดยผลงานที่ได้รับรางวัล Thailand Tourism Gold Award จำนวน 3 ครั้งติดต่อกัน โดยไม่จำเป็นต้องได้รับรางวัลประเภทเดียวกัน จะได้รับรางวัล Hall of Fame 
                 </p>
                 <p><b>กรอบแนวคิดการตัดสินรางวัลประกอบไปด้วย 3 แนวคิดหลักคือ</b></p>
                 <ol>
-                    <li>การท่องเที่ยวอย่างยั่งยืน (Sustainable Tourism) ส่งเสริมรูปแบบการท่องเที่ยวที่มีความหมายและนำไปสู่ความยั่งยืน มีกระบวนการจัดการที่คำนึงถึงสังคม เศรษฐกิจ
+                    <li>การท่องเที่ยวอย่างยั่งยืน (Sustainable Tourism) ส่งเสริมรูปแบบการท่องเที่ยวที่มีความหมายและนำไปสู่ความยั่งยืน มีกระบวนการจัดการที่คำนึงถึงสังคม เศรษฐกิจ 
                         และสิ่งแวดล้อม กลไกสำคัญประกอบด้วย BCG Economy Model/Responsible Tourism/Low Carbon Management</li>
                     <li>ความปลอดภัยด้านสุขอนามัย (Safety & Health Administration)</li>
                     <li>ความสนใจของกลุ่มนักท่องเที่ยว (Customers Interest)</li>
@@ -121,7 +107,7 @@
                         </ol>
                     </li>
                     <li>
-                        ประชาสัมพันธ์ ผลงานที่ได้รับรางวัลจะได้รับการประชาสัมพันธ์ผ่านสื่อดังต่อไปนี้
+                        ประชาสัมพันธ์  ผลงานที่ได้รับรางวัลจะได้รับการประชาสัมพันธ์ผ่านสื่อดังต่อไปนี้
                         <ol>
                             <li>ประชาสัมพันธ์ผ่านสื่อออฟไลน์ และออนไลน์ของ ททท. ได้แก่ เพจ Amazing Thailand และเพจ Thailand Tourism Awards/อนุสาร อสท.</li>
                             <li>ประชาสัมพันธ์ผ่านเว็บไซต์ข่าวออนไลน์ และสื่อสิ่งพิมพ์ ได้แก่ ผู้จัดการออนไลน์/ข่าวสดออนไลน์/ฐานเศรษฐกิจ/มติชนออนไลน์/เดลินิวส์/แนวหน้า </li>
@@ -137,46 +123,32 @@
                 </ol>
             </div>
             <div class="col12">
-                <p>
-                    <b>
-                        ททท.ขอเชิญชวนผู้ประกอบการอุตสาหกรรมท่องเที่ยวร่วมเป็นส่วนหนึ่งในการยกระดับคุณภาพสินค้าและบริการอุตสาหกรรมท่องเที่ยวไทยสู่การเติบโตอย่างยั่งยืน
-                        ด้วยการส่งผลงานร่วมประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย (Thailand Tourism Awards) ครั้งที่ 14 ประจำปี 2566
-                    </b>
-                </p>
-                <p>
-                    <b>
-                        เปิดรับสมัครผลงานเข้าประกวดตั้งแต่วันที่ 1 มีนาคม – 30 เมษายน 2566
-                        ผู้ประกอบการด้านการท่องเที่ยวสามารถศึกษาข้อมูลคุณสมบัติและเกณฑ์การตัดสินเพื่อเตรียมความพร้อม
-                        ก่อนสมัครได้ที่ 
-                    </b>
-                </p>
-                <p>
-                    <b>
-                        www.thailandtourismawards.com
-                        <br>
-                        Facebook: Thailand Tourism Awards
-                        <br>
-                        Line Official Account โครงการฯ: <a href="http://line.me/ti/p/@tourismawards" target="_blank">@tourismawards</a>
-                    </b>
-                </p>
-                <p>
-                    <b>
-                        Line Official Account แยกตามประเภทรางวัล
-                        <br>
-                        ประเภทแหล่งท่องเที่ยว: <a href="http://line.me/ti/p/@tourismawards1" target="_blank">@tourismawards1</a>
-                        <br>
-                        ประเภทที่พัก: <a href="http://line.me/ti/p/@tourismawards2" target="_blank">@tourismawards2</a>
-                        <br>
-                        ประเภทการท่องเที่ยวเชิงสุขภาพ: <a href="http://line.me/ti/p/@tourismawards3" target="_blank">@tourismawards3</a>
-                        <br>
-                        ประเภทรายการนำเที่ยว: <a href="http://line.me/ti/p/@tourismawards4" target="_blank">@tourismawards4
-                        <br>
-                        ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน: <a href="http://line.me/ti/p/@tourismawards5" target="_blank">@tourismawards5</a>
-                    </b>
-                </p>
+                <p><b>
+                    ททท.ขอเชิญชวนผู้ประกอบการอุตสาหกรรมท่องเที่ยวร่วมเป็นส่วนหนึ่งในการยกระดับคุณภาพสินค้าและบริการอุตสาหกรรมท่องเที่ยวไทยสู่การเติบโตอย่างยั่งยืน 
+                    ด้วยการส่งผลงานร่วมประกวดรางวัลอุตสาหกรรมท่องเที่ยวไทย (Thailand Tourism Awards) ครั้งที่ 14 ประจำปี 2566</b></p>
+<p>
+                    <b>เปิดรับสมัครผลงานเข้าประกวดตั้งแต่วันที่ 1 มีนาคม – 30 เมษายน 2566 
+                    ผู้ประกอบการด้านการท่องเที่ยวสามารถศึกษาข้อมูลคุณสมบัติและเกณฑ์การตัดสินเพื่อเตรียมความพร้อม
+                    ก่อนสมัครได้ที่  </b></p>
+<p><b>www.thailandtourismawards.com<br>Facebook: Thailand Tourism Awards
+                    <br>Line Official Account โครงการฯ: <a href="http://line.me/ti/p/@tourismawards" target="_blank">@tourismawards</a>
+                    </b></p>
+<p><b>
+                    Line Official Account แยกตามประเภทรางวัล
+                    <br>
+                    ประเภทแหล่งท่องเที่ยว: <a href="http://line.me/ti/p/@tourismawards1" target="_blank">@tourismawards1</a>
+                    <br>
+                    ประเภทที่พัก: <a href="http://line.me/ti/p/@tourismawards2" target="_blank">@tourismawards2</a>
+                    <br>
+                    ประเภทการท่องเที่ยวเชิงสุขภาพ: <a href="http://line.me/ti/p/@tourismawards3" target="_blank">@tourismawards3</a>
+                    <br>
+                    ประเภทรายการนำเที่ยว: <a href="http://line.me/ti/p/@tourismawards4" target="_blank">@tourismawards4
+                    <br>
+                    ประเภทการท่องเที่ยวคาร์บอนต่ำเพื่อความยั่งยืน: <a href="http://line.me/ti/p/@tourismawards5" target="_blank">@tourismawards5</a>
+                </b></p>
+
 
             </div>
         </div>
     </div>
 </div>
-<?= $this->endSection() ?>

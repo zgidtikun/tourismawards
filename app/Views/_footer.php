@@ -73,30 +73,22 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {  
-        const screen_w = window.innerWidth;
-        const screen_h = window.innerHeight;
-
+    jQuery(document).ready(function($) {
+        var screen_w = $(window).width();
+        var screen_h = $(window).height();
         if (screen_w <= 1024) {
-            document.querySelectorAll(".footermenutitle").forEach( ele => {
-                ele.addEventListener('click', function() {
-                    const datatab = this.dataset.tab;
-                    
-                    if (this.classList.contains("active")) {
-                        $(".footermenu_col ul").slideUp(200);
-                        this.classList.remove("active")
-                    } else {
-                        $(".footermenu_col ul").slideUp(200);
-                        $(`.footermenu_col ul[data-tab="${datatab}"]`).slideDown(200);
-                        
-                        document.querySelectorAll(".footermenutitle").forEach(function(e){
-                            e.classList.remove("active");
-                        });
-
-                        this.classList.add("active");
-                    }
-                });
-            });            
+            $(".footermenutitle").click(function() {
+                var datatab = $(this).attr("data-tab");
+                if ($(this).hasClass("active")) {
+                    $(".footermenu_col ul").slideUp(200);
+                    $(this).removeClass("active");
+                } else {
+                    $(".footermenu_col ul").slideUp(200);
+                    $('.footermenu_col ul[data-tab="' + datatab + '"]').slideDown(200);
+                    $(".footermenutitle").removeClass("active");
+                    $(this).addClass("active");
+                }
+            });
         }
 
     });
@@ -106,8 +98,9 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H70R1H0L02"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
+  function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
+
   gtag('config', 'G-H70R1H0L02');
 </script>
 <?php endif; ?>

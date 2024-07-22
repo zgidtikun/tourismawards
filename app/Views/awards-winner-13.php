@@ -1,53 +1,3 @@
-<?= $this->extend('layout') ?>
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
-
-<?= $this->section('js') ?>
-<script src="<?=base_url('assets/js/frontend/last-winner.js')?>"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const headerHeight = document.querySelector('#header-inner').offsetHeight;
-        const mainsite = document.querySelector('.mainsite');
-
-        mainsite.classList.add('awardotherbranch');
-        mainsite.style.display = 'block';
-        mainsite.style.marginTop = `${headerHeight}px`;
-        
-        const paramType = '<?=(!empty($_GET['type']) ? $_GET['type'] : '')?>';
-        ayear = 2564;
-
-        switch(paramType){
-            case 'attraction': atab = 1; break;
-            case 'accommodation': atab = 2; break;
-            case 'health-and-wellness-tourism': atab = 3; break;
-            default: atab = 1;
-        }
-
-        document.querySelectorAll('.btn-selectsec').forEach( e => {
-            e.classList.remove('active');
-        });
-
-        document.querySelector(`.btn-selectsec[data-tab="${atab}"]`).classList.add('active');
-        setAwards();
-    });
-
-    document.querySelectorAll('.btn-selectsec').forEach( ele => {
-        ele.addEventListener('click', function() {
-            const tab = this.dataset.tab;
-            atab = tab;
-
-            document.querySelectorAll('.btn-selectsec').forEach( e => {
-                e.classList.remove('active');
-            });
-
-            this.classList.add('active');
-            setAwards();
-        });
-    });
-</script>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
 <div class="banner-box">
 
     <div class="txt-banner">
@@ -57,7 +7,7 @@
 </div>
 
 <div class="container">
-    <div class="container_box">
+    <div class="container_box awardsectionlist">
         <div class="row">
             <div class="col12">
                 <div class="awardyear">
@@ -147,4 +97,41 @@
     </div>
 
 </div>
-<?= $this->endSection() ?>
+
+<script src="<?=base_url('assets/js/frontend/last-winner.js')?>"></script>
+<script>
+
+    $(document).ready(() => {
+        const paramType = '<?=(!empty($_GET['type']) ? $_GET['type'] : '')?>';
+        ayear = 2564;
+
+        switch(paramType){
+            case 'attraction':
+                atab = 1;
+            break;
+            case 'accommodation':
+                atab = 2;
+            break;
+            case 'health-and-wellness-tourism':
+                atab = 3;
+            break;
+            default: 
+                atab = 1;
+        }
+
+        $('.mainsite').addClass('awardotherbranch');
+        $('.btn-selectsec').removeClass('active');
+        $(`.btn-selectsec[data-tab="${atab}"]`).addClass('active');
+
+        setAwards();
+
+        $('.btn-selectsec').click(function () {
+            const datatab = $(this).attr('data-tab');
+            atab = datatab;
+            $('.btn-selectsec').removeClass('active');
+            $(this).addClass('active');
+            setAwards();
+        });
+    });
+    
+</script>

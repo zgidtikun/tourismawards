@@ -1,17 +1,20 @@
-<?= $this->extend('layout') ?>
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
-
-<?= $this->section('css') ?>
 <style>
-    .tab { margin-right: 3rem; }
-    .mt { margin-top: 0.5rem; }
+    .tab {
+        margin-right: 3rem;
+    }
+
+    .mt {
+        margin-top: 0.5rem;
+    }
 
     .outer {        
         font-size: 18px;
         margin-bottom: 0.5rem;
     }
 
-    .main { margin-top: 0.5rem; }
+    .main {
+        margin-top: 0.5rem;
+    }
 
     .sub {
         font-size: 18px;
@@ -29,10 +32,14 @@
         padding-right: 100px;
     }
 
-    .award-list-section ol li { margin-bottom: 1rem; }
+    .award-list-section ol li {
+        margin-bottom: 1rem;
+    }
 
     @media screen and (max-width: 1366px){
-        .sub { padding-left: 1.5rem; }
+        .sub {            
+            padding-left: 1.5rem;
+        }
 
         .award-list-section {
             padding-left: 0;
@@ -40,21 +47,6 @@
         }
     }
 </style>
-<?= $this->endSection() ?>
-
-<?= $this->section('js') ?>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const headerHeight = document.querySelector('#header-inner').offsetHeight;
-        const mainsite = document.querySelector('.mainsite');
-        mainsite.classList.add('privacy');
-        mainsite.style.display = 'block';
-        mainsite.style.marginTop = `${headerHeight}px`;
-    });
-</script>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
 <div class="banner-box">
 
     <div class="txt-banner">
@@ -365,4 +357,9 @@
     </div>
 
 </div>
-<?= $this->endSection() ?>
+
+<script>
+    $(document).ready(() => {
+        $('.mainsite').addClass('privacy');
+    });
+</script>

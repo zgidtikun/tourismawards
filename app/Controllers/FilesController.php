@@ -21,7 +21,7 @@ class FilesController extends BaseController
                     if($image->isValid() && !$image->hasMoved()){
                         $extension = $image->guessExtension();
                         $name = 'profile_'.$id.'_'.randomFileName($extension);
-                        $full_path = $path.'/'.$name;     
+                        $full_path = $path.'/'.$name;
 
                         if($image->move(FCPATH.$path, $name)){
                             $obj = new \App\Models\Users();                        
@@ -112,6 +112,7 @@ class FilesController extends BaseController
                         $originalName = $file->getName();
                         $extension = $file->guessExtension();
                         $newName = $prefix.randomFileName($extension);
+                        
                         $file->move(FCPATH.$path, $newName);
 
                         $tmp_file = array(

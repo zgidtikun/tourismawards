@@ -1391,7 +1391,6 @@
     });
 
     $(document).ready(function() {
-        console.log('<?=$duedate->expired_date?>')
         register.init(
             '<?= $duedate->expired_sts ? 'Expired' : 'Unexpired' ?>',
             '<?= $config_date ?>'

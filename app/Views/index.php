@@ -1,7 +1,3 @@
-<?= $this->extend('layout') ?>
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
-
-<?= $this->section('css') ?>
 <style>
     .img-overlay {
         position: absolute;
@@ -35,6 +31,7 @@
     .claim_txt ul{
         list-style-position: inside;
     }
+
     .claim_txt ul li{
         margin-bottom: 1rem;
     }
@@ -49,15 +46,6 @@
         }
     }
 </style>
-<?= $this->endSection() ?>
-
-<?= $this->section('banner') ?>
-<div id="includedbanner">
-    <?= $this->include('_banner') ?>
-</div>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
 <div class="container titlebox">
     <div class="container_box">
         <div class="row">
@@ -273,7 +261,6 @@
         </div>
     </div>
 </div>
-
 <div class="container reveal" style="background-image: url(<?=base_url('assets/images/banner/awards_bg.jpg')?>);background-position: bottom center;background-repeat: no-repeat;background-size: cover;">
     <div class="container_box">
 
@@ -303,6 +290,12 @@
 
     </div>
 </div>
+<script>
+    const toAwardsWinner = (param) => {
+        const url = window.location.origin+'/awards-winner/'+param;
+        window.open(url,'_blank');
+    }
+</script>
 <div class="container reveal" style="background-image: url('<?= base_url('assets/images/winneraward_bg.jpg') ?>');background-position:center;background-size:cover;display:none;">
     <div class="container_box">
 
@@ -400,37 +393,53 @@
         </div>
     </div>
 </div>
-<?= $this->endSection() ?>
 
-<?= $this->section('js') ?>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const headerHeight = document.querySelector('#header-inner').offsetHeight;
-        document.querySelector('#includedbanner').style.display = 'block';
-        document.querySelector('#includedbanner').style.marginTop = `${headerHeight}px`;
+<script type="text/javascript">
+    jQuery(document).ready(function($) {
 
-        window.addEventListener('load', () => {
-            const reveals = document.querySelectorAll(".reveal");
-            const webHeight = window.innerHeight;
-            const webelementTop = reveals[0].getBoundingClientRect().top; 
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
 
-            for(let i = 0; i < 4; i++){
-                if (webelementTop > webHeight / 3) reveals[0].classList.add('active');
-                else reveals[0].classList.add('active');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 10;
+				var screen_h = $(window).height();
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                } else {
+                    reveals[i].classList.remove("active");
+                }
             }
-        });
+        }
 
         window.addEventListener("scroll", reveal);
 
-        const screen_w = window.offsetWidth;
-        const screen_h = window.offsetHeight;
+		$(window).load(function () {
+        var reveals = document.querySelectorAll(".reveal");
+        var webHeight = window.innerHeight;
+        var webelementTop = reveals[0].getBoundingClientRect().top;        
 
-        let branchTitle, branchTitleHeight, claimTitle, claimTitleHeight;
-        let branchTitleTab = claimTitleTab = [] ;
+        for (var i = 0; i < 4; i++) {
+          if (webelementTop > webHeight / 3) {
+            reveals[i].classList.add("active");
+          } else {
+            reveals[i].classList.remove("active");
+          }
+        }
+      });
+    });
+</script>
 
-        if(screen_w > 1024){
-            document.querySelector(".comment_slide").style.display = 'block';
+<script type="text/javascript" async>
+    jQuery(document).ready(function($) {
 
+        var screen_w = $(window).width();
+        var screen_h = $(window).height();
+
+        if (screen_w > 1024) {
+            $(".comment_slide").css("display", "block");
             $(".comment_slide").slick({
                 dots: true,
                 infinite: false,
@@ -439,12 +448,54 @@
                 slidesToScroll: 3
             });
 
-            setHeight('.branch_title');
-            setHeight('.claim_title');
-        }
-        else if(screen_w >= 768){
-            document.querySelector(".comment_slide").style.display = 'block';
+            //----------------------------------------------------------------------------------//
+            var branchtitle = $('.branch_title').length;
+            var branchtitletab = [];
+            for (var i = 1; i <= branchtitle;) {
+                branchtitletab[i] = $('.branch_title[data-tab="' + i + '"]').height();
+                i++
+            }
+            var branchtitleheight = branchtitletab.reduce(function(a, b) {
+                return Math.max(a, b);
+            });
+            $('.branch_title').css("height", branchtitleheight);
+            //----------------------------------------------------------------------------------//
+            // var branchtxt = $('.branch_txt').length;
+            // var branchtxttab = [];
+            // for (var i = 1; i <= branchtxt;) {
+            //     branchtxttab[i] = $('.branch_txt[data-tab="' + i + '"]').height();
+            //     i++
+            // }
+            // var branchtxtheight = branchtxttab.reduce(function(a, b) {
+            //     return Math.max(a, b);
+            // });
+            // $('.branch_txt').css("height", branchtxtheight + 20);
+            //----------------------------------------------------------------------------------//
+            var claimtitle = $('.claim_title').length;
+            var claimtitletab = [];
+            for (var i = 1; i <= claimtitle;) {
+                claimtitletab[i] = $('.claim_title[data-tab="' + i + '"]').height();
+                i++
+            }
+            var claimtitleheight = claimtitletab.reduce(function(a, b) {
+                return Math.max(a, b);
+            });
+            $('.claim_title').css("height", claimtitleheight+30);
 
+            //----------------------------------------------------------------------------------//
+            // var claimtxt = $('.claim_txt').length;
+            // var claimtxttab = [];
+            // for (var i = 1; i <= claimtxt;) {
+            //     claimtxttab[i] = $('.claim_txt[data-tab="' + i + '"]').height();
+            //     i++
+            // }
+            // var claimtxtheight = claimtxttab.reduce(function(a, b) {
+            //     return Math.max(a, b);
+            // });            
+            // $('.claim_txt').css("height", `${claimtxtheight}px`);
+
+        } else if (screen_w >= 768) {
+            $(".comment_slide").css("display", "block");
             $(".comment_slide").slick({
                 dots: true,
                 infinite: false,
@@ -452,12 +503,20 @@
                 slidesToShow: 2,
                 slidesToScroll: 2
             });
-
-            setHeight('.branch_title');
-        }
-        else if(screen_w < 768){
-            document.querySelector(".comment_slide").style.display = 'block';
-
+            //----------------------------------------------------------------------------------//
+            var branchtitle = $('.branch_title').length;
+            var branchtitletab = [];
+            for (var i = 1; i <= branchtitle;) {
+                branchtitletab[i] = $('.branch_title[data-tab="' + i + '"]').height();
+                i++
+            }
+            var branchtitleheight = branchtitletab.reduce(function(a, b) {
+                return Math.max(a, b);
+            });
+            $('.branch_title').css("height", branchtitleheight);
+            //----------------------------------------------------------------------------------//
+        } else if (screen_w < 768) {
+            $(".comment_slide").css("display", "block");
             $(".comment_slide").slick({
                 dots: true,
                 infinite: false,
@@ -466,39 +525,6 @@
                 slidesToScroll: 1
             });
         }
+
     });
-    
-    const toAwardsWinner = param => {
-        const url = `${window.location.origin}/awards-winner/${param}`;
-        window.open(url,'_blank');
-    }
-    
-    const reveal = () => {
-        const windowHeight = window.innerHeight;
-        const elementVisible = 10;
-
-        document.querySelectorAll(".reveal").forEach( e => {
-            const elementTop = e.getBoundingClientRect().top;
-
-            if(elementTop < (windowHeight - elementVisible)) e.classList.add('active');
-            else e.classList.remove('active');
-        });
-    }
-
-    const setHeight = selector => {
-        const length = document.querySelectorAll(selector).length;
-        const heights = [];
-
-        for(let i = 1; i <= length; i++) {
-            const height = document.querySelector(`${selector}[data-tab="${i}"]`).offsetHeight;
-            heights.push(height);
-        };
-
-        const maxHeight = heights.reduce((a, b) => {
-            return Math.max(a, b);
-        });
-
-        document.querySelectorAll(selector).style.height = maxHeight;
-    }
 </script>
-<?= $this->endSection() ?>

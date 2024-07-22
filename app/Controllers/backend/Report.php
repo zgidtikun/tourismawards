@@ -177,8 +177,7 @@ class Report extends BaseController
             ->join('committees CM', 'CM.application_form_id = AP.id AND CM.assessment_round = 2')
             ->join('application_type AT', 'AT.id = AP.application_type_id')
             ->join('application_type_sub ATS', 'ATS.id = AP.application_type_sub_id')->get()->getResultObject();
-        // pp_sql();
-        // exit;
+
         if (empty($data['result'])) {
             show_error_report();
         }

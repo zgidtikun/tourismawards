@@ -1,11 +1,15 @@
-<?= $this->extend('layout') ?>
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
-
-<?= $this->section('css') ?>
 <style>
-    .winner-title { font-size: 5vw; }
-    .winner-title-large { font-size: 10vw; }
-    .award-section-col { cursor: pointer; }
+    .winner-title {
+        font-size: 5vw;
+    }
+
+    .winner-title-large {
+        font-size: 10vw;
+    }
+
+    .award-section-col {
+        cursor: pointer;
+    }
 
     .award-section-txt {
         font-size: 20px !important;
@@ -22,19 +26,7 @@
         background-size: cover;
     }
 </style>
-<?= $this->endSection() ?>
 
-<?= $this->section('js') ?>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const headerHeight = document.querySelector('#header-inner').offsetHeight;
-        document.querySelector('.mainsite').style.display = 'block';
-        document.querySelector('.mainsite').style.marginTop = `${headerHeight}px`;
-    });
-</script>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
 <div class="container awards">
     <div class="container_box">
         <div class="row">
@@ -62,4 +54,3 @@
         </div>
     </div>
 </div>
-<?= $this->endSection() ?>

@@ -18,15 +18,17 @@ class Home extends BaseController
 
     public function index()
     {
-        if(config(\Config\App::class)->comming_soon) 
+        $_app = new \Config\App();
+        if($_app->comming_soon){
             return redirect()->to(base_url('comming-soon'));
+        }
 
         $data = [
             'title' => 'Thailand Tourism Awards',
             '_banner' => true,
+            'view' => 'index'
         ];
-
-        return view('pages/index',$data);
+        return view('template-app',$data);
     }
 
     public function verifyuser()
@@ -128,20 +130,67 @@ class Home extends BaseController
         ));
     }
 
+    public function new()
+    {
+        $obj = new \App\Models\News();
+        $news  = $obj->where('publish_end >=',"'".date('Y-m-d H:i:s')."'")
+            ->select('id, title, image_cover, created_by, publish_start')
+            ->orderBy('id','desc')
+            ->findAll();
+            
+        foreach($news as $new){
+            $new->publish_start = docDate($new->publish_start,3,'thailand');
+        }
+
+        $data = [
+            'title' => 'ข่าวประชาสัมพันธ์',
+            '_banner' => false,
+            'news' => $news,
+            'view' => 'new'
+        ];
+
+        return view('template-app',$data);
+    }
+
+    public function new_detail($id)
+    {
+        $obj = new \App\Models\News();
+        $new  = $obj->where('id',$id)
+            ->select('id, title, description, image_cover, created_by, 
+            publish_start')
+            ->first();
+
+        $data = [
+            'title' => 'ข่าวประชาสัมพันธ์',
+            '_banner' => false,
+            'new' => $new,
+            'view' => 'new-detail'
+        ];
+
+        return view('template-app',$data);
+    }
+
     public function aboutus()
     {
-        $data = [ 'title' => 'เกี่ยวกับโครงการ' ];
-        return view('pages/about-us',$data);
+        $data = [
+            'title' => 'เกี่ยวกับโครงการ',
+            '_banner' => false,
+            'view' => 'about-us'
+        ];
+
+        return view('template-app',$data);
     }
 
     public function contactus()
     {
         $data = [
             'title' => 'ติดต่อเรา',
-            '_recapcha' => $this->recapcha
+            '_recapcha' => $this->recapcha,
+            '_banner' => false,
+            'view' => 'contact-us'
         ];
 
-        return view('pages/contact-us',$data);
+        return view('template-app',$data);
     }
 
     public function sendEmailContact()
@@ -178,6 +227,38 @@ class Home extends BaseController
         return (object) array('result' => true);
     }
 
+    public function judge()
+    {
+        $obj = new \App\Models\Users();
+        $judge = $obj->where([
+                'role_id' => 3,
+                'status' => 1,
+                'status_delete' => 1
+            ])
+            ->where('award_type IS NOT NULL',NULL,false)
+            ->select(
+                'CONCAT(name,\' \',surname) fullname, profile, 
+                award_type, position'
+            , false)
+            ->findAll();
+
+        foreach($judge as $val){
+            $val->award_type = json_decode($val->award_type,false);
+
+            if(empty($val->pofile))
+                $val->profile = 'assets/images/unknown_user.jpg';
+        }
+        
+        $data = [
+            'title' => 'คณะกรรมการ',
+            '_banner' => false,
+            'judge' => $judge,
+            'view' => 'judge'
+        ];
+
+        return view('template-app',$data);
+    }
+
     public function privacypolicy()
     {
         $data = [
@@ -186,36 +267,52 @@ class Home extends BaseController
             'view' => 'privacy-policy'
         ];
 
-        return view('pages/privacy-policy',$data);
+        return view('template-app',$data);
 
+    }
+
+    public function appguide()
+    {
+        $data = [
+            'title' => 'คู่มือการสมัคร',
+            '_banner' => false,
+            'view' => 'application-guide'
+        ];
+
+        return view('template-app',$data);        
     }
 
     public function winnerinfo()
     {
         $data = [
-            'title' => 'ข้อมูลการประกวดรางวัล'
+            'title' => 'ข้อมูลการประกวดรางวัล',
+            '_banner' => false,
+            'view' => 'awards-info'
         ];
 
-        return view('pages/awards-info',$data);
+        return view('template-app',$data);
     }
 
     public function winneraward()
     {
         $data = [
             'title' => 'WINNER 2023',
+            '_banner' => false,
             'view' => 'awards-winner'
         ];
 
-        return view('pages/awards-winner',$data);
+        return view('template-app',$data);
     }
 
     public function winneraward13()
     {
         $data = [
-            'title' => 'ผลงานปีที่ได้รับปีที่ผ่านมา'
+            'title' => 'ผลงานปีที่ได้รับปีที่ผ่านมา',
+            '_banner' => false,
+            'view' => 'awards-winner-13'
         ];
 
-        return view('pages/awards-winner-13',$data);
+        return view('template-app',$data);
 
     }
 
@@ -225,18 +322,18 @@ class Home extends BaseController
             case 'hall-of-fame':
                 $title = 'Hall of Fame';
                 $setting = 'hall-of-fame';
-                $view = 'pages/awards-hall-of-fame';
+                $view = 'awards-hall-of-fame';
             break;
             case 'gold-awards':
                 $title = 'Gold Awards';
 
                 if ($subType == null) {
                     $setting = 'gold-awards';
-                    $view = 'pages/awards-winner-14';
+                    $view = 'awards-winner-14';
                 }
                 else if ($subType == 'low-carbon') {
                     $setting = 'gold-awards-low-carbon';
-                    $view = 'pages/awards-low-carbon';
+                    $view = 'awards-low-carbon';
                 }
                 else return redirect(base_url("awards-winner/$type"));
             break;
@@ -245,11 +342,11 @@ class Home extends BaseController
 
                 if ($subType == null) {
                     $setting = 'silver-awards';
-                    $view = 'pages/awards-winner-14';
+                    $view = 'awards-winner-14';
                 }
                 else if ($subType == 'low-carbon') {
                     $setting = 'silver-awards-low-carbon';
-                    $view = 'pages/awards-low-carbon';
+                    $view = 'awards-low-carbon';
                 }
                 else return redirect(base_url("awards-winner/$type"));
             break;
@@ -258,10 +355,12 @@ class Home extends BaseController
 
         $data = [
             'title' => $title,
-            'setting' => $setting
+            '_banner' => false,
+            'setting' => $setting,
+            'view' => $view
         ];
 
-        return view($view,$data);
+        return view('template-app',$data);
 
     }
 
@@ -275,9 +374,13 @@ class Home extends BaseController
     }
 
     public function comming_soon()
-    {
-        if(config(\Config\App::class)->comming_soon) return view('pages/comming-soon');
-        else return redirect()->to(base_url('home'));
+    {        
+        $_app = new \Config\App();
+        if($_app->comming_soon){
+            return view('comming-soon');
+        } else {
+            return redirect()->to(base_url('home'));
+        }
     }
 
     public function ebook()

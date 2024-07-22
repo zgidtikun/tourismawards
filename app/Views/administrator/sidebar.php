@@ -16,6 +16,10 @@
       </div>
       <div class="backendmenu-list-row title">เมนูหลัก</div>
 
+      <div class="backendmenu-list-row">
+        <li><a href="<?= base_url('administrator/question') ?>"><i class="bi bi-question-circle"></i>คำถามและเกณฑ์</a></li>
+      </div>
+
       <?php if (isAdmin()) : ?>
         <div class="backendmenu-list-row">
           <a href="javascript:void(0)" class="btn-menulist" data-tab="1" data-type="user"><i class="bi bi-grid-fill"></i>สมาชิก</a>

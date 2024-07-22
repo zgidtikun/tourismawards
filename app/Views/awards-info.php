@@ -1,7 +1,3 @@
-<?= $this->extend('layout') ?>
-<?= $this->section('title') ?><?= $title ?><?= $this->endSection() ?>
-
-<?= $this->section('css') ?>
 <style>
     .btn {
         --bs-btn-padding-x: 0.75rem;
@@ -56,8 +52,13 @@
         --bs-btn-disabled-border-color: #0C2C55;
     }
 
-    .award-list ul.judge { justify-content: center !important; }
-    .award-list li.judge { width: 33.33% ; }
+    .award-list ul.judge {
+        justify-content: center !important;
+    }
+
+    .award-list li.judge {
+        width: 33.33% ;
+    }
 
     @media screen and (max-width: 767px) and (orientation: portrait){
         .award-list li.judge {
@@ -67,66 +68,6 @@
         }
     }
 </style>
-<?= $this->endSection() ?>
-
-<?= $this->section('js') ?>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const headerHeight = document.querySelector('#header-inner').offsetHeight;
-        const mainsite = document.querySelector('.mainsite');
-        mainsite.style.display = 'block';
-        mainsite.style.marginTop = `${headerHeight}px`;
-
-        try {
-            const sPageURL = window.location.search.substring(1);
-            const sURLVariables = sPageURL.split('&');
-            let pv;
-
-            for(index in sURLVariables){
-                const sParameterName = sURLVariables[index].split('=');
-
-                if(sParameterName[0] == 'p'){
-                    pv = sParameterName[1];
-                    return;
-                }
-            }
-            
-            switch(pv.toLowerCase()){
-                case 'attraction':
-                case 'accommodation':
-                case 'healthandwellness':
-                case 'tourprogram':
-                    document.querySelector('#pointer-1').scrollIntoView();
-                    break;
-                case 'property':
-                    document.querySelector('#pointer-2').scrollIntoView();
-                    break;
-                case 'judge':
-                    document.querySelector('#pointer-3').scrollIntoView();
-                    break;
-                case 'benefits':
-                    document.querySelector('#pointer-4').scrollIntoView();
-                    break;
-                default: 
-                    document.querySelector('#pointer-0').scrollIntoView();
-            }
-        } catch(error){}
-    });
-
-    const download_file = (type) => {
-        let url = `${window.location.origin}/download/`;
-
-        switch(type){
-            case 1: url += 'qualifications-of-applicants.rar'; break;
-            case 2: url += 'judging-criteria.rar'; break;
-        }
-
-        window.open(url,'_blank');
-    }
-</script>
-<?= $this->endSection() ?>
-
-<?= $this->section('content') ?>
 <div class="banner-box">
 
     <div class="txt-banner" id="pointer-0">
@@ -230,6 +171,7 @@
                                 ประเภทรายการนำเที่ยว<br>
                                 (Tour Program)
                             </div>
+
                         </li>
                     </ul>
                 </div>
@@ -365,6 +307,10 @@
                             </div>
                         </li>
                     </ul>
+                    <!-- <button type="button" class="btn btn-main" 
+                    onclick="download_file(2)">
+                        <i class="bi bi-cloud-download"></i> Download
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -437,4 +383,52 @@
 
     </div>
 </div>
-<?= $this->endSection() ?>
+<script>
+    $(document).ready(()=>{
+        try {
+            const sPageURL = window.location.search.substring(1);
+            const sURLVariables = sPageURL.split('&');
+            let pv;
+
+            $.each(sURLVariables,(key, value)=>{
+                const sParameterName = value.split('=');
+                if(sParameterName[0] == 'p'){
+                    pv = sParameterName[1];
+                    return;
+                }
+            });
+            
+            switch(pv.toLowerCase()){
+                case 'attraction':
+                case 'accommodation':
+                case 'healthandwellness':
+                case 'tourprogram':
+                    $('#pointer-1')[0].scrollIntoView();
+                    break;
+                case 'property':
+                    $('#pointer-2')[0].scrollIntoView();
+                    break;
+                case 'judge':
+                    $('#pointer-3')[0].scrollIntoView();
+                    break;
+                case 'benefits':
+                    $('#pointer-4')[0].scrollIntoView();
+                    break;
+                default: 
+                    $('#pointer-0')[0].scrollIntoView();
+                    break;
+            }
+        } catch(error){}
+    });
+
+    const download_file = (type) => {
+        let url = window.location.origin + '/download/';
+
+        switch(type){
+            case 1: url += 'qualifications-of-applicants.rar'; break;
+            case 2: url += 'judging-criteria.rar'; break;
+        }
+
+        window.open(url,'_blank');
+    }
+</script>

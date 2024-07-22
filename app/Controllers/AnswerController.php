@@ -90,15 +90,19 @@ class AnswerController extends BaseController
         ->getResult();
         
         if(!empty($myQuestion)){
+            $question_arr = [];
+
             foreach($myQuestion as $mq){
-                $this->ans->insert([
+                 $question_arr[] = [
                     'question_id' => $mq->id,
                     'reply_by' => $this->myId,
                     'status' => 1,
                     'created_at' => $current_datetime,
                     'updated_at' => $current_datetime
-                ]);
+                ];
             }
+
+            $this->ans->insertBatch($question_arr);
         }
 
         if($requireLowCarbon){
@@ -110,15 +114,19 @@ class AnswerController extends BaseController
             ->find();
         
             if(!empty($myLowcarbon)){
+                $lowcarbon_arr = [];
+
                 foreach($myLowcarbon as $mq){
-                    $this->ans->insert([
+                    $lowcarbon_arr[] = [
                         'question_id' => $mq->id,
                         'reply_by' => $this->myId,
                         'status' => 1,
                         'created_at' => $current_datetime,
                         'updated_at' => $current_datetime
-                    ]);
+                    ];
                 }
+
+                $this->ans->insertBatch($question_arr);
             }
         }
 
@@ -299,7 +307,6 @@ class AnswerController extends BaseController
     public function saveReply()
     {
         try{
-
             switch($this->input->getVar('action')){
                 case 'create': 
                     $dtdb = [
@@ -351,22 +358,34 @@ class AnswerController extends BaseController
                     $counter = 0;
 
                     foreach($answers as $ans){
+                        // if($ans->action == 'create'){
+                        //     $this->ans->insert([
+                        //         'question_id' => $ans->qid,
+                        //         'reply' => $ans->reply,
+                        //         'reply_by' => $this->myId,
+                        //         'status' => 2,
+                        //     ]);
+                        // } else {
+                        //     $this->ans->where('id',$ans->aid)
+                        //         ->set([ 'reply' => $ans->reply, 'status' => 2 ])
+                        //         ->update();
+                        // }
                         $ansUpdate[] = [                            
                             'id' => $ans->aid,
                             'reply' => $ans->reply,
                             'status' => 2,
                         ];
                         $counter++;
-                    }  
+                    }
                     
-                    $update = $this->db->table('answer')->updateBatch($ansUpdate,'id');                    
+                    $update = $this->db->table('answer')->updateBatch($ansUpdate,'id'); 
 
                     $this->ans->where('reply_by', $this->myId)
                         ->set([ 
                             'status' => 2 ,
                             'send_date' => date('Y-m-d H:i:s')
                         ])
-                        ->update();
+                        ->update();                    
 
                     $form = $this->appForm->where('id',$this->input->getVar('appId'))
                         ->select('IFNULL(attraction_name_th,attraction_name_en) place_name',false)
@@ -393,8 +412,8 @@ class AnswerController extends BaseController
                             $judgeRequest->respond_request($this->input->getVar('appId'),$this->myId,$form->place_name);
                             $isEstimateRequire = true;
                         }
-                    } 
-                    
+                    }                   
+
                     save_log_activety([
                         'module' => 'user_pre_screen',
                         'action' => 'pre_screen_send_sys',

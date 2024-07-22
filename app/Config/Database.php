@@ -52,10 +52,10 @@ class Database extends Config
     
     public $development = [
         'DSN'      => '',
-        'hostname' => '10.0.0.70',
-        'username' => 'tourismawarddb',
-        'password' => '@wsxcde3$rThai',
-        'database' => 'tourismawards',
+        'hostname' => 'localhost',
+        'username' => 'root',
+        'password' => '',
+        'database' => 'admin_tourismawardsdb',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,

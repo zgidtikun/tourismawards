@@ -25,16 +25,17 @@ class RegisterController extends BaseController
 
         $data = [
             'title' => 'ลืมรหัสผ่าน',
+            'view' => 'frontend/forgetpass',
             '_recapcha' => $this->recapcha
         ];
-        return view('frontend/forgetpass', $data);
+        return view('template-frontend', $data);
     }
 
     public function signup()
     {
-        if (session()->get('isLoggedIn')) {
-            return redirect()->to(base_url('home'));
-        }
+        // if (session()->get('isLoggedIn')) {
+        //     return redirect()->to(base_url('home'));
+        // }
 
         $status = false;
         $error = array();
@@ -114,9 +115,10 @@ class RegisterController extends BaseController
 
         $data = [
             'title' => 'Register',
+            'view' => 'frontend/register',
             '_recapcha' => $this->recapcha,
-            '_register_open' => $_register_open??true,
-            '_register_expire' => $_register_expire??false,
+            '_register_open' => $_register_open,
+            '_register_expire' => $_register_expire,
             '_signup' => (object) array(
                 'method' => $method,
                 'status' => $status,
@@ -125,7 +127,7 @@ class RegisterController extends BaseController
             )
         ];
 
-        return view('frontend/register', $data);
+        return view('template-frontend', $data);
     }
 
     public function resetPassword()

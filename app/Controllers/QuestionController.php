@@ -221,7 +221,7 @@ class QuestionController extends BaseController
                     if($isFinish == 'unfinish'){
                         $rq_status = $this->checkStatusRequest($val->id,$this->myId);
                         
-                        if(($val->status == 3 || $val->status == 5) && $rq_status == 3){  
+                        if($val->status == 3 && $rq_status == 3){  
                             if($current_date > $val->duedate){
                                 
                                 $UsersStage->where('id',$val->stage_id)
